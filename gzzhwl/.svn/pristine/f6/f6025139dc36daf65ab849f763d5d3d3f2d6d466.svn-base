@@ -1,0 +1,128 @@
+package com.gzzhwl.api.agent.service.impl;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.api.agent.service.AgentInfoService;
+import com.gzzhwl.api.agent.validate.AgentValidate;
+import com.gzzhwl.api.image.model.ImageCategory;
+import com.gzzhwl.api.image.model.ImageItem;
+import com.gzzhwl.api.image.service.ImageServiceFactory;
+import com.gzzhwl.core.constant.AgentType;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.data.dao.AgentInfoDao;
+import com.gzzhwl.core.data.extdao.AgentInfoExtDao;
+import com.gzzhwl.core.data.model.AgentInfo;
+import com.gzzhwl.core.utils.IdentifierUtils;
+
+@Service
+public class AgentInfoServiceImpl implements AgentInfoService {
+	@Autowired
+	private AgentInfoDao agentInfoDao;
+	@Autowired
+	private AgentInfoExtDao extDao;
+	@Autowired
+	private ImageServiceFactory imageFactory;
+
+	@Override
+	public String saveAgentInfoV2(AgentInfo agentInfo, String accountId) {
+
+		AgentValidate.valid_Empty_v2(agentInfo);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("idno", agentInfo.getIdno());
+		param.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		int num = agentInfoDao.hasIdno(param);
+		AgentValidate.valid_idno(agentInfo.getIdno(), num);
+
+		String agentInfoId = IdentifierUtils.getId().generate().toString();
+		agentInfo.setAgentInfoId(agentInfoId);
+		agentInfo.setAccountId(accountId);
+		agentInfo.setSource(DataSource.VLORRY.getCode());
+		agentInfo.setCreatedBy(accountId);
+		agentInfo.setStatus(Global.STATUS_WAIT.toString());
+		agentInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+//		String busImageRefId = agentInfo.getBusImageRefId();
+//		if (StringUtils.isNotBlank(busImageRefId)) {
+//			agentInfo.setAgentType(AgentType.COMPANY.getCode());
+//		} else {
+//			agentInfo.setAgentType(AgentType.PERSONAL.getCode());
+//		}
+		agentInfoDao.insert(agentInfo);
+		return agentInfoId;
+	}
+
+	@Override
+	public String saveOrUpdateAgentInfo(AgentInfo agentInfo, String accountId) {
+		AgentInfo info = agentInfoDao.get(accountId);
+		if (null == info) {// do insert
+			AgentValidate.valid_Empty(agentInfo);
+
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("idno", agentInfo.getIdno());
+			param.put("isDeleted", Global.ISDEL_NORMAL.toString());
+			int num = agentInfoDao.hasIdno(param);
+			AgentValidate.valid_idno(agentInfo.getIdno(), num);
+
+			String agentInfoId = IdentifierUtils.getId().generate().toString();
+			agentInfo.setAgentInfoId(agentInfoId);
+			agentInfo.setAccountId(accountId);
+			agentInfo.setSource(DataSource.VLORRY.getCode());
+			agentInfo.setCreatedBy(agentInfo.getAccountId());
+			agentInfo.setStatus(Global.STATUS_WAIT.toString());
+			agentInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+			String busImageRefId = agentInfo.getBusImageRefId();
+			if (StringUtils.isNotBlank(busImageRefId)) {
+				agentInfo.setAgentType(AgentType.COMPANY.getCode());
+			} else {
+				agentInfo.setAgentType(AgentType.PERSONAL.getCode());
+			}
+			agentInfoDao.insert(agentInfo);
+			return agentInfoId;
+		} else {// do update
+			AgentValidate.valid_Empty(agentInfo);
+
+			AgentValidate.valid_status(info);
+
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("idno", agentInfo.getIdno());
+			params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+			params.put("_idno", info.getIdno());
+			int num = agentInfoDao.hasIdno(params);
+			AgentValidate.valid_idno(agentInfo.getIdno(), num);
+			agentInfo.setAccountId(accountId);
+			agentInfo.setStatus(Global.STATUS_WAIT.toString());
+			String busImageRefId = agentInfo.getBusImageRefId();
+			if (StringUtils.isNotBlank(busImageRefId)) {
+				agentInfo.setAgentType(AgentType.COMPANY.getCode());
+			} else {
+				agentInfo.setAgentType(AgentType.PERSONAL.getCode());
+			}
+			agentInfoDao.updateSelective(agentInfo);
+			return info.getAgentInfoId();
+		}
+	}
+
+	@Override
+	public Map<String, Object> getAgentInfoByCondition(String accountId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("accountId", accountId);
+		return extDao.getAgentInfo(params);
+	}
+
+	@Override
+	public String updateImageInfo(MultipartFile image, String accountId) {
+		ImageItem item = new ImageItem();
+		if (image != null && !image.isEmpty()) {
+			item = imageFactory.saveImage(ImageCategory.AGENT, image, accountId);
+		}
+		return item.getFileId();
+	}
+
+}

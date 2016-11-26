@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.InternalDriverDao">
+
+	<resultMap id="internalDriverResultMap" type="InternalDriver">
+		<id property="accountId" column="account_id" />
+		<result property="isStaff" column="is_staff" />
+	</resultMap>
+
+	<insert id="insert" parameterType="InternalDriver">
+	   insert into zh_internal_driver (
+	     account_id,
+	     is_staff
+	   )values (
+	     #{accountId},
+	     #{isStaff}
+	   )
+	</insert>
+</mapper> 

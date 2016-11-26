@@ -1,0 +1,135 @@
+package com.gzzhwl.admin.order.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.order.service.OrderHistoryService;
+import com.gzzhwl.admin.order.service.OrderLinkStatusService;
+import com.gzzhwl.admin.quoted.service.QuotedLinkStatusService;
+import com.gzzhwl.admin.source.service.SourceLinkStatusService;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.FlowsService;
+import com.gzzhwl.core.data.dao.OrderDetailInfoDao;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.OrderDetailInfo;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class OrderLinkStatusServiceImpl implements OrderLinkStatusService {
+	@Autowired
+	private FlowsService flowService;
+	@Autowired
+	private OrderHistoryService orderHistoryService;
+	@Autowired
+	private OrderDetailInfoDao detailInfoDao;
+	@Autowired
+	private QuotedLinkStatusService quotedLinkStatusService;
+	@Autowired
+	private SourceLinkStatusService sourceLinkStatusService;
+
+	private OrderDetailInfo executeFlow(String orderId, String actionCode, String staffId) throws RestException {
+		OrderDetailInfo orderDetailInfo = detailInfoDao.get(orderId);
+		String currentStatus = orderDetailInfo.getStatus();
+		FlowDef flowDef = flowService.executeFlow(ZHFlow.ORDER, actionCode, currentStatus, FlowActionCategory.SYSTEM);
+		orderDetailInfo.setStatus(flowDef.getTransitionStatus());
+		orderDetailInfo.setUpdatedBy(staffId);
+		detailInfoDao.updateSelective(orderDetailInfo);
+		orderHistoryService.saveOrderHistory(orderId, currentStatus, flowDef, staffId);
+		return orderDetailInfo;
+	}
+
+	/**
+	 * YSJ 操作货源联动订单状态 ---start
+	 */
+	@Override
+	public boolean rejectOrder(String orderId, String reason, String staffId) throws RestException {
+		String actionCode = "06";// YSJ拒绝发布
+		this.executeFlow(orderId, actionCode, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean publicOrder(String orderId, String staffId) throws RestException {
+		String actionCode = "09";// YSJ确认发布
+		this.executeFlow(orderId, actionCode, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean bidOrder(String orderId, String staffId) throws RestException {
+		String actionCode = "10";// YSJ中标动作
+		this.executeFlow(orderId, actionCode, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean avttSource(String orderId, String staffId) throws RestException {
+		String actionCode = "11";// YSJ完成配载动作
+		this.executeFlow(orderId, actionCode, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean closeSourceOrder(String orderId, String reason, String staffId) throws RestException {
+		String actionCode = "12";// YSJ关闭货源
+		this.executeFlow(orderId, actionCode, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean breakPromiseOrder(String orderId, String operatorId) throws RestException {
+		String actionCode = "13";// YSJ违约货源
+		this.executeFlow(orderId, actionCode, operatorId);
+		return true;
+	}
+
+	@Override
+	public boolean autoClose(String orderId, String staffId) throws RestException {
+		String actionCode = "14";// YSJ竞价自动结束动作
+		this.executeFlow(orderId, actionCode, staffId);
+		return true;
+	}
+
+	/**
+	 * YSJ 操作货源联动订单状态 ---end
+	 */
+
+	@Override
+	public boolean loadOrder(String orderId, String staffId) throws RestException {
+		String actionCode = "15";// 配载
+		this.executeFlow(orderId, actionCode, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean cancelLoad(String orderId, String staffId) throws RestException {
+		String actionCode = "16";// 取消配载
+		this.executeFlow(orderId, actionCode, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean doTrip(String orderId, String staffId) throws RestException {
+		String actionCode = "17";// 发车
+		this.executeFlow(orderId, actionCode, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean setOut(String orderId, String staffId) throws RestException {
+		String actionCode = "18";// 发车
+		this.executeFlow(orderId, actionCode, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean cancelSetOut(String orderId, String staffId) throws RestException {
+		String actionCode = "19";// 取消发车
+		this.executeFlow(orderId, actionCode, staffId);
+//		if (StringUtils.isNotBlank(quotedId)) {// 有报价ID ，
+//			quotedLinkStatusService.cancelSetOut(quotedId, staffId);// 作废报价\作废货源
+//		}
+		return true;
+	}
+}

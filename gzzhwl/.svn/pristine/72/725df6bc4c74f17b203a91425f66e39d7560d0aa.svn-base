@@ -1,0 +1,295 @@
+package com.gzzhwl.admin.lend.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Transformer;
+import org.apache.commons.lang3.StringUtils;
+import org.dozer.Mapper;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.lend.service.LendService;
+import com.gzzhwl.admin.lend.vo.LendQryVo;
+import com.gzzhwl.admin.lend.vo.LendVO;
+import com.gzzhwl.admin.vehicle.service.VehicleManageService;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.SeqNoKey;
+import com.gzzhwl.core.data.dao.DepartmentInfoDao;
+import com.gzzhwl.core.data.dao.LendLogDao;
+import com.gzzhwl.core.data.dao.RealDriverInfoDao;
+import com.gzzhwl.core.data.dao.RealVehicleUsedInfoDao;
+import com.gzzhwl.core.data.extdao.LendLogExtDao;
+import com.gzzhwl.core.data.model.DepartmentInfo;
+import com.gzzhwl.core.data.model.LendLog;
+import com.gzzhwl.core.data.model.RealDriverInfo;
+import com.gzzhwl.core.data.model.RealVehicleUsedInfo;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.core.utils.JodaDateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class LendServiceImpl implements LendService {
+	@Autowired
+	private LendLogDao lendLogDao;
+	@Autowired
+	private RealDriverInfoDao realDriverInfoDao;
+	@Autowired
+	private RealVehicleUsedInfoDao realVehicleUsedInfoDao;
+	@Autowired
+	private LendLogExtDao lendLogExtDao;
+	@Autowired
+	private RegionService regionService;
+	@Autowired
+	private Mapper beanMapper;
+	@Autowired
+	private VehicleManageService vehicleManageService;
+	@Autowired
+	private DepartmentInfoDao departmentInfoDao;
+
+	@Override
+	public String addLend(LendVO lendVo, Integer departId, String staffId) throws RestException {
+		String vehicleInfoId = lendVo.getVehicleInfoId();
+		LendLog log = this.getVehicleLendLog(vehicleInfoId, departId);// 借的记录
+		LendLog lendLog = new LendLog();
+		if (log != null) {
+			DateTime lastDate = this.getVehiclelastReturnDate(log);
+			String endTime = lendVo.getEndTime();
+			DateTime dt = JodaDateUtils.parse(endTime);
+			if (lastDate.isBefore(dt)) {
+				throw new RestException("21002", "超过可外借的日期");
+			} else {
+				if (StringUtils.isNotBlank(log.getDriver1InfoId())) {
+					lendLog.setDriver1InfoId(log.getDriver1InfoId());
+				} else {
+					lendLog.setDriver1InfoId(lendVo.getDriver1InfoId());
+				}
+				if (StringUtils.isNotBlank(log.getDriver2InfoId())) {
+					lendLog.setDriver2InfoId(log.getDriver2InfoId());
+				} else {
+					lendLog.setDriver2InfoId(lendVo.getDriver2InfoId());
+				}
+			}
+		} else {
+			lendLog.setDriver1InfoId(lendVo.getDriver1InfoId());
+			lendLog.setDriver2InfoId(lendVo.getDriver2InfoId());
+		}
+		String lendId = IdentifierUtils.getId().generate().toString();
+		String lendNo = IdentifierUtils.getSequence(SeqNoKey.LEND).generate().toString();
+		lendLog.setLendId(lendId);
+		lendLog.setVehicleInfoId(vehicleInfoId);
+		lendLog.setFromDepartId(departId + "");
+		lendLog.setToDepartId(lendVo.getToDepartId());
+		lendLog.setEndTime(lendVo.getEndTime());
+		lendLog.setStatus(LendLog.EFFECT);
+		lendLog.setUpdatedBy(staffId);
+		lendLog.setCreatedBy(staffId);
+		lendLog.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		lendLog.setDepartureCode(lendVo.getDepartureCode());
+		lendLog.setDestinationCode(lendVo.getDestinationCode());
+		lendLog.setLendNo(lendNo);
+		lendLogDao.insert(lendLog);
+
+		if (StringUtils.isNotBlank(lendLog.getDriver1InfoId())) {
+			RealDriverInfo up = new RealDriverInfo();
+			up.setDriverInfoId(lendLog.getDriver1InfoId());
+			up.setUseDepartId(lendVo.getToDepartId());
+			realDriverInfoDao.updateSelective(up);
+		}
+		if (StringUtils.isNotBlank(lendLog.getDriver2InfoId())) {
+			RealDriverInfo up = new RealDriverInfo();
+			up.setDriverInfoId(lendLog.getDriver2InfoId());
+			up.setUseDepartId(lendVo.getToDepartId());
+			realDriverInfoDao.updateSelective(up);
+		}
+		RealVehicleUsedInfo realVehicleUsedInfo = new RealVehicleUsedInfo();
+		realVehicleUsedInfo.setVehicleInfoId(vehicleInfoId);
+		realVehicleUsedInfo.setUseDepartId(lendVo.getToDepartId());
+		realVehicleUsedInfoDao.updateSelective(realVehicleUsedInfo);
+		return lendId;
+	}
+
+	/**
+	 * 判断车辆是否是借来的
+	 */
+	private LendLog getVehicleLendLog(String vehicleInfoId, Integer departId) {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("vehicleInfoId", vehicleInfoId);
+		params.put("toDepartId", departId);
+		params.put("status", LendLog.EFFECT);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		return lendLogDao.getLendLog(params);
+	}
+
+	/**
+	 * 获取车辆最久归还日期
+	 */
+	private DateTime getVehiclelastReturnDate(LendLog log) {
+		String endTime = log.getEndTime();
+		return JodaDateUtils.parse(endTime);
+	}
+
+	@Override
+	public boolean offLend(String lendId, String staffId) throws RestException {
+		LendLog log = lendLogDao.get(lendId);
+		String status = log.getStatus();
+		if (StringUtils.equals(status, LendLog.EFFECT)) {
+			String vehicleInfoId = log.getVehicleInfoId();
+			String toDepartId = log.getToDepartId();
+			LendLog lendSub = this.getVehicleLendLog(vehicleInfoId, Integer.valueOf(toDepartId));
+			if (lendSub != null) {
+				throw new RestException("100230", "车辆还在外借中，不能提前归还。");
+			} else {
+				LendLog updateLog = new LendLog();
+				updateLog.setLendId(lendId);
+				updateLog.setUpdatedBy(staffId);
+				updateLog.setStatus(LendLog.INEFFICACY);
+				lendLogDao.updateSelective(updateLog);
+
+				if (StringUtils.isNotBlank(log.getDriver1InfoId())) {
+					RealDriverInfo up = new RealDriverInfo();
+					up.setDriverInfoId(log.getDriver1InfoId());
+					up.setUseDepartId(log.getFromDepartId());
+					realDriverInfoDao.updateSelective(up);
+				}
+				if (StringUtils.isNotBlank(log.getDriver2InfoId())) {
+					RealDriverInfo up = new RealDriverInfo();
+					up.setDriverInfoId(log.getDriver2InfoId());
+					up.setUseDepartId(log.getFromDepartId());
+					realDriverInfoDao.updateSelective(up);
+				}
+				RealVehicleUsedInfo realVehicleUsedInfo = new RealVehicleUsedInfo();
+				realVehicleUsedInfo.setVehicleInfoId(vehicleInfoId);
+				realVehicleUsedInfo.setUseDepartId(log.getFromDepartId());
+				realVehicleUsedInfoDao.updateSelective(realVehicleUsedInfo);
+
+			}
+		} else {
+			throw new RestException("100231", "车辆已归还。");
+		}
+		return false;
+	}
+
+	@Override
+	public Map<String, Object> validInfo(String vehicleInfoId, Integer departId) throws RestException {
+		LendLog log = this.getVehicleLendLog(vehicleInfoId, departId);// 借的记录
+		if (log != null) {
+			Map<String, Object> result = Maps.newHashMap();
+			DateTime lastDate = this.getVehiclelastReturnDate(log);
+			result.put("lastDate", lastDate);
+			List<String> driverList = Lists.newArrayList();
+			if (StringUtils.isNotBlank(log.getDriver1InfoId())) {
+				driverList.add(log.getDriver1InfoId());
+			}
+			if (StringUtils.isNotBlank(log.getDriver2InfoId())) {
+				driverList.add(log.getDriver2InfoId());
+			}
+			result.put("driverList", driverList);
+			return result;
+		}
+		return null;
+	}
+
+	@Override
+	public Page<Map<String, Object>> getLendLogPage(LendQryVo lendQryVo, int current, int pagesize) {
+
+		Page<Map<String, Object>> pageList = lendLogExtDao.getLendLogPage(lendQryVo.getParam(), current, pagesize);
+
+		CollectionUtils.transform(pageList.getRows(), new Transformer<Map<String, Object>, Map<String, Object>>() {
+			@Override
+			public Map<String, Object> transform(Map<String, Object> input) {
+
+				String departureCode = (String) input.get("departureCode");
+				input.put("departureCodeCn", this.getCodeCn(departureCode));
+
+				String destinationCode = (String) input.get("destinationCode");
+				input.put("destinationCodeCn", this.getCodeCn(destinationCode));
+
+				String status = (String) input.get("status");
+				if (status.equals(LendLog.EFFECT)) {
+					input.put("statusCn", "借用中");
+				} else if (status.equals(LendLog.INEFFICACY)) {
+					input.put("statusCn", "已归还");
+				}
+
+				return input;
+			}
+
+			private String getCodeCn(String code) {
+				if (StringUtils.isNotBlank(code)) {
+					RegionInfo startCodePCn = regionService.findByCode(code);
+					if (startCodePCn != null) {
+						return startCodePCn.getRegionName();
+					}
+				}
+				return "";
+			}
+		});
+
+		return lendLogExtDao.getLendLogPage(lendQryVo.getParam(), current, pagesize);
+	}
+
+	@Override
+	public Map<String, Object> getLendLogDetail(String lendId) {
+
+		Map<String, Object> resmap = Maps.newHashMap();
+
+		LendLog lendLog = lendLogDao.get(lendId);
+
+		String departureCodeCn = this.getCodeCn(lendLog.getDepartureCode());
+
+		String destinationCodeCn = this.getCodeCn(lendLog.getDestinationCode());
+
+		String statusCn = "";
+
+		if (lendLog.getStatus().equals(LendLog.EFFECT)) {
+			statusCn = "借用中";
+		} else if (lendLog.getStatus().equals(LendLog.INEFFICACY)) {
+			statusCn = "已归还";
+		}
+
+		String fromDepartName = this.getDepartName(lendLog.getFromDepartId());
+		String toDepartName = this.getDepartName(lendLog.getToDepartId());
+
+		Map<String, Object> lendLogMap = beanMapper.map(lendLog, Map.class);
+		lendLogMap.put("departureCodeCn", departureCodeCn);
+		lendLogMap.put("destinationCodeCn", destinationCodeCn);
+		lendLogMap.put("statusCn", statusCn);
+		lendLogMap.put("fromDepartName", fromDepartName);
+		lendLogMap.put("toDepartName", toDepartName);
+
+		resmap.put("lendLog", lendLog);
+
+		return resmap;
+	}
+
+	private String getCodeCn(String code) {
+		if (StringUtils.isNotBlank(code)) {
+			RegionInfo startCodePCn = regionService.findByCode(code);
+			if (startCodePCn != null) {
+				return startCodePCn.getRegionName();
+			}
+		}
+		return "";
+	}
+
+	private String getDepartName(String departId) {
+
+		if (StringUtils.isNotBlank(departId)) {
+			DepartmentInfo departmentInfo = departmentInfoDao.get(new Integer(departId));
+			if (departmentInfo != null) {
+				return departmentInfo.getName();
+			}
+		}
+
+		return "";
+	}
+
+}

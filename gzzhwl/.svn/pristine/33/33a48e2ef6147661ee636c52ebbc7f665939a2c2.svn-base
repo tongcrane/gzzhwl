@@ -1,0 +1,83 @@
+package com.gzzhwl.admin.load.service;
+
+import java.text.ParseException;
+import java.util.Map;
+
+import com.gzzhwl.admin.load.vo.ArriveQueryVo;
+import com.gzzhwl.admin.load.vo.LoadPrintreceiptVo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.exception.RestException;
+
+public interface ArrivedManageService {
+
+	/**
+	 * 到达
+	 */
+	public boolean doArrived(String loadId, String arriveTime, String staffId) throws RestException;
+
+	/**
+	 * 上传电子回单
+	 */
+	public boolean uploadElecReceipt(String loadId, String imageId, String actionTime, String staffId);
+
+	/**
+	 * 上传纸质回单
+	 */
+	public boolean uploadPrintReceipt(LoadPrintreceiptVo vo, String staffId);
+
+	/**
+	 * 审核电子回单
+	 */
+	public boolean verifyElecReceipt(String loadId, String receiptId, String verifyResult, String staffId);
+
+	/**
+	 * 确认纸质回单
+	 */
+	public boolean confirmPrintReceipt(String loadId, String receiptId, String signTime, String staffId);
+
+	/**
+	 * 车辆到达关闭
+	 */
+	public boolean close(String loadId, String staffId);
+
+	/**
+	 * 查询到达列表
+	 */
+	public Page<Map<String, Object>> pageArriveList(ArriveQueryVo queryVo, int currentPage, int pageSize)
+			throws ParseException;
+
+	/**
+	 * 查询到达详情
+	 */
+	public Map<String, Object> getArriveDetail(String loadId);
+
+	/**
+	 * 获取电子回单详情
+	 */
+	public Map<String, Object> getElecReceiptDetail(String loadId);
+
+	/**
+	 * 获取纸质回单详情
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	public Map<String, Object> getPrintReceiptDetail(String loadId);
+
+	/**
+	 * 是否能上传纸质回单
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	public boolean isCanAddPrint(String loadId);
+
+	/**
+	 * 是否能上传电子回单
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	public boolean isCanAddElec(String loadId);
+
+}

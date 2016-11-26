@@ -1,0 +1,60 @@
+package com.gzzhwl.api.source.vo;
+
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.rest.springmvc.validate.ParamEmptyValidator;
+
+public class QuerySourceHallVo {
+	
+//	private String lineId;
+	
+	private String queryContent;
+	
+	private String sort;
+
+//	public String getLineId() {
+//		return lineId;
+//	}
+//
+//	public void setLineId(String lineId) {
+//		this.lineId = lineId;
+//	}
+//	
+	public String getQueryContent() {
+		return queryContent;
+	}
+
+	public void setQueryContent(String queryContent) {
+		this.queryContent = queryContent;
+	}
+
+	public String getSort() {
+		return sort;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+
+	public Map<String, Object> getParam() {
+//		ParamEmptyValidator.VALID_PARAM_EMPTY(this.lineId);
+		Map<String, Object> params = Maps.newHashMap();
+		
+//		params.put("lineId", this.lineId);
+		
+		if (StringUtils.equals(this.sort, "01")) {
+			params.put("sort", "desc");
+		} else if (StringUtils.equals(this.sort, "02")) {
+			params.put("sort", "asc");
+		}
+		
+		if (StringUtils.isNotBlank(queryContent)) {
+			params.put("queryContent", this.queryContent);
+		}
+		
+		return params;
+	}
+}

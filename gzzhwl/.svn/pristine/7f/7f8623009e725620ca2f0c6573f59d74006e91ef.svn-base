@@ -1,0 +1,89 @@
+package com.gzzhwl.api.load.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.admin.load.vo.LoadFeedbackListVo;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.data.model.AccountInfo;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.rest.springmvc.annotation.Authorization;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+@RestController
+@RequestMapping("/api/feedback")
+public class FeedbackController {
+	
+	@Autowired
+	private LoadFeedbackService loadFeedbackService;
+
+	/**
+	 * 外部司机保存异常反馈
+	 * 
+	 * @param loadFeedbackListVo
+	 * @return
+	 */
+	@RequestMapping(value = "/saveYSJDriverFeedback", method = RequestMethod.POST, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel saveYSJDriverFeedback(@RequestBody LoadFeedbackListVo loadFeedbackListVo, @Authorization AccountInfo accountInfo) {
+
+		loadFeedbackService.saveYSJDriverFeedback(loadFeedbackListVo, accountInfo.getAccountId());
+
+		return new ResponseModel(null);
+	}
+	
+	/**
+	 * 内部司机保存异常反馈
+	 * 
+	 * @param loadFeedbackListVo
+	 * @return
+	 */
+	@RequestMapping(value = "/saveCBSDriverFeedback", method = RequestMethod.POST, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel saveCBSDriverFeedback(@RequestBody LoadFeedbackListVo loadFeedbackListVo, @Authorization AccountInfo accountInfo) {
+
+		
+		loadFeedbackService.saveCBSDriverFeedback(loadFeedbackListVo, accountInfo.getAccountId());
+		
+		return new ResponseModel(null);
+	}
+	
+	/**
+	 * 定位信息上报
+	 * 
+	 * @param loadFeedbackListVo
+	 * @return
+	 */
+	@RequestMapping(value = "/saveGPSInfo", method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel saveGPSInfo(@RequestBody LoadFeedbackListVo loadFeedbackListVo, @Authorization AccountInfo accountInfo) {
+
+		loadFeedbackService.saveGPSInfo(loadFeedbackListVo, accountInfo.getAccountId());
+
+		return new ResponseModel(null);
+	}
+	
+	/**
+	 * 结束异常反馈
+	 * 
+	 * @param loadFeedbackListVo
+	 * @return
+	 */
+	@RequestMapping(value = "/endFeedback", method = RequestMethod.POST)
+	public ResponseModel endFeedback(String feedbackId, @Authorization AccountInfo accountInfo) {
+
+		loadFeedbackService.endFeedback(feedbackId, accountInfo.getAccountId());
+
+		return new ResponseModel(null);
+	}
+	
+	
+	
+	
+	
+	
+}

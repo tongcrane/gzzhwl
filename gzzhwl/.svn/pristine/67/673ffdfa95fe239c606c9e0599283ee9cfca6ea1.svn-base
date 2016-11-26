@@ -1,0 +1,215 @@
+package com.gzzhwl.admin.load.vo;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.springmvc.validate.ParamEmptyValidator;
+
+public class LoadQueryVo {
+
+	private String queryType;// 查询方式 0-快捷搜索 1-高级搜索
+	private String keyWord;// 快捷搜索关键字
+	private String loadNo;// 提货单号
+	private String orderNo;// 订单号
+	private String plateNumber;// 车牌号
+	private String status;// 提货单状态
+	private String attributes;// 车辆属性
+	private String realName;// 司机名称
+	private String telphone;// 司机手机号
+	private String paymentName;// 结款对象
+	private String loadCreatedStartTime;// 提货单创建时间(起)
+	private String loadCreatedEndTime;// 提货单创建时间(止)
+	private String driverContractCreatedStartTime;// 司机合同生成时间(起)
+	private String driverContractCreatedEndTime;// 司机合同生成时间(止)
+
+	private String sort;// 00-下单时间升序 01-下单时间降序
+
+	private static final String QUERYTYPE_NORMAL = "0";// 快捷查询
+	private static final String QUERYTYPE_SENIOR = "1";// 高级查询
+
+	public String getQueryType() {
+		return queryType;
+	}
+
+	public void setQueryType(String queryType) {
+		this.queryType = queryType;
+	}
+
+	public String getKeyWord() {
+		return keyWord;
+	}
+
+	public void setKeyWord(String keyWord) {
+		this.keyWord = keyWord;
+	}
+
+	public String getLoadNo() {
+		return loadNo;
+	}
+
+	public void setLoadNo(String loadNo) {
+		this.loadNo = loadNo;
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public String getPlateNumber() {
+		return plateNumber;
+	}
+
+	public void setPlateNumber(String plateNumber) {
+		this.plateNumber = plateNumber;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(String attributes) {
+		this.attributes = attributes;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public String getTelphone() {
+		return telphone;
+	}
+
+	public void setTelphone(String telphone) {
+		this.telphone = telphone;
+	}
+
+	public String getPaymentName() {
+		return paymentName;
+	}
+
+	public void setPaymentName(String paymentName) {
+		this.paymentName = paymentName;
+	}
+
+	public String getLoadCreatedStartTime() {
+		return loadCreatedStartTime;
+	}
+
+	public void setLoadCreatedStartTime(String loadCreatedStartTime) {
+		this.loadCreatedStartTime = loadCreatedStartTime;
+	}
+
+	public String getLoadCreatedEndTime() {
+		return loadCreatedEndTime;
+	}
+
+	public void setLoadCreatedEndTime(String loadCreatedEndTime) {
+		this.loadCreatedEndTime = loadCreatedEndTime;
+	}
+
+	public String getDriverContractCreatedStartTime() {
+		return driverContractCreatedStartTime;
+	}
+
+	public void setDriverContractCreatedStartTime(String driverContractCreatedStartTime) {
+		this.driverContractCreatedStartTime = driverContractCreatedStartTime;
+	}
+
+	public String getDriverContractCreatedEndTime() {
+		return driverContractCreatedEndTime;
+	}
+
+	public void setDriverContractCreatedEndTime(String driverContractCreatedEndTime) {
+		this.driverContractCreatedEndTime = driverContractCreatedEndTime;
+	}
+
+	public String getSort() {
+		return sort;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+
+	public Map<String, Object> getParam() {
+		String queryType = this.getQueryType();
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.queryType);
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (QUERYTYPE_NORMAL.equals(queryType)) {
+			// 快捷搜索
+			if (StringUtils.isNoneBlank(this.getKeyWord())) {
+				params.put("keyWord", this.getKeyWord());
+			}
+		} else if (QUERYTYPE_SENIOR.equals(queryType)) {
+			// 高级搜索
+			if (StringUtils.isNotBlank(this.getStatus())) {
+				params.put("status", this.getStatus());
+			}
+			if(StringUtils.isNotBlank(this.getAttributes())) {
+				params.put("attributes", this.getAttributes());
+			}
+			if(StringUtils.isNoneBlank(this.getRealName())) {
+				params.put("realName", this.getRealName());
+			}
+			if(StringUtils.isNoneBlank(this.getTelphone())) {
+				params.put("telphone", this.getTelphone());
+			}
+			if(StringUtils.isNoneBlank(this.getPaymentName())) {
+				params.put("paymentName", "%"+this.getPaymentName()+"%");
+			}
+			if(StringUtils.isNoneBlank(this.getLoadCreatedStartTime())) {
+				params.put("loadCreatedStartTime", this.getLoadCreatedStartTime());
+			}
+			if(StringUtils.isNoneBlank(this.getLoadCreatedEndTime())) {
+				params.put("loadCreatedEndTime", this.getLoadCreatedEndTime());
+			}
+			if(StringUtils.isNoneBlank(this.getDriverContractCreatedStartTime())) {
+				params.put("driverContractCreatedStartTime", this.getDriverContractCreatedStartTime());
+			}
+			if(StringUtils.isNoneBlank(this.getDriverContractCreatedEndTime())) {
+				params.put("driverContractCreatedEndTime", this.getDriverContractCreatedEndTime());
+			}
+		} else {
+			throw new RestException(ErrorCode.ERROR_900006.getCode(), ErrorCode.ERROR_900006.getDesc());
+		}
+
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		
+		//关闭和取消的订单不展示在货源列表里
+		//params.put("status", "'02','06'");
+
+		if (StringUtils.isNotBlank(this.getSort())) {
+			params.put("sort", this.getSort());
+
+		} else {
+			params.put("sort", "01");
+		}
+		
+		
+
+		return params;
+	}
+	
+}

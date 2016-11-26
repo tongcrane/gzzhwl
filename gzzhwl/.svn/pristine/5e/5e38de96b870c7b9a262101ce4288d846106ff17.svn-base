@@ -1,0 +1,143 @@
+package com.gzzhwl.api.load.controller;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
+
+import com.gzzhwl.api.load.service.TripMapService;
+import com.gzzhwl.api.load.service.TripService;
+import com.gzzhwl.api.load.vo.ReportGeoVo;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.data.model.AccountInfo;
+import com.gzzhwl.rest.springmvc.annotation.Authorization;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+import com.gzzhwl.rest.springmvc.validate.ParamEmptyValidator;
+
+@RestController
+@RequestMapping("/api/trip")
+public class TripController {
+
+	@Autowired
+	private TripService tripService;
+	@Autowired
+	private TripMapService tripMapService;
+
+	@RequestMapping(value = "/getDriverOrderList", method = RequestMethod.GET)
+	public ResponseModel getDriverOrderList(@Authorization AccountInfo accountInfo,String source) throws ParseException, IOException {
+		String accountId = accountInfo.getAccountId();
+		DataSource dataSource = null;
+		//source 默认来源是运势界
+		if(source!=null){
+			dataSource = DataSource.getDataSource(source);
+		}else{
+			dataSource = DataSource.VLORRY;
+		}
+		List<Map<String, Object>> listMap = tripService.getDriverOrderList(accountId,dataSource);
+		return new ResponseModel(listMap);
+	}
+	
+	@RequestMapping(value = "/getDriverOrderDetail", method = RequestMethod.GET)
+	public ResponseModel getDriverOrderDetail(@Authorization AccountInfo accountInfo,@RequestParam String loadId) throws ParseException, IOException {
+		String accountId = accountInfo.getAccountId();
+		Map<String, Object> resMap = tripService.getDriverOrderDetail(loadId, accountId);
+		return new ResponseModel(resMap);
+	}
+	
+	@RequestMapping(value = "/getDriverOrderCount", method = RequestMethod.GET)
+	public ResponseModel getDriverOrderCount(@Authorization AccountInfo accountInfo,String source) throws ParseException, IOException {
+		String accountId = accountInfo.getAccountId();
+		DataSource dataSource = null;
+		//source 默认来源是运势界
+		if(source!=null){
+			dataSource = DataSource.getDataSource(source);
+		}else{
+			dataSource = DataSource.VLORRY;
+		}
+		Map<String, Object> resMap = tripService.getDriverOrderCount(accountId,dataSource);
+		return new ResponseModel(resMap);
+	}
+	
+
+	@RequestMapping(value = "/getDriverOrderHistoryList", method = RequestMethod.GET)
+	public ResponseModel getDriverOrderHistoryList(@Authorization AccountInfo accountInfo)
+			throws ParseException, IOException {
+		String accountId = accountInfo.getAccountId();
+		List<Map<String, Object>> listMap = tripService.getDriverOrderHistoryList(accountId);
+		return new ResponseModel(listMap);
+	}
+	
+	@RequestMapping(value = "/getFinishedOrderList", method = RequestMethod.GET)
+	public ResponseModel  getFinishedOrderList(@Authorization AccountInfo accountInfo)
+			throws ParseException, IOException {
+		String accountId = accountInfo.getAccountId();
+		List<Map<String, Object>> listMap = tripService.getFinishedOrderList(accountId);
+		return new ResponseModel(listMap);
+	}
+	
+	@RequestMapping(value = "/getAllOrderList", method = RequestMethod.GET)
+	public ResponseModel  getAllOrderList(@Authorization AccountInfo accountInfo)
+			throws ParseException, IOException {
+		String accountId = accountInfo.getAccountId();
+		List<Map<String, Object>> listMap = tripService.getAllOrderList(accountId);
+		return new ResponseModel(listMap);
+	}
+
+	@RequestMapping(value = "/trackInfo", method = RequestMethod.GET)
+	public ResponseModel trackInfo(@RequestParam String loadId, @Authorization AccountInfo accountInfo) {
+		ParamEmptyValidator.VALID_PARAM_EMPTY(loadId);
+		Map<String, Object> resMap = tripMapService.findTrackInfo(loadId);
+		return new ResponseModel(resMap);
+	}
+
+	@RequestMapping(value = "/ysjVehicleCheck", method = RequestMethod.GET)
+	public ResponseModel ysjVehicleCheck(@RequestParam String loadNo, String actionTime,
+			@Authorization AccountInfo accountInfo) {
+		ParamEmptyValidator.VALID_PARAM_EMPTY(loadNo, actionTime);
+		tripService.ysjVehicleCheck(loadNo, accountInfo.getAccountId(), actionTime);
+		return new ResponseModel(null);
+	}
+
+	@RequestMapping(value = "/ysjCloseToSurface", method = RequestMethod.GET)
+	public ResponseModel ysjCloseToSurface(@RequestParam String loadNo, String actionTime,
+			@Authorization AccountInfo accountInfo) {
+		ParamEmptyValidator.VALID_PARAM_EMPTY(loadNo, actionTime);
+		tripService.ysjCloseToSurface(loadNo, accountInfo.getAccountId(), actionTime);
+		return new ResponseModel(null);
+	}
+
+	@RequestMapping(value = "/ysjTripTheCar", method = RequestMethod.GET)
+	public ResponseModel ysjTripTheCar(@RequestParam String loadNo, String actionTime,
+			@Authorization AccountInfo accountInfo) {
+		ParamEmptyValidator.VALID_PARAM_EMPTY(loadNo, actionTime);
+		tripService.ysjTripTheCar(loadNo, accountInfo.getAccountId(), actionTime);
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 获取当前位置
+	 */
+	@RequestMapping(value = "/getgeo", method = RequestMethod.GET)
+	public DeferredResult<ResponseModel> getGeo(@RequestParam String loadId, @Authorization AccountInfo accountInfo) {
+		String accountId = accountInfo.getAccountId();
+		return tripMapService.saveAndgetGeoRecord(loadId, accountId);
+	}
+
+	/**
+	 * 上报当前位置
+	 */
+	@RequestMapping(value = "/reportGeo", method = RequestMethod.POST)
+	public ResponseModel reportGeo(ReportGeoVo reportGeo, @Authorization AccountInfo accountInfo) {
+		String accountId = accountInfo.getAccountId();
+		boolean success = tripMapService.reportGeo(reportGeo, accountId);
+		return new ResponseModel(success);
+	}
+
+}

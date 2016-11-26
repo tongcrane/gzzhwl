@@ -1,0 +1,364 @@
+package com.gzzhwl.admin.vehicle.controller;
+
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.admin.vehicle.service.VehicleManageService;
+import com.gzzhwl.admin.vehicle.vo.DriverAndVehicleCheckQueryVo;
+import com.gzzhwl.admin.vehicle.vo.DriverAndVehicleVo;
+import com.gzzhwl.admin.vehicle.vo.VehicleInfoDetailVo;
+import com.gzzhwl.admin.vehicle.vo.VehicleInfoQryVo;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.VehicleType;
+import com.gzzhwl.core.data.model.RealVehicleInfo;
+import com.gzzhwl.core.data.model.RealVehiclePlusInfo;
+import com.gzzhwl.core.data.model.RealVehicleUsedInfo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.security.utils.SecurityUtils;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+@RestController
+@RequestMapping("/admin/vehiclemanage")
+public class VehicleManageController {
+
+	@Autowired
+	private VehicleManageService service;
+
+	@Autowired
+	private Mapper beanMapper;
+
+	/**
+	 * 保存车辆
+	 * 
+	 * @param vehicleInfoDetailVo
+	 * @return
+	 */
+	@RequestMapping(value = "/saveVehicle", method = RequestMethod.POST)
+	private ResponseModel saveVehicle(VehicleInfoDetailVo vehicleInfoDetailVo) throws ParseException {
+
+		Map<String, Object> paraMap = null;
+
+		vehicleInfoDetailVo.setVehicleType(VehicleType.CAR.getCode());
+
+		RealVehicleInfo vehicleInfo = beanMapper.map(vehicleInfoDetailVo, RealVehicleInfo.class);
+
+		RealVehiclePlusInfo vehicleInfoPlusInfo = beanMapper.map(vehicleInfoDetailVo, RealVehiclePlusInfo.class);
+
+		RealVehicleUsedInfo vehicleUsedInfo = beanMapper.map(vehicleInfoDetailVo, RealVehicleUsedInfo.class);
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		String vehicleInfoId = service.saveVehicle(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo, staffId);
+
+		paraMap = new HashMap<>();
+
+		paraMap.put("vehicleInfoId", vehicleInfoId);
+
+		return new ResponseModel(paraMap);
+	}
+
+	/**
+	 * 保存车挂
+	 * 
+	 * @param vehicleInfoDetailVo
+	 * @return
+	 */
+	@RequestMapping(value = "/saveHung", method = RequestMethod.POST)
+	private ResponseModel saveHung(VehicleInfoDetailVo vehicleInfoDetailVo) {
+
+		RealVehicleInfo vehicleInfo = beanMapper.map(vehicleInfoDetailVo, RealVehicleInfo.class);
+
+		RealVehiclePlusInfo vehicleInfoPlusInfo = beanMapper.map(vehicleInfoDetailVo, RealVehiclePlusInfo.class);
+
+		RealVehicleUsedInfo vehicleUsedInfo = beanMapper.map(vehicleInfoDetailVo, RealVehicleUsedInfo.class);
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		String vehicleInfoId = service.saveHung(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo, staffId);
+
+		Map<String, Object> paraMap = new HashMap<>();
+
+		paraMap.put("vehicleInfoId", vehicleInfoId);
+
+		return new ResponseModel(paraMap);
+	}
+
+	/**
+	 * 更新车辆信息
+	 * 
+	 * @param vehicleInfoDetailVo
+	 * @return
+	 */
+	@RequestMapping(value = "/updateVehicle", method = RequestMethod.POST)
+	public ResponseModel updateVehicle(VehicleInfoDetailVo vehicleInfoDetailVo) throws ParseException {
+
+		vehicleInfoDetailVo.setVehicleType(VehicleType.CAR.getCode());
+
+		RealVehicleInfo vehicleInfo = beanMapper.map(vehicleInfoDetailVo, RealVehicleInfo.class);
+
+		RealVehiclePlusInfo vehicleInfoPlusInfo = beanMapper.map(vehicleInfoDetailVo, RealVehiclePlusInfo.class);
+
+		RealVehicleUsedInfo vehicleUsedInfo = beanMapper.map(vehicleInfoDetailVo, RealVehicleUsedInfo.class);
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		service.updateVehicle(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo, staffId);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 更新车挂信息
+	 * 
+	 * @param vehicleInfoDetailVo
+	 * @return
+	 */
+	@RequestMapping(value = "/updateHung", method = RequestMethod.POST)
+	public ResponseModel updateHung(VehicleInfoDetailVo vehicleInfoDetailVo) {
+
+		vehicleInfoDetailVo.setVehicleType(VehicleType.HUNG.getCode());
+
+		RealVehicleInfo vehicleInfo = beanMapper.map(vehicleInfoDetailVo, RealVehicleInfo.class);
+
+		RealVehiclePlusInfo vehicleInfoPlusInfo = beanMapper.map(vehicleInfoDetailVo, RealVehiclePlusInfo.class);
+
+		RealVehicleUsedInfo vehicleUsedInfo = beanMapper.map(vehicleInfoDetailVo, RealVehicleUsedInfo.class);
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		service.updateHung(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo, staffId);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 图片上传
+	 * 
+	 * @param request
+	 * @param vehicleInfoId
+	 * @param type
+	 * @return
+	 */
+	@RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
+	public ResponseModel uploadImage(@RequestParam MultipartFile image) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		String imageId = service.updateImage(image, staffId);
+
+		Map<String, Object> resMap = new HashMap<>();
+		resMap.put("imageId", imageId);
+
+		return new ResponseModel(resMap);
+	}
+
+	/**
+	 * 查询车辆详情
+	 * 
+	 * @param vehicleInfoId
+	 * @return
+	 */
+	@RequestMapping(value = "/queryDetail", method = RequestMethod.GET)
+	public ResponseModel queryDetail(@RequestParam String vehicleInfoId) {
+
+		Map<String, Object> map = service.queryDetail(vehicleInfoId);
+
+		VehicleInfoDetailVo vehicleInfoDetailVo = new VehicleInfoDetailVo();
+		
+		if (map != null) {
+			beanMapper.map(map, vehicleInfoDetailVo);
+		}
+
+		return new ResponseModel(vehicleInfoDetailVo);
+	}
+
+	/**
+	 * 删除车辆详情
+	 * 
+	 * @param vehicleInfoId
+	 * @return
+	 */
+	@RequestMapping(value = "/remove", method = RequestMethod.GET)
+	public ResponseModel remove(@RequestParam String vehicleInfoId) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		service.remove(vehicleInfoId, staffId);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 查询车辆信息
+	 * 
+	 * @param vehicleInfoCheckVo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryVehicleInfoList", method = RequestMethod.POST)
+	public ResponseModel queryVehicleInfoList(VehicleInfoQryVo vehicleInfoQryVo, @Pagination PageParameter page) {
+
+		Page<Map<String, Object>> map = service.queryVehicleInfoList(vehicleInfoQryVo, page.getPageIndex(),
+				page.getPageSize());
+
+		return new ResponseModel(map);
+	}
+
+	/**
+	 * 查询车挂信息
+	 * 
+	 * @param vehicleInfoCheckVo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryHungInfoList", method = RequestMethod.POST)
+	public ResponseModel queryHungInfoList(VehicleInfoQryVo vehicleInfoQryVo, @Pagination PageParameter page) {
+
+		vehicleInfoQryVo.likeHandle();
+		
+		Page<Map<String, Object>> map = service.queryHungList(vehicleInfoQryVo, page.getPageIndex(),
+				page.getPageSize());
+
+		return new ResponseModel(map);
+	}
+
+	@RequestMapping(value = "/vehicleManageExistValidator", method = RequestMethod.GET)
+	public ResponseModel vehicleManageExistValidator(@RequestParam(required = false) String plateNumber,
+			@RequestParam(required = false) String licenseNo, @RequestParam(required = false) String engineNo,
+			@RequestParam(required = false) String vin, @RequestParam(required = false) String regCertCode,
+			@RequestParam(required = false) String operatingCertNo,
+			@RequestParam(required = false) String currentVehicleInfoId) {
+
+		if (ValidateUtils.isEmpty(plateNumber) && ValidateUtils.isEmpty(licenseNo) && ValidateUtils.isEmpty(vin)
+				&& ValidateUtils.isEmpty(regCertCode) && ValidateUtils.isEmpty(operatingCertNo)
+				&& ValidateUtils.isEmpty(engineNo)) {
+			throw new RestException(ErrorCode.ERROR_900007.getCode(), ErrorCode.ERROR_900007.getDesc());
+		}
+
+		Map<String, Object> resMap = new HashMap<>();
+		boolean res = service.vehicleManageExistValidator(plateNumber, licenseNo, engineNo, vin, regCertCode,
+				operatingCertNo, currentVehicleInfoId, resMap);
+
+		resMap.put("result", res);
+
+		return new ResponseModel(resMap);
+	}
+
+	@RequestMapping(value = "/hungManageExistValidator", method = RequestMethod.GET)
+	public ResponseModel hungManageExistValidator(@RequestParam(required = false) String plateNumber,
+			@RequestParam(required = false) String licenseNo, @RequestParam(required = false) String vin,
+			@RequestParam(required = false) String regCertCode, @RequestParam(required = false) String operatingCertNo,
+			@RequestParam(required = false) String currentVehicleInfoId) {
+
+		if (ValidateUtils.isEmpty(plateNumber) && ValidateUtils.isEmpty(licenseNo) && ValidateUtils.isEmpty(vin)
+				&& ValidateUtils.isEmpty(regCertCode) && ValidateUtils.isEmpty(operatingCertNo)) {
+			throw new RestException(ErrorCode.ERROR_900007.getCode(), ErrorCode.ERROR_900007.getDesc());
+		}
+
+		Map<String, Object> resMap = new HashMap<>();
+
+		boolean res = service.hungManageExistValidator(plateNumber, licenseNo, vin, regCertCode, operatingCertNo,
+				currentVehicleInfoId, resMap);
+
+		resMap.put("result", res);
+
+		return new ResponseModel(resMap);
+	}
+
+	@RequestMapping(value = "/driverAndVehicleCheckList", method = RequestMethod.GET)
+	public ResponseModel driverAndVehicleCheckList(DriverAndVehicleCheckQueryVo driverAndVehicleCheckQueryVo,
+			@Pagination PageParameter page) {
+
+		Page<Map<String, Object>> resMap = service.getDriverAndVehicleCheckList(driverAndVehicleCheckQueryVo,
+				page.getPageIndex(), page.getPageSize());
+
+		return new ResponseModel(resMap);
+	}
+
+	@RequestMapping(value = "/driverAndVehicleCheck", method = RequestMethod.GET)
+	public ResponseModel driverAndVehicleCheck(@RequestParam String vehicleInfoId, @RequestParam String accountId,
+			@RequestParam String authFlag) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		service.checkDriverAndVehicle(vehicleInfoId, accountId, staffId, authFlag);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 查询司机车辆审核明细
+	 * 
+	 * @param driverInfoId
+	 * @return
+	 */
+	@RequestMapping(value = "/queryDriverandVehicleCheckDetail", method = RequestMethod.GET)
+	public ResponseModel queryDriverandVehicleCheckDetail(@RequestParam String vehicleInfoId,
+			@RequestParam String accountId) {
+		Map<String, Object> result = service.getDriverandVehicleCheckDetail(vehicleInfoId, accountId);
+		return new ResponseModel(result);
+	}
+
+	/**
+	 * 查询司机车辆明细
+	 * 
+	 * @param driverInfoId
+	 * @return
+	 */
+	@RequestMapping(value = "/queryDriverandVehicleDetail", method = RequestMethod.POST, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel queryDriverandVehicleDetail(@RequestBody DriverAndVehicleVo driverAndVehicleVo) {
+		Map<String, Object> result = service.getDriverandVehicleDetail(driverAndVehicleVo);
+		return new ResponseModel(result);
+	}
+
+	/**
+	 * 查询车辆信息
+	 */
+	@RequestMapping(value = "/listVehicle", method = RequestMethod.GET)
+	public ResponseModel listVehicle(@RequestParam(required = false) String vehicleIds) {
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		Integer departId = SecurityUtils.getSubject().getDepartId();
+		String[] arrVehicleIds = StringUtils.split(vehicleIds, ",");
+		List<Map<String, Object>> map = service.listVehicle(arrVehicleIds, departId, staffId);
+		return new ResponseModel(map);
+	}
+
+	/**
+	 * 查询车挂信息
+	 */
+	@RequestMapping(value = "/listHung", method = RequestMethod.GET)
+	public ResponseModel listHung(@RequestParam(required = false) String vehicleIds) {
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		Integer departId = SecurityUtils.getSubject().getDepartId();
+		String[] arrVehicleIds = StringUtils.split(vehicleIds, ",");
+		List<Map<String, Object>> map = service.listHung(arrVehicleIds, departId, staffId);
+		return new ResponseModel(map);
+	}
+
+	/**
+	 * 查询车辆信息
+	 */
+	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
+	public ResponseModel listAll() {
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		Integer departId = SecurityUtils.getSubject().getDepartId();
+		List<Map<String, Object>> map = service.listAll(staffId, departId);
+		return new ResponseModel(map);
+	}
+
+}

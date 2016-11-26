@@ -1,0 +1,68 @@
+package com.gzzhwl.admin.demo.controller;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
+
+import com.gzzhwl.rest.security.annotation.RequirePerm;
+import com.gzzhwl.rest.security.model.AuthType;
+import com.gzzhwl.rest.springmvc.utils.WebRequestResolve;
+import com.gzzhwl.template.support.ExcelService;
+
+@RestController
+@RequestMapping("/admin/demo")
+public class DownLoadController {
+	private static final Logger logger = LoggerFactory.getLogger(DownLoadController.class);
+	@Autowired
+	private ExcelService excelService;
+
+	@RequestMapping(value = "/export", method = RequestMethod.POST)
+	@RequirePerm(type = AuthType.ANON)
+	public void export(WebRequest request, HttpServletResponse response,
+			@RequestParam(required = false) Map<String, String> params) throws IOException {
+		logger.debug("收到的参数:{}", params);
+
+		String fileName = "导出测试.xlsx";
+		response.reset();
+		response.setContentType("application/vnd.ms-excel");
+		boolean isIE = WebRequestResolve.isIE(request);
+		String name = StringUtils.replace(fileName, ",", "_");
+		if (isIE) {
+			response.setHeader("Content-Disposition", "filename=\"" + URLEncoder.encode(name, "UTF-8") + "\"");
+		} else {
+			response.setHeader("Content-disposition", "filename=" + new String(name.getBytes("utf-8"), "iso8859-1"));
+		}
+		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		for (int i = 0; i < 10; i++) {
+			Map<String, Object> row = new HashMap<String, Object>();
+			row.put("orderNo", System.currentTimeMillis() + "");
+			List<Map<String, Object>> feedBackList = new ArrayList<Map<String, Object>>();
+			for (int j = 0; j < 5; j++) {
+				Map<String, Object> feedBack = new HashMap<String, Object>();
+				feedBack.put("createdTime", DateTime.now().toString("yyyy-MM-dd HH:mm"));
+				feedBack.put("createdBy", "adfadf");
+				feedBackList.add(feedBack);
+			}
+			row.put("feedBackList", feedBackList);
+			data.add(row);
+		}
+
+		excelService.export(data, "receivables_export", response.getOutputStream());
+	}
+}

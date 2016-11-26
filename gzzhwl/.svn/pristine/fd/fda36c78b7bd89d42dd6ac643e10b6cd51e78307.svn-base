@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.AgentInfoExtDao">
+
+	<resultMap id="agentInfoResultMap" type="AgentInfo">
+		<id property="agentInfoId" column="agent_info_id" />
+		<result property="accountId" column="account_id" />
+		<result property="realName" column="real_name" />
+		<result property="idno" column="idno" />
+		<result property="sex" column="sex" />
+		<result property="telphone" column="telphone" />
+		<result property="mobile" column="mobile" />
+		<result property="companyFullName" column="company_full_name" />
+		<result property="companyPhone" column="company_phone" />
+		<result property="areaCode" column="area_code" />
+		<result property="address" column="address" />
+		<result property="certType" column="cert_type" />
+		<result property="uscCode" column="usc_code" />
+		<result property="busCode" column="bus_code" />
+		<result property="orgCode" column="org_code" />
+		<result property="taxRegCode" column="tax_reg_code" />
+		<result property="idFImageRefId" column="id_f_image_ref_id" />
+		<result property="idBImageRefId" column="id_b_image_ref_id" />
+		<result property="photoImageRefId" column="photo_image_ref_id" />
+		<result property="busImageRefId" column="bus_image_ref_id" />
+		<result property="orgImageRefId" column="org_image_ref_id" />
+		<result property="taxImageRefId" column="tax_image_ref_id" />
+		<result property="source" column="source" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="agentInfoResultMap">
+		<result property="checkTime" column="check_time"/>
+		<result property="checkBy" column="check_by"/>
+	</resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="agentInfoResultMap"></resultMap>
+
+	<select id="getAgentInfo" parameterType="map" resultMap="findResultMap">
+	   select 
+	    real_name,
+	    idno,
+	    company_full_name,
+	    id_f_image_ref_id,
+	    id_b_image_ref_id,
+	    bus_image_ref_id,
+	    status
+	   from zh_agent_info
+	   where 
+	    account_id=#{accountId} 
+	    and is_deleted=#{isDeleted}
+	</select>
+	
+	<select id="pageCheckList" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     zaci.telphone,
+	     zai.account_id,
+	     zai.source,
+	     zai.status,
+	     zai.real_name,
+	     zai.idno,
+	     zai.updated_time,
+	     zai.company_full_name,
+	     (SELECT
+			created_time
+			FROM
+			zh_account_verify_log
+			WHERE
+			target_id = zai.account_id and target_type=#{targetType}
+			ORDER BY
+			created_time DESC
+			LIMIT 1) as check_time,
+		 (SELECT
+			zsi.real_name
+			FROM
+			zh_account_verify_log zavl inner join zh_staff_info zsi on zavl.created_by=zsi.staff_id
+			WHERE
+			zavl.target_id = zai.account_id and target_type=#{targetType}
+			ORDER BY
+			zavl.created_time DESC
+			LIMIT 1) as check_by
+	   from zh_agent_info zai inner join zh_account_info zaci on zai.account_id=zaci.account_id
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="telphone != null">
+	        zaci.telphone=#{telphone}
+	     </if>
+	     <if test="status!=null">
+	     	and zai.status=#{status}
+	     </if>
+	     <if test="companyName!=null">
+	     	and zai.company_full_name like #{companyName}
+	     </if>
+	     <if test="realName!=null">
+	     	and zai.real_name like #{realName}
+	     </if>
+	     <if test="isDeleted!=null">
+	     	and zai.is_deleted=#{isDeleted}
+	     </if>
+	     <if test="queryContent!=null">
+	     	and (zaci.telphone like #{queryContent} or zai.company_full_name like #{queryContent} or zai.real_name like #{queryContent}) 
+	     </if>
+	   </trim>
+	   order by FIELD(zai.status,'01','02','00'),zai.updated_time desc
+	</select>
+	
+	<select id="getUserDetail" parameterType="map" resultMap="pageResultMap">
+	   select 
+	    zaci.telphone,
+	    zai.account_id,
+	    zai.status,
+	    zai.real_name,
+	    zai.idno,
+	    zai.id_f_image_ref_id,
+	    zai.id_b_image_ref_id,
+	    zai.company_full_name,
+	    zai.usc_code,
+	    zai.bus_code,
+	    zai.org_code,
+	    zai.tax_reg_code,
+	    zai.bus_image_ref_id,
+	    zai.org_image_ref_id,
+	    zai.tax_image_ref_id,
+	    zai.updated_time,
+	    (SELECT
+			created_time
+			FROM
+			zh_account_verify_log
+			WHERE
+			target_id = zai.account_id and target_type=#{targetType}
+			ORDER BY
+			created_time DESC
+			LIMIT 1) as check_time,
+		 (SELECT
+			zsi.real_name
+			FROM
+			zh_account_verify_log zavl inner join zh_staff_info zsi on zavl.created_by=zsi.staff_id
+			WHERE
+			zavl.target_id = zai.account_id and target_type=#{targetType}
+			ORDER BY
+			zavl.created_time DESC
+			LIMIT 1) as check_by
+	   from zh_agent_info zai inner join zh_account_info zaci on zai.account_id=zaci.account_id
+	   where 
+	    zai.account_id=#{accountId} 
+	    and zai.is_deleted=#{isDeleted}
+	</select>
+</mapper> 

@@ -1,0 +1,466 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_customer_info表
+ * @author mew
+ *
+ */
+public class CustomerInfo implements Serializable {
+	@Length(max = 36, message = "customerId超过长度限制")
+	private java.lang.String customerId; // 客户标识
+	@Length(max = 50, message = "customerNo超过长度限制")
+	private java.lang.String customerNo; // 客户编号
+	@Length(max = 2, message = "type超过长度限制")
+	private java.lang.String type; // 客户类型
+	@Length(max = 50, message = "fullName超过长度限制")
+	private java.lang.String fullName; // 客户全名
+	@Length(max = 20, message = "taxRegCode超过长度限制")
+	private java.lang.String taxRegCode; // 税务登记号
+	@Length(max = 50, message = "contactName超过长度限制")
+	private java.lang.String contactName; // 联系人
+	@Length(max = 20, message = "telphone超过长度限制")
+	private java.lang.String telphone; // 联系电话
+	@Length(max = 20, message = "mobile超过长度限制")
+	private java.lang.String mobile; // 联系手机
+	@Length(max = 50, message = "email超过长度限制")
+	private java.lang.String email; // 联系邮箱
+	@Length(max = 10, message = "areaCode超过长度限制")
+	private java.lang.String areaCode; // 所在区域
+	@Length(max = 200, message = "address超过长度限制")
+	private java.lang.String address; // 联系地址
+	@Length(max = 2, message = "isAgreement超过长度限制")
+	private java.lang.String isAgreement; // 是否合同
+	@Length(max = 20, message = "agreementNo超过长度限制")
+	private java.lang.String agreementNo; // 合同编码
+	@Length(max = 400, message = "remark超过长度限制")
+	private java.lang.String remark; // 备注
+	@Length(max = 10, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 36, message = "belongDepartId超过长度限制")
+	private java.lang.String belongDepartId; // 所属部门
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取客户标识属性
+     *
+     * @return customerId
+     */
+	public java.lang.String getCustomerId() {
+		return customerId;
+	}
+	
+	/**
+	 * 设置客户标识属性
+	 *
+	 * @param customerId
+	 */
+	public void setCustomerId(java.lang.String customerId) {
+		this.customerId = customerId;
+	}
+	
+	/**
+     * 获取客户编号属性
+     *
+     * @return customerNo
+     */
+	public java.lang.String getCustomerNo() {
+		return customerNo;
+	}
+	
+	/**
+	 * 设置客户编号属性
+	 *
+	 * @param customerNo
+	 */
+	public void setCustomerNo(java.lang.String customerNo) {
+		this.customerNo = customerNo;
+	}
+	
+	/**
+     * 获取客户类型属性
+     *
+     * @return type
+     */
+	public java.lang.String getType() {
+		return type;
+	}
+	
+	/**
+	 * 设置客户类型属性
+	 *
+	 * @param type
+	 */
+	public void setType(java.lang.String type) {
+		this.type = type;
+	}
+	
+	/**
+     * 获取客户全名属性
+     *
+     * @return fullName
+     */
+	public java.lang.String getFullName() {
+		return fullName;
+	}
+	
+	/**
+	 * 设置客户全名属性
+	 *
+	 * @param fullName
+	 */
+	public void setFullName(java.lang.String fullName) {
+		this.fullName = fullName;
+	}
+	
+	/**
+     * 获取税务登记号属性
+     *
+     * @return taxRegCode
+     */
+	public java.lang.String getTaxRegCode() {
+		return taxRegCode;
+	}
+	
+	/**
+	 * 设置税务登记号属性
+	 *
+	 * @param taxRegCode
+	 */
+	public void setTaxRegCode(java.lang.String taxRegCode) {
+		this.taxRegCode = taxRegCode;
+	}
+	
+	/**
+     * 获取联系人属性
+     *
+     * @return contactName
+     */
+	public java.lang.String getContactName() {
+		return contactName;
+	}
+	
+	/**
+	 * 设置联系人属性
+	 *
+	 * @param contactName
+	 */
+	public void setContactName(java.lang.String contactName) {
+		this.contactName = contactName;
+	}
+	
+	/**
+     * 获取联系电话属性
+     *
+     * @return telphone
+     */
+	public java.lang.String getTelphone() {
+		return telphone;
+	}
+	
+	/**
+	 * 设置联系电话属性
+	 *
+	 * @param telphone
+	 */
+	public void setTelphone(java.lang.String telphone) {
+		this.telphone = telphone;
+	}
+	
+	/**
+     * 获取联系手机属性
+     *
+     * @return mobile
+     */
+	public java.lang.String getMobile() {
+		return mobile;
+	}
+	
+	/**
+	 * 设置联系手机属性
+	 *
+	 * @param mobile
+	 */
+	public void setMobile(java.lang.String mobile) {
+		this.mobile = mobile;
+	}
+	
+	/**
+     * 获取联系邮箱属性
+     *
+     * @return email
+     */
+	public java.lang.String getEmail() {
+		return email;
+	}
+	
+	/**
+	 * 设置联系邮箱属性
+	 *
+	 * @param email
+	 */
+	public void setEmail(java.lang.String email) {
+		this.email = email;
+	}
+	
+	/**
+     * 获取所在区域属性
+     *
+     * @return areaCode
+     */
+	public java.lang.String getAreaCode() {
+		return areaCode;
+	}
+	
+	/**
+	 * 设置所在区域属性
+	 *
+	 * @param areaCode
+	 */
+	public void setAreaCode(java.lang.String areaCode) {
+		this.areaCode = areaCode;
+	}
+	
+	/**
+     * 获取联系地址属性
+     *
+     * @return address
+     */
+	public java.lang.String getAddress() {
+		return address;
+	}
+	
+	/**
+	 * 设置联系地址属性
+	 *
+	 * @param address
+	 */
+	public void setAddress(java.lang.String address) {
+		this.address = address;
+	}
+	
+	/**
+     * 获取是否合同属性
+     *
+     * @return isAgreement
+     */
+	public java.lang.String getIsAgreement() {
+		return isAgreement;
+	}
+	
+	/**
+	 * 设置是否合同属性
+	 *
+	 * @param isAgreement
+	 */
+	public void setIsAgreement(java.lang.String isAgreement) {
+		this.isAgreement = isAgreement;
+	}
+	
+	/**
+     * 获取合同编码属性
+     *
+     * @return agreementNo
+     */
+	public java.lang.String getAgreementNo() {
+		return agreementNo;
+	}
+	
+	/**
+	 * 设置合同编码属性
+	 *
+	 * @param agreementNo
+	 */
+	public void setAgreementNo(java.lang.String agreementNo) {
+		this.agreementNo = agreementNo;
+	}
+	
+	/**
+     * 获取备注属性
+     *
+     * @return remark
+     */
+	public java.lang.String getRemark() {
+		return remark;
+	}
+	
+	/**
+	 * 设置备注属性
+	 *
+	 * @param remark
+	 */
+	public void setRemark(java.lang.String remark) {
+		this.remark = remark;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取所属部门属性
+     *
+     * @return belongDepartId
+     */
+	public java.lang.String getBelongDepartId() {
+		return belongDepartId;
+	}
+	
+	/**
+	 * 设置所属部门属性
+	 *
+	 * @param belongDepartId
+	 */
+	public void setBelongDepartId(java.lang.String belongDepartId) {
+		this.belongDepartId = belongDepartId;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改人属性
+     *
+     * @return updatedBy
+     */
+	public java.lang.String getUpdatedBy() {
+		return updatedBy;
+	}
+	
+	/**
+	 * 设置修改人属性
+	 *
+	 * @param updatedBy
+	 */
+	public void setUpdatedBy(java.lang.String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("CustomerInfo");
+        sb.append("{customerId=").append(customerId);
+        sb.append(", customerNo=").append(customerNo);
+        sb.append(", type=").append(type);
+        sb.append(", fullName=").append(fullName);
+        sb.append(", taxRegCode=").append(taxRegCode);
+        sb.append(", contactName=").append(contactName);
+        sb.append(", telphone=").append(telphone);
+        sb.append(", mobile=").append(mobile);
+        sb.append(", email=").append(email);
+        sb.append(", areaCode=").append(areaCode);
+        sb.append(", address=").append(address);
+        sb.append(", isAgreement=").append(isAgreement);
+        sb.append(", agreementNo=").append(agreementNo);
+        sb.append(", remark=").append(remark);
+        sb.append(", status=").append(status);
+        sb.append(", belongDepartId=").append(belongDepartId);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedBy=").append(updatedBy);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

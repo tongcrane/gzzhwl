@@ -1,0 +1,318 @@
+package com.gzzhwl.tms.service.impl;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.order.service.ChargeService;
+import com.gzzhwl.admin.order.service.OrderHistoryService;
+import com.gzzhwl.admin.order.vo.PushOrderVO;
+import com.gzzhwl.admin.source.service.SourceLinkStatusService;
+import com.gzzhwl.admin.source.service.SourceService;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.FlowsService;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.data.dao.OrderBaseInfoDao;
+import com.gzzhwl.core.data.dao.OrderDetailInfoDao;
+import com.gzzhwl.core.data.dao.OrderLineInfoDao;
+import com.gzzhwl.core.data.dao.OrderReceiverInfoDao;
+import com.gzzhwl.core.data.dao.OrderSenderInfoDao;
+import com.gzzhwl.core.data.model.ChargeInfo;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.OrderBaseInfo;
+import com.gzzhwl.core.data.model.OrderDetailInfo;
+import com.gzzhwl.core.data.model.OrderLineInfo;
+import com.gzzhwl.core.data.model.OrderReceiverInfo;
+import com.gzzhwl.core.data.model.OrderSenderInfo;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.core.utils.JodaDateUtils;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.tms.service.TMSCustomerService;
+import com.gzzhwl.tms.service.TMSOrderService;
+import com.gzzhwl.tms.service.TMSRegionService;
+import com.gzzhwl.tms.vo.OrderBaseInfoVO;
+import com.gzzhwl.tms.vo.OrderLineInfoVO;
+import com.gzzhwl.tms.vo.OrderReceiverInfoVO;
+import com.gzzhwl.tms.vo.OrderSenderInfoVO;
+import com.gzzhwl.tms.vo.OrderSourceVO;
+import com.gzzhwl.tms.vo.OrderVO;
+import com.gzzhwl.tms.vo.SourceVO;
+
+@Service
+public class TMSOrderServiceImpl implements TMSOrderService {
+	@Autowired
+	private ChargeService chargeService;
+	@Value("${tmsadmin.staffid}")
+	private String tmsAdminId;
+
+	@Value("${tms.departid}")
+	private String tmsDepartid;
+
+	@Autowired
+	private FlowsService flowService;
+	@Autowired
+	private OrderHistoryService orderHistoryService;
+	@Autowired
+	private TMSCustomerService customerService;
+	@Autowired
+	private OrderDetailInfoDao detailInfoDao;
+	@Autowired
+	private OrderBaseInfoDao baseInfoDao;
+	@Autowired
+	private OrderLineInfoDao lineInfoDao;
+	@Autowired
+	private OrderReceiverInfoDao receiverInfoDao;
+	@Autowired
+	private OrderSenderInfoDao senderInfoDao;
+	@Autowired
+	private SourceService sourceService;
+	@Autowired
+	private SourceLinkStatusService sourceLinkStatusService;
+	@Autowired
+	private TMSRegionService regionService;
+
+	@Override
+	public String pushOrder(OrderVO orderInfo) throws RestException {
+		OrderBaseInfoVO baseInfoVO = orderInfo.getBaseInfo();
+		OrderReceiverInfoVO receiverVO = orderInfo.getReceiver();
+		OrderSenderInfoVO senderVO = orderInfo.getSender();
+		OrderLineInfoVO lineInfoVO = orderInfo.getLineInfo();
+		OrderSourceVO sourceInfoVO = orderInfo.getSourceInfo();
+		baseInfoVO.valid();
+		receiverVO.valid();
+		senderVO.valid();
+		lineInfoVO.valid();
+		sourceInfoVO.valid();
+		PushOrderVO pushInfo = this.getPushOrderInfo(sourceInfoVO);
+		String orderNo = baseInfoVO.getOrderNo();
+		OrderDetailInfo oldData = detailInfoDao.getByOrderNo(orderNo);
+		boolean repush = this.doRepush(oldData);
+		if (repush) {
+			String actionCode = "07";// 重推送动作
+			String orderId = oldData.getOrderId();
+			this.executeFlow(orderId, actionCode, tmsAdminId);
+			return sourceLinkStatusService.reAddSource(orderId, pushInfo, tmsAdminId);
+		} else {
+			OrderBaseInfo baseInfo = this.getOrderBaseInfo(baseInfoVO);
+			OrderReceiverInfo receiver = this.getReceiverInfo(receiverVO);
+			OrderSenderInfo sender = this.getSenderInfo(senderVO);
+			OrderLineInfo lineInfo = this.getLineInfo(lineInfoVO);
+			OrderDetailInfo orderDetailInfo = this.getOrderDetailInfo(baseInfoVO);
+			String orderId = this.saveOrder(baseInfo, orderDetailInfo, receiver, sender, lineInfo);
+			pushInfo.setOrderId(orderId);
+			return sourceLinkStatusService.addSource(orderId, pushInfo, tmsAdminId);
+		}
+	}
+
+	private boolean doRepush(OrderDetailInfo orderDetailInfo) {
+		if (orderDetailInfo == null) {// 该订单不存在，新推送
+			return false;
+		} else {// 该订单已存在
+			String orderId = orderDetailInfo.getOrderId();
+			boolean allow = this.allowRePush(orderId);
+			if (!allow) {
+				throw new RestException("90002", "该订单已存在，当前状态不能重新推送。");
+			}
+			return true;
+		}
+	}
+
+	private boolean allowRePush(String orderId) {
+		String sourceId = sourceService.getCurrentSource(orderId);
+		return StringUtils.isBlank(sourceId);
+	}
+
+	private PushOrderVO getPushOrderInfo(OrderSourceVO sourceInfoVO) {
+		PushOrderVO pushInfo = new PushOrderVO();
+		pushInfo.setEndTime(sourceInfoVO.getEndTime());
+		pushInfo.setNeedDriverNum(sourceInfoVO.getNeedDriverNum());
+		pushInfo.setStartTime(sourceInfoVO.getStartTime());
+		return pushInfo;
+	}
+
+	private String saveOrder(OrderBaseInfo baseInfo, OrderDetailInfo orderDetailInfo, OrderReceiverInfo receiver,
+			OrderSenderInfo sender, OrderLineInfo lineInfo) {
+		String infoId = IdentifierUtils.getId().generate().toString();
+
+		baseInfo.setInfoId(infoId);
+		String orderId = IdentifierUtils.getId().generate().toString();
+		orderDetailInfo.setOrderId(orderId);
+		orderDetailInfo.setInfoId(infoId);
+		receiver.setInfoId(infoId);
+
+		customerService.saveOrUpdate(sender);
+		sender.setInfoId(infoId);
+		lineInfo.setInfoId(infoId);
+
+		FlowDef flowDef = flowService.startFlow(ZHFlow.ORDER, FlowActionCategory.CBS);
+		orderDetailInfo.setStatus(flowDef.getTransitionStatus());
+		baseInfoDao.insert(baseInfo);
+		detailInfoDao.insert(orderDetailInfo);
+		senderInfoDao.insert(sender);
+		lineInfoDao.insert(lineInfo);
+		receiverInfoDao.insert(receiver);
+		orderHistoryService.saveOrderHistory(orderId, flowDef.getLinkedStatus(), flowDef, tmsAdminId);
+		String actionCode = "04";// 推送动作
+		this.doPush(orderDetailInfo, actionCode);
+
+		return orderDetailInfo.getOrderId();
+	}
+
+	private OrderDetailInfo getOrderDetailInfo(OrderBaseInfoVO baseInfoVO) {
+		OrderDetailInfo orderDetailInfo = new OrderDetailInfo();
+		orderDetailInfo.setGoodsVolume(baseInfoVO.getGoodsVolume());
+		orderDetailInfo.setGoodsWeight(baseInfoVO.getGoodsWeight());
+		orderDetailInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		orderDetailInfo.setCreatedBy(tmsAdminId);
+		orderDetailInfo.setUpdatedBy(tmsAdminId);
+		orderDetailInfo.setOrderNo(baseInfoVO.getOrderNo());
+		return orderDetailInfo;
+	}
+
+	private OrderLineInfo getLineInfo(OrderLineInfoVO lineInfoVO) {
+		OrderLineInfo lineInfo = new OrderLineInfo();
+		RegionInfo endRegionP = this.getRegion(lineInfoVO.getEndCodeP(), 1, 1);
+		lineInfo.setEndCodeP(endRegionP.getRegionCode());
+		RegionInfo endRegionC = this.getRegion(lineInfoVO.getEndCodeC(), endRegionP.getRegionId(),
+				endRegionP.getRegionLevel() + 1);
+		lineInfo.setEndCodeC(endRegionC.getRegionCode());
+		RegionInfo startRegionP = this.getRegion(lineInfoVO.getStartCodeP(), 1, 1);
+		lineInfo.setStartCodeP(startRegionP.getRegionCode());
+		RegionInfo startRegionC = this.getRegion(lineInfoVO.getStartCodeP(), startRegionP.getRegionId(),
+				endRegionP.getRegionLevel() + 1);
+		lineInfo.setStartCodeC(startRegionC.getRegionCode());
+		return lineInfo;
+	}
+
+	private OrderSenderInfo getSenderInfo(OrderSenderInfoVO senderVO) {
+		RegionInfo regionD = this.getLastRegion(senderVO.getAreaCodeP(), senderVO.getAreaCodeC(),
+				senderVO.getAreaCodeD());
+		OrderSenderInfo senderInfo = new OrderSenderInfo();
+		senderInfo.setAddress(senderVO.getAddress());
+		senderInfo.setAreaCode(regionD.getRegionCode());
+		senderInfo.setContactName(senderVO.getContactName());
+		senderInfo.setCustomerId(senderVO.getCustomerId());
+		senderInfo.setCustomerName(senderVO.getCustomerName());
+		senderInfo.setMobile(senderVO.getMobile());
+		senderInfo.setTelphone(senderVO.getTelphone());
+		return senderInfo;
+	}
+
+	private OrderReceiverInfo getReceiverInfo(OrderReceiverInfoVO receiverVO) {
+		RegionInfo regionD = this.getLastRegion(receiverVO.getAreaCodeP(), receiverVO.getAreaCodeC(),
+				receiverVO.getAreaCodeD());
+		OrderReceiverInfo receiverInfo = new OrderReceiverInfo();
+		receiverInfo.setAddress(receiverVO.getAddress());
+		receiverInfo.setAreaCode(regionD.getRegionCode());
+		receiverInfo.setContactName(receiverVO.getContactName());
+		receiverInfo.setCustomerName(receiverVO.getCustomerName());
+		receiverInfo.setMobile(receiverVO.getMobile());
+		receiverInfo.setTelphone(receiverVO.getTelphone());
+		receiverInfo.setLongitude(receiverVO.getLongitude());
+		receiverInfo.setLatitude(receiverVO.getLatitude());
+		return receiverInfo;
+	}
+
+	private OrderBaseInfo getOrderBaseInfo(OrderBaseInfoVO baseInfoVO) {
+		OrderBaseInfo baseInfo = new OrderBaseInfo();
+		baseInfo.setAddrId(null);
+		baseInfo.setAgreementId(null);
+		baseInfo.setBelongDepartId(tmsDepartid);
+		String chargeId = this.getChargeId(baseInfoVO.getChargeType());
+		baseInfo.setChargeId(chargeId);
+		baseInfo.setCreatedBy(tmsAdminId);
+		baseInfo.setCustomerBillNo(baseInfoVO.getCustomerBillNo());
+		baseInfo.setGoodsName(baseInfoVO.getGoodsName());
+		baseInfo.setGoodsVolume(baseInfoVO.getGoodsVolume());
+		baseInfo.setGoodsWeight(baseInfoVO.getGoodsWeight());
+		baseInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		baseInfo.setIsPredict(StringUtils.equals(baseInfoVO.getIsPredict(), "0") ? "01" : "02");
+		baseInfo.setLineAttribute(baseInfoVO.getLineAttribute());
+		baseInfo.setMiles(baseInfoVO.getMiles());
+		baseInfo.setNeedArriveTime(JodaDateUtils.parse(baseInfoVO.getNeedArriveTime(), "yyyy-MM-dd HH:mm")
+				.toString("yyyy-MM-dd HH:mm:ss"));
+		baseInfo.setNeedImportedVehicles(StringUtils.equals(baseInfo.getNeedImportedVehicles(), "0") ? "否" : "是");
+		baseInfo.setNeedLength(baseInfoVO.getNeedLength());
+		baseInfo.setNeedOwnVehicles(StringUtils.equals(baseInfoVO.getNeedOwnVehicles(), "0") ? "否" : "是");
+		baseInfo.setNeedStartTime(
+				JodaDateUtils.parse(baseInfoVO.getNeedStartTime(), "yyyy-MM-dd HH:mm").toString("yyyy-MM-dd HH:mm:ss"));
+		baseInfo.setNeedType(baseInfoVO.getNeedType());
+		baseInfo.setOrderAdvice(baseInfoVO.getOrderAdvice());
+		baseInfo.setOrderType(baseInfoVO.getOrderType());
+		baseInfo.setPaymentType(baseInfoVO.getPaymentType());
+		baseInfo.setPickUpTime(
+				JodaDateUtils.parse(baseInfoVO.getPickUpTime(), "yyyy-MM-dd HH:mm").toString("yyyy-MM-dd HH:mm:ss"));
+		baseInfo.setRemark(baseInfoVO.getRemark());
+		baseInfo.setType(OrderBaseInfo.ORDER_BILL);
+		baseInfo.setUnitPrice(baseInfoVO.getUnitPrice());
+		baseInfo.setUpdatedBy(tmsAdminId);
+		return baseInfo;
+	}
+
+	// 01整车 02公里数 03重量 04体积
+	private String getChargeId(String chargeType) {
+		String name = null;
+		if (StringUtils.equals(chargeType, "01")) {
+			name = "整车";
+		} else if (StringUtils.equals(chargeType, "02")) {
+			name = "公里数";
+		}
+		if (StringUtils.equals(chargeType, "03")) {
+			name = "重量";
+		}
+		if (StringUtils.equals(chargeType, "04")) {
+			name = "体积";
+		}
+		if (name != null) {
+			ChargeInfo chargeInfo = chargeService.getByName(name);
+			return chargeInfo.getChargeId();
+		} else {
+			return null;
+		}
+	}
+
+	private OrderDetailInfo doPush(OrderDetailInfo orderDetailInfo, String actionCode) {
+		String orderId = orderDetailInfo.getOrderId();
+		String currentStatus = orderDetailInfo.getStatus();
+		FlowDef flowDef = flowService.executeFlow(ZHFlow.ORDER, actionCode, currentStatus, FlowActionCategory.CBS);
+		orderDetailInfo.setStatus(flowDef.getTransitionStatus());
+		detailInfoDao.updateSelective(orderDetailInfo);
+		orderHistoryService.saveOrderHistory(orderId, currentStatus, flowDef, tmsAdminId);
+		return orderDetailInfo;
+	}
+
+	private OrderDetailInfo executeFlow(String orderId, String actionCode, String staffId) {
+		OrderDetailInfo orderDetailInfo = detailInfoDao.get(orderId);
+		return this.doPush(orderDetailInfo, actionCode);
+	}
+
+	@Override
+	public boolean cancelTrip(SourceVO sourceVo) throws RestException {
+		String sourceId = sourceVo.getSourceId();
+		OrderDetailInfo detailInfo = sourceService.getOrderDetailInfo(sourceId);
+		String orderId = detailInfo.getOrderId();
+		if (StringUtils.isBlank(orderId)) {
+			throw new RestException("90003", "该货源ID不存在");
+		} else {
+			throw new RestException("90005", "取消发车需先通知运势界作废报价");
+		}
+	}
+
+	private RegionInfo getLastRegion(String p, String c, String d) {
+		RegionInfo regionP = this.getRegion(p, 1, 1);
+		RegionInfo regionC = this.getRegion(c, regionP.getRegionId(), regionP.getRegionLevel() + 1);
+		RegionInfo regionD = this.getRegion(d, regionC.getRegionId(), regionC.getRegionLevel() + 1);
+		return regionD;
+	}
+
+	private RegionInfo getRegion(String name, Integer parentRegionId, Integer level) {
+		RegionInfo regionInfo = regionService.getRegionInfoParent(name, parentRegionId, level);
+		if (regionInfo == null) {
+			throw new RestException("90010", name + "不正确");
+		}
+		return regionInfo;
+	}
+}

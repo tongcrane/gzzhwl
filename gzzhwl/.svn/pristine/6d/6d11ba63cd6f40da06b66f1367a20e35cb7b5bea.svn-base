@@ -1,0 +1,13 @@
+package com.gzzhwl.admin.account.service;
+
+
+import com.gzzhwl.core.data.model.AccountInfo;
+
+public interface AccountManageService {
+
+	boolean createAccountForCBS(String idno, String realName, String telphone, String idFImageRefId,
+			String idBImageRefId);
+
+	AccountInfo getLoginInfoByParam(String telphone, boolean isDel);
+
+}

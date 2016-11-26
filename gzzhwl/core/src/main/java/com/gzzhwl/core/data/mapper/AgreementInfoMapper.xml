@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.AgreementInfoDao">
+
+	<resultMap id="agreementInfoResultMap" type="AgreementInfo">
+		<id property="agreementId" column="agreement_id" />
+		<result property="customerId" column="customer_id" />
+		<result property="startCodeP" column="start_code_p" />
+		<result property="startCodeC" column="start_code_c" />
+		<result property="transferCodeP" column="transfer_code_p" />
+		<result property="transferCodeC" column="transfer_code_c" />
+		<result property="endCodeP" column="end_code_p" />
+		<result property="endCodeC" column="end_code_c" />
+		<result property="carryType" column="carry_type" />
+		<result property="chargeId" column="charge_id" />
+		<result property="unitPrice" column="unit_price" />
+		<result property="lineAttribute" column="line_attribute" />
+		<result property="needType" column="need_type" />
+		<result property="needLength" column="need_length" />
+		<result property="needImportedVehicles" column="need_imported_vehicles" />
+		<result property="needOwnVehicles" column="need_own_vehicles" />
+		<result property="paymentType" column="payment_type" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="executeCycle" column="execute_cycle" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="agreementInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="agreementInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="AgreementInfo">
+	   insert into zh_agreement_info (
+	     agreement_id,
+	     customer_id,
+	     start_code_p,
+	     start_code_c,
+	     transfer_code_p,
+	     transfer_code_c,
+	     end_code_p,
+	     end_code_c,
+	     carry_type,
+	     charge_id,
+	     unit_price,
+	     line_attribute,
+	     need_type,
+	     need_length,
+	     need_imported_vehicles,
+	     need_own_vehicles,
+	     payment_type,
+	     start_time,
+	     end_time,
+	     execute_cycle,
+	     remark,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   )values (
+	     #{agreementId},
+	     #{customerId},
+	     #{startCodeP},
+	     #{startCodeC},
+	     #{transferCodeP},
+	     #{transferCodeC},
+	     #{endCodeP},
+	     #{endCodeC},
+	     #{carryType},
+	     #{chargeId},
+	     #{unitPrice},
+	     #{lineAttribute},
+	     #{needType},
+	     #{needLength},
+	     #{needImportedVehicles},
+	     #{needOwnVehicles},
+	     #{paymentType},
+	     #{startTime},
+	     #{endTime},
+	     #{executeCycle},
+	     #{remark},
+	     #{status},
+	     #{createdBy},
+	     #{createdTime},
+	     #{updatedBy},
+	     #{updatedTime},
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="AgreementInfo">
+	   update zh_agreement_info set
+	     agreement_id=#{agreementId},
+	     customer_id=#{customerId},
+	     start_code_p=#{startCodeP},
+	     start_code_c=#{startCodeC},
+	     transfer_code_p=#{transferCodeP},
+	     transfer_code_c=#{transferCodeC},
+	     end_code_p=#{endCodeP},
+	     end_code_c=#{endCodeC},
+	     carry_type=#{carryType},
+	     charge_id=#{chargeId},
+	     unit_price=#{unitPrice},
+	     line_attribute=#{lineAttribute},
+	     need_type=#{needType},
+	     need_length=#{needLength},
+	     need_imported_vehicles=#{needImportedVehicles},
+	     need_own_vehicles=#{needOwnVehicles},
+	     payment_type=#{paymentType},
+	     start_time=#{startTime},
+	     end_time=#{endTime},
+	     execute_cycle=#{executeCycle},
+	     remark=#{remark},
+	     status=#{status},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     updated_by=#{updatedBy},
+	     updated_time=#{updatedTime},
+	     is_deleted=#{isDeleted}
+	   where 
+	    agreement_id=#{agreementId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="AgreementInfo">
+	   update zh_agreement_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="agreementId != null">
+		       agreement_id=#{agreementId},
+		     </if>
+		     <if test="customerId != null">
+		       customer_id=#{customerId},
+		     </if>
+		     <if test="startCodeP != null">
+		       start_code_p=#{startCodeP},
+		     </if>
+		     <if test="startCodeC != null">
+		       start_code_c=#{startCodeC},
+		     </if>
+		     <if test="transferCodeP != null">
+		       transfer_code_p=#{transferCodeP},
+		     </if>
+		     <if test="transferCodeC != null">
+		       transfer_code_c=#{transferCodeC},
+		     </if>
+		     <if test="endCodeP != null">
+		       end_code_p=#{endCodeP},
+		     </if>
+		     <if test="endCodeC != null">
+		       end_code_c=#{endCodeC},
+		     </if>
+		     <if test="carryType != null">
+		       carry_type=#{carryType},
+		     </if>
+		     <if test="chargeId != null">
+		       charge_id=#{chargeId},
+		     </if>
+		     <if test="unitPrice != null">
+		       unit_price=#{unitPrice},
+		     </if>
+		     <if test="lineAttribute != null">
+		       line_attribute=#{lineAttribute},
+		     </if>
+		     <if test="needType != null">
+		       need_type=#{needType},
+		     </if>
+		     <if test="needLength != null">
+		       need_length=#{needLength},
+		     </if>
+		     <if test="needImportedVehicles != null">
+		       need_imported_vehicles=#{needImportedVehicles},
+		     </if>
+		     <if test="needOwnVehicles != null">
+		       need_own_vehicles=#{needOwnVehicles},
+		     </if>
+		     <if test="paymentType != null">
+		       payment_type=#{paymentType},
+		     </if>
+		     <if test="startTime != null">
+		       start_time=#{startTime},
+		     </if>
+		     <if test="endTime != null">
+		       end_time=#{endTime},
+		     </if>
+		     <if test="executeCycle != null">
+		       execute_cycle=#{executeCycle},
+		     </if>
+		     <if test="remark != null">
+		       remark=#{remark},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		     <if test="updatedTime != null">
+		       updated_time=#{updatedTime},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    agreement_id=#{agreementId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_agreement_info 
+	   where 
+	    agreement_id=#{agreementId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="agreementInfoResultMap">
+	   select 
+	    agreement_id,
+	    customer_id,
+	    start_code_p,
+	    start_code_c,
+	    transfer_code_p,
+	    transfer_code_c,
+	    end_code_p,
+	    end_code_c,
+	    carry_type,
+	    charge_id,
+	    unit_price,
+	    line_attribute,
+	    need_type,
+	    need_length,
+	    need_imported_vehicles,
+	    need_own_vehicles,
+	    payment_type,
+	    start_time,
+	    end_time,
+	    execute_cycle,
+	    remark,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_agreement_info
+	   where 
+	    agreement_id=#{agreementId} 
+	    and is_deleted ='00' 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    agreement_id,
+	    customer_id,
+	    start_code_p,
+	    start_code_c,
+	    transfer_code_p,
+	    transfer_code_c,
+	    end_code_p,
+	    end_code_c,
+	    carry_type,
+	    charge_id,
+	    unit_price,
+	    line_attribute,
+	    need_type,
+	    need_length,
+	    need_imported_vehicles,
+	    need_own_vehicles,
+	    payment_type,
+	    start_time,
+	    end_time,
+	    execute_cycle,
+	    remark,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_agreement_info
+	   where 
+	    agreement_id=#{agreementId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     agreement_id,
+	     customer_id,
+	     start_code_p,
+	     start_code_c,
+	     transfer_code_p,
+	     transfer_code_c,
+	     end_code_p,
+	     end_code_c,
+	     carry_type,
+	     charge_id,
+	     unit_price,
+	     line_attribute,
+	     need_type,
+	     need_length,
+	     need_imported_vehicles,
+	     need_own_vehicles,
+	     payment_type,
+	     start_time,
+	     end_time,
+	     execute_cycle,
+	     remark,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_agreement_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="agreementId != null">
+	        agreement_id=#{agreementId}
+	     </if>
+	     <if test="customerId != null">
+	        and customer_id=#{customerId}
+	     </if>
+	     <if test="startCodeP != null">
+	        and start_code_p=#{startCodeP}
+	     </if>
+	     <if test="startCodeC != null">
+	        and start_code_c=#{startCodeC}
+	     </if>
+	     <if test="transferCodeP != null">
+	        and transfer_code_p=#{transferCodeP}
+	     </if>
+	     <if test="transferCodeC != null">
+	        and transfer_code_c=#{transferCodeC}
+	     </if>
+	     <if test="endCodeP != null">
+	        and end_code_p=#{endCodeP}
+	     </if>
+	     <if test="endCodeC != null">
+	        and end_code_c=#{endCodeC}
+	     </if>
+	     <if test="carryType != null">
+	        and carry_type=#{carryType}
+	     </if>
+	     <if test="chargeId != null">
+	        and charge_id=#{chargeId}
+	     </if>
+	     <if test="unitPrice != null">
+	        and unit_price=#{unitPrice}
+	     </if>
+	     <if test="lineAttribute != null">
+	        and line_attribute=#{lineAttribute}
+	     </if>
+	     <if test="needType != null">
+	        and need_type=#{needType}
+	     </if>
+	     <if test="needLength != null">
+	        and need_length=#{needLength}
+	     </if>
+	     <if test="needImportedVehicles != null">
+	        and need_imported_vehicles=#{needImportedVehicles}
+	     </if>
+	     <if test="needOwnVehicles != null">
+	        and need_own_vehicles=#{needOwnVehicles}
+	     </if>
+	     <if test="paymentType != null">
+	        and payment_type=#{paymentType}
+	     </if>
+	     <if test="startTime != null">
+	        and start_time=#{startTime}
+	     </if>
+	     <if test="endTime != null">
+	        and end_time=#{endTime}
+	     </if>
+	     <if test="executeCycle != null">
+	        and execute_cycle=#{executeCycle}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     agreement_id,
+	     customer_id,
+	     start_code_p,
+	     start_code_c,
+	     transfer_code_p,
+	     transfer_code_c,
+	     end_code_p,
+	     end_code_c,
+	     carry_type,
+	     charge_id,
+	     unit_price,
+	     line_attribute,
+	     need_type,
+	     need_length,
+	     need_imported_vehicles,
+	     need_own_vehicles,
+	     payment_type,
+	     start_time,
+	     end_time,
+	     execute_cycle,
+	     remark,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_agreement_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="agreementId != null">
+	        agreement_id=#{agreementId}
+	     </if>
+	     <if test="customerId != null">
+	        and customer_id=#{customerId}
+	     </if>
+	     <if test="startCodeP != null">
+	        and start_code_p=#{startCodeP}
+	     </if>
+	     <if test="startCodeC != null">
+	        and start_code_c=#{startCodeC}
+	     </if>
+	     <if test="transferCodeP != null">
+	        and transfer_code_p=#{transferCodeP}
+	     </if>
+	     <if test="transferCodeC != null">
+	        and transfer_code_c=#{transferCodeC}
+	     </if>
+	     <if test="endCodeP != null">
+	        and end_code_p=#{endCodeP}
+	     </if>
+	     <if test="endCodeC != null">
+	        and end_code_c=#{endCodeC}
+	     </if>
+	     <if test="carryType != null">
+	        and carry_type=#{carryType}
+	     </if>
+	     <if test="chargeId != null">
+	        and charge_id=#{chargeId}
+	     </if>
+	     <if test="unitPrice != null">
+	        and unit_price=#{unitPrice}
+	     </if>
+	     <if test="lineAttribute != null">
+	        and line_attribute=#{lineAttribute}
+	     </if>
+	     <if test="needType != null">
+	        and need_type=#{needType}
+	     </if>
+	     <if test="needLength != null">
+	        and need_length=#{needLength}
+	     </if>
+	     <if test="needImportedVehicles != null">
+	        and need_imported_vehicles=#{needImportedVehicles}
+	     </if>
+	     <if test="needOwnVehicles != null">
+	        and need_own_vehicles=#{needOwnVehicles}
+	     </if>
+	     <if test="paymentType != null">
+	        and payment_type=#{paymentType}
+	     </if>
+	     <if test="startTime != null">
+	        and start_time=#{startTime}
+	     </if>
+	     <if test="endTime != null">
+	        and end_time=#{endTime}
+	     </if>
+	     <if test="executeCycle != null">
+	        and execute_cycle=#{executeCycle}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

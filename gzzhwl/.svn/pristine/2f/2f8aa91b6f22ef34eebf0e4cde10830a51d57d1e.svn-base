@@ -1,0 +1,258 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_flow_def表
+ * @author mew
+ *
+ */
+public class FlowDef implements Serializable {
+	@Length(max = 36, message = "flowDefId超过长度限制")
+	private java.lang.String flowDefId; // 标识
+	@Length(max = 36, message = "flowId超过长度限制")
+	private java.lang.String flowId; // 所属流程状态
+	@Length(max = 2, message = "category超过长度限制")
+	private java.lang.String category; // 分类
+	@Length(max = 10, message = "actionCode超过长度限制")
+	private java.lang.String actionCode; // 动作编码
+	@Length(max = 50, message = "actionName超过长度限制")
+	private java.lang.String actionName; // 动作名称
+	@Length(max = 50, message = "linkedStatus超过长度限制")
+	private java.lang.String linkedStatus; // 前置状态
+	@Length(max = 50, message = "transitionStatus超过长度限制")
+	private java.lang.String transitionStatus; // 执行后状态
+	private java.lang.Integer isStarted; // 起始步骤
+	@Length(max = 20, message = "autoRun超过长度限制")
+	private java.lang.String autoRun; // 自动执行
+	@Length(max = 400, message = "msgTemplate超过长度限制")
+	private java.lang.String msgTemplate; // 消息模板
+	private java.lang.Integer notice; // 通知
+	/** 是开始节点 */
+	public static final Integer IS_STARTED = 1;
+	/** 不是开始节点 */
+	public static final Integer NOT_STARTED = 0;
+
+
+	/**
+     * 获取标识属性
+     *
+     * @return flowDefId
+     */
+	public java.lang.String getFlowDefId() {
+		return flowDefId;
+	}
+	
+	/**
+	 * 设置标识属性
+	 *
+	 * @param flowDefId
+	 */
+	public void setFlowDefId(java.lang.String flowDefId) {
+		this.flowDefId = flowDefId;
+	}
+	
+	/**
+     * 获取所属流程状态属性
+     *
+     * @return flowId
+     */
+	public java.lang.String getFlowId() {
+		return flowId;
+	}
+	
+	/**
+	 * 设置所属流程状态属性
+	 *
+	 * @param flowId
+	 */
+	public void setFlowId(java.lang.String flowId) {
+		this.flowId = flowId;
+	}
+	
+	/**
+     * 获取分类属性
+     *
+     * @return category
+     */
+	public java.lang.String getCategory() {
+		return category;
+	}
+	
+	/**
+	 * 设置分类属性
+	 *
+	 * @param category
+	 */
+	public void setCategory(java.lang.String category) {
+		this.category = category;
+	}
+	
+	/**
+     * 获取动作编码属性
+     *
+     * @return actionCode
+     */
+	public java.lang.String getActionCode() {
+		return actionCode;
+	}
+	
+	/**
+	 * 设置动作编码属性
+	 *
+	 * @param actionCode
+	 */
+	public void setActionCode(java.lang.String actionCode) {
+		this.actionCode = actionCode;
+	}
+	
+	/**
+     * 获取动作名称属性
+     *
+     * @return actionName
+     */
+	public java.lang.String getActionName() {
+		return actionName;
+	}
+	
+	/**
+	 * 设置动作名称属性
+	 *
+	 * @param actionName
+	 */
+	public void setActionName(java.lang.String actionName) {
+		this.actionName = actionName;
+	}
+	
+	/**
+     * 获取前置状态属性
+     *
+     * @return linkedStatus
+     */
+	public java.lang.String getLinkedStatus() {
+		return linkedStatus;
+	}
+	
+	/**
+	 * 设置前置状态属性
+	 *
+	 * @param linkedStatus
+	 */
+	public void setLinkedStatus(java.lang.String linkedStatus) {
+		this.linkedStatus = linkedStatus;
+	}
+	
+	/**
+     * 获取执行后状态属性
+     *
+     * @return transitionStatus
+     */
+	public java.lang.String getTransitionStatus() {
+		return transitionStatus;
+	}
+	
+	/**
+	 * 设置执行后状态属性
+	 *
+	 * @param transitionStatus
+	 */
+	public void setTransitionStatus(java.lang.String transitionStatus) {
+		this.transitionStatus = transitionStatus;
+	}
+	
+	/**
+     * 获取起始步骤属性
+     *
+     * @return isStarted
+     */
+	public java.lang.Integer getIsStarted() {
+		return isStarted;
+	}
+	
+	/**
+	 * 设置起始步骤属性
+	 *
+	 * @param isStarted
+	 */
+	public void setIsStarted(java.lang.Integer isStarted) {
+		this.isStarted = isStarted;
+	}
+	
+	/**
+     * 获取自动执行属性
+     *
+     * @return autoRun
+     */
+	public java.lang.String getAutoRun() {
+		return autoRun;
+	}
+	
+	/**
+	 * 设置自动执行属性
+	 *
+	 * @param autoRun
+	 */
+	public void setAutoRun(java.lang.String autoRun) {
+		this.autoRun = autoRun;
+	}
+	
+	/**
+     * 获取消息模板属性
+     *
+     * @return msgTemplate
+     */
+	public java.lang.String getMsgTemplate() {
+		return msgTemplate;
+	}
+	
+	/**
+	 * 设置消息模板属性
+	 *
+	 * @param msgTemplate
+	 */
+	public void setMsgTemplate(java.lang.String msgTemplate) {
+		this.msgTemplate = msgTemplate;
+	}
+	
+	/**
+     * 获取通知属性
+     *
+     * @return notice
+     */
+	public java.lang.Integer getNotice() {
+		return notice;
+	}
+	
+	/**
+	 * 设置通知属性
+	 *
+	 * @param notice
+	 */
+	public void setNotice(java.lang.Integer notice) {
+		this.notice = notice;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("FlowDef");
+        sb.append("{flowDefId=").append(flowDefId);
+        sb.append(", flowId=").append(flowId);
+        sb.append(", category=").append(category);
+        sb.append(", actionCode=").append(actionCode);
+        sb.append(", actionName=").append(actionName);
+        sb.append(", linkedStatus=").append(linkedStatus);
+        sb.append(", transitionStatus=").append(transitionStatus);
+        sb.append(", isStarted=").append(isStarted);
+        sb.append(", autoRun=").append(autoRun);
+        sb.append(", msgTemplate=").append(msgTemplate);
+        sb.append(", notice=").append(notice);
+		sb.append('}');
+        return sb.toString();
+    }
+}

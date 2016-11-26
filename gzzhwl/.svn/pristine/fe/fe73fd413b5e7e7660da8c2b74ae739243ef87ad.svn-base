@@ -1,0 +1,14 @@
+package com.gzzhwl.admin.payables.service;
+
+import java.util.Map;
+
+public interface PayablesService {
+
+	/**
+	 * 查询应收明细
+	 */
+	public Map<String, Object> getPayDetail(String loadId);
+	
+	 
+	
+}

@@ -1,0 +1,171 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_remark_info表
+ * @author mew
+ *
+ */
+public class RemarkInfo implements Serializable {
+	private java.lang.Long pid; // 自增标识
+	@Length(max = 36, message = "remarkId超过长度限制")
+	private java.lang.String remarkId; // 备注标识
+	@Length(max = 36, message = "targetId超过长度限制")
+	private java.lang.String targetId; // 对象标识
+	@Length(max = 2, message = "type超过长度限制")
+	private java.lang.String type; // 对象类型
+	@Length(max = 400, message = "content超过长度限制")
+	private java.lang.String content; // 备注内容
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+
+
+	/**
+     * 获取自增标识属性
+     *
+     * @return pid
+     */
+	public java.lang.Long getPid() {
+		return pid;
+	}
+	
+	/**
+	 * 设置自增标识属性
+	 *
+	 * @param pid
+	 */
+	public void setPid(java.lang.Long pid) {
+		this.pid = pid;
+	}
+	
+	/**
+     * 获取备注标识属性
+     *
+     * @return remarkId
+     */
+	public java.lang.String getRemarkId() {
+		return remarkId;
+	}
+	
+	/**
+	 * 设置备注标识属性
+	 *
+	 * @param remarkId
+	 */
+	public void setRemarkId(java.lang.String remarkId) {
+		this.remarkId = remarkId;
+	}
+	
+	/**
+     * 获取对象标识属性
+     *
+     * @return targetId
+     */
+	public java.lang.String getTargetId() {
+		return targetId;
+	}
+	
+	/**
+	 * 设置对象标识属性
+	 *
+	 * @param targetId
+	 */
+	public void setTargetId(java.lang.String targetId) {
+		this.targetId = targetId;
+	}
+	
+	/**
+     * 获取对象类型属性
+     *
+     * @return type
+     */
+	public java.lang.String getType() {
+		return type;
+	}
+	
+	/**
+	 * 设置对象类型属性
+	 *
+	 * @param type
+	 */
+	public void setType(java.lang.String type) {
+		this.type = type;
+	}
+	
+	/**
+     * 获取备注内容属性
+     *
+     * @return content
+     */
+	public java.lang.String getContent() {
+		return content;
+	}
+	
+	/**
+	 * 设置备注内容属性
+	 *
+	 * @param content
+	 */
+	public void setContent(java.lang.String content) {
+		this.content = content;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("RemarkInfo");
+        sb.append("{pid=").append(pid);
+        sb.append(", remarkId=").append(remarkId);
+        sb.append(", targetId=").append(targetId);
+        sb.append(", type=").append(type);
+        sb.append(", content=").append(content);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+		sb.append('}');
+        return sb.toString();
+    }
+}

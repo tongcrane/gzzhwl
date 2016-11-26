@@ -1,0 +1,20 @@
+package com.gzzhwl.admin.lend.vo;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class LendVO {
+
+	private java.lang.String vehicleInfoId; // 车辆信息标识
+
+	private java.lang.String driver1InfoId; // 司机1信息标识
+
+	private java.lang.String driver2InfoId; // 司机2信息标识
+
+	private java.lang.String toDepartId; // 借用方
+
+	private java.lang.String endTime; // 计划归还时间
+
+}

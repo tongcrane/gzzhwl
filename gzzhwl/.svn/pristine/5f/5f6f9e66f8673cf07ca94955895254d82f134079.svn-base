@@ -1,0 +1,551 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+/**
+ * 
+ * zh_order_load_info表
+ * 
+ * @author mew
+ *
+ */
+public class OrderLoadInfo implements Serializable {
+	@Length(max = 36, message = "loadId超过长度限制")
+	private java.lang.String loadId; // 提货单标识
+	@Length(max = 2, message = "source超过长度限制")
+	private java.lang.String source; // 数据来源
+	@Length(max = 2, message = "type超过长度限制")
+	private java.lang.String type; // 数据类型
+	@Length(max = 36, message = "belongDepartId超过长度限制")
+	private java.lang.String belongDepartId; // 所属部门
+	@Length(max = 50, message = "loadNo超过长度限制")
+	private java.lang.String loadNo; // 提货单号
+	@Length(max = 36, message = "orderId超过长度限制")
+	private java.lang.String orderId; // 订单标识
+	@Length(max = 36, message = "quotedId超过长度限制")
+	private java.lang.String quotedId; // 报价标识
+	@Length(max = 36, message = "vehicleInfoId超过长度限制")
+	private java.lang.String vehicleInfoId; // 车辆信息标识
+	@Length(max = 36, message = "loadInfoId超过长度限制")
+	private java.lang.String loadInfoId; // 车挂信息标识
+	@Length(max = 20, message = "needArriveTime超过长度限制")
+	private java.lang.String needArriveTime; // 要求达到场地时间
+	@Length(max = 10, message = "freightPrice超过长度限制")
+	private java.lang.String freightPrice; // 运费
+	@Length(max = 2, message = "isPredict超过长度限制")
+	private java.lang.String isPredict; // 是否预估
+	@Length(max = 10, message = "prePay超过长度限制")
+	private java.lang.String prePay; // 预付现金
+	@Length(max = 10, message = "oilPay超过长度限制")
+	private java.lang.String oilPay; // 预付油费
+	@Length(max = 20, message = "oilCardNo超过长度限制")
+	private java.lang.String oilCardNo; // 油卡卡号
+	@Length(max = 10, message = "paymentType超过长度限制")
+	private java.lang.String paymentType; // 结算方式
+	@Length(max = 50, message = "paymentName超过长度限制")
+	private java.lang.String paymentName; // 结算对象名称
+	@Length(max = 36, message = "supplyId超过长度限制")
+	private java.lang.String supplyId; // 结算对象
+	@Length(max = 400, message = "remark超过长度限制")
+	private java.lang.String remark; // 备注
+	@Length(max = 10, message = "status超过长度限制")
+	private java.lang.String status; // 单据状态
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+	public static final String LOAD_BILL = "01";// 提货单
+	public static final String DRIVER_CONTRACT_BILL = "02";// 司机合同
+
+	/**
+	 * 获取提货单标识属性
+	 *
+	 * @return loadId
+	 */
+	public java.lang.String getLoadId() {
+		return loadId;
+	}
+
+	/**
+	 * 设置提货单标识属性
+	 *
+	 * @param loadId
+	 */
+	public void setLoadId(java.lang.String loadId) {
+		this.loadId = loadId;
+	}
+
+	/**
+	 * 获取数据来源属性
+	 *
+	 * @return source
+	 */
+	public java.lang.String getSource() {
+		return source;
+	}
+
+	/**
+	 * 设置数据来源属性
+	 *
+	 * @param source
+	 */
+	public void setSource(java.lang.String source) {
+		this.source = source;
+	}
+
+	/**
+	 * 获取数据类型属性
+	 *
+	 * @return type
+	 */
+	public java.lang.String getType() {
+		return type;
+	}
+
+	/**
+	 * 设置数据类型属性
+	 *
+	 * @param type
+	 */
+	public void setType(java.lang.String type) {
+		this.type = type;
+	}
+
+	/**
+	 * 获取所属部门属性
+	 *
+	 * @return belongDepartId
+	 */
+	public java.lang.String getBelongDepartId() {
+		return belongDepartId;
+	}
+
+	/**
+	 * 设置所属部门属性
+	 *
+	 * @param belongDepartId
+	 */
+	public void setBelongDepartId(java.lang.String belongDepartId) {
+		this.belongDepartId = belongDepartId;
+	}
+
+	/**
+	 * 获取提货单号属性
+	 *
+	 * @return loadNo
+	 */
+	public java.lang.String getLoadNo() {
+		return loadNo;
+	}
+
+	/**
+	 * 设置提货单号属性
+	 *
+	 * @param loadNo
+	 */
+	public void setLoadNo(java.lang.String loadNo) {
+		this.loadNo = loadNo;
+	}
+
+	/**
+	 * 获取订单标识属性
+	 *
+	 * @return orderId
+	 */
+	public java.lang.String getOrderId() {
+		return orderId;
+	}
+
+	/**
+	 * 设置订单标识属性
+	 *
+	 * @param orderId
+	 */
+	public void setOrderId(java.lang.String orderId) {
+		this.orderId = orderId;
+	}
+
+	/**
+	 * 获取报价标识属性
+	 *
+	 * @return quotedId
+	 */
+	public java.lang.String getQuotedId() {
+		return quotedId;
+	}
+
+	/**
+	 * 设置报价标识属性
+	 *
+	 * @param quotedId
+	 */
+	public void setQuotedId(java.lang.String quotedId) {
+		this.quotedId = quotedId;
+	}
+
+	/**
+	 * 获取车辆信息标识属性
+	 *
+	 * @return vehicleInfoId
+	 */
+	public java.lang.String getVehicleInfoId() {
+		return vehicleInfoId;
+	}
+
+	/**
+	 * 设置车辆信息标识属性
+	 *
+	 * @param vehicleInfoId
+	 */
+	public void setVehicleInfoId(java.lang.String vehicleInfoId) {
+		this.vehicleInfoId = vehicleInfoId;
+	}
+
+	/**
+	 * 获取车挂信息标识属性
+	 *
+	 * @return loadInfoId
+	 */
+	public java.lang.String getLoadInfoId() {
+		return loadInfoId;
+	}
+
+	/**
+	 * 设置车挂信息标识属性
+	 *
+	 * @param loadInfoId
+	 */
+	public void setLoadInfoId(java.lang.String loadInfoId) {
+		this.loadInfoId = loadInfoId;
+	}
+
+	/**
+	 * 获取要求达到场地时间属性
+	 *
+	 * @return needArriveTime
+	 */
+	public java.lang.String getNeedArriveTime() {
+		return needArriveTime;
+	}
+
+	/**
+	 * 设置要求达到场地时间属性
+	 *
+	 * @param needArriveTime
+	 */
+	public void setNeedArriveTime(java.lang.String needArriveTime) {
+		this.needArriveTime = needArriveTime;
+	}
+
+	/**
+	 * 获取运费属性
+	 *
+	 * @return freightPrice
+	 */
+	public java.lang.String getFreightPrice() {
+		return freightPrice;
+	}
+
+	/**
+	 * 设置运费属性
+	 *
+	 * @param freightPrice
+	 */
+	public void setFreightPrice(java.lang.String freightPrice) {
+		this.freightPrice = freightPrice;
+	}
+
+	/**
+	 * 获取是否预估属性
+	 *
+	 * @return isPredict
+	 */
+	public java.lang.String getIsPredict() {
+		return isPredict;
+	}
+
+	/**
+	 * 设置是否预估属性
+	 *
+	 * @param isPredict
+	 */
+	public void setIsPredict(java.lang.String isPredict) {
+		this.isPredict = isPredict;
+	}
+
+	/**
+	 * 获取预付现金属性
+	 *
+	 * @return prePay
+	 */
+	public java.lang.String getPrePay() {
+		return prePay;
+	}
+
+	/**
+	 * 设置预付现金属性
+	 *
+	 * @param prePay
+	 */
+	public void setPrePay(java.lang.String prePay) {
+		this.prePay = prePay;
+	}
+
+	/**
+	 * 获取预付油费属性
+	 *
+	 * @return oilPay
+	 */
+	public java.lang.String getOilPay() {
+		return oilPay;
+	}
+
+	/**
+	 * 设置预付油费属性
+	 *
+	 * @param oilPay
+	 */
+	public void setOilPay(java.lang.String oilPay) {
+		this.oilPay = oilPay;
+	}
+
+	/**
+	 * 获取油卡卡号属性
+	 *
+	 * @return oilCardNo
+	 */
+	public java.lang.String getOilCardNo() {
+		return oilCardNo;
+	}
+
+	/**
+	 * 设置油卡卡号属性
+	 *
+	 * @param oilCardNo
+	 */
+	public void setOilCardNo(java.lang.String oilCardNo) {
+		this.oilCardNo = oilCardNo;
+	}
+
+	/**
+	 * 获取结算方式属性
+	 *
+	 * @return paymentType
+	 */
+	public java.lang.String getPaymentType() {
+		return paymentType;
+	}
+
+	/**
+	 * 设置结算方式属性
+	 *
+	 * @param paymentType
+	 */
+	public void setPaymentType(java.lang.String paymentType) {
+		this.paymentType = paymentType;
+	}
+
+	/**
+	 * 获取结算对象名称属性
+	 *
+	 * @return paymentName
+	 */
+	public java.lang.String getPaymentName() {
+		return paymentName;
+	}
+
+	/**
+	 * 设置结算对象名称属性
+	 *
+	 * @param paymentName
+	 */
+	public void setPaymentName(java.lang.String paymentName) {
+		this.paymentName = paymentName;
+	}
+
+	/**
+	 * 获取结算对象属性
+	 *
+	 * @return supplyId
+	 */
+	public java.lang.String getSupplyId() {
+		return supplyId;
+	}
+
+	/**
+	 * 设置结算对象属性
+	 *
+	 * @param supplyId
+	 */
+	public void setSupplyId(java.lang.String supplyId) {
+		this.supplyId = supplyId;
+	}
+
+	/**
+	 * 获取备注属性
+	 *
+	 * @return remark
+	 */
+	public java.lang.String getRemark() {
+		return remark;
+	}
+
+	/**
+	 * 设置备注属性
+	 *
+	 * @param remark
+	 */
+	public void setRemark(java.lang.String remark) {
+		this.remark = remark;
+	}
+
+	/**
+	 * 获取单据状态属性
+	 *
+	 * @return status
+	 */
+	public java.lang.String getStatus() {
+		return status;
+	}
+
+	/**
+	 * 设置单据状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+
+	/**
+	 * 获取创建人属性
+	 *
+	 * @return createdBy
+	 */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	/**
+	 * 获取创建时间属性
+	 *
+	 * @return createdTime
+	 */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	/**
+	 * 获取修改人属性
+	 *
+	 * @return updatedBy
+	 */
+	public java.lang.String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	/**
+	 * 设置修改人属性
+	 *
+	 * @param updatedBy
+	 */
+	public void setUpdatedBy(java.lang.String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	/**
+	 * 获取修改时间属性
+	 *
+	 * @return updatedTime
+	 */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+
+	/**
+	 * 获取是否删除属性
+	 *
+	 * @return isDeleted
+	 */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("OrderLoadInfo");
+		sb.append("{loadId=").append(loadId);
+		sb.append(", source=").append(source);
+		sb.append(", type=").append(type);
+		sb.append(", belongDepartId=").append(belongDepartId);
+		sb.append(", loadNo=").append(loadNo);
+		sb.append(", orderId=").append(orderId);
+		sb.append(", quotedId=").append(quotedId);
+		sb.append(", vehicleInfoId=").append(vehicleInfoId);
+		sb.append(", loadInfoId=").append(loadInfoId);
+		sb.append(", needArriveTime=").append(needArriveTime);
+		sb.append(", freightPrice=").append(freightPrice);
+		sb.append(", isPredict=").append(isPredict);
+		sb.append(", prePay=").append(prePay);
+		sb.append(", oilPay=").append(oilPay);
+		sb.append(", oilCardNo=").append(oilCardNo);
+		sb.append(", paymentType=").append(paymentType);
+		sb.append(", paymentName=").append(paymentName);
+		sb.append(", supplyId=").append(supplyId);
+		sb.append(", remark=").append(remark);
+		sb.append(", status=").append(status);
+		sb.append(", createdBy=").append(createdBy);
+		sb.append(", createdTime=").append(createdTime);
+		sb.append(", updatedBy=").append(updatedBy);
+		sb.append(", updatedTime=").append(updatedTime);
+		sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+		return sb.toString();
+	}
+}

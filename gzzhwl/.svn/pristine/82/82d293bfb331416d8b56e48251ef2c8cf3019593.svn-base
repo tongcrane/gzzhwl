@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.ChargeInfoDao">
+
+	<resultMap id="chargeInfoResultMap" type="ChargeInfo">
+		<id property="chargeId" column="charge_id" />
+		<result property="name" column="name" />
+		<result property="unit" column="unit" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="chargeInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="chargeInfoResultMap"></resultMap>
+
+
+	<select id="get" parameterType="map" resultMap="chargeInfoResultMap">
+	   select 
+	    charge_id,
+	    name,
+	    unit
+	   from zh_charge_info
+	   where 
+	    charge_id=#{chargeId} 
+	</select>
+	
+	<select id="getByName" parameterType="map" resultMap="chargeInfoResultMap">
+	   select 
+	    charge_id,
+	    name,
+	    unit
+	   from zh_charge_info
+	   where 
+	    name=#{name} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     charge_id,
+	     name,
+	     unit
+	   from zh_charge_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="chargeId != null">
+	        charge_id=#{chargeId}
+	     </if>
+	     <if test="name != null">
+	        and name=#{name}
+	     </if>
+	     <if test="unit != null">
+	        and unit=#{unit}
+	     </if>
+	   </trim>
+	</select>
+	
+	
+</mapper> 

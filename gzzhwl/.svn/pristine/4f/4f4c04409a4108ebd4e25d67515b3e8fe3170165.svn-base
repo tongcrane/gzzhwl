@@ -1,0 +1,62 @@
+package com.gzzhwl.tms.vo;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.joda.time.DateTime;
+
+import com.gzzhwl.core.utils.JodaDateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class PushOrderVO {
+	private String endTime; // 竞价结束时间（yyyy-MM-dd HH:mm）
+	private String needDriverNum; // 要求司机人数
+	private String startTime; // 竞价开始时间（yyyy-MM-dd HH:mm）
+
+	public void valid() {
+		validEmpty();
+		validData();
+		validFormat();
+		validBusEmpty();
+	}
+
+	private void validEmpty() {
+		if (StringUtils.isAnyEmpty(endTime, needDriverNum, startTime)) {
+			throw new RestException("90001", "参数不能为空");
+		}
+	}
+
+	private void validData() {
+	}
+
+	private void validFormat() {
+		final String fmt = "yyyy-MM-dd HH:mm";
+		int num = NumberUtils.toInt(needDriverNum);
+		if (num > 0 && num < 3) {
+
+		} else {
+			throw new RestException("90001", "要求司机人数不正确");
+		}
+		boolean isValid = JodaDateUtils.isValidDate(startTime, fmt);
+		if (!isValid) {
+			throw new RestException("90001", "竞价开始时间格式不正确");
+		}
+		isValid = JodaDateUtils.isValidDate(endTime, fmt);
+		if (!isValid) {
+			throw new RestException("90001", "竞价结束时间格式不正确");
+		}
+	}
+
+	private void validBusEmpty() {
+		final String fmt = "yyyy-MM-dd HH:mm";
+		DateTime d_s = JodaDateUtils.parse(startTime, fmt);// 开始时间
+		DateTime d_e = JodaDateUtils.parse(endTime, fmt);// 结束时间
+		if (!d_s.isBefore(d_e)) {
+			throw new RestException("90001", "竞价开始时间要早于竞价结束时间");
+		}
+	}
+}

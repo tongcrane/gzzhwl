@@ -1,0 +1,9 @@
+package com.gzzhwl.admin.contract.service;
+
+import com.gzzhwl.rest.exception.RestException;
+
+public interface ContractService {
+
+	public String createContract(String loadId, Integer departId, String staffId) throws RestException;
+
+}

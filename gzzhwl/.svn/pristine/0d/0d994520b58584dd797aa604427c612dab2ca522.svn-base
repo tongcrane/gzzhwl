@@ -1,0 +1,193 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_real_vehicle_used_info表
+ * @author mew
+ *
+ */
+public class RealVehicleUsedInfo implements Serializable {
+	@Length(max = 36, message = "vehicleInfoId超过长度限制")
+	private java.lang.String vehicleInfoId; // 车辆信息标识
+	@Length(max = 36, message = "belongDepartId超过长度限制")
+	private java.lang.String belongDepartId; // 所属部门
+	@Length(max = 50, message = "belongDepartName超过长度限制")
+	private java.lang.String belongDepartName; // 所属部门名称
+	@Length(max = 36, message = "useDepartId超过长度限制")
+	private java.lang.String useDepartId; // 使用部门
+	@Length(max = 50, message = "useDepartName超过长度限制")
+	private java.lang.String useDepartName; // 使用部门名称
+	@Length(max = 10, message = "departureCode超过长度限制")
+	private java.lang.String departureCode; // 线路出发地
+	@Length(max = 10, message = "destinationCode超过长度限制")
+	private java.lang.String destinationCode; // 线路目的地
+	@Length(max = 2, message = "useStatus超过长度限制")
+	private java.lang.String useStatus; // 使用状态
+
+
+	/**
+     * 获取车辆信息标识属性
+     *
+     * @return vehicleInfoId
+     */
+	public java.lang.String getVehicleInfoId() {
+		return vehicleInfoId;
+	}
+	
+	/**
+	 * 设置车辆信息标识属性
+	 *
+	 * @param vehicleInfoId
+	 */
+	public void setVehicleInfoId(java.lang.String vehicleInfoId) {
+		this.vehicleInfoId = vehicleInfoId;
+	}
+	
+	/**
+     * 获取所属部门属性
+     *
+     * @return belongDepartId
+     */
+	public java.lang.String getBelongDepartId() {
+		return belongDepartId;
+	}
+	
+	/**
+	 * 设置所属部门属性
+	 *
+	 * @param belongDepartId
+	 */
+	public void setBelongDepartId(java.lang.String belongDepartId) {
+		this.belongDepartId = belongDepartId;
+	}
+	
+	/**
+     * 获取所属部门名称属性
+     *
+     * @return belongDepartName
+     */
+	public java.lang.String getBelongDepartName() {
+		return belongDepartName;
+	}
+	
+	/**
+	 * 设置所属部门名称属性
+	 *
+	 * @param belongDepartName
+	 */
+	public void setBelongDepartName(java.lang.String belongDepartName) {
+		this.belongDepartName = belongDepartName;
+	}
+	
+	/**
+     * 获取使用部门属性
+     *
+     * @return useDepartId
+     */
+	public java.lang.String getUseDepartId() {
+		return useDepartId;
+	}
+	
+	/**
+	 * 设置使用部门属性
+	 *
+	 * @param useDepartId
+	 */
+	public void setUseDepartId(java.lang.String useDepartId) {
+		this.useDepartId = useDepartId;
+	}
+	
+	/**
+     * 获取使用部门名称属性
+     *
+     * @return useDepartName
+     */
+	public java.lang.String getUseDepartName() {
+		return useDepartName;
+	}
+	
+	/**
+	 * 设置使用部门名称属性
+	 *
+	 * @param useDepartName
+	 */
+	public void setUseDepartName(java.lang.String useDepartName) {
+		this.useDepartName = useDepartName;
+	}
+	
+	/**
+     * 获取线路出发地属性
+     *
+     * @return departureCode
+     */
+	public java.lang.String getDepartureCode() {
+		return departureCode;
+	}
+	
+	/**
+	 * 设置线路出发地属性
+	 *
+	 * @param departureCode
+	 */
+	public void setDepartureCode(java.lang.String departureCode) {
+		this.departureCode = departureCode;
+	}
+	
+	/**
+     * 获取线路目的地属性
+     *
+     * @return destinationCode
+     */
+	public java.lang.String getDestinationCode() {
+		return destinationCode;
+	}
+	
+	/**
+	 * 设置线路目的地属性
+	 *
+	 * @param destinationCode
+	 */
+	public void setDestinationCode(java.lang.String destinationCode) {
+		this.destinationCode = destinationCode;
+	}
+	
+	/**
+     * 获取使用状态属性
+     *
+     * @return useStatus
+     */
+	public java.lang.String getUseStatus() {
+		return useStatus;
+	}
+	
+	/**
+	 * 设置使用状态属性
+	 *
+	 * @param useStatus
+	 */
+	public void setUseStatus(java.lang.String useStatus) {
+		this.useStatus = useStatus;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("RealVehicleUsedInfo");
+        sb.append("{vehicleInfoId=").append(vehicleInfoId);
+        sb.append(", belongDepartId=").append(belongDepartId);
+        sb.append(", belongDepartName=").append(belongDepartName);
+        sb.append(", useDepartId=").append(useDepartId);
+        sb.append(", useDepartName=").append(useDepartName);
+        sb.append(", departureCode=").append(departureCode);
+        sb.append(", destinationCode=").append(destinationCode);
+        sb.append(", useStatus=").append(useStatus);
+		sb.append('}');
+        return sb.toString();
+    }
+}

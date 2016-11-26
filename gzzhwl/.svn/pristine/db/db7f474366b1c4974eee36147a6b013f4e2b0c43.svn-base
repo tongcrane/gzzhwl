@@ -1,0 +1,49 @@
+package com.gzzhwl.admin.store.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.store.service.StoreService;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.data.dao.StoreAddrInfoDao;
+import com.gzzhwl.core.data.dao.StoreInfoDao;
+import com.gzzhwl.core.data.model.StoreAddrInfo;
+import com.gzzhwl.core.data.model.StoreInfo;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class StoreServiceImpl implements StoreService {
+	@Autowired
+	private StoreInfoDao storeInfoDao;
+	@Autowired
+	private StoreAddrInfoDao storeAddrInfoDao;
+
+	@Override
+	public List<StoreInfo> listStore(String staffId) throws RestException {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("status", Global.STATUS_NORMAL.toString());
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		// params.put("departList", null);
+		return storeInfoDao.find(params);
+	}
+
+	@Override
+	public List<StoreAddrInfo> listStoreAddr(String storeId, String staffId) throws RestException {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("storeId", storeId);
+		params.put("status", Global.STATUS_NORMAL.toString());
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		// params.put("departList", null);
+		return storeAddrInfoDao.find(params);
+	}
+
+	@Override
+	public StoreAddrInfo getStoreAddr(String addrId) throws RestException {
+		return storeAddrInfoDao.get(addrId);
+	}
+
+}

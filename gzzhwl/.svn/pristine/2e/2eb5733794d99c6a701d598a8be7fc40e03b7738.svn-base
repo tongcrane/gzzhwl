@@ -1,0 +1,38 @@
+package com.gzzhwl.admin.payables.controller;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.admin.contract.service.ContractService;
+import com.gzzhwl.admin.payables.vo.PayContractQueryVo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+@RestController
+@RequestMapping("/admin/payables")
+public class PayablesController {
+	
+	@Autowired
+	private ContractService contractService;
+	
+	/**
+	 * 应付查询
+	 * @param vo
+	 * @param page
+	 * @return
+	 */
+	@RequestMapping(value = "/pagePayablesList", method = RequestMethod.GET)
+	public ResponseModel pagePayablesList(PayContractQueryVo vo, @Pagination PageParameter page) {
+		Page<Map<String, Object>> resPage = contractService.pagePayContractList(vo, page.getPageIndex(), page.getPageSize());
+		return new ResponseModel(resPage);
+	}
+	
+	
+	
+}

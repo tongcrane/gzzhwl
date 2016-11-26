@@ -1,0 +1,201 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_sms_captcha表
+ * @author mew
+ *
+ */
+public class SmsCaptcha implements Serializable {
+	@Length(max = 36, message = "captchaId超过长度限制")
+	private java.lang.String captchaId; // 验证码标识
+	@Length(max = 36, message = "accountId超过长度限制")
+	private java.lang.String accountId; // 账户标识
+	@Length(max = 11, message = "telphone超过长度限制")
+	private java.lang.String telphone; // 手机号
+	@Length(max = 50, message = "captcha超过长度限制")
+	private java.lang.String captcha; // 验证码
+	@Length(max = 2, message = "type超过长度限制")
+	private java.lang.String type; // 类型
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+	/**
+     * 正常
+     */
+	public static final String STATUS_NORMAL = "00"; // 正常
+	/**
+     * 过期
+     */
+	public static final String STATUS_OVERDUE = "01"; // 过期
+
+	/**
+     * 获取验证码标识属性
+     *
+     * @return captchaId
+     */
+	public java.lang.String getCaptchaId() {
+		return captchaId;
+	}
+	
+	/**
+	 * 设置验证码标识属性
+	 *
+	 * @param captchaId
+	 */
+	public void setCaptchaId(java.lang.String captchaId) {
+		this.captchaId = captchaId;
+	}
+	
+	/**
+     * 获取账户标识属性
+     *
+     * @return accountId
+     */
+	public java.lang.String getAccountId() {
+		return accountId;
+	}
+	
+	/**
+	 * 设置账户标识属性
+	 *
+	 * @param accountId
+	 */
+	public void setAccountId(java.lang.String accountId) {
+		this.accountId = accountId;
+	}
+	
+	/**
+     * 获取手机号属性
+     *
+     * @return telphone
+     */
+	public java.lang.String getTelphone() {
+		return telphone;
+	}
+	
+	/**
+	 * 设置手机号属性
+	 *
+	 * @param telphone
+	 */
+	public void setTelphone(java.lang.String telphone) {
+		this.telphone = telphone;
+	}
+	
+	/**
+     * 获取验证码属性
+     *
+     * @return captcha
+     */
+	public java.lang.String getCaptcha() {
+		return captcha;
+	}
+	
+	/**
+	 * 设置验证码属性
+	 *
+	 * @param captcha
+	 */
+	public void setCaptcha(java.lang.String captcha) {
+		this.captcha = captcha;
+	}
+	
+	/**
+     * 获取类型属性
+     *
+     * @return type
+     */
+	public java.lang.String getType() {
+		return type;
+	}
+	
+	/**
+	 * 设置类型属性
+	 *
+	 * @param type
+	 */
+	public void setType(java.lang.String type) {
+		this.type = type;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("SmsCaptcha");
+        sb.append("{captchaId=").append(captchaId);
+        sb.append(", accountId=").append(accountId);
+        sb.append(", telphone=").append(telphone);
+        sb.append(", captcha=").append(captcha);
+        sb.append(", type=").append(type);
+        sb.append(", status=").append(status);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

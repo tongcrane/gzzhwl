@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.SupplyBankInfoDao">
+
+	<resultMap id="supplyBankInfoResultMap" type="SupplyBankInfo">
+		<id property="supplyId" column="supply_id" />
+		<result property="cardName" column="card_name" />
+		<result property="cardNo" column="card_no" />
+		<result property="depositBank" column="deposit_bank" />
+		<result property="bankName" column="bank_name" />
+		<result property="invoiceTitle" column="invoice_title" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="supplyBankInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="supplyBankInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="SupplyBankInfo">
+	   insert into zh_supply_bank_info (
+	     supply_id,
+	     card_name,
+	     card_no,
+	     deposit_bank,
+	     bank_name,
+	     invoice_title
+	   )values (
+	     #{supplyId},
+	     #{cardName},
+	     #{cardNo},
+	     #{depositBank},
+	     #{bankName},
+	     #{invoiceTitle}
+	   )
+	</insert>
+
+	<update id="update" parameterType="SupplyBankInfo">
+	   update zh_supply_bank_info set
+	     supply_id=#{supplyId},
+	     card_name=#{cardName},
+	     card_no=#{cardNo},
+	     deposit_bank=#{depositBank},
+	     bank_name=#{bankName},
+	     invoice_title=#{invoiceTitle}
+	   where 
+	    supply_id=#{supplyId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="SupplyBankInfo">
+	   update zh_supply_bank_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="supplyId != null">
+		       supply_id=#{supplyId},
+		     </if>
+		     <if test="cardName != null">
+		       card_name=#{cardName},
+		     </if>
+		     <if test="cardNo != null">
+		       card_no=#{cardNo},
+		     </if>
+		     <if test="depositBank != null">
+		       deposit_bank=#{depositBank},
+		     </if>
+		     <if test="bankName != null">
+		       bank_name=#{bankName},
+		     </if>
+		     <if test="invoiceTitle != null">
+		       invoice_title=#{invoiceTitle}
+		     </if>
+	   </trim>
+	
+	   where 
+	    supply_id=#{supplyId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_supply_bank_info 
+	   where 
+	    supply_id=#{supplyId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="supplyBankInfoResultMap">
+	   select 
+	    supply_id,
+	    card_name,
+	    card_no,
+	    deposit_bank,
+	    bank_name,
+	    invoice_title
+	   from zh_supply_bank_info
+	   where 
+	    supply_id=#{supplyId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    supply_id,
+	    card_name,
+	    card_no,
+	    deposit_bank,
+	    bank_name,
+	    invoice_title
+	   from zh_supply_bank_info
+	   where 
+	    supply_id=#{supplyId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     supply_id,
+	     card_name,
+	     card_no,
+	     deposit_bank,
+	     bank_name,
+	     invoice_title
+	   from zh_supply_bank_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="supplyId != null">
+	        supply_id=#{supplyId}
+	     </if>
+	     <if test="cardName != null">
+	        and card_name=#{cardName}
+	     </if>
+	     <if test="cardNo != null">
+	        and card_no=#{cardNo}
+	     </if>
+	     <if test="depositBank != null">
+	        and deposit_bank=#{depositBank}
+	     </if>
+	     <if test="bankName != null">
+	        and bank_name=#{bankName}
+	     </if>
+	     <if test="invoiceTitle != null">
+	        and invoice_title=#{invoiceTitle}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     supply_id,
+	     card_name,
+	     card_no,
+	     deposit_bank,
+	     bank_name,
+	     invoice_title
+	   from zh_supply_bank_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="supplyId != null">
+	        supply_id=#{supplyId}
+	     </if>
+	     <if test="cardName != null">
+	        and card_name=#{cardName}
+	     </if>
+	     <if test="cardNo != null">
+	        and card_no=#{cardNo}
+	     </if>
+	     <if test="depositBank != null">
+	        and deposit_bank=#{depositBank}
+	     </if>
+	     <if test="bankName != null">
+	        and bank_name=#{bankName}
+	     </if>
+	     <if test="invoiceTitle != null">
+	        and invoice_title=#{invoiceTitle}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

@@ -1,0 +1,235 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_account_info表
+ * @author mew
+ *
+ */
+public class AccountInfo implements Serializable {
+	@Length(max = 36, message = "accountId超过长度限制")
+	private java.lang.String accountId; // 账户标识
+	@Length(max = 11, message = "telphone超过长度限制")
+	private java.lang.String telphone; // 手机号
+	@Length(max = 32, message = "password超过长度限制")
+	private java.lang.String password; // 密码
+	@Length(max = 50, message = "nickName超过长度限制")
+	private java.lang.String nickName; // 昵称
+	@Length(max = 36, message = "userHead超过长度限制")
+	private java.lang.String userHead; // 用户头像
+	@Length(max = 2, message = "accountSource超过长度限制")
+	private java.lang.String accountSource; // 账户来源
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取账户标识属性
+     *
+     * @return accountId
+     */
+	public java.lang.String getAccountId() {
+		return accountId;
+	}
+	
+	/**
+	 * 设置账户标识属性
+	 *
+	 * @param accountId
+	 */
+	public void setAccountId(java.lang.String accountId) {
+		this.accountId = accountId;
+	}
+	
+	/**
+     * 获取手机号属性
+     *
+     * @return telphone
+     */
+	public java.lang.String getTelphone() {
+		return telphone;
+	}
+	
+	/**
+	 * 设置手机号属性
+	 *
+	 * @param telphone
+	 */
+	public void setTelphone(java.lang.String telphone) {
+		this.telphone = telphone;
+	}
+	
+	/**
+     * 获取密码属性
+     *
+     * @return password
+     */
+	public java.lang.String getPassword() {
+		return password;
+	}
+	
+	/**
+	 * 设置密码属性
+	 *
+	 * @param password
+	 */
+	public void setPassword(java.lang.String password) {
+		this.password = password;
+	}
+	
+	/**
+     * 获取昵称属性
+     *
+     * @return nickName
+     */
+	public java.lang.String getNickName() {
+		return nickName;
+	}
+	
+	/**
+	 * 设置昵称属性
+	 *
+	 * @param nickName
+	 */
+	public void setNickName(java.lang.String nickName) {
+		this.nickName = nickName;
+	}
+	
+	/**
+     * 获取用户头像属性
+     *
+     * @return userHead
+     */
+	public java.lang.String getUserHead() {
+		return userHead;
+	}
+	
+	/**
+	 * 设置用户头像属性
+	 *
+	 * @param userHead
+	 */
+	public void setUserHead(java.lang.String userHead) {
+		this.userHead = userHead;
+	}
+	
+	/**
+     * 获取账户来源属性
+     *
+     * @return accountSource
+     */
+	public java.lang.String getAccountSource() {
+		return accountSource;
+	}
+	
+	/**
+	 * 设置账户来源属性
+	 *
+	 * @param accountSource
+	 */
+	public void setAccountSource(java.lang.String accountSource) {
+		this.accountSource = accountSource;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("AccountInfo");
+        sb.append("{accountId=").append(accountId);
+        sb.append(", telphone=").append(telphone);
+        sb.append(", password=").append(password);
+        sb.append(", nickName=").append(nickName);
+        sb.append(", userHead=").append(userHead);
+        sb.append(", accountSource=").append(accountSource);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", status=").append(status);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

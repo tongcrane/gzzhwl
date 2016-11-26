@@ -1,0 +1,34 @@
+package com.gzzhwl.core.data.dao;
+
+
+import java.util.Map;
+import java.util.List;
+import com.gzzhwl.core.data.model.ChargeInfo;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ *
+ */
+public interface ChargeInfoDao {    
+    public final static String PREFIX = ChargeInfoDao.class.getName();
+    
+	public ChargeInfo get(java.lang.String chargeId);
+	
+	public <K, V> Map<K, V> findOne(java.lang.String chargeId);
+	
+	public <T, K, V> List<T> find(Map<K, V> params);
+	
+	public int insert(ChargeInfo chargeInfo);
+	
+	public int update(ChargeInfo chargeInfo);
+	
+	public int updateSelective(ChargeInfo chargeInfo);
+	
+	public int delete(java.lang.String chargeId );
+
+	public <E, K, V> Page<E> page(Map<K, V> params, int current, int pagesize);
+
+}
+
+

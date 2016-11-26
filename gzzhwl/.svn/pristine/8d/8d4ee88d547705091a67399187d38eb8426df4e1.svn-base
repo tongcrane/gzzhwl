@@ -1,0 +1,109 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_department_info表
+ * @author mew
+ *
+ */
+public class DepartmentInfo implements Serializable {
+	@Length(max = 10, message = "departId超过长度限制")
+	private java.lang.Integer departId; // 部门标识
+	@Length(max = 20, message = "name超过长度限制")
+	private java.lang.String name; // 部门名字
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 3, message = "lo超过长度限制")
+	private java.lang.String lo; // 
+
+
+	/**
+     * 获取部门标识属性
+     *
+     * @return departId
+     */
+	public java.lang.Integer getDepartId() {
+		return departId;
+	}
+	
+	/**
+	 * 设置部门标识属性
+	 *
+	 * @param departId
+	 */
+	public void setDepartId(java.lang.Integer departId) {
+		this.departId = departId;
+	}
+	
+	/**
+     * 获取部门名字属性
+     *
+     * @return name
+     */
+	public java.lang.String getName() {
+		return name;
+	}
+	
+	/**
+	 * 设置部门名字属性
+	 *
+	 * @param name
+	 */
+	public void setName(java.lang.String name) {
+		this.name = name;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取属性
+     *
+     * @return lo
+     */
+	public java.lang.String getLo() {
+		return lo;
+	}
+	
+	/**
+	 * 设置属性
+	 *
+	 * @param lo
+	 */
+	public void setLo(java.lang.String lo) {
+		this.lo = lo;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("DepartmentInfo");
+        sb.append("{departId=").append(departId);
+        sb.append(", name=").append(name);
+        sb.append(", status=").append(status);
+        sb.append(", lo=").append(lo);
+		sb.append('}');
+        return sb.toString();
+    }
+}

@@ -1,0 +1,44 @@
+package com.gzzhwl.admin.load.service;
+
+import com.gzzhwl.admin.load.vo.LoadPrintreceiptVo;
+import com.gzzhwl.rest.exception.RestException;
+
+public interface ArrivedManageService {
+
+	/**
+	 * 到达
+	 */
+	public void doArrived(String loadId, String arriveTime, String staffId) throws RestException;
+
+	/**
+	 * 上传电子回单
+	 */
+	public void uploadElecReceipt(String loadId, String imageId, String actionTime, String staffId);
+
+	/**
+	 * 上传纸质回单
+	 */
+	public void uploadPrintReceipt(LoadPrintreceiptVo vo, String staffId);
+
+	/**
+	 * 审核电子回单
+	 */
+	public void verifyElecReceipt(String loadId, String receiptId, String verifyResult, String staffId);
+
+	/**
+	 * 确认纸质回单
+	 */
+	public void confirmPrintReceipt(String loadId, String receiptId, String staffId);
+	
+	/**
+	 * 车辆到达关闭
+	 */
+	public void close(String loadId, String staffId);
+	
+	/**
+	 * 查询到达列表
+	 */
+	
+	
+
+}

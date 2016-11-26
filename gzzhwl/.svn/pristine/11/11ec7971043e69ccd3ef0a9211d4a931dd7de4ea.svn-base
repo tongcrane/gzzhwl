@@ -1,0 +1,46 @@
+package com.gzzhwl.core.constant;
+
+import com.gzzhwl.core.exception.NotFoundEnumException;
+
+public enum LoadBillType {
+
+	NOTVEHICLE("01", "未车检"), VEHICLECHECK("02", "已车检"), CLOSETOSURFACE("03", "已靠台"), FEEDBACK("04", "已反馈"), DEPART("05",
+			"已发车"), CANCEL("06", "已取消"), LOAD("07", "已配载");
+
+	private String code;
+	private String desc;
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	private LoadBillType(String code, String desc) {
+		this.code = code;
+		this.desc = desc;
+	}
+
+	public String toString() {
+		return this.code;
+	}
+
+	public static LoadBillType getLoadBillType(String code) throws NotFoundEnumException {
+		for (LoadBillType lt : values()) {
+			if (code.equals(lt.getCode())) {
+				return lt;
+			}
+		}
+		throw new NotFoundEnumException();
+	}
+}

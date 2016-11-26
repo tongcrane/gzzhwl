@@ -1,0 +1,16 @@
+package com.gzzhwl.core.data.extdao;
+
+import java.util.Map;
+
+import com.gzzhwl.core.page.Page;
+
+public interface OrderInfoExtDao {
+	public final static String PREFIX = OrderInfoExtDao.class.getName();
+
+	public <E, K, V> Page<E> pageOrderList(String keyWord, String sort, int currentPage, int pageSizes);
+
+	public <E, K, V> Page<E> pageOrders(Map<K, V> params, int currentPage, int pageSizes);
+
+	// 获取订单退回申请列表
+	public <E, K, V> Page<E> pageOrderReturnList(Map<K, V> params, int currentPage, int pageSizes);
+}

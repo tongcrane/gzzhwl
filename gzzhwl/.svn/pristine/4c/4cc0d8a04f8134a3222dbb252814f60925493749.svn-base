@@ -1,0 +1,44 @@
+package com.gzzhwl.core.constant;
+
+/**
+ * 提货单司机种类
+ * @author jly
+ *
+ */
+public enum LoadDriverCategory {
+
+	MAJOR("01", "主司机"), 
+	
+	NOTMAJOR("02", "副司机");
+	
+	private String code;
+	private String desc;
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	
+	public String toString() {
+		return this.code;
+	}
+
+	private LoadDriverCategory(String code, String desc) {
+		this.code = code;
+		this.desc = desc;
+	}
+
+	
+}

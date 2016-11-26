@@ -1,0 +1,64 @@
+package com.gzzhwl.admin.load.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.load.service.LoadHistoryService;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.data.dao.LoadHisDao;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.LoadHis;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class LoadHistoryServiceImpl implements LoadHistoryService {
+	@Autowired
+	private LoadHisDao loadHisDao;
+
+	@Autowired
+	private Mapper beanMapper;
+	
+	@Override
+	public String saveLoadHistory(String loadId, String current, String actionTime, FlowDef flowDef, String staffId)
+			throws RestException {
+		LoadHis loadHis = new LoadHis();
+		loadHis.setCreatedBy(staffId);
+		loadHis.setHisId(IdentifierUtils.getId().generate().toString());
+		loadHis.setLoadId(loadId);
+		if (StringUtils.isNotBlank(actionTime)) {
+			loadHis.setActionTime(actionTime);
+		}
+		loadHis.setUserType(flowDef.getCategory());
+		loadHis.setSrcStatus(current);
+		loadHis.setDestStatus(flowDef.getTransitionStatus());
+		loadHis.setMsgInfo(flowDef.getMsgTemplate());
+		loadHisDao.insert(loadHis);
+		return loadId;
+	}
+
+	@Override
+	public LoadHis getLoadHistory(String loadId, LoadBillType loadBillType) throws RestException {
+		
+		Map<String,Object> params = new HashMap<>();
+		params.put("loadId", loadId);
+		params.put("destStatus", loadBillType.getCode());
+		
+		List<Map<String,Object>> listObj = loadHisDao.find(params);
+		
+		if(listObj.size()>0){
+			return beanMapper.map(listObj.get(0), LoadHis.class);
+		}
+		
+		return null;
+	}
+	
+	
+
+}

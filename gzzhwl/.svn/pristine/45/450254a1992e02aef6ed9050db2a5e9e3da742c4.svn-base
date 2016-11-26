@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.StoreInfoDao">
+
+	<resultMap id="storeInfoResultMap" type="StoreInfo">
+		<id property="storeId" column="store_id" />
+		<result property="storeName" column="store_name" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<select id="find" parameterType="map" resultMap="storeInfoResultMap">
+	   SELECT
+			zsi.store_id,
+			zsi.store_name,
+			zsi.status,
+			zsi.created_by,
+			zsi.created_time,
+			zsi.updated_by,
+			zsi.updated_time,
+			zsi.is_deleted
+		FROM
+			zh_store_info zsi
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="storeName != null">
+	        and zsi.store_name=#{storeName}
+	     </if>
+	     <if test="status != null">
+	        and zsi.status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and zsi.is_deleted=#{isDeleted}
+	     </if>
+	     <if test="departList != null">
+	        and exists (
+				select
+					1
+				from
+					zh_store_addr_info zsai
+				where
+					zsi.store_id = zsai.store_id
+					and zsai.belong_depart_id in
+				<foreach collection="departList" index="index" item="departId" open="(" separator="," close=")">  
+			           #{departId}
+			   	</foreach>
+			   	<if test="status != null">
+			        and zsai.status=#{status}
+			    </if>
+			    <if test="isDeleted != null">
+			        and zsai.is_deleted=#{isDeleted}
+			    </if>
+			)
+	     </if>
+	   </trim>
+	</select>
+	
+</mapper> 

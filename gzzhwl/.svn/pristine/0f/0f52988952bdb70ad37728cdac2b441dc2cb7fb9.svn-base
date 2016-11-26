@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.QuotedInfoDao">
+
+	<resultMap id="quotedInfoResultMap" type="QuotedInfo">
+		<id property="quotedId" column="quoted_id" />
+		<result property="accountId" column="account_id" />
+		<result property="sourceId" column="source_id" />
+		<result property="price" column="price" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="quotedInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="quotedInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="QuotedInfo">
+	   insert into zh_quoted_info (
+	     quoted_id,
+	     account_id,
+	     source_id,
+	     price,
+	     remark,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   )values (
+	     #{quotedId},
+	     #{accountId},
+	     #{sourceId},
+	     #{price},
+	     #{remark},
+	     #{status},
+	     #{createdBy},
+	     now(),
+	     #{updatedBy},
+	     now(),
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="QuotedInfo">
+	   update zh_quoted_info set
+	     quoted_id=#{quotedId},
+	     account_id=#{accountId},
+	     source_id=#{sourceId},
+	     price=#{price},
+	     remark=#{remark},
+	     status=#{status},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     updated_by=#{updatedBy},
+	     is_deleted=#{isDeleted},
+	     updated_time=now()
+	   where 
+	    quoted_id=#{quotedId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="QuotedInfo">
+	   update zh_quoted_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="quotedId != null">
+		       quoted_id=#{quotedId},
+		     </if>
+		     <if test="accountId != null">
+		       account_id=#{accountId},
+		     </if>
+		     <if test="sourceId != null">
+		       source_id=#{sourceId},
+		     </if>
+		     <if test="price != null">
+		       price=#{price},
+		     </if>
+		     <if test="remark != null">
+		       remark=#{remark},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted},
+		     </if>
+		      updated_time=now()
+	   </trim>
+	
+	   where 
+	    quoted_id=#{quotedId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_quoted_info 
+	   where 
+	    quoted_id=#{quotedId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="quotedInfoResultMap">
+	   select 
+	    quoted_id,
+	    account_id,
+	    source_id,
+	    price,
+	    remark,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_quoted_info
+	   where 
+	    quoted_id=#{quotedId} 
+	    and
+	    is_deleted = '00';
+	</select>
+	
+	
+	<select id="hasQuoted" parameterType="map" resultType="int">
+	   select count(1) 
+		from zh_quoted_info 
+		where source_id = #{sourceId}
+		and account_id = #{accountId}
+		<if test="status != null">
+	        <![CDATA[and status <> #{status}]]>
+	    </if>
+	</select>
+	
+	<select id="findLineQuote" parameterType="map" resultType="int">
+		SELECT
+			count(1) 
+		FROM
+			zh_order_source_info zosir
+		INNER JOIN zh_order_source_info zosis ON zosis.start_code_p = zosir.end_code_p
+		AND zosis.start_code_c = zosir.end_code_c
+		AND zosis.end_code_p = zosir.start_code_p
+		AND zosis.end_code_c = zosir.start_code_c
+		AND zosis.source_id = #{sourceId}
+		WHERE
+			EXISTS (
+				SELECT
+					1
+				FROM
+					zh_quoted_info zqi
+				WHERE
+					zqi.account_id = #{accountId}
+				AND zqi.source_id = zosir.source_id
+				<if test="statusList != null">
+			        and zqi.status in
+			        <foreach collection="statusList" index="index" item="status" open="(" separator="," close=")">  
+				           #{status}
+				   	</foreach>
+			    </if>
+			)
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    quoted_id,
+	    account_id,
+	    source_id,
+	    price,
+	    remark,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_quoted_info
+	   where 
+	    quoted_id=#{quotedId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     quoted_id,
+	     account_id,
+	     source_id,
+	     price,
+	     remark,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_quoted_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="quotedId != null">
+	        quoted_id=#{quotedId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="sourceId != null">
+	        and source_id=#{sourceId}
+	     </if>
+	     <if test="price != null">
+	        and price=#{price}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     quoted_id,
+	     account_id,
+	     source_id,
+	     price,
+	     remark,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_quoted_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="quotedId != null">
+	        quoted_id=#{quotedId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="sourceId != null">
+	        and source_id=#{sourceId}
+	     </if>
+	     <if test="price != null">
+	        and price=#{price}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

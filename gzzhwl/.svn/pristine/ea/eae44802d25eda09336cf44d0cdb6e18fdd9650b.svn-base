@@ -1,0 +1,20 @@
+package com.gzzhwl.admin.recieve.service;
+
+import java.text.ParseException;
+import java.util.Map;
+
+import com.gzzhwl.admin.recieve.vo.ReceiveQueryVo;
+import com.gzzhwl.core.page.Page;
+
+public interface ReceiveService {
+	/**
+	 * 查询应收列表
+	 */
+	public Page<Map<String, Object>> pageReceiveList(ReceiveQueryVo vo ,int currentPage, int pageSize) throws ParseException;
+	
+	/**
+	 * 查询应收明细
+	 */
+	public Map<String, Object> getReceiveDetail(String orderId);
+	
+}

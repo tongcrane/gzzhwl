@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.OrderDetailInfoDao">
+
+	<resultMap id="orderDetailInfoResultMap" type="OrderDetailInfo">
+		<id property="orderId" column="order_id" />
+		<result property="orderNo" column="order_no" />
+		<result property="infoId" column="info_id" />
+		<result property="goodsWeight" column="goods_weight" />
+		<result property="goodsVolume" column="goods_volume" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="orderDetailInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="orderDetailInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="OrderDetailInfo">
+	   insert into zh_order_detail_info (
+	     order_id,
+	     order_no,
+	     info_id,
+	     goods_weight,
+	     goods_volume,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   )values (
+	     #{orderId},
+	     #{orderNo},
+	     #{infoId},
+	     #{goodsWeight},
+	     #{goodsVolume},
+	     #{status},
+	     #{createdBy},
+	     now(),
+	     #{updatedBy},
+	     now(),
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="OrderDetailInfo">
+	   update zh_order_detail_info set
+	     order_id=#{orderId},
+	     order_no=#{orderNo},
+	     info_id=#{infoId},
+	     goods_weight=#{goodsWeight},
+	     goods_volume=#{goodsVolume},
+	     status=#{status},
+	     updated_by=#{updatedBy},
+	     updated_time=now(),
+	     is_deleted=#{isDeleted}
+	   where 
+	    order_id=#{orderId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="OrderDetailInfo">
+	   update zh_order_detail_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="orderId != null">
+		       order_id=#{orderId},
+		     </if>
+		     <if test="orderNo != null">
+		       order_no=#{orderNo},
+		     </if>
+		     <if test="infoId != null">
+		       info_id=#{infoId},
+		     </if>
+		     <if test="goodsWeight != null">
+		       goods_weight=#{goodsWeight},
+		     </if>
+		     <if test="goodsVolume != null">
+		       goods_volume=#{goodsVolume},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		       updated_time=now(),
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    order_id=#{orderId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_order_detail_info 
+	   where 
+	    order_id=#{orderId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="orderDetailInfoResultMap">
+	   select 
+	    order_id,
+	    order_no,
+	    info_id,
+	    goods_weight,
+	    goods_volume,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_order_detail_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="orderId != null">
+	        order_id=#{orderId}
+	     </if>
+	     <if test="orderNo != null">
+	        and order_no=#{orderNo}
+	     </if>
+	     and is_deleted = '00'
+       </trim>
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    order_id,
+	    order_no,
+	    info_id,
+	    goods_weight,
+	    goods_volume,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_order_detail_info
+	   where 
+	    order_id=#{orderId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     order_id,
+	     order_no,
+	     info_id,
+	     goods_weight,
+	     goods_volume,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_order_detail_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="orderId != null">
+	        order_id=#{orderId}
+	     </if>
+	     <if test="orderNo != null">
+	        and order_no=#{orderNo}
+	     </if>
+	     <if test="infoId != null">
+	        and info_id=#{infoId}
+	     </if>
+	     <if test="goodsWeight != null">
+	        and goods_weight=#{goodsWeight}
+	     </if>
+	     <if test="goodsVolume != null">
+	        and goods_volume=#{goodsVolume}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     order_id,
+	     order_no,
+	     info_id,
+	     goods_weight,
+	     goods_volume,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_order_detail_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="orderId != null">
+	        order_id=#{orderId}
+	     </if>
+	     <if test="orderNo != null">
+	        and order_no=#{orderNo}
+	     </if>
+	     <if test="infoId != null">
+	        and info_id=#{infoId}
+	     </if>
+	     <if test="goodsWeight != null">
+	        and goods_weight=#{goodsWeight}
+	     </if>
+	     <if test="goodsVolume != null">
+	        and goods_volume=#{goodsVolume}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

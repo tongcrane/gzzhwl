@@ -1,0 +1,50 @@
+package com.gzzhwl.core.data.dao.impl;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.gzzhwl.core.data.dao.LendLogDao;
+import com.gzzhwl.core.data.model.LendLog;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+
+/**
+ * 数据访问接口
+ * 
+ * @author mew
+ *
+ */
+@Repository
+public class LendLogDaoImpl implements LendLogDao {
+	@Autowired
+	private DaoSupport dao;
+
+	@Override
+	public int insert(LendLog lendLog) {
+		return dao.insert(PREFIX + ".insert", lendLog);
+	}
+
+	@Override
+	public LendLog getLendLog(Map<String, Object> params) {
+		return dao.get(PREFIX + ".getLendLog", params);
+	}
+
+	@Override
+	public LendLog get(String lendId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("lendId", lendId);
+		return dao.get(PREFIX + ".getLendLog", params);
+	}
+
+	@Override
+	public int updateSelective(LendLog lendLog) {
+		return dao.update(PREFIX + ".updateSelective", lendLog);
+	}
+
+	@Override
+	public LendLog getDriverLendLog(Map<String, Object> params) {
+		return dao.get(PREFIX + ".getDriverLendLog", params);
+	}
+}

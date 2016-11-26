@@ -1,0 +1,56 @@
+package com.gzzhwl.admin.recieve.controller;
+
+import java.text.ParseException;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.admin.recieve.service.ReceiveService;
+import com.gzzhwl.admin.recieve.vo.ReceiveQueryVo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.security.annotation.RequirePerm;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+@RestController
+@RequestMapping("/admin/receive")
+public class ReceiveController {
+	@Autowired
+	private ReceiveService service;
+	
+	/**
+	 * 查询应收列表
+	 * @throws ParseException 
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/page", method = {RequestMethod.GET })
+	public ResponseModel pageReceiveList(ReceiveQueryVo queryVo, @Pagination PageParameter page) throws ParseException {
+		Page<Map<String, Object>> data = service.pageReceiveList(queryVo, page.getPageIndex(), page.getPageSize());
+		return new ResponseModel(data);
+	}	
+	
+	/**
+	 * 查询应收详情
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/getReceiveDetail", method = {RequestMethod.GET })
+	public ResponseModel getReceiveDetail(@RequestParam String orderId) {
+		Map<String, Object> data = service.getReceiveDetail(orderId);
+		return new ResponseModel(data);
+	}	
+	
+	/**
+	 * 应收审核
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/verifyReceive", method = {RequestMethod.GET })
+	public ResponseModel verifyReceive(@RequestParam String orderId) {
+		
+		return new ResponseModel(null);
+	}	
+}

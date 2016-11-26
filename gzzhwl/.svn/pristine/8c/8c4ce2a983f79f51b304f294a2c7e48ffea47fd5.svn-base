@@ -1,0 +1,177 @@
+package com.gzzhwl.admin.load.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.load.service.LoadHistoryService;
+import com.gzzhwl.admin.load.service.LoadLinkStatusService;
+import com.gzzhwl.admin.load.service.VADUsedService;
+import com.gzzhwl.admin.order.service.OrderLinkStatusService;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.FlowsService;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.SeqNoKey;
+import com.gzzhwl.core.data.dao.LoadDriverInfoDao;
+import com.gzzhwl.core.data.dao.OrderBaseInfoDao;
+import com.gzzhwl.core.data.dao.OrderDetailInfoDao;
+import com.gzzhwl.core.data.dao.OrderLoadInfoDao;
+import com.gzzhwl.core.data.dao.QuotedInfoDao;
+import com.gzzhwl.core.data.dao.QuotedPlusInfoDao;
+import com.gzzhwl.core.data.extdao.OrderInfoExtDao;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.LoadDriverInfo;
+import com.gzzhwl.core.data.model.OrderBaseInfo;
+import com.gzzhwl.core.data.model.OrderDetailInfo;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.data.model.QuoteOrderInfo;
+import com.gzzhwl.core.data.model.QuotedInfo;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class LoadLinkStatusServiceImpl implements LoadLinkStatusService {
+	@Autowired
+	private OrderDetailInfoDao orderDetailInfoDao;
+	@Autowired
+	private OrderBaseInfoDao orderBaseInfoDao;
+	@Autowired
+	private LoadHistoryService loadHistoryService;
+	@Autowired
+	private FlowsService flowService;
+	@Autowired
+	private OrderLoadInfoDao orderLoadInfoDao;
+	@Autowired
+	private LoadDriverInfoDao loadDriverInfoDao;
+	@Autowired
+	private QuotedInfoDao quotedInfoDao;
+	@Autowired
+	private OrderInfoExtDao orderInfoExtDao;
+	@Autowired
+	private QuotedPlusInfoDao quotedPlusInfoDao;
+	@Value("${superadmin.staffid}")
+	private String staffId;
+	@Value("${ysjadmin.staffid}")
+	private String ysjStaffId;
+	@Autowired
+	private VADUsedService vadUserdService;
+	@Autowired
+	private OrderLinkStatusService orderLinkStatusService;
+
+	@Override
+	public String createLoad(String orderId, Integer departId, String staffId) throws RestException {
+		OrderDetailInfo orderDetailInfo = orderDetailInfoDao.get(orderId);
+		String orderInfoId = orderDetailInfo.getInfoId();
+		OrderBaseInfo orderBaseInfo = orderBaseInfoDao.get(orderInfoId);
+		OrderLoadInfo loadInfo = new OrderLoadInfo();
+		FlowDef flowDef = flowService.startFlow(ZHFlow.LOAD_BILL, FlowActionCategory.SYSTEM);
+		String loadId = IdentifierUtils.getId().generate().toString();
+		loadInfo.setOrderId(orderId);
+		loadInfo.setBelongDepartId(departId + "");
+		loadInfo.setCreatedBy(staffId);
+		loadInfo.setUpdatedBy(staffId);
+		loadInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		loadInfo.setLoadId(loadId);
+		loadInfo.setQuotedId(null);
+		loadInfo.setSource(DataSource.PLATFORM.getCode());
+		loadInfo.setStatus(flowDef.getTransitionStatus());
+		loadInfo.setType(OrderLoadInfo.LOAD_BILL);
+		loadInfo.setNeedArriveTime(orderBaseInfo.getPickUpTime());
+		orderLoadInfoDao.insert(loadInfo);
+		loadHistoryService.saveLoadHistory(loadId, flowDef.getLinkedStatus(), null, flowDef, staffId);
+		
+		//todo 消息中心
+		
+		return loadId;
+	}
+
+	@Override
+	public String createLoadFromYSJ(String quotedId) throws RestException {
+		QuotedInfo quotedInfo = quotedInfoDao.get(quotedId);
+		Map<String, String> params = Maps.newHashMap();
+		params.put("quotedId", quotedId);
+		List<Map<String, String>> vdList = quotedPlusInfoDao.find(params);
+		List<String> driverList = Lists.newArrayList();
+		String vehicleInfoId = null;
+		for (Map<String, String> vdInfo : vdList) {
+			vehicleInfoId = vdInfo.get("vehicleInfoId");
+			String driverInfoId = vdInfo.get("driverInfoId");
+			driverList.add(driverInfoId);
+		}
+
+		QuoteOrderInfo quoteOrderInfo = orderInfoExtDao.getOrderInfoByQuoted(quotedId);
+		String orderId = quoteOrderInfo.getOrderId();
+		String belongDepartId = quoteOrderInfo.getBelongDepartId();
+		String paymentType = quoteOrderInfo.getPaymentType();
+		OrderLoadInfo loadInfo = new OrderLoadInfo();
+		String actionCode = "11";// 发车动作
+		String currentStatus = "09";// 当前已配载
+		FlowDef flowDef = flowService.executeFlow(ZHFlow.LOAD_BILL, actionCode, currentStatus, FlowActionCategory.CBS);
+		String loadId = IdentifierUtils.getId().generate().toString();
+		String loadNo = IdentifierUtils.getSequence(SeqNoKey.LOAD).generate().toString();
+		loadInfo.setFreightPrice(quotedInfo.getPrice());
+		// loadInfo.setLoadInfoId(loadInfoId);//无车挂
+
+		// loadInfo.setIsPredict(isPredict);//是否预估
+
+		// loadInfo.setOilCardNo(oilCardNo);//油卡卡号
+		// loadInfo.setOilPay(oilPay);//预付油费
+		// loadInfo.setPaymentName(paymentName);//结算对象名称
+		// loadInfo.setPrePay(prePay);//预付现金
+
+		loadInfo.setNeedArriveTime(quoteOrderInfo.getPickUpTime());// 到达客户现场时间
+		loadInfo.setVehicleInfoId(vehicleInfoId);
+		loadInfo.setPaymentType(paymentType);
+		loadInfo.setLoadNo(loadNo);
+		loadInfo.setOrderId(orderId);
+		loadInfo.setBelongDepartId(belongDepartId);
+		loadInfo.setCreatedBy(ysjStaffId);
+		loadInfo.setUpdatedBy(ysjStaffId);
+		loadInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		loadInfo.setLoadId(loadId);
+		loadInfo.setQuotedId(quotedId);
+		loadInfo.setSource(DataSource.VLORRY.getCode());
+		loadInfo.setStatus(flowDef.getTransitionStatus());
+		loadInfo.setType(OrderLoadInfo.LOAD_BILL);
+
+		orderLoadInfoDao.insert(loadInfo);
+		boolean setMajor = true;
+		for (String driverId : driverList) {
+			LoadDriverInfo loadDriverInfo = new LoadDriverInfo();
+			loadDriverInfo.setDriverInfoId(driverId);
+			loadDriverInfo.setLoadId(loadId);
+			if (setMajor) {
+				loadDriverInfo.setIsMajor(LoadDriverInfo.MAJOR_YES);
+				setMajor = false;
+			} else {
+				loadDriverInfo.setIsMajor(LoadDriverInfo.MAJOR_NO);
+			}
+			loadDriverInfoDao.insert(loadDriverInfo);
+		}
+		loadHistoryService.saveLoadHistory(loadId, currentStatus, null, flowDef, ysjStaffId);
+
+		vadUserdService.lockVandD(loadId, ysjStaffId);// 锁定司机车辆
+		orderLinkStatusService.doTrip(orderId, loadNo);// 创建完提货单开始发车，准备车检
+		return loadInfo.getLoadId();
+	}
+
+	@Override
+	public boolean cancelTrip(String loadId, String staffId) throws RestException {
+		String actionCode = "15";// 作废报价，取消发车
+		OrderLoadInfo orderLoadInfo = orderLoadInfoDao.get(loadId);
+		String currentStatus = orderLoadInfo.getStatus();
+		FlowDef flowdef = flowService.executeFlow(ZHFlow.LOAD_BILL, actionCode, currentStatus, FlowActionCategory.SYSTEM);
+		orderLoadInfo.setStatus(flowdef.getTransitionStatus());
+		orderLoadInfoDao.updateSelective(orderLoadInfo);
+		loadHistoryService.saveLoadHistory(orderLoadInfo.getLoadId(), orderLoadInfo.getStatus(), null, flowdef,
+				staffId);
+		return true;
+	}
+}

@@ -1,0 +1,208 @@
+package com.gzzhwl.admin.source.service.impl;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.load.service.LoadBillService;
+import com.gzzhwl.admin.load.service.LoadLinkStatusService;
+import com.gzzhwl.admin.order.service.OrderLinkStatusService;
+import com.gzzhwl.admin.order.vo.PushOrderVO;
+import com.gzzhwl.admin.orderReturn.service.OrderReturnService;
+import com.gzzhwl.admin.quoted.service.QuotedManageService;
+import com.gzzhwl.admin.source.service.SourceHistoryService;
+import com.gzzhwl.admin.source.service.SourceLinkStatusService;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.FlowsService;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.SeqNoKey;
+import com.gzzhwl.core.data.dao.OrderBaseInfoDao;
+import com.gzzhwl.core.data.dao.OrderDetailInfoDao;
+import com.gzzhwl.core.data.dao.OrderLineInfoDao;
+import com.gzzhwl.core.data.dao.OrderSourceInfoDao;
+import com.gzzhwl.core.data.dao.SourceBaseInfoDao;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.OrderBaseInfo;
+import com.gzzhwl.core.data.model.OrderDetailInfo;
+import com.gzzhwl.core.data.model.OrderLineInfo;
+import com.gzzhwl.core.data.model.OrderSourceInfo;
+import com.gzzhwl.core.data.model.SourceBaseInfo;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class SourceLinkStatusServiceImpl implements SourceLinkStatusService {
+	@Autowired
+	private FlowsService flowService;
+	@Autowired
+	private SourceHistoryService sourceHistoryService;
+	@Autowired
+	private OrderLinkStatusService orderLinkStatusService;
+	@Autowired
+	private OrderSourceInfoDao orderSourceInfoDao;
+	@Autowired
+	private SourceBaseInfoDao sourceBaseInfoDao;
+	@Autowired
+	private OrderReturnService orderReturnService;
+	@Autowired
+	private QuotedManageService quotedManageService;
+	@Autowired
+	private OrderDetailInfoDao detailInfoDao;
+	@Autowired
+	private OrderBaseInfoDao baseInfoDao;
+	@Autowired
+	private OrderLineInfoDao lineInfoDao;
+	@Autowired
+	private LoadBillService loadBillService;
+	@Autowired
+	private LoadLinkStatusService loadLinkStatusService;
+
+	private OrderSourceInfo executeFlow(String sourceId, String actionCode, String staffId) {
+		OrderSourceInfo orderSourceInfo = orderSourceInfoDao.get(sourceId);
+		String currentStatus = orderSourceInfo.getStatus();
+		FlowDef flowDef = flowService.executeFlow(ZHFlow.SOURCE, actionCode, currentStatus, FlowActionCategory.SYSTEM);
+		orderSourceInfo.setStatus(flowDef.getTransitionStatus());
+		orderSourceInfo.setUpdatedBy(staffId);
+		orderSourceInfoDao.updateSelective(orderSourceInfo);
+		sourceHistoryService.saveSourceHistory(sourceId, currentStatus, flowDef, staffId);
+		return orderSourceInfo;
+	}
+
+	@Override
+	public String addSource(String orderId, PushOrderVO orderInfo, String staffId) throws RestException {
+		OrderDetailInfo orderDetailInfo = detailInfoDao.get(orderId);
+
+		SourceBaseInfo sourceBaseInfo = sourceBaseInfoDao.getByOrderId(orderId);
+		String infoId = null;
+		if (sourceBaseInfo == null) {
+			sourceBaseInfo = new SourceBaseInfo();
+			infoId = IdentifierUtils.getId().generate().toString();
+			String sourceNo = IdentifierUtils.getSequence(SeqNoKey.SOURCE).generate().toString();
+			sourceBaseInfo.setInfoId(infoId);
+			sourceBaseInfo.setOrderId(orderDetailInfo.getOrderId());
+			sourceBaseInfo.setSourceNo(sourceNo);
+			sourceBaseInfoDao.insert(sourceBaseInfo);
+		} else {
+			infoId = sourceBaseInfo.getInfoId();
+		}
+
+		String orderInfoId = orderDetailInfo.getInfoId();
+		OrderLineInfo orderLineInfo = lineInfoDao.get(orderInfoId);
+		OrderBaseInfo orderBaseInfo = baseInfoDao.get(orderInfoId);
+
+		OrderSourceInfo orderSourceInfo = new OrderSourceInfo();
+		orderSourceInfo.setCreatedBy(staffId);
+		orderSourceInfo.setUpdatedBy(staffId);
+		orderSourceInfo.setEndTime(orderInfo.getEndTime());
+		orderSourceInfo.setStartTime(orderInfo.getStartTime());
+		orderSourceInfo.setNeedDriverNum(orderInfo.getNeedDriverNum());
+		orderSourceInfo.setNeedArriveTime(orderBaseInfo.getPickUpTime());
+		orderSourceInfo.setInfoId(infoId);
+		String sourceId = IdentifierUtils.getId().generate().toString();
+		orderSourceInfo.setSourceId(sourceId);
+
+		FlowDef flowDef = flowService.startFlow(ZHFlow.SOURCE, FlowActionCategory.SYSTEM);
+		orderSourceInfo.setStatus(flowDef.getTransitionStatus());
+
+		orderSourceInfo.setEndCodeC(orderLineInfo.getEndCodeC());
+		orderSourceInfo.setEndCodeP(orderLineInfo.getEndCodeP());
+		orderSourceInfo.setStartCodeC(orderLineInfo.getStartCodeC());
+		orderSourceInfo.setStartCodeP(orderLineInfo.getStartCodeP());
+		orderSourceInfo.setNeedLength(orderBaseInfo.getNeedLength());
+		orderSourceInfo.setNeedType(orderBaseInfo.getNeedType());
+		orderSourceInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		//// orderSourceInfo.setEstimatedPrice(estimatedPrice);
+		//// orderSourceInfo.setLevel(level);
+		//// orderSourceInfo.setMiles(miles);
+		//// orderSourceInfo.setTransitRequire(transitRequire);
+		orderSourceInfoDao.insert(orderSourceInfo);
+		sourceHistoryService.saveSourceHistory(sourceId, flowDef.getLinkedStatus(), flowDef, staffId);
+		return sourceId;
+	}
+
+	@Override
+	public boolean bidSource(String sourceId, String staffId) throws RestException {
+		String actionCode = "04";// 中标动作
+		OrderSourceInfo orderSourceInfo = this.executeFlow(sourceId, actionCode, staffId);
+		String infoId = orderSourceInfo.getInfoId();
+		SourceBaseInfo sourceBaseInfo = sourceBaseInfoDao.get(infoId);
+		String orderId = sourceBaseInfo.getOrderId();
+		orderLinkStatusService.bidOrder(orderId, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean avttSource(String sourceId, String staffId) throws RestException {
+		String actionCode = "05";// 配载动作
+		OrderSourceInfo orderSourceInfo = this.executeFlow(sourceId, actionCode, staffId);
+		String infoId = orderSourceInfo.getInfoId();
+		SourceBaseInfo sourceBaseInfo = sourceBaseInfoDao.get(infoId);
+		String orderId = sourceBaseInfo.getOrderId();
+		orderLinkStatusService.avttSource(orderId, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean breakPromiseSourceByUser(String sourceId, String accountId) throws RestException {
+		String actionCode = "06";// 用户违约
+		OrderSourceInfo orderSourceInfo = this.executeFlow(sourceId, actionCode, accountId);
+		String infoId = orderSourceInfo.getInfoId();
+		SourceBaseInfo sourceBaseInfo = sourceBaseInfoDao.get(infoId);
+		String orderId = sourceBaseInfo.getOrderId();
+		Map<String, Object> orderLoadInfo = loadBillService.getLoadInfoByOrdrId(orderId);
+		if (orderLoadInfo != null) {// 已有提货单
+			String loadId = (String) orderLoadInfo.get("loadId");
+			loadLinkStatusService.cancelTrip(loadId, accountId);
+		}else{
+			orderLinkStatusService.breakPromiseOrder(orderId, accountId);
+			orderReturnService.autoAgreeReturn(sourceId, null);
+		}
+		
+		return true;
+	}
+
+	@Override
+	public boolean breakPromiseSourceByAdmin(String sourceId, String staffId) throws RestException {
+		String actionCode = "08";// 后台违约
+		OrderSourceInfo orderSourceInfo = this.executeFlow(sourceId, actionCode, staffId);
+		String infoId = orderSourceInfo.getInfoId();
+		SourceBaseInfo sourceBaseInfo = sourceBaseInfoDao.get(infoId);
+		String orderId = sourceBaseInfo.getOrderId();
+		Map<String, Object> orderLoadInfo = loadBillService.getLoadInfoByOrdrId(orderId);
+		if (orderLoadInfo != null) {// 已有提货单
+			String loadId = (String) orderLoadInfo.get("loadId");
+			loadLinkStatusService.cancelTrip(loadId, staffId);
+		}else{
+			orderLinkStatusService.breakPromiseOrder(orderId, staffId);
+			orderReturnService.autoAgreeReturn(sourceId, staffId);
+		}
+		
+		// TODO
+		return true;
+	}
+
+	@Override
+	public boolean autoCloseSource(String sourceId, String staffId) throws RestException {
+		String actionCode = "09";// 货源自动结束动作
+		OrderSourceInfo orderSourceInfo = this.executeFlow(sourceId, actionCode, staffId);
+		String infoId = orderSourceInfo.getInfoId();
+		SourceBaseInfo sourceBaseInfo = sourceBaseInfoDao.get(infoId);
+		String orderId = sourceBaseInfo.getOrderId();
+		// 订单自动结束
+		orderLinkStatusService.autoClose(orderId, staffId);
+		// 自动同意退回申请
+		orderReturnService.autoAgreeReturn(sourceId, staffId);
+		// TODO:自动结束报价
+		quotedManageService.closeSourceLinkageHandler(sourceId, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean cancelSetOut(String sourceId, String staffId) throws RestException {
+		String actionCode = "10";// 取消发车
+		this.executeFlow(sourceId, actionCode, staffId);
+		return true;
+	}
+}

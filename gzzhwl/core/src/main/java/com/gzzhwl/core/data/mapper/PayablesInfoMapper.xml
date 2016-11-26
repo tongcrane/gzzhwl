@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.PayablesInfoDao">
+
+	<resultMap id="payablesInfoResultMap" type="PayablesInfo">
+		<id property="contractId" column="contract_id" />
+		<result property="freightPrice" column="freight_price" />
+		<result property="prePay" column="pre_pay" />
+		<result property="oilPay" column="oil_pay" />
+		<result property="oilCardNo" column="oil_card_no" />
+		<result property="exceptionTotal" column="exception_total" />
+		<result property="total" column="total" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="payablesInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="payablesInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="PayablesInfo">
+	   insert into zh_payables_info (
+	     contract_id,
+	     freight_price,
+	     pre_pay,
+	     oil_pay,
+	     oil_card_no,
+	     exception_total,
+	     total,
+	     created_by,
+	     created_time
+	   )values (
+	     #{contractId},
+	     #{freightPrice},
+	     #{prePay},
+	     #{oilPay},
+	     #{oilCardNo},
+	     #{exceptionTotal},
+	     #{total},
+	     #{createdBy},
+	     now()
+	   )
+	</insert>
+
+	<update id="update" parameterType="PayablesInfo">
+	   update zh_payables_info set
+	     contract_id=#{contractId},
+	     freight_price=#{freightPrice},
+	     pre_pay=#{prePay},
+	     oil_pay=#{oilPay},
+	     oil_card_no=#{oilCardNo},
+	     exception_total=#{exceptionTotal},
+	     total=#{total},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime}
+	   where 
+	    contract_id=#{contractId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="PayablesInfo">
+	   update zh_payables_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="contractId != null">
+		       contract_id=#{contractId},
+		     </if>
+		     <if test="freightPrice != null">
+		       freight_price=#{freightPrice},
+		     </if>
+		     <if test="prePay != null">
+		       pre_pay=#{prePay},
+		     </if>
+		     <if test="oilPay != null">
+		       oil_pay=#{oilPay},
+		     </if>
+		     <if test="oilCardNo != null">
+		       oil_card_no=#{oilCardNo},
+		     </if>
+		     <if test="exceptionTotal != null">
+		       exception_total=#{exceptionTotal},
+		     </if>
+		     <if test="total != null">
+		       total=#{total},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime}
+		     </if>
+	   </trim>
+	
+	   where 
+	    contract_id=#{contractId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_payables_info 
+	   where 
+	    contract_id=#{contractId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="payablesInfoResultMap">
+	   select 
+	    contract_id,
+	    freight_price,
+	    pre_pay,
+	    oil_pay,
+	    oil_card_no,
+	    exception_total,
+	    total,
+	    created_by,
+	    created_time
+	   from zh_payables_info
+	   where 
+	    contract_id=#{contractId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    contract_id,
+	    freight_price,
+	    pre_pay,
+	    oil_pay,
+	    oil_card_no,
+	    exception_total,
+	    total,
+	    created_by,
+	    created_time
+	   from zh_payables_info
+	   where 
+	    contract_id=#{contractId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     contract_id,
+	     freight_price,
+	     pre_pay,
+	     oil_pay,
+	     oil_card_no,
+	     exception_total,
+	     total,
+	     created_by,
+	     created_time
+	   from zh_payables_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="contractId != null">
+	        contract_id=#{contractId}
+	     </if>
+	     <if test="freightPrice != null">
+	        and freight_price=#{freightPrice}
+	     </if>
+	     <if test="prePay != null">
+	        and pre_pay=#{prePay}
+	     </if>
+	     <if test="oilPay != null">
+	        and oil_pay=#{oilPay}
+	     </if>
+	     <if test="oilCardNo != null">
+	        and oil_card_no=#{oilCardNo}
+	     </if>
+	     <if test="exceptionTotal != null">
+	        and exception_total=#{exceptionTotal}
+	     </if>
+	     <if test="total != null">
+	        and total=#{total}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     contract_id,
+	     freight_price,
+	     pre_pay,
+	     oil_pay,
+	     oil_card_no,
+	     exception_total,
+	     total,
+	     created_by,
+	     created_time
+	   from zh_payables_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="contractId != null">
+	        contract_id=#{contractId}
+	     </if>
+	     <if test="freightPrice != null">
+	        and freight_price=#{freightPrice}
+	     </if>
+	     <if test="prePay != null">
+	        and pre_pay=#{prePay}
+	     </if>
+	     <if test="oilPay != null">
+	        and oil_pay=#{oilPay}
+	     </if>
+	     <if test="oilCardNo != null">
+	        and oil_card_no=#{oilCardNo}
+	     </if>
+	     <if test="exceptionTotal != null">
+	        and exception_total=#{exceptionTotal}
+	     </if>
+	     <if test="total != null">
+	        and total=#{total}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

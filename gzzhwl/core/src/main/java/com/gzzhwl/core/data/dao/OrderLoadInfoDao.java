@@ -1,0 +1,42 @@
+package com.gzzhwl.core.data.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ *
+ */
+public interface OrderLoadInfoDao {
+	public final static String PREFIX = OrderLoadInfoDao.class.getName();
+
+	public OrderLoadInfo get(java.lang.String loadId);
+
+	public <K, V> Map<K, V> findOne(java.lang.String loadId);
+
+	public <T, K, V> List<T> find(Map<K, V> params);
+
+	public int insert(OrderLoadInfo orderLoadInfo);
+
+	public int update(OrderLoadInfo orderLoadInfo);
+
+	public int updateSelective(OrderLoadInfo orderLoadInfo);
+
+	public int delete(java.lang.String loadId);
+
+	public <E, K, V> Page<E> page(Map<K, V> params, int current, int pagesize);
+
+	public <E, K, V> Page<E> pageLoads(Map<K, V> params, int current, int pagesize);
+
+	public String getLoadByOrder(Map<String, Object> params);
+
+	public <K, V> Map<K, V> getLoadInfo(Map<K, V> params);
+
+	public String getLoadByVehicle(Map<String, Object> params);
+
+	public Map<String, Object> findBaseInfo(Map<String, Object> params);
+
+}

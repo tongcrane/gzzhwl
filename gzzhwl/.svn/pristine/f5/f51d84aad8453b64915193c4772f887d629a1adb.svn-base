@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.CustomerBankInfoDao">
+
+	<resultMap id="customerBankInfoResultMap" type="CustomerBankInfo">
+		<id property="customerId" column="customer_id" />
+		<result property="cardName" column="card_name" />
+		<result property="cardNo" column="card_no" />
+		<result property="depositBank" column="deposit_bank" />
+		<result property="bankName" column="bank_name" />
+		<result property="invoiceTitle" column="invoice_title" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="customerBankInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="customerBankInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="CustomerBankInfo">
+	   insert into zh_customer_bank_info (
+	     customer_id,
+	     card_name,
+	     card_no,
+	     deposit_bank,
+	     bank_name,
+	     invoice_title
+	   )values (
+	     #{customerId},
+	     #{cardName},
+	     #{cardNo},
+	     #{depositBank},
+	     #{bankName},
+	     #{invoiceTitle}
+	   )
+	</insert>
+
+	<update id="update" parameterType="CustomerBankInfo">
+	   update zh_customer_bank_info set
+	     customer_id=#{customerId},
+	     card_name=#{cardName},
+	     card_no=#{cardNo},
+	     deposit_bank=#{depositBank},
+	     bank_name=#{bankName},
+	     invoice_title=#{invoiceTitle}
+	   where 
+	    customer_id=#{customerId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="CustomerBankInfo">
+	   update zh_customer_bank_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="customerId != null">
+		       customer_id=#{customerId},
+		     </if>
+		     <if test="cardName != null">
+		       card_name=#{cardName},
+		     </if>
+		     <if test="cardNo != null">
+		       card_no=#{cardNo},
+		     </if>
+		     <if test="depositBank != null">
+		       deposit_bank=#{depositBank},
+		     </if>
+		     <if test="bankName != null">
+		       bank_name=#{bankName},
+		     </if>
+		     <if test="invoiceTitle != null">
+		       invoice_title=#{invoiceTitle}
+		     </if>
+	   </trim>
+	
+	   where 
+	    customer_id=#{customerId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_customer_bank_info 
+	   where 
+	    customer_id=#{customerId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="customerBankInfoResultMap">
+	   select 
+	    customer_id,
+	    card_name,
+	    card_no,
+	    deposit_bank,
+	    bank_name,
+	    invoice_title
+	   from zh_customer_bank_info
+	   where 
+	    customer_id=#{customerId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    customer_id,
+	    card_name,
+	    card_no,
+	    deposit_bank,
+	    bank_name,
+	    invoice_title
+	   from zh_customer_bank_info
+	   where 
+	    customer_id=#{customerId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     customer_id,
+	     card_name,
+	     card_no,
+	     deposit_bank,
+	     bank_name,
+	     invoice_title
+	   from zh_customer_bank_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="customerId != null">
+	        customer_id=#{customerId}
+	     </if>
+	     <if test="cardName != null">
+	        and card_name=#{cardName}
+	     </if>
+	     <if test="cardNo != null">
+	        and card_no=#{cardNo}
+	     </if>
+	     <if test="depositBank != null">
+	        and deposit_bank=#{depositBank}
+	     </if>
+	     <if test="bankName != null">
+	        and bank_name=#{bankName}
+	     </if>
+	     <if test="invoiceTitle != null">
+	        and invoice_title=#{invoiceTitle}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     customer_id,
+	     card_name,
+	     card_no,
+	     deposit_bank,
+	     bank_name,
+	     invoice_title
+	   from zh_customer_bank_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="customerId != null">
+	        customer_id=#{customerId}
+	     </if>
+	     <if test="cardName != null">
+	        and card_name=#{cardName}
+	     </if>
+	     <if test="cardNo != null">
+	        and card_no=#{cardNo}
+	     </if>
+	     <if test="depositBank != null">
+	        and deposit_bank=#{depositBank}
+	     </if>
+	     <if test="bankName != null">
+	        and bank_name=#{bankName}
+	     </if>
+	     <if test="invoiceTitle != null">
+	        and invoice_title=#{invoiceTitle}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

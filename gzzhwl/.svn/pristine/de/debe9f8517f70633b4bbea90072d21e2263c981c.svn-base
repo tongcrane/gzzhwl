@@ -1,0 +1,79 @@
+package com.gzzhwl.core.data.dao.impl;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import com.gzzhwl.core.data.model.OrderDetailInfo;
+import com.gzzhwl.core.data.dao.OrderDetailInfoDao;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ * @author mew
+ *
+ */
+@Repository
+public class OrderDetailInfoDaoImpl implements OrderDetailInfoDao {
+	@Autowired	
+	private DaoSupport dao;
+
+	@Override
+	public OrderDetailInfo get(java.lang.String orderId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderId", orderId);
+		return dao.get(PREFIX + ".get", params);
+	}
+	
+	@Override
+	public <K, V> Map<K, V> findOne(java.lang.String orderId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderId", orderId);
+		return dao.get(PREFIX + ".findOne", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> find(Map<K, V> params) {
+		return dao.find(PREFIX + ".find", params);
+	}
+
+	@Override
+	public int insert(OrderDetailInfo orderDetailInfo) {
+		return dao.insert(PREFIX + ".insert", orderDetailInfo);
+	}
+
+	@Override
+	public int update(OrderDetailInfo orderDetailInfo) {
+		return dao.update(PREFIX + ".update", orderDetailInfo);
+	}
+	
+	@Override
+	public int updateSelective(OrderDetailInfo orderDetailInfo) {
+		return dao.update(PREFIX + ".updateSelective", orderDetailInfo);
+	}
+
+	@Override
+	public int delete(java.lang.String orderId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderId", orderId);
+		return dao.delete(PREFIX + ".delete", params);
+	}
+	
+	@Override
+	public <E, K, V> Page<E> page(Map<K, V> params, int current, int pagesize) {
+		return dao.page(PREFIX + ".page", params, current, pagesize);
+	}
+
+	@Override
+	public OrderDetailInfo getByOrderNo(String orderNo) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderNo", orderNo);
+		return dao.get(PREFIX + ".get", params);
+	}
+}
+
+

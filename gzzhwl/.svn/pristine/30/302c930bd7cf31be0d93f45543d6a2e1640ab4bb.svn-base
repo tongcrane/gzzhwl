@@ -1,0 +1,99 @@
+package com.gzzhwl.api.vehicle.vo;
+
+import java.util.List;
+
+import com.gzzhwl.api.driver.vo.DriverInfoVo;
+
+public class VehicleInfoVo {
+	private String vehicleInfoId;//车辆信息标识
+	
+	private String plateNumber;//车牌号
+	
+	private String licenseImageRefId;//行驶证照片
+	
+	private String ocImageRefId;//营运证照片
+	
+	private String ciImageRefId; // 强制险图片
+	
+	private String viImageRefId; // 商业险图片
+	
+	private String status;//审核状态
+	
+	private boolean canEdit;//是否允许修改
+	
+	private List<DriverInfoVo> driverList;//司机列表
+
+	public String getVehicleInfoId() {
+		return vehicleInfoId;
+	}
+
+	public void setVehicleInfoId(String vehicleInfoId) {
+		this.vehicleInfoId = vehicleInfoId;
+	}
+
+	public String getPlateNumber() {
+		return plateNumber;
+	}
+
+	public void setPlateNumber(String plateNumber) {
+		this.plateNumber = plateNumber;
+	}
+
+	public String getLicenseImageRefId() {
+		return licenseImageRefId;
+	}
+
+	public void setLicenseImageRefId(String licenseImageRefId) {
+		this.licenseImageRefId = licenseImageRefId;
+	}
+
+	public String getOcImageRefId() {
+		return ocImageRefId;
+	}
+
+	public void setOcImageRefId(String ocImageRefId) {
+		this.ocImageRefId = ocImageRefId;
+	}
+
+	public String getCiImageRefId() {
+		return ciImageRefId;
+	}
+
+	public void setCiImageRefId(String ciImageRefId) {
+		this.ciImageRefId = ciImageRefId;
+	}
+
+	public String getViImageRefId() {
+		return viImageRefId;
+	}
+
+	public void setViImageRefId(String viImageRefId) {
+		this.viImageRefId = viImageRefId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public boolean isCanEdit() {
+		return canEdit;
+	}
+
+	public void setCanEdit(boolean canEdit) {
+		this.canEdit = canEdit;
+	}
+
+	public List<DriverInfoVo> getDriverList() {
+		return driverList;
+	}
+
+	public void setDriverList(List<DriverInfoVo> driverList) {
+		this.driverList = driverList;
+	}
+	
+
+}

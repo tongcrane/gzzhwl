@@ -1,0 +1,12 @@
+package com.gzzhwl.admin.load.service;
+
+import com.gzzhwl.rest.exception.RestException;
+
+public interface ArrivedManageService {
+	
+	/**
+	 * 到达
+	 */
+	public void doArrived(String loadId,String actionTime) throws RestException;
+	
+}

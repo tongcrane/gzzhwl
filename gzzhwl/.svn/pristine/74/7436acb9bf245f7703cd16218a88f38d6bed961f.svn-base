@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.RealDriverUsedInfoDao">
+
+	<resultMap id="realDriverUsedInfoResultMap" type="RealDriverUsedInfo">
+		<id property="driverInfoId" column="driver_info_id" />
+		<result property="useStatus" column="use_status" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="realDriverUsedInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="realDriverUsedInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="RealDriverUsedInfo">
+	   insert into zh_real_driver_used_info (
+	     driver_info_id,
+	     use_status
+	   )values (
+	     #{driverInfoId},
+	     #{useStatus}
+	   )
+	</insert>
+
+	<update id="update" parameterType="RealDriverUsedInfo">
+	   update zh_real_driver_used_info set
+	     driver_info_id=#{driverInfoId},
+	     use_status=#{useStatus}
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="RealDriverUsedInfo">
+	   update zh_real_driver_used_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="driverInfoId != null">
+		       driver_info_id=#{driverInfoId},
+		     </if>
+		     <if test="useStatus != null">
+		       use_status=#{useStatus}
+		     </if>
+	   </trim>
+	
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_real_driver_used_info 
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="realDriverUsedInfoResultMap">
+	   select 
+	    driver_info_id,
+	    use_status
+	   from zh_real_driver_used_info
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    driver_info_id,
+	    use_status
+	   from zh_real_driver_used_info
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     driver_info_id,
+	     use_status
+	   from zh_real_driver_used_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="driverInfoId != null">
+	        driver_info_id=#{driverInfoId}
+	     </if>
+	     <if test="useStatus != null">
+	        and use_status=#{useStatus}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     driver_info_id,
+	     use_status
+	   from zh_real_driver_used_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="driverInfoId != null">
+	        driver_info_id=#{driverInfoId}
+	     </if>
+	     <if test="useStatus != null">
+	        and use_status=#{useStatus}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

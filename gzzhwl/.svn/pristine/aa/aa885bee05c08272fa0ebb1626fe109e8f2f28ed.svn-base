@@ -1,0 +1,222 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+/**
+ * 
+ * zh_account_attribute_info表
+ * @author mew
+ *
+ */
+public class AccountAttributeInfo implements Serializable {
+	private java.lang.String accountId; // 账户标识
+	private java.lang.String realName; // 姓名
+	private java.lang.String idno; // 身份证
+	private java.lang.String idFImageRefId; // 身份证照片(正)
+	private java.lang.String idBImageRefId; // 身份证照片(反)
+	private java.lang.String remark; // 备注
+	private java.lang.String createdTime; // 创建时间
+	private java.lang.String updatedBy; // 修改人
+	private java.lang.String updatedTime; // 修改时间
+	private java.lang.String status; // 状态
+
+
+	/**
+     * 获取账户标识属性
+     *
+     * @return accountId
+     */
+	public java.lang.String getAccountId() {
+		return accountId;
+	}
+	
+	/**
+	 * 设置账户标识属性
+	 *
+	 * @param accountId
+	 */
+	public void setAccountId(java.lang.String accountId) {
+		this.accountId = accountId;
+	}
+	
+	/**
+     * 获取姓名属性
+     *
+     * @return realName
+     */
+	public java.lang.String getRealName() {
+		return realName;
+	}
+	
+	/**
+	 * 设置姓名属性
+	 *
+	 * @param realName
+	 */
+	public void setRealName(java.lang.String realName) {
+		this.realName = realName;
+	}
+	
+	/**
+     * 获取身份证属性
+     *
+     * @return idno
+     */
+	public java.lang.String getIdno() {
+		return idno;
+	}
+	
+	/**
+	 * 设置身份证属性
+	 *
+	 * @param idno
+	 */
+	public void setIdno(java.lang.String idno) {
+		this.idno = idno;
+	}
+	
+	/**
+     * 获取身份证照片(正)属性
+     *
+     * @return idFImageRefId
+     */
+	public java.lang.String getIdFImageRefId() {
+		return idFImageRefId;
+	}
+	
+	/**
+	 * 设置身份证照片(正)属性
+	 *
+	 * @param idFImageRefId
+	 */
+	public void setIdFImageRefId(java.lang.String idFImageRefId) {
+		this.idFImageRefId = idFImageRefId;
+	}
+	
+	/**
+     * 获取身份证照片(反)属性
+     *
+     * @return idBImageRefId
+     */
+	public java.lang.String getIdBImageRefId() {
+		return idBImageRefId;
+	}
+	
+	/**
+	 * 设置身份证照片(反)属性
+	 *
+	 * @param idBImageRefId
+	 */
+	public void setIdBImageRefId(java.lang.String idBImageRefId) {
+		this.idBImageRefId = idBImageRefId;
+	}
+	
+	/**
+     * 获取备注属性
+     *
+     * @return remark
+     */
+	public java.lang.String getRemark() {
+		return remark;
+	}
+	
+	/**
+	 * 设置备注属性
+	 *
+	 * @param remark
+	 */
+	public void setRemark(java.lang.String remark) {
+		this.remark = remark;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改人属性
+     *
+     * @return updatedBy
+     */
+	public java.lang.String getUpdatedBy() {
+		return updatedBy;
+	}
+	
+	/**
+	 * 设置修改人属性
+	 *
+	 * @param updatedBy
+	 */
+	public void setUpdatedBy(java.lang.String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("AccountAttributeInfo");
+        sb.append("{accountId=").append(accountId);
+        sb.append(", realName=").append(realName);
+        sb.append(", idno=").append(idno);
+        sb.append(", idFImageRefId=").append(idFImageRefId);
+        sb.append(", idBImageRefId=").append(idBImageRefId);
+        sb.append(", remark=").append(remark);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedBy=").append(updatedBy);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", status=").append(status);
+		sb.append('}');
+        return sb.toString();
+    }
+}

@@ -1,0 +1,11 @@
+package com.gzzhwl.core.data.extdao;
+
+import java.util.Map;
+
+import com.gzzhwl.core.page.Page;
+
+public interface OrderLoadInfoExtDao {
+	public static final String PREFIX = OrderLoadInfoExtDao.class.getName();
+	
+	public <E, K, V> Page<E> pageTripList(Map<K, V> params, int currentPage, int pageSizes);
+}

@@ -1,0 +1,23 @@
+package com.gzzhwl.admin.contract.service;
+
+import com.gzzhwl.rest.exception.RestException;
+
+public interface ContractService {
+
+	public String createContract(String loadId, Integer departId, String staffId) throws RestException;
+
+	/**
+	 * 根据提货单ID获取当前的司机合同
+	 */
+	public String getCurrentContract(String loadId) throws RestException;
+
+	/**
+	 * 是否允许创建司机合同
+	 */
+	public boolean allowCreate(String loadId) throws RestException;
+
+	/**
+	 * 作废司机合同
+	 */
+	public boolean cancelContract(String contractId, String staffId) throws RestException;
+}

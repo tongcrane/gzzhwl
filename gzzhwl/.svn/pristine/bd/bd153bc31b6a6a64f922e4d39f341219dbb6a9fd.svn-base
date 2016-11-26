@@ -1,0 +1,152 @@
+package com.gzzhwl.api.vehicle.service;
+
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.api.vehicle.vo.VehicleInfoVo;
+import com.gzzhwl.core.data.model.RealVehicleInfo;
+import com.gzzhwl.core.data.model.RealVehiclePlusInfo;
+import com.gzzhwl.core.data.model.VehicleInfo;
+import com.gzzhwl.core.data.model.VehiclePlusInfo;
+
+public interface VehicleService {
+	
+	/**
+	 * 运势界车辆信息草稿更新
+	 * @param vehicleInfo
+	 * @param vehicleInfoPlusInfo
+	 * @param accountId
+	 * @param status
+	 * @return
+	 */
+	public String updateTemp(VehicleInfo vehicleInfo,VehiclePlusInfo vehicleInfoPlusInfo,String accountId,String status);
+	
+	/**
+	 * 运势界车辆信息草稿保存
+	 * @param vehicleInfo
+	 * @param vehicleInfoPlusInfo
+	 * @param accountId
+	 * @param status
+	 * @return
+	 */
+	public String saveTemp(VehicleInfo vehicleInfo,VehiclePlusInfo vehicleInfoPlusInfo,String accountId,String status);
+	
+//	public Map<String, Object> queryDetail(String vehicleInfoId);
+	
+	public String updateImage(MultipartFile file, String accountId);
+	
+	/**
+	 * 根据临时驾驶员ID获取临时车辆信息
+	 * @param driverInfoId
+	 * @param accountId
+	 * @return
+	 */
+	public Map<String,Object> getTmpVehicleInfoByDriverInfoId(String driverInfoId,String accountId);
+	
+	/**
+	 * 根据驾驶员ID获取正式表车辆信息
+	 * @param driverInfoId
+	 * @param accountId
+	 * @return
+	 */
+	public Map<String,Object> getRealVehicleInfoByDriverInfoId(String driverInfoId,String accountId);
+	
+//	public VehicleInfo getVehicleByDriverInfoId(String driverInfoId);
+//	
+//	public VehiclePlusInfo getVehiclePlusInfoByDriverInfoId(String driverInfoId);
+	
+//	/**
+//	 * 运势界临时表车辆唯一性校验
+//	 * @param plateNumber
+//	 * @param accountId
+//	 * @return true 表示车辆已存在 false 表示车辆不存在
+//	 */
+//	public  boolean tmpVehicleExistValidator(String plateNumber,String accountId);
+	
+//	/**
+//	 * 运势界临时表车辆唯一性校验
+//	 * @param plateNumber
+//	 * @param accountId
+//	 * @param vehicInfoId
+//	 * @return true 表示车辆已存在 false 表示车辆不存在
+//	 */
+//	public  boolean tmpVehicleExistValidator(String plateNumber,String accountId,String existVehicleInfoId);
+	
+	/**
+	 * 运势界正式表车辆唯一性校验
+	 * @param plateNumber 
+	 * @return true 表示车辆已存在 false 表示车辆不存在
+	 */
+	public  boolean realVehicleExistValidator(String plateNumber);
+	
+	/**
+	 * 保存或更新正式车辆表
+	 * @param vehicleInfo
+	 * @param vehicleInfoPlusInfo
+	 * @param accountId
+	 */
+	public String saveOrUpdateRealVehicle(RealVehicleInfo vehicleInfo,RealVehiclePlusInfo vehicleInfoPlusInfo);
+	
+	/**
+	 * 运势界车辆保存正式表
+	 * @param vehicleInfo
+	 * @param vehicleInfoPlusInfo
+	 * @param accountId
+	 * @return
+	 */
+	public String saveRealVehicle(RealVehicleInfo vehicleInfo, RealVehiclePlusInfo vehicleInfoPlusInfo);
+	
+	/**
+	 * 运势界车辆更新正式表
+	 * @param vehicleInfo
+	 * @param vehicleInfoPlusInfo
+	 * @param accountId
+	 * @return
+	 */
+	public String updateRealVehicle(RealVehicleInfo vehicleInfo, RealVehiclePlusInfo vehicleInfoPlusInfo);
+	
+	/**
+	 * 获取运势界正式表车辆信息
+	 * @param plateNumber 
+	 * @return true 表示车辆已存在 false 表示车辆不存在
+	 */
+	public  Map<String,Object> getYSJRealVehicleInfoByPlateNumber(String plateNumber);
+	
+	/**
+	 * 获取司机车辆待审核数据
+	 * @param vehicleInfoId
+	 * @param accountId
+	 * @return
+	 */
+	public List<Map<String,Object>> getAuditDriverAndVehicleListByVehicleInfo(String vehicleInfoId,String accountId);
+	
+	/**
+	 * 运势界车辆信息修改
+	 * @param vehicleInfo
+	 * @param vehicleInfoPlusInfo
+	 * @param accountId
+	 * @param status
+	 * @return
+	 */
+	public String updateVehicleInfo(VehicleInfo vehicleInfo, VehiclePlusInfo vehicleInfoPlusInfo, String accountId,
+			String status);
+	
+	/**
+	 * 运势界车辆信息保存
+	 * @param vehicleInfo
+	 * @param vehicleInfoPlusInfo
+	 * @param accountId
+	 * @param status
+	 * @return
+	 */
+	public String saveVehicleInfo(VehicleInfo vehicleInfo, VehiclePlusInfo vehicleInfoPlusInfo, String accountId,
+			String status);
+
+	public boolean canEdit(String status, String platNumber, String accountId);
+
+	public VehicleInfoVo getVehicleInfo(String vehicleInfoId);
+	
+}

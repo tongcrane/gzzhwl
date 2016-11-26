@@ -1,0 +1,203 @@
+package com.gzzhwl.admin.load.vo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.Length;
+
+import com.alibaba.fastjson.JSON;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.model.LoadFeedbackAtta;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.core.utils.JacksonJsonMapper;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.springmvc.validate.ParamEmptyValidator;
+
+public class LoadFeedbackVo {
+
+	private java.lang.String loadId; // 提货单标识
+	
+	private java.lang.String loadNo; // 提货单编号
+	
+	private String status; // 反馈状态
+	
+	private String type; // 异常类型
+	
+	private java.lang.String itemName; // 费用名称
+	
+	private java.lang.String itemPrice; // 费用金额
+	
+	private java.lang.String itemDesc; // 费用说明
+	
+	private java.lang.String feedbackTime; // 反馈时间
+	
+	private java.lang.String longitude; // 经度
+
+	private java.lang.String latitude; // 纬度
+	
+	private java.lang.String address; // 地址
+	
+	private List<LoadFeedBackAttVo> imageIdList; //异常反馈上传图片列表
+
+	public java.lang.String getLoadId() {
+		return loadId;
+	}
+
+	public void setLoadId(java.lang.String loadId) {
+		this.loadId = loadId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public java.lang.String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(java.lang.String itemName) {
+		this.itemName = itemName;
+	}
+
+	public java.lang.String getItemPrice() {
+		return itemPrice;
+	}
+
+	public void setItemPrice(java.lang.String itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+
+	public java.lang.String getItemDesc() {
+		return itemDesc;
+	}
+
+	public void setItemDesc(java.lang.String itemDesc) {
+		this.itemDesc = itemDesc;
+	}
+
+	public java.lang.String getFeedbackTime() {
+		return feedbackTime;
+	}
+
+	public void setFeedbackTime(java.lang.String feedbackTime) {
+		this.feedbackTime = feedbackTime;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public java.lang.String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(java.lang.String longitude) {
+		this.longitude = longitude;
+	}
+
+	public java.lang.String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(java.lang.String latitude) {
+		this.latitude = latitude;
+	}
+
+	public java.lang.String getAddress() {
+		return address;
+	}
+
+	public void setAddress(java.lang.String address) {
+		this.address = address;
+	}
+
+	public List<LoadFeedBackAttVo> getImageIdList() {
+		return imageIdList;
+	}
+
+	public void setImageIdList(List<LoadFeedBackAttVo> imageIdList) {
+		this.imageIdList = imageIdList;
+	}
+	
+	public java.lang.String getLoadNo() {
+		return loadNo;
+	}
+
+	public void setLoadNo(java.lang.String loadNo) {
+		this.loadNo = loadNo;
+	}
+	
+
+	public LoadFeedbackLog getLoadFeedbackLog(){
+		
+		LoadFeedbackLog loadFeedbackLog = new LoadFeedbackLog();
+		
+		if(ValidateUtils.isEmpty(this.loadId)){
+			ParamEmptyValidator.VALID_PARAM_EMPTY(this.loadNo);
+		}
+
+//		ParamEmptyValidator.VALID_PARAM_EMPTY(this.loadId);
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.itemName);
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.status);
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.type);
+		
+		loadFeedbackLog.setType(LoadFeedBackType.getLoadFeedBackType(type).getCode());
+		loadFeedbackLog.setItemName(this.itemName);
+		loadFeedbackLog.setItemPrice(this.itemPrice);
+		loadFeedbackLog.setItemDesc(this.itemDesc);
+		loadFeedbackLog.setLoadId(this.loadId);
+		loadFeedbackLog.setAddress(this.address);
+		loadFeedbackLog.setLatitude(this.latitude);
+		loadFeedbackLog.setLongitude(this.longitude);
+		loadFeedbackLog.setStatus(LoadBillType.getLoadBillType(this.status).getCode());
+		
+		if(StringUtils.isNoneBlank(this.itemName)){
+			loadFeedbackLog.setItemName(this.itemName);
+		}
+		
+		if(StringUtils.isNoneBlank(this.feedbackTime)){
+			loadFeedbackLog.setFeedbackTime(feedbackTime);
+		}else{
+			loadFeedbackLog.setFeedbackTime(DateUtils.currentStringDate("yyyy-MM-dd HH:mm:ss"));
+		}
+		
+		return loadFeedbackLog;
+	}
+	
+	public List<LoadFeedbackAtta> getLoadFeedbackAttaList(){
+		
+		List<LoadFeedbackAtta> loadFeedbackAttaList = new ArrayList<>();
+		
+		if(!ValidateUtils.isEmpty(this.imageIdList)){
+			
+			if(imageIdList.size()>5){
+				throw new RestException(ErrorCode.ERROR_900015.getCode(), ErrorCode.ERROR_900015.getDesc());
+			}
+			
+			for (int i = 0; i < imageIdList.size(); i++) {
+				
+				LoadFeedbackAtta loadFeedbackAtta = new LoadFeedbackAtta();
+				
+				loadFeedbackAtta.setFileId(imageIdList.get(i).getImageId());
+				
+				loadFeedbackAttaList.add(loadFeedbackAtta);
+			}
+			
+		}
+		return loadFeedbackAttaList;
+	}
+	
+}

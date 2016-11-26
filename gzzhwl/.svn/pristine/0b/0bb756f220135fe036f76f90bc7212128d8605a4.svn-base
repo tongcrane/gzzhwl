@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.RemarkInfoExtDao">
+
+	<resultMap id="remarkInfoResultMap" type="RemarkInfo">
+		<id property="pid" column="pid" />
+		<id property="remarkId" column="remark_id" />
+		<result property="pid" column="pid" />
+		<result property="remarkId" column="remark_id" />
+		<result property="targetId" column="target_id" />
+		<result property="type" column="type" />
+		<result property="content" column="content" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="remarkInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="remarkInfoResultMap"></resultMap>
+
+	<!-- 获取货源操作记录 -->
+	<select id="getSourceRecordList" parameterType="map" resultMap="findResultMap">
+	   (
+		SELECT
+		CONCAT("修改备注:",content)  content,
+		t2.real_name,
+		date_format(t1.created_time,'%Y-%m-%d %H:%i') as created_time
+		FROM
+		zh_remark_info t1,zh_staff_info t2
+		where
+		t1.created_by = t2.staff_id
+		and
+		t1.type = #{remarkType}
+		and
+		target_id  = #{target_id}
+		)
+		union all
+		(
+		SELECT
+		msg_info,
+		t2.real_name,
+		date_format(t1.created_time,'%Y-%m-%d %H:%i') as created_time
+		FROM
+		zh_source_his t1,zh_staff_info t2
+		where
+		t1.created_by = t2.staff_id
+		and
+		source_id  = #{target_id}
+		)
+		order by created_time desc
+	</select>
+	
+	<!-- 获取订单操作记录 -->
+	<select id="getLoadRecordList" parameterType="map" resultMap="findResultMap">
+	 	(
+		SELECT
+		CONCAT("修改备注:",content)  content,
+		t2.real_name,
+		date_format(t1.created_time,'%Y-%m-%d %H:%i') as created_time
+		FROM
+		zh_remark_info t1,zh_staff_info t2
+		where
+		t1.created_by = t2.staff_id
+		and
+		t1.type = #{remarkType}
+		and
+		target_id  = #{target_id}
+		)
+		union all
+		(
+		SELECT
+		msg_info,
+		t2.real_name,
+		date_format(t1.created_time,'%Y-%m-%d %H:%i') as created_time
+		FROM
+		zh_order_his t1,zh_staff_info t2
+		where
+		t1.created_by = t2.staff_id
+		and
+		order_id  = #{target_id}
+		)
+		order by created_time desc
+	</select>
+	
+	<!-- 获取在途操作记录 -->
+	<select id="getOrderRecordList" parameterType="map" resultMap="findResultMap">
+	 	(
+		SELECT
+		CONCAT('进行了异常反馈,',item_name)  content,
+		t2.real_name,
+		date_format(t1.updated_time,'%Y-%m-%d %H:%i') as created_time
+		FROM
+		zh_load_feedback_log t1,zh_staff_info t2
+		where
+		t1.updated_by = t2.staff_id
+		and
+ 		t1.is_deleted = '00'
+		and
+		t1.load_id  = #{target_id}
+		<if test="statusArray != null">
+		 and linked_status in
+		  <foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+		        	#{status}
+		   </foreach>
+	    </if>
+		)
+		union all
+		(
+		SELECT
+		msg_info,
+		t2.real_name,
+		date_format(t1.action_time,'%Y-%m-%d %H:%i') as created_time
+		FROM
+		zh_load_his t1,zh_staff_info t2
+		where
+		t1.created_by = t2.staff_id
+		and
+		load_id  =  #{target_id}
+		<if test="statusArray != null">
+		 and dest_status in
+		  <foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+		        	#{status}
+		   </foreach>
+	    </if>
+		)
+		order by created_time 
+	</select>
+	
+</mapper> 

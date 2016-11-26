@@ -1,0 +1,151 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_customer_bank_info表
+ * @author mew
+ *
+ */
+public class CustomerBankInfo implements Serializable {
+	@Length(max = 36, message = "customerId超过长度限制")
+	private java.lang.String customerId; // 客户标识
+	@Length(max = 50, message = "cardName超过长度限制")
+	private java.lang.String cardName; // 开户名
+	@Length(max = 30, message = "cardNo超过长度限制")
+	private java.lang.String cardNo; // 银行卡号
+	@Length(max = 20, message = "depositBank超过长度限制")
+	private java.lang.String depositBank; // 开户行
+	@Length(max = 20, message = "bankName超过长度限制")
+	private java.lang.String bankName; // 银行名称
+	@Length(max = 50, message = "invoiceTitle超过长度限制")
+	private java.lang.String invoiceTitle; // 发票抬头
+
+
+	/**
+     * 获取客户标识属性
+     *
+     * @return customerId
+     */
+	public java.lang.String getCustomerId() {
+		return customerId;
+	}
+	
+	/**
+	 * 设置客户标识属性
+	 *
+	 * @param customerId
+	 */
+	public void setCustomerId(java.lang.String customerId) {
+		this.customerId = customerId;
+	}
+	
+	/**
+     * 获取开户名属性
+     *
+     * @return cardName
+     */
+	public java.lang.String getCardName() {
+		return cardName;
+	}
+	
+	/**
+	 * 设置开户名属性
+	 *
+	 * @param cardName
+	 */
+	public void setCardName(java.lang.String cardName) {
+		this.cardName = cardName;
+	}
+	
+	/**
+     * 获取银行卡号属性
+     *
+     * @return cardNo
+     */
+	public java.lang.String getCardNo() {
+		return cardNo;
+	}
+	
+	/**
+	 * 设置银行卡号属性
+	 *
+	 * @param cardNo
+	 */
+	public void setCardNo(java.lang.String cardNo) {
+		this.cardNo = cardNo;
+	}
+	
+	/**
+     * 获取开户行属性
+     *
+     * @return depositBank
+     */
+	public java.lang.String getDepositBank() {
+		return depositBank;
+	}
+	
+	/**
+	 * 设置开户行属性
+	 *
+	 * @param depositBank
+	 */
+	public void setDepositBank(java.lang.String depositBank) {
+		this.depositBank = depositBank;
+	}
+	
+	/**
+     * 获取银行名称属性
+     *
+     * @return bankName
+     */
+	public java.lang.String getBankName() {
+		return bankName;
+	}
+	
+	/**
+	 * 设置银行名称属性
+	 *
+	 * @param bankName
+	 */
+	public void setBankName(java.lang.String bankName) {
+		this.bankName = bankName;
+	}
+	
+	/**
+     * 获取发票抬头属性
+     *
+     * @return invoiceTitle
+     */
+	public java.lang.String getInvoiceTitle() {
+		return invoiceTitle;
+	}
+	
+	/**
+	 * 设置发票抬头属性
+	 *
+	 * @param invoiceTitle
+	 */
+	public void setInvoiceTitle(java.lang.String invoiceTitle) {
+		this.invoiceTitle = invoiceTitle;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("CustomerBankInfo");
+        sb.append("{customerId=").append(customerId);
+        sb.append(", cardName=").append(cardName);
+        sb.append(", cardNo=").append(cardNo);
+        sb.append(", depositBank=").append(depositBank);
+        sb.append(", bankName=").append(bankName);
+        sb.append(", invoiceTitle=").append(invoiceTitle);
+		sb.append('}');
+        return sb.toString();
+    }
+}

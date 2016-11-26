@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.LoadHisDao">
+
+	<resultMap id="loadHisResultMap" type="LoadHis">
+		<id property="hisId" column="his_id" />
+		<result property="loadId" column="load_id" />
+		<result property="srcStatus" column="src_status" />
+		<result property="destStatus" column="dest_status" />
+		<result property="userType" column="user_type" />
+		<result property="msgInfo" column="msg_info" />
+		<result property="actionTime" column="action_time" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="loadHisResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="loadHisResultMap"></resultMap>
+
+	<insert id="insert" parameterType="LoadHis">
+	   insert into zh_load_his (
+	     his_id,
+	     load_id,
+	     src_status,
+	     dest_status,
+	     user_type,
+	     msg_info,
+	     action_time,
+	     created_by,
+	     created_time,
+	     is_deleted
+	   )values (
+	     #{hisId},
+	     #{loadId},
+	     #{srcStatus},
+	     #{destStatus},
+	     #{userType},
+	     #{msgInfo},
+	     <if test="actionTime != null">
+	       #{actionTime},
+	     </if>
+	     <if test="actionTime == null">
+	       now(),
+	     </if>
+	     #{createdBy},
+	     now(),
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="LoadHis">
+	   update zh_load_his set
+	     his_id=#{hisId},
+	     load_id=#{loadId},
+	     src_status=#{srcStatus},
+	     dest_status=#{destStatus},
+	     user_type=#{userType},
+	     msg_info=#{msgInfo},
+	     action_time=#{actionTime},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     is_deleted=#{isDeleted}
+	   where 
+	    his_id=#{hisId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="LoadHis">
+	   update zh_load_his
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="hisId != null">
+		       his_id=#{hisId},
+		     </if>
+		     <if test="loadId != null">
+		       load_id=#{loadId},
+		     </if>
+		     <if test="srcStatus != null">
+		       src_status=#{srcStatus},
+		     </if>
+		     <if test="destStatus != null">
+		       dest_status=#{destStatus},
+		     </if>
+		     <if test="userType != null">
+		       user_type=#{userType},
+		     </if>
+		     <if test="msgInfo != null">
+		       msg_info=#{msgInfo},
+		     </if>
+		     <if test="actionTime != null">
+		       action_time=#{actionTime},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    his_id=#{hisId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_load_his 
+	   where 
+	    his_id=#{hisId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="loadHisResultMap">
+	   select 
+	    his_id,
+	    load_id,
+	    src_status,
+	    dest_status,
+	    user_type,
+	    msg_info,
+	    action_time,
+	    created_by,
+	    created_time,
+	    is_deleted
+	   from zh_load_his
+	   where 
+	    his_id=#{hisId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    his_id,
+	    load_id,
+	    src_status,
+	    dest_status,
+	    user_type,
+	    msg_info,
+	    action_time,
+	    created_by,
+	    created_time,
+	    is_deleted
+	   from zh_load_his
+	   where 
+	    his_id=#{hisId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     his_id,
+	     load_id,
+	     src_status,
+	     dest_status,
+	     user_type,
+	     msg_info,
+	     action_time,
+	     created_by,
+	     created_time,
+	     is_deleted
+	   from zh_load_his
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="hisId != null">
+	        his_id=#{hisId}
+	     </if>
+	     <if test="loadId != null">
+	        and load_id=#{loadId}
+	     </if>
+	     <if test="srcStatus != null">
+	        and src_status=#{srcStatus}
+	     </if>
+	     <if test="destStatus != null">
+	        and dest_status=#{destStatus}
+	     </if>
+	     <if test="userType != null">
+	        and user_type=#{userType}
+	     </if>
+	     <if test="msgInfo != null">
+	        and msg_info=#{msgInfo}
+	     </if>
+	     <if test="actionTime != null">
+	        and action_time=#{actionTime}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     his_id,
+	     load_id,
+	     src_status,
+	     dest_status,
+	     user_type,
+	     msg_info,
+	     action_time,
+	     created_by,
+	     created_time,
+	     is_deleted
+	   from zh_load_his
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="hisId != null">
+	        his_id=#{hisId}
+	     </if>
+	     <if test="loadId != null">
+	        and load_id=#{loadId}
+	     </if>
+	     <if test="srcStatus != null">
+	        and src_status=#{srcStatus}
+	     </if>
+	     <if test="destStatus != null">
+	        and dest_status=#{destStatus}
+	     </if>
+	     <if test="userType != null">
+	        and user_type=#{userType}
+	     </if>
+	     <if test="msgInfo != null">
+	        and msg_info=#{msgInfo}
+	     </if>
+	     <if test="actionTime != null">
+	        and action_time=#{actionTime}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

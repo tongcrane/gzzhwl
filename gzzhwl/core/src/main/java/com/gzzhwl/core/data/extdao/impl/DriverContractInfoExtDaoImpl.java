@@ -1,0 +1,77 @@
+package com.gzzhwl.core.data.extdao.impl;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.gzzhwl.core.constant.ContractType;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.extdao.DriverContractInfoExtDao;
+import com.gzzhwl.core.data.model.LoadDriverInfo;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.core.data.model.OrderBaseInfo;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ * 
+ * @author mew
+ *
+ */
+@Repository
+public class DriverContractInfoExtDaoImpl implements DriverContractInfoExtDao {
+	@Autowired
+	private DaoSupport dao;
+
+	@Override
+	public <E, K, V> Page<E> pageContractList(Map<K, V> params, int current, int pagesize) {
+		return dao.page(PREFIX + ".getContractList", params, current, pagesize);
+	}
+
+	@Override
+	public <E, K, V> Page<E> pagePayContractList(Map<String, Object> params, int current, int pagesize) {
+		
+		params.put("contractType", OrderLoadInfo.DRIVER_CONTRACT_BILL);
+		params.put("loadType", OrderLoadInfo.LOAD_BILL);
+		params.put("feedbackType", LoadFeedBackType.VEHICLE.getCode());
+		params.put("isException", LoadFeedbackLog.ISEND_YES);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("checkStatus", Global.STATUS_NORMAL.toString());
+		params.put("contractStatusArray", new String[]{ContractType.WAITREVIEW.getCode(),ContractType.REVIEW.getCode()});//仅查询审核通过与未审核的司机合同
+		params.put("isMajor", LoadDriverInfo.MAJOR_YES);
+		
+		return dao.page(PREFIX + ".getPayContractList", params, current, pagesize);
+	}
+	
+	@Override
+	public <K, V> Map<K, V> payLoadDetail(String contractId) {
+		
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("contractId", contractId);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("checkStatus", Global.STATUS_NORMAL.toString());
+		
+		return dao.get(PREFIX + ".payLoadDetail", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> getPayStatementList(Map<String, Object> params) {
+		
+		
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("checkStatus", Global.STATUS_NORMAL.toString());
+		params.put("orderType", OrderBaseInfo.ORDER_BILL);
+		params.put("status", ContractType.REVIEW.getCode());
+		params.put("feedbackType", LoadFeedBackType.VEHICLE.getCode());
+		
+		
+		return dao.find(PREFIX + ".payStatementList", params);
+	}
+
+
+}

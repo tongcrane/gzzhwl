@@ -1,0 +1,540 @@
+package com.gzzhwl.admin.load.service.impl;
+
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.contract.service.ContractService;
+import com.gzzhwl.admin.load.service.LoadBillService;
+import com.gzzhwl.admin.load.service.LoadHistoryService;
+import com.gzzhwl.admin.load.service.VADUsedService;
+import com.gzzhwl.admin.load.validator.LoadValidate;
+import com.gzzhwl.admin.load.vo.LoadDriverVO;
+import com.gzzhwl.admin.load.vo.LoadInfoVO;
+import com.gzzhwl.admin.load.vo.LoadQueryVo;
+import com.gzzhwl.admin.order.service.OrderLinkStatusService;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.FlowsService;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.SeqNoKey;
+import com.gzzhwl.core.data.dao.LoadDriverInfoDao;
+import com.gzzhwl.core.data.dao.OrderLoadInfoDao;
+import com.gzzhwl.core.data.dao.SupplyInfoDao;
+import com.gzzhwl.core.data.extdao.OrderInfoExtDao;
+import com.gzzhwl.core.data.extdao.OrderLoadInfoExtDao;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.FlowStatus;
+import com.gzzhwl.core.data.model.LoadDriverInfo;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.data.model.SupplyInfo;
+import com.gzzhwl.core.data.model.UsedInfoHis;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class LoadBillServiceImpl implements LoadBillService {
+	@Autowired
+	private OrderLinkStatusService orderLinkStatusService;
+	@Autowired
+	private Mapper beanMapper;
+	@Autowired
+	private LoadHistoryService loadHistoryService;
+	@Autowired
+	private FlowsService flowService;
+	@Autowired
+	private OrderLoadInfoDao orderLoadInfoDao;
+	@Autowired
+	private LoadDriverInfoDao loadDriverInfoDao;
+	@Autowired
+	private OrderInfoExtDao orderInfoExtDao;
+	@Autowired
+	private RegionService regionService;
+	@Autowired
+	private OrderLoadInfoExtDao orderLoadInfoExtDao;
+	@Autowired
+	private ContractService contractService;
+	@Autowired
+	private VADUsedService vadUsedService;
+	@Autowired
+	private SupplyInfoDao supplyInfoDao;
+	@Autowired
+	private OrderLoadInfoExtDao loadExtDao;
+
+	// @Autowired
+	// private AccountInfoDao accountInfoDao;
+	// @Autowired
+	// private MessageTipsService messageTipsService;
+	// @Autowired
+	// private SmsService smsService;
+	//
+	// @Value("${load.trip}")
+	// private String loadTrip;
+
+	@Override
+	public String createLoad(LoadInfoVO loadInfoVO, String staffId) throws RestException {
+		List<LoadDriverVO> driverList = loadInfoVO.getDriverList();
+		LoadValidate.valid_driver_list(driverList);
+		LoadValidate.valid_freightPrice(loadInfoVO.getFreightPrice());
+
+		String actionCode = "13";// 生成提货单
+		String loadId = loadInfoVO.getLoadId();
+		OrderLoadInfo loadInfo = orderLoadInfoDao.get(loadId);
+		String currentStatus = loadInfo.getStatus();
+		FlowDef flowDef = flowService.executeFlow(ZHFlow.LOAD_BILL, actionCode, currentStatus, FlowActionCategory.CBS);
+		
+		beanMapper.map(loadInfoVO, loadInfo);
+		String loadNo = IdentifierUtils.getSequence(SeqNoKey.LOAD).generate().toString();
+		loadInfo.setUpdatedBy(staffId);
+		loadInfo.setLoadNo(loadNo);
+		loadInfo.setQuotedId(null);
+		loadInfo.setStatus(flowDef.getTransitionStatus());
+		for (LoadDriverVO driver : driverList) {
+			LoadDriverInfo driverInfo = new LoadDriverInfo();
+			driverInfo.setDriverInfoId(driver.getDriverInfoId());
+			driverInfo.setIsMajor(driver.getIsMajor());
+			driverInfo.setLoadId(loadId);
+			loadDriverInfoDao.insert(driverInfo);
+		}
+		String supplyId = loadInfoVO.getSupplyId();
+		SupplyInfo supplyInfo = supplyInfoDao.get(supplyId);
+
+		loadInfo.setPaymentType(supplyInfo.getPaymentType());
+		loadInfo.setPaymentName(supplyInfo.getFullName());
+
+		orderLoadInfoDao.updateSelective(loadInfo);
+		loadHistoryService.saveLoadHistory(loadId, currentStatus, null, flowDef, staffId);
+		String orderId = loadInfo.getOrderId();
+		orderLinkStatusService.loadOrder(orderId, staffId);
+		vadUsedService.lockVandD(loadId, staffId);// 锁定司机车辆
+		return loadId;
+	}
+
+	@Override
+	public boolean cancelLoad(String loadId, String staffId) throws RestException {
+		String contractId = contractService.getCurrentContract(loadId);
+		if (StringUtils.isNotBlank(contractId)) {// 已有司机合同，无法取消提货单
+			throw new RestException(ErrorCode.ERROR_110004);
+		}
+		String actionCode = "12";// 取消提货单
+		OrderLoadInfo orderLoadInfo = orderLoadInfoDao.get(loadId);
+		String currentStatus = orderLoadInfo.getStatus();
+		FlowDef flowDef = flowService.executeFlow(ZHFlow.LOAD_BILL, actionCode, currentStatus, FlowActionCategory.CBS);
+		orderLoadInfo.setStatus(flowDef.getTransitionStatus());
+		orderLoadInfo.setUpdatedBy(staffId);
+		orderLoadInfoDao.updateSelective(orderLoadInfo);
+		loadHistoryService.saveLoadHistory(loadId, currentStatus, null, flowDef, staffId);
+		String orderId = orderLoadInfo.getOrderId();
+		orderLinkStatusService.cancelLoad(orderId, staffId);
+
+		vadUsedService.releaseVandD(loadId, staffId);// 解锁司机车辆
+		return true;
+	}
+
+	@Override
+	public boolean cancelLoadBatch(String[] loadArr, String staffId) {
+		if (ArrayUtils.isNotEmpty(loadArr)) {
+			for (String loadId : loadArr) {
+				this.cancelLoad(loadId, staffId);
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public String getCurrentLoadBill(String orderId) throws RestException {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("flowName", ZHFlow.LOAD_BILL.getName());
+		params.put("orderId", orderId);
+		params.put("statusType", FlowStatus.NORMAL_TYPE);
+		params.put("type", OrderLoadInfo.LOAD_BILL);
+		return orderLoadInfoDao.getLoadByOrder(params);
+	}
+
+	@Override
+	public String getCurrentLoadBillByOrderNo(String orderNo) throws RestException {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("flowName", ZHFlow.LOAD_BILL.getName());
+		params.put("orderNo", orderNo);
+		params.put("statusType", FlowStatus.NORMAL_TYPE);
+		params.put("type", OrderLoadInfo.LOAD_BILL);
+		return orderLoadInfoDao.getLoadByOrder(params);
+	}
+
+	@Override
+	public Page<Map<String, Object>> pageLoads(LoadQueryVo queryVo, int pageIndex, int pageSize)
+			throws RestException, ParseException {
+		Map<String, Object> params = queryVo.getParam();
+		params.put("loadType", OrderLoadInfo.LOAD_BILL);
+		params.put("driverContractType", OrderLoadInfo.DRIVER_CONTRACT_BILL);
+		Page<Map<String, Object>> loads = orderLoadInfoDao.pageLoads(params, pageIndex, pageSize);
+		List<Map<String, Object>> list = loads.getRows();
+		for (Map<String, Object> map : list) {
+			String startCodeP = (String) map.get("startCodeP");
+			String startCodePCn = this.getCodeCn(startCodeP);
+			map.put("startCodePCn", startCodePCn);
+
+			String startCodeC = (String) map.get("startCodeC");
+			String startCodeCCn = this.getCodeCn(startCodeC);
+			map.put("startCodeCCn", startCodeCCn);
+
+			String endCodeP = (String) map.get("endCodeP");
+			String endCodePCn = this.getCodeCn(endCodeP);
+			map.put("endCodePCn", endCodePCn);
+
+			String endCodeC = (String) map.get("endCodeC");
+			String endCodeCCn = this.getCodeCn(endCodeC);
+			map.put("endCodeCCn", endCodeCCn);
+			FlowStatus flowStatus = flowService.getStatus(ZHFlow.LOAD_BILL, (String) map.get("status"));
+			map.put("statusCn", flowStatus.getName());
+
+			String loadId = (String) map.get("loadId");
+			if (StringUtils.isNotEmpty(loadId)) {
+				OrderLoadInfo loadInfo = orderLoadInfoDao.get(loadId);
+				if (!ValidateUtils.isEmpty(loadInfo)) {
+					String status = loadInfo.getStatus();
+					List<Map<String, Object>> actionList = flowService.whatToDo(ZHFlow.LOAD_BILL, status,
+							FlowActionCategory.CBS);
+					map.put("toDoList", actionList);
+				} else {
+					map.put("toDoList", Lists.newArrayList());
+				}
+			}
+
+		}
+		return loads;
+	}
+
+	@Override
+	public String modifyLoad(LoadInfoVO loadInfoVO, String staffId) throws RestException {
+		String loadId = loadInfoVO.getLoadId();
+		String contractId = contractService.getCurrentContract(loadId);
+		if (StringUtils.isNotEmpty(contractId)) {
+			throw new RestException(ErrorCode.ERROR_110003);
+		} else {
+			vadUsedService.releaseVandD(loadId, staffId);// 解锁司机车辆
+			String actionCode = "14"; // 修改提货单
+			List<LoadDriverVO> driverList = loadInfoVO.getDriverList();
+			LoadValidate.valid_driver_list(driverList);
+			OrderLoadInfo loadInfo = orderLoadInfoDao.get(loadId);
+			String currentStatus = loadInfo.getStatus();
+			FlowDef flowDef = flowService.executeFlow(ZHFlow.LOAD_BILL, actionCode, currentStatus,
+					FlowActionCategory.CBS);
+			beanMapper.map(loadInfoVO, loadInfo);
+			loadInfo.setStatus(flowDef.getTransitionStatus());
+			loadInfo.setUpdatedBy(staffId);
+			loadDriverInfoDao.delLoadDriver(loadId);
+			for (LoadDriverVO driver : driverList) {
+				LoadDriverInfo driverInfo = new LoadDriverInfo();
+				driverInfo.setDriverInfoId(driver.getDriverInfoId());
+				driverInfo.setIsMajor(driver.getIsMajor());
+				driverInfo.setLoadId(loadId);
+				loadDriverInfoDao.insert(driverInfo);
+			}
+			String supplyId = loadInfoVO.getSupplyId();
+			SupplyInfo supplyInfo = supplyInfoDao.get(supplyId);
+			loadInfo.setPaymentType(supplyInfo.getPaymentType());
+			loadInfo.setPaymentName(supplyInfo.getFullName());
+			orderLoadInfoDao.updateSelective(loadInfo);
+			loadHistoryService.saveLoadHistory(loadId, currentStatus, null, flowDef, staffId);
+			vadUsedService.lockVandD(loadId, staffId);// 解锁司机车辆
+			return loadId;
+		}
+	}
+
+	@Override
+	public boolean doTrip(String loadId, String staffId) throws RestException {
+		String actionCode = "11"; // 发车
+		OrderLoadInfo orderLoadInfo = orderLoadInfoDao.get(loadId);
+		String currentStatus = orderLoadInfo.getStatus();
+		FlowDef flowdef = flowService.executeFlow(ZHFlow.LOAD_BILL, actionCode, currentStatus, FlowActionCategory.CBS);
+		orderLoadInfo.setStatus(flowdef.getTransitionStatus());
+		orderLoadInfo.setUpdatedBy(staffId);
+		orderLoadInfoDao.updateSelective(orderLoadInfo);
+		loadHistoryService.saveLoadHistory(loadId, currentStatus, null, flowdef, staffId);
+		String orderId = orderLoadInfo.getOrderId();
+		orderLinkStatusService.doTrip(orderId, staffId);// 联动订单发车
+
+		// todo 消息中心
+		// String content="";
+		// String realName="";
+		// String telphone="";
+		// List<Map<String, Object>> accountIdMap =
+		// accountInfoDao.getAccountIdByLoadId(loadId);
+		// if (accountIdMap.size() > 1 || ValidateUtils.isEmpty(accountIdMap)) {
+		//
+		// } else {
+		// String driverAccountId = (String)
+		// accountIdMap.get(0).get("accountId");
+		// Map<String,Object> loadInfo=this.getLoadInfo(loadId);
+		// List<Map<String,Object>> driverInfo=(List<Map<String, Object>>)
+		// loadInfo.get("driverInfo");
+		// if(CollectionUtils.isNotEmpty(driverInfo)) {
+		// if(driverInfo.size()>0) {
+		// realName=driverInfo.get(0).get("realName").toString();
+		// telphone=driverInfo.get(0).get("telphone").toString();
+		// }
+		// }
+		// Map<String, Object> orderDetail = this.getLoadOrderInfo(orderId);
+		// if (MapUtils.isNotEmpty(orderDetail)) {
+		// String receiveAddress = "";
+		// System.out.println(JacksonJsonMapper.objectToJson(orderDetail));
+		// String date = orderDetail.get("pickUpTime").toString();
+		// SimpleDateFormat sdf=new SimpleDateFormat("MM月dd日 E");
+		// SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		// Date _date = null;
+		// try {
+		// _date = sdf2.parse(date);
+		// } catch (ParseException e) {
+		// e.printStackTrace();
+		// }
+		// String dateTime=sdf.format(_date);
+		// String loadNo=orderLoadInfo.getLoadNo();
+		// String receiveArea = orderDetail.get("sendArea").toString();
+		// List<RegionInfo> list = regionService.findRootByCode(receiveArea);
+		// if (list.size() > 0) {
+		// for (int i = list.size(); i > 0; i--) {
+		// receiveAddress += list.get(i - 1).getRegionName();
+		// }
+		// }
+		// String address =
+		// receiveAddress.concat(orderDetail.get("sendAddress").toString());
+		// String line = orderDetail.get("startCodeCCn").toString().concat("至")
+		// .concat(orderDetail.get("endCodeCCn").toString());
+		// content = MessageFormat.format(loadTrip, realName,dateTime, address,
+		// line,loadNo);
+		// messageTipsService.addMessage(TipsCategory.TIPS_C05.getCode(),
+		// driverAccountId, loadId,
+		// TipsSourceType.TIPS_S02.getCode(), content, staffId);
+		// }
+		// }
+
+		// 发送短信
+		// smsService.sendSms(telphone, content);
+
+		return true;
+	}
+
+	@Override
+	public boolean tripBatch(String[] loadArr, String staffId) throws RestException {
+		if (ArrayUtils.isNotEmpty(loadArr)) {
+			for (String loadId : loadArr) {
+				this.doTrip(loadId, staffId);
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public Map<String, Object> getLoadDetail(String loadId) throws RestException {
+		OrderLoadInfo orderLoad = orderLoadInfoDao.get(loadId);
+		LoadValidate.valid_not_exist(!ValidateUtils.isEmpty(orderLoad));
+		String orderId = orderLoad.getOrderId();
+		Map<String, Object> loadDetail = new HashMap<String, Object>();
+		Map<String, Object> orderInfo = this.getLoadOrderInfo(orderId);
+		Map<String, Object> loadInfo = this.getLoadInfo(loadId);
+		if (!ValidateUtils.isEmpty(loadInfo)) {
+			String status = (String) loadInfo.get("status");
+			List<Map<String, Object>> actionList = flowService.whatToDo(ZHFlow.LOAD_BILL, status,
+					FlowActionCategory.CBS);
+			loadDetail.put("actionList", actionList);
+		} else {
+			loadDetail.put("actionList", Lists.newArrayList());
+		}
+		loadDetail.put("orderInfo", orderInfo);
+		loadDetail.put("loadInfo", loadInfo);
+		return loadDetail;
+	}
+
+	private Map<String, Object> getLoadOrderInfo(String orderId) {
+		Map<String, Object> orderInfo = orderInfoExtDao.getLoadOrderInfo(orderId);
+		if (orderInfo != null) {
+			String startCodeP = (String) orderInfo.get("startCodeP");
+			String startCodePCn = this.getCodeCn(startCodeP);
+			orderInfo.put("startCodePCn", startCodePCn);
+
+			String startCodeC = (String) orderInfo.get("startCodeC");
+			String startCodeCCn = this.getCodeCn(startCodeC);
+			orderInfo.put("startCodeCCn", startCodeCCn);
+
+			String endCodeP = (String) orderInfo.get("endCodeP");
+			String endCodePCn = this.getCodeCn(endCodeP);
+			orderInfo.put("endCodePCn", endCodePCn);
+
+			String endCodeC = (String) orderInfo.get("endCodeC");
+			String endCodeCCn = this.getCodeCn(endCodeC);
+			orderInfo.put("endCodeCCn", endCodeCCn);
+			String sendArea = (String) orderInfo.get("sendArea");
+			String receiveArea = (String) orderInfo.get("receiveArea");
+			if (sendArea != null) {
+				List<RegionInfo> sendRegion = regionService.findRootByCode(sendArea);
+				orderInfo.put("sendRegion", sendRegion);
+			}
+			if (receiveArea != null) {
+				List<RegionInfo> receiveRegion = regionService.findRootByCode(receiveArea);
+				orderInfo.put("receiveRegion", receiveRegion);
+			}
+		}
+		return orderInfo;
+	}
+
+	@Override
+	public Map<String, Object> getLoadInfoByOrdrId(String orderId) throws RestException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderId", orderId);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("loadType", OrderLoadInfo.LOAD_BILL.toString());
+		params.put("statusArray",
+				new String[] { LoadBillType.NOTVEHICLE.getCode(), LoadBillType.VEHICLECHECK.getCode(),
+						LoadBillType.CLOSETOSURFACE.getCode(), LoadBillType.DEPART.getCode(),
+						LoadBillType.UNLOAD.getCode(), LoadBillType.HAS_LOAD.getCode(), LoadBillType.ARRIVED.getCode(),
+						LoadBillType.ELECRECEIPT.getCode(), LoadBillType.PRINTRECEIPT.getCode(),
+						LoadBillType.CLOSED.getCode(),LoadBillType.HAS_INVALID.getCode()});
+		List<Map<String, Object>> loads = orderLoadInfoExtDao.getLoadInfoByOrderId(params);
+		Map<String, Object> loadInfo = null;
+		if (!ValidateUtils.isEmpty(loads)) {
+			loadInfo = loads.get(0);
+		}
+		return loadInfo;
+	}
+
+	private Map<String, Object> getLoadInfo(String loadId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("loadId", loadId);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		Map<String, Object> loadInfo = orderLoadInfoDao.getLoadInfo(params);
+		List<Map<String, Object>> driverList = this.getLoadDriverList(loadId);
+		if (loadInfo != null) {
+			loadInfo.put("driverInfo", driverList);
+		}
+		String contractId = contractService.getCurrentContract(loadId);
+		if (StringUtils.isNotEmpty(contractId)) {
+			loadInfo.put("contractId", contractId);
+		} else {
+			loadInfo.put("contractId", "");
+		}
+		return loadInfo;
+	}
+
+	private String getCodeCn(String code) {
+		if (StringUtils.isNotBlank(code)) {
+			RegionInfo startCodePCn = regionService.findByCode(code);
+			if (startCodePCn != null) {
+				return startCodePCn.getRegionName();
+			}
+		}
+		return "";
+	}
+
+	@Override
+	public List<Map<String, Object>> getLoadDriverList(String loadId) throws RestException {
+		Map<String, String> params = Maps.newHashMap();
+		params.put("loadId", loadId);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		return loadDriverInfoDao.find(params);
+	}
+
+	@Override
+	public OrderLoadInfo getLoadInfoByLoadNo(String loadNo) {
+
+		Map<String, Object> param = Maps.newHashMap();
+		param.put("loadNo", loadNo);
+		param.put("type", OrderLoadInfo.LOAD_BILL);
+		param.put("isDeleted", Global.ISDEL_NORMAL.toString());
+
+		List<Map<String, Object>> listMap = orderLoadInfoDao.find(param);
+
+		if (!ValidateUtils.isEmpty(listMap)) {
+			return beanMapper.map(listMap.get(0), OrderLoadInfo.class);
+		}
+		return null;
+	}
+
+	@Override
+	public String getLoadBillByVehicle(String plateNumber) {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("plateNumber", plateNumber);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("flowName", ZHFlow.LOAD_BILL.getName());
+		params.put("statusType", FlowStatus.NORMAL_TYPE);
+		params.put("type", OrderLoadInfo.LOAD_BILL);
+		params.put("useStatus", UsedInfoHis.INUSED);
+		params.put("statusArray",  new String[]{LoadBillType.NOTVEHICLE.getCode(), LoadBillType.VEHICLECHECK.getCode(),
+				LoadBillType.CLOSETOSURFACE.getCode(), LoadBillType.DEPART.getCode(),
+				LoadBillType.ARRIVED.getCode()});
+		return orderLoadInfoDao.getLoadByVehicle(params);
+	}
+
+	@Override
+	public Map<String, Object> getMajorDriverByLoadNo(String loadNo) {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("loadNo", loadNo);
+		params.put("isMajor", LoadDriverInfo.MAJOR_YES);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		Map<String, Object> driverMap = orderLoadInfoExtDao.getLoadMajorDriver(params);
+
+		LoadValidate.valid_driver_not_exist(!ValidateUtils.isEmpty(driverMap));
+		return driverMap;
+	}
+
+	@Override
+	public Map<String, Object> getMajorDriverByLoadId(String loadId) {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("loadId", loadId);
+		params.put("isMajor", LoadDriverInfo.MAJOR_YES);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		Map<String, Object> driverMap = orderLoadInfoExtDao.getLoadMajorDriver(params);
+
+		LoadValidate.valid_driver_not_exist(!ValidateUtils.isEmpty(driverMap));
+		return driverMap;
+	}
+
+	@Override
+	public Map<String, Object> getLoadVehcleDetail(String loadId) {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("loadId", loadId);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("loadType", OrderLoadInfo.LOAD_BILL);
+		Map<String, Object> loadVehicleMap = loadExtDao.getLoadVehicleDetail(params);
+		if (!ValidateUtils.isEmpty(loadVehicleMap)) {
+			String startCodeP = (String) loadVehicleMap.get("startCodeP");
+			loadVehicleMap.put("startCodePCn", this.getCodeCn(startCodeP));
+
+			String startCodeC = (String) loadVehicleMap.get("startCodeC");
+			loadVehicleMap.put("startCodeCCn", this.getCodeCn(startCodeC));
+
+			String endCodeP = (String) loadVehicleMap.get("endCodeP");
+			loadVehicleMap.put("endCodePCn", this.getCodeCn(endCodeP));
+
+			String endCodeC = (String) loadVehicleMap.get("endCodeC");
+			loadVehicleMap.put("endCodeCCn", this.getCodeCn(endCodeC));
+		}
+		return loadVehicleMap;
+	}
+
+	@Override
+	public String getCurrentNoCanceledLoadBill(String orderId) throws RestException {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("flowName", ZHFlow.LOAD_BILL.getName());
+		params.put("orderId", orderId);
+		params.put("type", OrderLoadInfo.LOAD_BILL);
+		params.put("statusArray", new String[]{LoadBillType.CANCEL_TRIP.getCode(), LoadBillType.CANCEL.getCode(), LoadBillType.HAS_INVALID.getCode()});
+		return orderLoadInfoDao.getLoadByOrder(params);
+	}
+
+}

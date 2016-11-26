@@ -1,0 +1,59 @@
+package com.gzzhwl.common.service.impl;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.common.service.H2DbService;
+import com.gzzhwl.core.data.model.RegionInfo;
+
+@Service
+public class H2DbServiceImpl implements H2DbService {
+
+	protected static Logger logger = LoggerFactory.getLogger(H2DbService.class);
+	@Autowired
+	@Qualifier("h2DataSource")
+	private DataSource dataSource;
+
+	@Override
+	@Async
+	public void saveRegionToMem(List<RegionInfo> alldata) {
+		Resource fileResource = new ClassPathResource("region.csv");
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			File file = fileResource.getFile();
+			FileUtils.writeLines(file, alldata, false);
+			conn = dataSource.getConnection();
+			pstmt = conn
+					.prepareStatement("INSERT INTO zh_region_info (SELECT  * FROM  CSVREAD('" + file.getPath() + "'))");
+			int row = pstmt.executeUpdate();
+			logger.debug("初始化h2数据库{}条数据", row);
+		} catch (IOException e) {
+			logger.debug("初始化h2数据库发生错误{}", e.getMessage());
+		} catch (SQLException e) {
+			logger.debug("初始化h2数据库发生错误{}", e.getMessage());
+		} finally {
+			JdbcUtils.closeConnection(conn);
+			JdbcUtils.closeStatement(pstmt);
+		}
+
+	}
+
+}

@@ -1,0 +1,30 @@
+package com.gzzhwl.admin.load.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.gzzhwl.admin.load.vo.LoadFeedbackListVo;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+
+public interface LoadFeedbackService {
+	
+	/**
+	 * 异常反馈上报
+	 * @param loadId
+	 * @param loadFeedBackType
+	 * @param loadBillType
+	 */
+	public void saveLoadFeedback(LoadFeedbackListVo LoadFeedbackList,String staffId);
+	
+	/**
+	 * 查看异常反馈列表
+	 * @param loadId
+	 * @param loadFeedBackType 异常反馈类型
+	 * @param loadBillType 提货单类型
+	 * @return
+	 */
+	public List<Map<String,Object>>  getLoadFeedbackList(String loadId,LoadFeedBackType loadFeedBackType,LoadBillType loadBillType);
+	
+
+}

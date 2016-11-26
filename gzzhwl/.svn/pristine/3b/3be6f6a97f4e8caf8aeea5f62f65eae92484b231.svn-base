@@ -1,0 +1,61 @@
+package com.gzzhwl.core.data.extdao.impl;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.data.extdao.OrderLoadInfoExtDao;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+import com.gzzhwl.core.page.Page;
+
+@Repository
+public class OrderLoadInfoExtDaoImpl implements OrderLoadInfoExtDao{
+	@Autowired
+	private DaoSupport dao;
+
+	@Override
+	public <E, K, V> Page<E> pageTripList(Map<K, V> params, int currentPage, int pageSizes) {
+		return dao.page(PREFIX + ".pageTripList", params, currentPage, pageSizes);
+	}
+
+	@Override
+	public Map<String, Object> getTripDetail(String loadId) {
+		
+		Map<String,Object> params = new HashMap<>();
+		params.put("loadId", loadId);
+		return dao.get(PREFIX + ".getTripDetail", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> getTripDrivers(String loadId) {
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("loadId", loadId);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		return dao.find(PREFIX + ".getTripDrivers", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> getLoadInfoByOrderId(String orderId) {
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("orderId", orderId);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		return dao.find(PREFIX + ".getLoadInfoByOrderId", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> getLoadList(String addrId, String keyWord) {
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("addrId", addrId);
+		params.put("keyWord", keyWord);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		return dao.find(PREFIX + ".getLoadList", params);
+	}
+
+	
+
+}

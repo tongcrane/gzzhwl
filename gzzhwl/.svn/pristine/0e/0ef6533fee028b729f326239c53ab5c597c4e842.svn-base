@@ -1,0 +1,159 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+import lombok.Data;
+import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_vehicle_info表
+ * @author mew
+ *
+ */
+@Data
+@ToString
+public class VehicleInfo implements Serializable {
+
+	@Length(max = 36, message = "vehicleInfoId超过长度限制")
+	private java.lang.String vehicleInfoId; // 车辆信息标识
+
+	@Length(max = 36, message = "accountId超过长度限制")
+	private java.lang.String accountId; // 账户标识
+
+	@Length(max = 2, message = "vehicleType超过长度限制")
+	private java.lang.String vehicleType; // 数据类型
+
+	@Length(max = 20, message = "headstockType超过长度限制")
+	private java.lang.String headstockType; // 车头类型
+
+	@Length(max = 20, message = "type超过长度限制")
+	private java.lang.String type; // 车辆类型
+
+	@Length(max = 10, message = "plateNumber超过长度限制")
+	private java.lang.String plateNumber; // 车牌号
+
+	@Length(max = 10, message = "models超过长度限制")
+	private java.lang.String models; // 车辆型号
+
+	@Length(max = 10, message = "length超过长度限制")
+	private java.lang.String length; // 车长
+
+	@Length(max = 10, message = "power超过长度限制")
+	private java.lang.String power; // 马力
+
+	@Length(max = 10, message = "brand超过长度限制")
+	private java.lang.String brand; // 品牌
+
+	@Length(max = 10, message = "color超过长度限制")
+	private java.lang.String color; // 车头颜色
+
+	@Length(max = 17, message = "vin超过长度限制")
+	private java.lang.String vin; // 车架号
+
+	@Length(max = 10, message = "engineNo超过长度限制")
+	private java.lang.String engineNo; // 发动机号
+
+	@Length(max = 36, message = "ownerName超过长度限制")
+	private java.lang.String ownerName; // 车主
+
+	@Length(max = 20, message = "ownerPhone超过长度限制")
+	private java.lang.String ownerPhone; // 车主电话
+
+	@Length(max = 11, message = "ownerMobile超过长度限制")
+	private java.lang.String ownerMobile; // 车主手机
+
+	@Length(max = 20, message = "regDate超过长度限制")
+	private java.lang.String regDate; // 登记日期
+
+	@Length(max = 20, message = "regCertCode超过长度限制")
+	private java.lang.String regCertCode; // 登记证书号
+
+	@Length(max = 10, message = "loadWeight超过长度限制")
+	private java.lang.String loadWeight; // 核载重量
+
+	@Length(max = 10, message = "wheelsNum超过长度限制")
+	private java.lang.String wheelsNum; // 车轮数
+
+	@Length(max = 50, message = "ownerType超过长度限制")
+	private java.lang.String ownerType; // 所有权
+
+	@Length(max = 10, message = "attributes超过长度限制")
+	private java.lang.String attributes; // 车辆属性
+
+	@Length(max = 10, message = "maintenanceDate超过长度限制")
+	private java.lang.String maintenanceDate; // 上次保养时间
+
+	@Length(max = 36, message = "maintenanceBill超过长度限制")
+	private java.lang.String maintenanceBill; // 保养票据
+
+	@Length(max = 20, message = "licenseNo超过长度限制")
+	private java.lang.String licenseNo; // 行驶证号码
+
+	@Length(max = 10, message = "licenseRegDate超过长度限制")
+	private java.lang.String licenseRegDate; // 行驶证注册日期
+
+	@Length(max = 10, message = "licenseIssueDate超过长度限制")
+	private java.lang.String licenseIssueDate; // 行驶证发证日期
+
+	@Length(max = 10, message = "licenseValidDate超过长度限制")
+	private java.lang.String licenseValidDate; // 行驶证有效期至
+
+	@Length(max = 20, message = "operatingCertNo超过长度限制")
+	private java.lang.String operatingCertNo; // 营运证号码
+
+	@Length(max = 10, message = "operatingCertIssueDate超过长度限制")
+	private java.lang.String operatingCertIssueDate; // 营运证发证日期
+
+	@Length(max = 10, message = "operatingCertValidDate超过长度限制")
+	private java.lang.String operatingCertValidDate; // 营运证有效期至
+
+	@Length(max = 36, message = "regImageRefId超过长度限制")
+	private java.lang.String regImageRefId; // 登记证照片
+
+	@Length(max = 36, message = "licenseImageRefId超过长度限制")
+	private java.lang.String licenseImageRefId; // 行驶证照片1
+
+	@Length(max = 36, message = "ocImageRefId超过长度限制")
+	private java.lang.String ocImageRefId; // 营运证照片1
+
+	@Length(max = 36, message = "vehicleImageRefId超过长度限制")
+	private java.lang.String vehicleImageRefId; // 车辆照片
+
+	@Length(max = 2, message = "source超过长度限制")
+	private java.lang.String source; // 数据来源
+
+	@Length(max = 400, message = "remark超过长度限制")
+	private java.lang.String remark; // 备注
+
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+	@Length(max = 2, message = "bridgeType超过长度限制")
+	private java.lang.String bridgeType; // 车桥类型
+
+	@Length(max = 36, message = "licenseImage2RefId超过长度限制")
+	private java.lang.String licenseImage2RefId; // 行驶证照片2
+
+	@Length(max = 36, message = "ocImage3RefId超过长度限制")
+	private java.lang.String ocImage3RefId; // 营运证照片3
+
+	@Length(max = 36, message = "ocImage2RefId超过长度限制")
+	private java.lang.String ocImage2RefId; // 营运证照片2
+}

@@ -1,0 +1,116 @@
+package com.gzzhwl.core.data.extdao.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.data.extdao.OrderInfoExtDao;
+import com.gzzhwl.core.data.model.LoadDriverInfo;
+import com.gzzhwl.core.data.model.OrderBaseInfo;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+import com.gzzhwl.core.page.Page;
+
+@Repository
+public class OrderInfoExtDaoImpl implements OrderInfoExtDao {
+	@Autowired
+	private DaoSupport dao;
+
+	@Override
+	public <E, K, V> Page<E> pageOrderList(String keyWord, String sort, int currentPage, int pageSizes) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (StringUtils.isNotBlank(keyWord)) {
+			params.put("keyWord", keyWord);
+			params.put("keyWordLike", "%" + keyWord + "%");
+		}
+		if (StringUtils.isNotBlank(sort)) {
+			params.put("sort", sort);
+
+		} else {
+			params.put("sort", "01");
+		}
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("type", OrderBaseInfo.ORDER_BILL);
+		params.put("loadType", OrderLoadInfo.LOAD_BILL.toString());
+		params.put("statusArray",
+				new String[] { LoadBillType.NOTVEHICLE.getCode(), LoadBillType.VEHICLECHECK.getCode(),
+						LoadBillType.CLOSETOSURFACE.getCode(), LoadBillType.DEPART.getCode(),
+						LoadBillType.UNLOAD.getCode(), LoadBillType.HAS_LOAD.getCode(), LoadBillType.ARRIVED.getCode(),
+						LoadBillType.ELECRECEIPT.getCode(), LoadBillType.PRINTRECEIPT.getCode(),
+						LoadBillType.CLOSED.getCode() });
+		return dao.page(PREFIX + ".getOrderList", params, currentPage, pageSizes);
+	}
+
+	@Override
+	public <E, K, V> Page<E> pageOrders(Map<K, V> params, int currentPage, int pageSizes) {
+		return dao.page(PREFIX + ".getOrders", params, currentPage, pageSizes);
+	}
+
+	@Override
+	public <E, K, V> Page<E> pageOrderReturnList(Map<K, V> params, int currentPage, int pageSizes) {
+		return dao.page(PREFIX + ".getOrderReturnList", params, currentPage, pageSizes);
+	}
+
+	@Override
+	public <K, V> Map<K, V> getLoadOrderInfo(String orderId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderId", orderId);
+
+		return dao.get(PREFIX + ".getLoadOrderInfo", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> getDriverOrderList(String idno, String[] statusArray) {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("idno", idno);
+		params.put("statusArray", statusArray);
+		params.put("isMajor", LoadDriverInfo.MAJOR_YES);
+		params.put("type", OrderLoadInfo.LOAD_BILL.toString());
+
+		return dao.find(PREFIX + ".getDriverOrderList", params);
+	}
+
+	@Override
+	public <E> E getOrderInfoByQuoted(String quotedId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("quotedId", quotedId);
+		return dao.get(PREFIX + ".getOrderInfoByQuoted", params);
+
+	}
+
+	@Override
+	public <E, K, V> Page<E> pageTransitList(Map<K, V> params, int currentPage, int pageSizes) {
+		return dao.page(PREFIX + ".getTransitList", params, currentPage, pageSizes);
+	}
+
+	@Override
+	public <K, V> Map<K, V> getTransitOrderDetail(Map<K, V> params) {
+		return dao.get(PREFIX + ".getTransitOrderDetail", params);
+	}
+
+	@Override
+	public <K, V> Map<K, V> getLoadBillByQuotedId(String quotedId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("quotedId", quotedId);
+		params.put("type", OrderLoadInfo.LOAD_BILL.toString());
+		return dao.get(PREFIX + ".getLoadBillByQuotedId", params);
+	}
+
+	@Override
+	public <K, V> Map<K, V> getOrderGenernalInfo(Map<K, V> params) {
+		return dao.get(PREFIX + ".getOrderGeneralInfo", params);
+	}
+
+	@Override
+	public <E, K, V> Page<E> pageRecieveList(Map<K, V> params, int currentPage, int pageSizes) {
+		return dao.page(PREFIX + ".getRecieveList", params, currentPage, pageSizes);
+	}
+
+}

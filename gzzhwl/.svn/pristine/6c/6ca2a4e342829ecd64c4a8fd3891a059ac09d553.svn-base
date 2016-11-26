@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.RemarkInfoDao">
+
+	<resultMap id="remarkInfoResultMap" type="RemarkInfo">
+		<id property="pid" column="pid" />
+		<id property="remarkId" column="remark_id" />
+		<result property="pid" column="pid" />
+		<result property="remarkId" column="remark_id" />
+		<result property="targetId" column="target_id" />
+		<result property="targetId" column="target_id" />
+		<result property="type" column="type" />
+		<result property="type" column="type" />
+		<result property="content" column="content" />
+		<result property="content" column="content" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="remarkInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="remarkInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="RemarkInfo">
+	   insert into zh_remark_info (
+	     pid,
+	     remark_id,
+	     target_id,
+	     type,
+	     content,
+	     created_by,
+	     created_time
+	   )values (
+	     #{pid},
+	     #{remarkId},
+	     #{targetId},
+	     #{type},
+	     #{content},
+	     #{createdBy},
+	     now()
+	   )
+	</insert>
+
+	<update id="update" parameterType="RemarkInfo">
+	   update zh_remark_info set
+	     pid=#{pid},
+	     remark_id=#{remarkId},
+	     target_id=#{targetId},
+	     type=#{type},
+	     content=#{content},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime}
+	   where 
+		remark_id=#{remarkId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="RemarkInfo">
+	   update zh_remark_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="pid != null">
+		       pid=#{pid},
+		     </if>
+		     <if test="remarkId != null">
+		       remark_id=#{remarkId},
+		     </if>
+		     <if test="targetId != null">
+		       target_id=#{targetId},
+		     </if>
+		     <if test="type != null">
+		       type=#{type},
+		     </if>
+		     <if test="content != null">
+		       content=#{content},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime}
+		     </if>
+	   </trim>
+	
+	   where 
+		remark_id=#{remarkId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_remark_info 
+	   where 
+	    remark_id=#{remarkId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="remarkInfoResultMap">
+	   select 
+	    pid,
+	    remark_id,
+	    target_id,
+	    type,
+	    content,
+	    created_by,
+	    created_time
+	   from zh_remark_info
+	   where 
+	    remark_id=#{remarkId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    pid,
+	    remark_id,
+	    target_id,
+	    type,
+	    content,
+	    created_by,
+	    created_time
+	   from zh_remark_info
+	   where 
+	    remark_id=#{remarkId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     pid,
+	     remark_id,
+	     target_id,
+	     type,
+	     content,
+	     created_by,
+	     created_time
+	   from zh_remark_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="pid != null">
+	        pid=#{pid}
+	     </if>
+	     <if test="remarkId != null">
+	        and remark_id=#{remarkId}
+	     </if>
+	     <if test="targetId != null">
+	        and target_id=#{targetId}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="content != null">
+	        and content=#{content}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     pid,
+	     remark_id,
+	     target_id,
+	     type,
+	     content,
+	     created_by,
+	     created_time
+	   from zh_remark_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="pid != null">
+	        pid=#{pid}
+	     </if>
+	     <if test="remarkId != null">
+	        and remark_id=#{remarkId}
+	     </if>
+	     <if test="targetId != null">
+	        and target_id=#{targetId}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="content != null">
+	        and content=#{content}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

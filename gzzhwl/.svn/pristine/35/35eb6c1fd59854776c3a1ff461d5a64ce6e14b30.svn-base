@@ -1,0 +1,38 @@
+package com.gzzhwl.admin.consignment.service;
+
+import java.util.Map;
+
+import com.gzzhwl.admin.consignment.vo.ConsignmentInfoVo;
+import com.gzzhwl.admin.consignment.vo.consignQueryVo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.exception.RestException;
+
+public interface ConsignmentInfoService {
+	// 生成合同
+	public String createConsignment(ConsignmentInfoVo consignmentInfoVo, Integer departId, String staffId);
+
+	// 运单合同分页查询
+	public Page<Map<String, Object>> pageConsignList(consignQueryVo queryVo, int currentPage, int pageSize);
+
+	// 查询运单明细
+	public Map<String, Object> getConsignDetail(String consignId);
+
+	// 根据订单Id查询运单
+	public Map<String, Object> getConsignByOrderId(String orderId);
+
+	/**
+	 * 根据订单ID获取当前的运单
+	 */
+	public String getCurrentConsign(String orderId) throws RestException;
+
+	// 取消运单合同
+	public void cancleConsign(String consignId, String staffId);
+
+	//发车时自动生成运单
+	public String createConsignment(String orderId,String customerBillNo,String goodsVolume,String goodsWeight, Integer departId, String staffId);
+
+	public String getFreightPrice(String chargeId, String unitPrice, String miles, String goodsVolume, String goodsWeight);
+
+	public Map<String, Object> getConsignInfo(String orderId);
+
+}

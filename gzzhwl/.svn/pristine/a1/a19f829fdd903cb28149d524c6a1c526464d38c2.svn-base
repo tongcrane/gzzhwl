@@ -1,0 +1,115 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_flow_status表
+ * @author mew
+ *
+ */
+public class FlowStatus implements Serializable {
+	@Length(max = 36, message = "flowId超过长度限制")
+	private java.lang.String flowId; // 流程标识
+	@Length(max = 2, message = "code超过长度限制")
+	private java.lang.String code; // 状态码
+	@Length(max = 50, message = "name超过长度限制")
+	private java.lang.String name; // 状态名称
+	@Length(max = 2, message = "type超过长度限制")
+	private java.lang.String type; // 类型
+	/** 开始节点 */
+	public static final String START_TYPE = "01";
+	/** 普通节点 */
+	public static final String NORMAL_TYPE = "02";
+	/** 结束节点 */
+	public static final String END_TYPE = "03";
+
+
+	/**
+     * 获取流程标识属性
+     *
+     * @return flowId
+     */
+	public java.lang.String getFlowId() {
+		return flowId;
+	}
+	
+	/**
+	 * 设置流程标识属性
+	 *
+	 * @param flowId
+	 */
+	public void setFlowId(java.lang.String flowId) {
+		this.flowId = flowId;
+	}
+	
+	/**
+     * 获取状态码属性
+     *
+     * @return code
+     */
+	public java.lang.String getCode() {
+		return code;
+	}
+	
+	/**
+	 * 设置状态码属性
+	 *
+	 * @param code
+	 */
+	public void setCode(java.lang.String code) {
+		this.code = code;
+	}
+	
+	/**
+     * 获取状态名称属性
+     *
+     * @return name
+     */
+	public java.lang.String getName() {
+		return name;
+	}
+	
+	/**
+	 * 设置状态名称属性
+	 *
+	 * @param name
+	 */
+	public void setName(java.lang.String name) {
+		this.name = name;
+	}
+	
+	/**
+     * 获取类型属性
+     *
+     * @return type
+     */
+	public java.lang.String getType() {
+		return type;
+	}
+	
+	/**
+	 * 设置类型属性
+	 *
+	 * @param type
+	 */
+	public void setType(java.lang.String type) {
+		this.type = type;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("FlowStatus");
+        sb.append("{flowId=").append(flowId);
+        sb.append(", code=").append(code);
+        sb.append(", name=").append(name);
+        sb.append(", type=").append(type);
+		sb.append('}');
+        return sb.toString();
+    }
+}

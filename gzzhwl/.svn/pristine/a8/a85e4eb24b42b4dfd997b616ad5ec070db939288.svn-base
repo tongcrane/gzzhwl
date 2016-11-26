@@ -1,0 +1,255 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_order_return_log表
+ * @author mew
+ *
+ */
+public class OrderReturnLog implements Serializable {
+	private java.lang.Long pid; // 自增标识
+	@Length(max = 36, message = "logId超过长度限制")
+	private java.lang.String logId; // 记录标识
+	@Length(max = 36, message = "sourceId超过长度限制")
+	private java.lang.String sourceId; // 货源标识
+	@Length(max = 36, message = "orderId超过长度限制")
+	private java.lang.String orderId; // 订单标识
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 100, message = "remark超过长度限制")
+	private java.lang.String remark; // 备注
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取自增标识属性
+     *
+     * @return pid
+     */
+	public java.lang.Long getPid() {
+		return pid;
+	}
+	
+	/**
+	 * 设置自增标识属性
+	 *
+	 * @param pid
+	 */
+	public void setPid(java.lang.Long pid) {
+		this.pid = pid;
+	}
+	
+	/**
+     * 获取记录标识属性
+     *
+     * @return logId
+     */
+	public java.lang.String getLogId() {
+		return logId;
+	}
+	
+	/**
+	 * 设置记录标识属性
+	 *
+	 * @param logId
+	 */
+	public void setLogId(java.lang.String logId) {
+		this.logId = logId;
+	}
+	
+	/**
+     * 获取货源标识属性
+     *
+     * @return sourceId
+     */
+	public java.lang.String getSourceId() {
+		return sourceId;
+	}
+	
+	/**
+	 * 设置货源标识属性
+	 *
+	 * @param sourceId
+	 */
+	public void setSourceId(java.lang.String sourceId) {
+		this.sourceId = sourceId;
+	}
+	
+	/**
+     * 获取订单标识属性
+     *
+     * @return orderId
+     */
+	public java.lang.String getOrderId() {
+		return orderId;
+	}
+	
+	/**
+	 * 设置订单标识属性
+	 *
+	 * @param orderId
+	 */
+	public void setOrderId(java.lang.String orderId) {
+		this.orderId = orderId;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取备注属性
+     *
+     * @return remark
+     */
+	public java.lang.String getRemark() {
+		return remark;
+	}
+	
+	/**
+	 * 设置备注属性
+	 *
+	 * @param remark
+	 */
+	public void setRemark(java.lang.String remark) {
+		this.remark = remark;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改人属性
+     *
+     * @return updatedBy
+     */
+	public java.lang.String getUpdatedBy() {
+		return updatedBy;
+	}
+	
+	/**
+	 * 设置修改人属性
+	 *
+	 * @param updatedBy
+	 */
+	public void setUpdatedBy(java.lang.String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("OrderReturnLog");
+        sb.append("{pid=").append(pid);
+        sb.append(", logId=").append(logId);
+        sb.append(", sourceId=").append(sourceId);
+        sb.append(", orderId=").append(orderId);
+        sb.append(", status=").append(status);
+        sb.append(", remark=").append(remark);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedBy=").append(updatedBy);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

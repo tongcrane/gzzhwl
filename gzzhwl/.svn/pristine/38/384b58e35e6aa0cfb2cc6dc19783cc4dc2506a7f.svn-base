@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.AccountInfoDao">
+
+	<resultMap id="accountInfoResultMap" type="AccountInfo">
+		<id property="accountId" column="account_id" />
+		<result property="telphone" column="telphone" />
+		<result property="password" column="password" />
+		<result property="nickName" column="nick_name" />
+		<result property="userHead" column="user_head" />
+		<result property="accountSource" column="account_source" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="isStaff" column="is_staff" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="accountInfoResultMap">
+		<result property="lastLoginTime" column="last_login_time"/>
+		<result property="realName" column="real_name"/>
+		<result property="idno" column="idno"/>
+		<result property="companyFullName" column="company_full_name"/>
+		<result property="operationTime" column="operation_time"/>
+		<result property="checkBy" column="check_by"/>
+	</resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="accountInfoResultMap">
+		<result property="agentType" column="agent_type"/>
+		<result property="checkStatus" column="check_status"/>
+		<result property="realName" column="real_name"/>
+		<result property="checkBy" column="check_by"/>
+	</resultMap>
+
+	<insert id="insert" parameterType="AccountInfo">
+	   insert into zh_account_info (
+	     account_id,
+	     telphone,
+	     password,
+	     nick_name,
+	     user_head,
+	     account_source,
+	     created_time,
+	     updated_time,
+	     status,
+	     is_deleted
+	   )values (
+	     #{accountId},
+	     #{telphone},
+	     #{password},
+	     #{nickName},
+	     #{userHead},
+	     #{accountSource},
+	     now(),
+	     now(),
+	     #{status},
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="AccountInfo">
+	   update zh_account_info set
+	     account_id=#{accountId},
+	     telphone=#{telphone},
+	     password=#{password},
+	     nick_name=#{nickName},
+	     user_head=#{userHead},
+	     account_source=#{accountSource},
+	     created_time=#{createdTime},
+	     updated_time=#{updatedTime},
+	     status=#{status},
+	     is_deleted=#{isDeleted}
+	   where 
+	    account_id=#{accountId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="AccountInfo">
+	   update zh_account_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="accountId != null">
+		       account_id=#{accountId},
+		     </if>
+		     <if test="telphone != null">
+		       telphone=#{telphone},
+		     </if>
+		     <if test="password != null">
+		       password=#{password},
+		     </if>
+		     <if test="nickName != null">
+		       nick_name=#{nickName},
+		     </if>
+		     <if test="userHead != null">
+		       user_head=#{userHead},
+		     </if>
+		     <if test="accountSource != null">
+		       account_source=#{accountSource},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="updatedTime != null">
+		       updated_time=#{updatedTime},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    account_id=#{accountId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_account_info 
+	   where 
+	    account_id=#{accountId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="accountInfoResultMap">
+	   select 
+	    account_id,
+	    telphone,
+	    password,
+	    nick_name,
+	    user_head,
+	    account_source,
+	    created_time,
+	    updated_time,
+	    status,
+	    is_deleted
+	   from zh_account_info
+	   where 
+	    account_id=#{accountId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    account_id,
+	    telphone,
+	    password,
+	    nick_name,
+	    user_head,
+	    account_source,
+	    created_time,
+	    updated_time,
+	    status,
+	    is_deleted
+	   from zh_account_info
+	   where 
+	    account_id=#{accountId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     account_id,
+	     telphone,
+	     password,
+	     nick_name,
+	     user_head,
+	     account_source,
+	     created_time,
+	     updated_time,
+	     status,
+	     is_deleted
+	   from zh_account_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="accountId != null">
+	        account_id=#{accountId}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="password != null">
+	        and password=#{password}
+	     </if>
+	     <if test="nickName != null">
+	        and nick_name=#{nickName}
+	     </if>
+	     <if test="userHead != null">
+	        and user_head=#{userHead}
+	     </if>
+	     <if test="accountSource != null">
+	        and account_source=#{accountSource}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     account_id,
+	     telphone,
+	     password,
+	     nick_name,
+	     user_head,
+	     account_source,
+	     created_time,
+	     updated_time,
+	     status,
+	     is_deleted
+	   from zh_account_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="accountId != null">
+	        account_id=#{accountId}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="password != null">
+	        and password=#{password}
+	     </if>
+	     <if test="nickName != null">
+	        and nick_name=#{nickName}
+	     </if>
+	     <if test="userHead != null">
+	        and user_head=#{userHead}
+	     </if>
+	     <if test="accountSource != null">
+	        and account_source=#{accountSource}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="findAccountInfoToLogin" parameterType="map" resultMap="accountInfoResultMap">
+	   select 
+	    zai.account_id,
+	    zai.nick_name,
+	    zai.user_head,
+	    zai.telphone,
+	    zai.password,
+	    zai.account_source,
+	    zai.created_time,
+	    zai.updated_time,
+	    zai.status,
+	    zai.is_deleted,
+		zid.is_staff
+	   from zh_account_info zai
+		left join zh_internal_driver zid on zai.account_id = zid.account_id
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loginId != null">
+	        zai.account_id=#{accountId}
+	     </if>
+	     <if test="telphone != null">
+	        and zai.telphone = #{telphone}
+	     </if>
+	     <if test="status != null">
+	        and zai.status=#{status}
+	     </if>
+	     <if test="isDel != null">
+	        and zai.is_deleted=#{isDel}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="pageAccountList" parameterType="map" resultMap="pageResultMap">
+		select 
+			zai.account_id,
+			zai.user_head,
+			zai.telphone,
+			zai.status,
+			zai.created_time,
+			zagi.real_name,
+			zagi.idno,
+			zagi.company_full_name,
+			(
+			select
+			created_time
+			from
+				zh_account_operation_log
+			where
+				account_id = zai.account_id
+			order by
+				created_time DESC
+			limit 1
+			) as operation_time,
+			(select login_time from zh_login_history 
+			where account_id=zai.account_id
+			order by login_time desc limit 1) as last_login_time,
+			(SELECT
+			zsi.real_name
+			FROM
+			zh_account_operation_log zaol inner join zh_staff_info zsi on zaol.created_by=zsi.staff_id
+			WHERE
+			zaol.account_id = zai.account_id
+			ORDER BY
+			zaol.created_time DESC
+			LIMIT 1) as check_by
+		from zh_account_info zai left join zh_agent_info zagi on zai.account_id=zagi.account_id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="isDeleted!=null">
+				zai.is_deleted=#{isDeleted}
+			</if>
+			<if test="telphone != null">
+	        	and zai.telphone=#{telphone}
+	     	</if>
+	     	<if test="realName != null">
+	        	and zagi.real_name like #{realName}
+	     	</if>
+	     	<if test="status != null">
+	        	and zai.status=#{status}
+	     	</if>
+	     	<if test="queryContent!=null">
+	     		and (zai.telphone like #{queryContent} or zagi.real_name like #{queryContent})
+	     	</if>
+		</trim>
+		order by zai.status desc,operation_time desc
+	</select>
+	
+	<select id="getAccountInfo" parameterType="map" resultMap="findResultMap">
+	   select 
+	    zai.account_id,
+	    zai.telphone,
+	    zai.password,
+	    zai.nick_name,
+	    zai.user_head,
+	    zai.account_source,
+	    zai.created_time,
+	    zai.updated_time,
+	    zai.status,
+	    zai.is_deleted,
+	    zagi.agent_type,
+	    zagi.real_name,
+	    zagi.idno,
+	    zagi.status as check_status,
+	    (SELECT
+			zsi.real_name
+			FROM
+			zh_account_verify_log zavl inner join zh_staff_info zsi on zavl.created_by=zsi.staff_id
+			WHERE
+			zavl.target_id = #{accountId} and target_type=#{targetType}
+			ORDER BY
+			zavl.created_time DESC
+			LIMIT 1) as check_by
+	   from zh_account_info zai 
+	   left join zh_agent_info zagi on zai.account_id=zagi.account_id and zagi.is_deleted = #{isDeleted}
+	   where 
+	    zai.account_id = #{accountId} 
+	    and zai.is_deleted = #{isDeleted}
+	</select>
+	
+	<select id="getAccountIdByLoadId" parameterType="map" resultMap="findResultMap">
+	   select
+		t4.account_id
+		from
+		zh_order_load_info t1
+		inner join 
+		zh_load_driver_info t2
+		on t1.load_id = t2.load_id and t2.is_major=#{isMajor}
+		inner join
+		zh_real_driver_info t3
+		on t3.driver_info_id = t2.driver_info_id
+		inner join
+		zh_agent_info t4
+		on t4.idno = t3.idno
+		where
+		t1.load_id=#{loadId}
+	</select>
+</mapper> 

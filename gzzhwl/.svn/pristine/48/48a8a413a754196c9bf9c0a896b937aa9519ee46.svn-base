@@ -1,0 +1,156 @@
+package com.gzzhwl.admin.load.vo;
+
+import java.util.List;
+
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
+
+public class LoadInfoVO {
+	private java.lang.String orderId; // 订单标识
+	private java.lang.String vehicleInfoId; // 车辆信息标识
+	private java.lang.String loadInfoId; // 车挂信息标识
+	private java.lang.String needArriveTime; // 要求达到场地时间
+	private java.lang.String freightPrice; // 运费
+	private java.lang.String isPredict; // 是否预估
+	private java.lang.String prePay; // 预付现金
+	private java.lang.String oilPay; // 预付油费
+	private java.lang.String oilCardNo; // 油卡卡号
+	private java.lang.String paymentType; // 结算方式
+	private java.lang.String paymentName; // 结算对象名称
+	private java.lang.String supplyId; // 结算对象
+	private java.lang.String remark; // 备注
+	private List<String> driverList; // 司机信息标识
+
+	public java.lang.String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(java.lang.String orderId) {
+		this.orderId = orderId;
+	}
+
+	public java.lang.String getVehicleInfoId() {
+		return vehicleInfoId;
+	}
+
+	public void setVehicleInfoId(java.lang.String vehicleInfoId) {
+		this.vehicleInfoId = vehicleInfoId;
+	}
+
+	public java.lang.String getLoadInfoId() {
+		return loadInfoId;
+	}
+
+	public void setLoadInfoId(java.lang.String loadInfoId) {
+		this.loadInfoId = loadInfoId;
+	}
+
+	public java.lang.String getNeedArriveTime() {
+		return needArriveTime;
+	}
+
+	public void setNeedArriveTime(java.lang.String needArriveTime) {
+		this.needArriveTime = needArriveTime;
+	}
+
+	public java.lang.String getFreightPrice() {
+		return freightPrice;
+	}
+
+	public void setFreightPrice(java.lang.String freightPrice) {
+		this.freightPrice = freightPrice;
+	}
+
+	public java.lang.String getIsPredict() {
+		return isPredict;
+	}
+
+	public void setIsPredict(java.lang.String isPredict) {
+		this.isPredict = isPredict;
+	}
+
+	public java.lang.String getPrePay() {
+		return prePay;
+	}
+
+	public void setPrePay(java.lang.String prePay) {
+		this.prePay = prePay;
+	}
+
+	public java.lang.String getOilPay() {
+		return oilPay;
+	}
+
+	public void setOilPay(java.lang.String oilPay) {
+		this.oilPay = oilPay;
+	}
+
+	public java.lang.String getOilCardNo() {
+		return oilCardNo;
+	}
+
+	public void setOilCardNo(java.lang.String oilCardNo) {
+		this.oilCardNo = oilCardNo;
+	}
+
+	public java.lang.String getPaymentType() {
+		return paymentType;
+	}
+
+	public void setPaymentType(java.lang.String paymentType) {
+		this.paymentType = paymentType;
+	}
+
+	public java.lang.String getPaymentName() {
+		return paymentName;
+	}
+
+	public void setPaymentName(java.lang.String paymentName) {
+		this.paymentName = paymentName;
+	}
+
+	public java.lang.String getSupplyId() {
+		return supplyId;
+	}
+
+	public void setSupplyId(java.lang.String supplyId) {
+		this.supplyId = supplyId;
+	}
+
+	public java.lang.String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(java.lang.String remark) {
+		this.remark = remark;
+	}
+
+	public List<String> getDriverList() {
+		return driverList;
+	}
+
+	public void setDriverList(List<String> driverList) {
+		this.driverList = driverList;
+	}
+
+	public static void main(String[] args) {
+		LoadInfoVO info = new LoadInfoVO();
+		info.setFreightPrice("8000.00");
+		info.setIsPredict("01");
+		info.setNeedArriveTime("2016-07-28 90:00");
+		info.setOilCardNo("6050659790507");
+		info.setOilPay("300.00");
+		info.setOrderId("daaecc49-866c-4c63-954a-8ed16750fb47");
+		info.setPaymentType("月结");
+		info.setPrePay("500.00");
+		info.setRemark("还不错");
+		info.setVehicleInfoId("60afb097-b451-47a2-865f-5d05743b2ef9");
+		info.setLoadInfoId("383c7d46-e110-4295-b5c7-85b592b84a60");
+		List<String> driverList = Lists.newArrayList();
+		driverList.add("fa60df3a-b639-4e85-a66a-d4885e483b0e");
+		driverList.add("68bc5e15-b90b-4fa7-a7b3-1853135d6d21");
+		info.setDriverList(driverList);
+		System.out.println(JSON.toJSONString(info));
+	}
+
+}

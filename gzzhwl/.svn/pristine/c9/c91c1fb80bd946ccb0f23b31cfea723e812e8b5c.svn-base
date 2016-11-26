@@ -1,0 +1,29 @@
+package com.gzzhwl.core.data.extdao;
+
+
+import java.util.List;
+import java.util.Map;
+
+import com.gzzhwl.core.constant.DataSource;
+
+/**
+ * 数据访问接口
+ *
+ */
+public interface LoadFeedbackLogExtDao {
+    public final static String PREFIX = LoadFeedbackLogExtDao.class.getName();
+    
+    /**
+     * 获取异常反馈
+     * @param loadId
+     * @param loadFeedBackType
+     * @param loadBillType
+     * @return
+     */
+    public <T, K, V> List<T> getFeedBackList(String loadId,DataSource source,String[] loadFeedBackTypes,String isException,String isEnd,String[] loadBillTypes);
+
+	public List<Map<String, Object>> findFeedBackOnTrans(Map<String, Object> params);
+
+}
+
+

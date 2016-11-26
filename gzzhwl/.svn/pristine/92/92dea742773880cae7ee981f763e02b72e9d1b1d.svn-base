@@ -1,0 +1,131 @@
+package com.gzzhwl.tms.service.impl;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.source.service.SourceService;
+import com.gzzhwl.core.data.dao.QuotedInfoDao;
+import com.gzzhwl.core.data.extdao.QuotedInfoExtDao;
+import com.gzzhwl.core.data.model.QuotedInfo;
+import com.gzzhwl.rest.exception.HttpException;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.http.HttpService;
+import com.gzzhwl.rest.http.model.HttpConfig;
+import com.gzzhwl.tms.model.Operate;
+import com.gzzhwl.tms.service.TMSApiService;
+
+@Service
+public class TMSApiServiceImpl implements TMSApiService {
+	@Autowired
+	private HttpService httpService;
+	@Autowired
+	private SourceService sourceService;
+	@Autowired
+	private QuotedInfoDao quotedInfoDao;
+	@Autowired
+	private QuotedInfoExtDao quotedInfoExtDao;
+
+	@Override
+	public boolean doOperateOrder(String sourceId, Operate operate, String reason) throws RestException {
+		String orderId = sourceService.getOrderId(sourceId);
+
+		final String url = "/source/operate";
+		Map<String, Object> param = Maps.newHashMap();
+		param.put("orderId", orderId);
+		param.put("opType", operate.getCode());
+		param.put("reason", reason);
+		String body = JSON.toJSONString(param);
+		try {
+			String json = httpService.postAsBody(url, body, HttpConfig.createDefault());
+			json = "{\"status\":{\"errorMsg\":\"\",\"statusCode\":\"200\"},\"data\":true}";
+
+			return true;
+		} catch (HttpException e) {
+			e.printStackTrace();
+			throw new RestException("90005", "无法连接到TMS服务器");
+		}
+
+	}
+
+	@Override
+	public boolean doBidOrder(String quotedId) throws RestException {
+		QuotedInfo quotedInfo = quotedInfoDao.get(quotedId);
+		String sourceId = quotedInfo.getSourceId();
+		String orderId = sourceService.getOrderId(sourceId);
+		String price = quotedInfo.getPrice();
+
+		final String url = "/source/bid";
+		Map<String, Object> param = Maps.newHashMap();
+		param.put("orderId", orderId);
+		param.put("bidPrice", price);
+		String body = JSON.toJSONString(param);
+		try {
+			String json = httpService.postAsBody(url, body, HttpConfig.createDefault());
+			json = "{\"status\":{\"errorMsg\":\"\",\"statusCode\":\"200\"},\"data\":true}";
+			return true;
+		} catch (HttpException e) {
+			e.printStackTrace();
+			throw new RestException("90005", "无法连接到TMS服务器");
+		}
+	}
+
+	@Override
+	public boolean doReturnResponse(String sourceId, boolean agree) throws RestException {
+		String orderId = sourceService.getOrderId(sourceId);
+
+		final String url = "/order/returnResponse";
+		Map<String, Object> param = Maps.newHashMap();
+		param.put("orderId", orderId);
+		param.put("response", agree ? "01" : "02");
+		String body = JSON.toJSONString(param);
+		try {
+			String json = httpService.postAsBody(url, body, HttpConfig.createDefault());
+			json = "{\"status\":{\"errorMsg\":\"\",\"statusCode\":\"200\"},\"data\":true}";
+			return true;
+		} catch (HttpException e) {
+			e.printStackTrace();
+			throw new RestException("90005", "无法连接到TMS服务器");
+		}
+	}
+
+	@Override
+	public boolean doUnbid(String sourceId) throws RestException {
+		String orderId = sourceService.getOrderId(sourceId);
+
+		final String url = "/source/unbid";
+		Map<String, Object> param = Maps.newHashMap();
+		param.put("orderId", orderId);
+		String body = JSON.toJSONString(param);
+		try {
+			String json = httpService.postAsBody(url, body, HttpConfig.createDefault());
+			json = "{\"status\":{\"errorMsg\":\"\",\"statusCode\":\"200\"},\"data\":true}";
+			return true;
+		} catch (HttpException e) {
+			e.printStackTrace();
+			throw new RestException("90005", "无法连接到TMS服务器");
+		}
+	}
+
+	@Override
+	public boolean doFinishBid(String loadId) throws RestException {
+		Map<String, Object> vadInfo = quotedInfoExtDao.getLoadVADInfo(loadId);
+		if (vadInfo != null) {
+			vadInfo.remove("loadId");
+			vadInfo.remove("price");
+		}
+		final String url = "/source/vadinfo";
+		String body = JSON.toJSONString(vadInfo);
+		try {
+			String json = httpService.postAsBody(url, body, HttpConfig.createDefault());
+			json = "{\"status\":{\"errorMsg\":\"\",\"statusCode\":\"200\"},\"data\":true}";
+			return true;
+		} catch (HttpException e) {
+			e.printStackTrace();
+			throw new RestException("90005", "无法连接到TMS服务器");
+		}
+	}
+}

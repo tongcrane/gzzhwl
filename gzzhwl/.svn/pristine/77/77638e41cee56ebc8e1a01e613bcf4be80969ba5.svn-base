@@ -1,0 +1,17 @@
+package com.gzzhwl.admin.store.service;
+
+import java.util.List;
+
+import com.gzzhwl.core.data.model.StoreAddrInfo;
+import com.gzzhwl.core.data.model.StoreInfo;
+import com.gzzhwl.rest.exception.RestException;
+
+public interface StoreService {
+
+	public List<StoreInfo> listStore(String staffId) throws RestException;
+
+	public List<StoreAddrInfo> listStoreAddr(String storeId, String staffId) throws RestException;
+
+	public StoreAddrInfo getStoreAddr(String addrId) throws RestException;
+
+}

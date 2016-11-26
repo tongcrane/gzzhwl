@@ -1,0 +1,59 @@
+package com.gzzhwl.admin.load.validator;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+
+import com.gzzhwl.admin.load.vo.LoadDriverVO;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.data.model.LoadDriverInfo;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+public class LoadValidate {
+	public static void valid_load_id(String loadId) {
+		if (StringUtils.isBlank(loadId)) {
+			throw new RestException(ErrorCode.ERROR_110001.getCode(), ErrorCode.ERROR_110001.getDesc());
+		}
+	}
+
+	public static void valid_not_exist(boolean exist) {
+		if (!exist) {
+			throw new RestException(ErrorCode.ERROR_110002.getCode(), ErrorCode.ERROR_110002.getDesc());
+		}
+	}
+
+	public static void valid_timestamp(String timeStamp) {
+		if (ValidateUtils.isEmpty(timeStamp)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "timeStamp " + ErrorCode.ERROR_900003.getDesc());
+		}
+		if (!DateUtils.isDefaultValidTime(timeStamp)) {
+			throw new RestException(ErrorCode.ERROR_900005.getCode(), ErrorCode.ERROR_900005.getDesc());
+		}
+	}
+
+	public static void valid_driver_list(List<LoadDriverVO> driverList) {
+		if (CollectionUtils.isEmpty(driverList)) {
+			throw new RestException("110003", "请选择司机");
+		}
+		Set<String> set = new HashSet<String>();
+		int majorCount = 0;
+		for (LoadDriverVO loadDriver : driverList) {
+			set.add(loadDriver.getDriverInfoId());
+			String isMajor = loadDriver.getIsMajor();
+			if (StringUtils.equals(isMajor, LoadDriverInfo.MAJOR_YES)) {
+				majorCount++;
+			}
+		}
+		if (majorCount != 1) {
+			throw new RestException("110003", "只能有一个主驾驶");
+		}
+		if (set.size() != driverList.size()) {
+			throw new RestException("110003", "不能添加相同的司机");
+		}
+	}
+}

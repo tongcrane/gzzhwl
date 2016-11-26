@@ -1,0 +1,113 @@
+package com.gzzhwl.admin.payables.service.impl;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.consignment.service.ConsignmentInfoService;
+import com.gzzhwl.admin.contract.service.ContractService;
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.admin.payables.service.PayablesService;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.dao.OrderLoadInfoDao;
+import com.gzzhwl.core.data.extdao.OrderLoadInfoExtDao;
+import com.gzzhwl.core.data.model.FlowStatus;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.utils.ValidateUtils;
+
+@Service
+public class PayablesServiceImpl implements PayablesService {
+
+	@Autowired
+	private OrderLoadInfoExtDao orderLoadInfoExtDao;
+	@Autowired
+	private ContractService contractService;
+	@Autowired
+	private OrderLoadInfoDao orderLoadInfoDao;
+	@Autowired
+	private LoadFeedbackService loadFeedbackService;
+	@Autowired
+	private RegionService regionService;
+
+	@Override
+	public Map<String, Object> getPayDetail(String loadId) {
+
+		Map<String, Object> resMap = Maps.newHashMap();
+
+		Map<String, Object> payMap = orderLoadInfoExtDao.payLoadDetail(loadId);
+		
+
+		String startCodeP = (String) payMap.get("startCodeP");
+		String startCodePCn = this.getCodeCn(startCodeP);
+		payMap.put("startCodePCn", startCodePCn);
+
+		String startCodeC = (String) payMap.get("startCodeC");
+		String startCodeCCn = this.getCodeCn(startCodeC);
+		payMap.put("startCodeCCn", startCodeCCn);
+
+		String endCodeP = (String) payMap.get("endCodeP");
+		String endCodePCn = this.getCodeCn(endCodeP);
+		payMap.put("endCodePCn", endCodePCn);
+
+		String endCodeC = (String) payMap.get("endCodeC");
+		String endCodeCCn = this.getCodeCn(endCodeC);
+		payMap.put("endCodeCCn", endCodeCCn);
+		
+		
+		List<Map<String,Object>> feedBackList = loadFeedbackService.getLoadFeedbackList(loadId, null, new String[]{LoadFeedBackType.VEHICLE.getCode()}, LoadFeedbackLog.ISEND_YES, null, null);
+
+		resMap.put("payVehicleInfo", payMap);
+		resMap.put("payChargesInfo", this.getPayChargesInfo(loadId));
+		resMap.put("feedBackList", feedBackList);
+
+		return resMap;
+	}
+	
+	private String getCodeCn(String code) {
+		if (StringUtils.isNotBlank(code)) {
+			RegionInfo startCodePCn = regionService.findByCode(code);
+			if (startCodePCn != null) {
+				return startCodePCn.getRegionName();
+			}
+		}
+		return "";
+	}
+
+	@Override
+	public Map<String, Object> getPayChargesInfo(String loadId) {
+
+		String contractId = contractService.getCurrentContract(loadId);
+
+		OrderLoadInfo orderLoadInfo = orderLoadInfoDao.get(contractId);
+
+		String prePay = orderLoadInfo.getPrePay()!=null?orderLoadInfo.getPrePay():"0";// 预付现金
+		String oilPay = orderLoadInfo.getOilPay()!=null?orderLoadInfo.getOilPay():"0";// 预付油费
+		String oilCardNo = orderLoadInfo.getOilCardNo();// 油卡卡号
+		String freightPrice = orderLoadInfo.getFreightPrice()!=null?orderLoadInfo.getFreightPrice():"0";// 纯运费
+		String feedBackPrice = loadFeedbackService.getPayFeedbackCharges(loadId);// 异常反馈费用
+		if(feedBackPrice==null){
+			feedBackPrice ="0";
+		}
+		BigDecimal totalPrice = new BigDecimal(prePay).add(new BigDecimal(oilPay)).add(new BigDecimal(freightPrice)).add(new BigDecimal(feedBackPrice));
+
+		Map<String, Object> chargesMap = Maps.newHashMap();
+		chargesMap.put("prePay", prePay);
+		chargesMap.put("oilPay", oilPay);
+		chargesMap.put("oilCardNo", oilCardNo);
+		chargesMap.put("freightPrice", freightPrice);
+		chargesMap.put("feedBackPrice", feedBackPrice);
+		chargesMap.put("totalPrice", new java.text.DecimalFormat("#.00").format(totalPrice));
+
+		return chargesMap;
+	}
+
+}

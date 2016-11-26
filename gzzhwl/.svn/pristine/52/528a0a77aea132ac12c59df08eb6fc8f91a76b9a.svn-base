@@ -1,0 +1,45 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+import lombok.Data;
+import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_used_info_his表
+ * @author mew
+ *
+ */
+@Data
+@ToString
+public class UsedInfoHis implements Serializable {
+
+	@Length(max = 36, message = "hisId超过长度限制")
+	private java.lang.String hisId; // 记录标识
+
+	@Length(max = 36, message = "loadId超过长度限制")
+	private java.lang.String loadId; // 提货单标识
+
+	@Length(max = 36, message = "targetId超过长度限制")
+	private java.lang.String targetId; // 使用对象
+
+	@Length(max = 2, message = "targetType超过长度限制")
+	private java.lang.String targetType; // 对象类型
+
+	@Length(max = 2, message = "srcStatus超过长度限制")
+	private java.lang.String srcStatus; // 原始状态
+
+	@Length(max = 2, message = "destStatus超过长度限制")
+	private java.lang.String destStatus; // 目标状态
+
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	
+	public static final String INUSED = "01";// 使用中
+	public static final String UNUSED = "00";// 未使用
+}

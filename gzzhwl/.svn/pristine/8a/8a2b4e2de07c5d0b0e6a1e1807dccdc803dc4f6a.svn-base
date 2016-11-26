@@ -1,0 +1,760 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_real_driver_info表
+ * @author mew
+ *
+ */
+public class RealDriverInfo implements Serializable {
+	@Length(max = 36, message = "driverInfoId超过长度限制")
+	private java.lang.String driverInfoId; // 驾驶员信息标识
+	@Length(max = 30, message = "seqNo超过长度限制")
+	private java.lang.String seqNo; // 驾驶员编号
+	@Length(max = 100, message = "realName超过长度限制")
+	private java.lang.String realName; // 真实姓名
+	@Length(max = 50, message = "idno超过长度限制")
+	private java.lang.String idno; // 身份证号
+	@Length(max = 2, message = "sex超过长度限制")
+	private java.lang.String sex; // 性别
+	@Length(max = 10, message = "birthday超过长度限制")
+	private java.lang.String birthday; // 出生年月
+	@Length(max = 400, message = "criminalRecord超过长度限制")
+	private java.lang.String criminalRecord; // 犯罪记录
+	@Length(max = 11, message = "telphone超过长度限制")
+	private java.lang.String telphone; // 手机号
+	@Length(max = 10, message = "attributes超过长度限制")
+	private java.lang.String attributes; // 驾驶员属性
+	@Length(max = 10, message = "areaCode超过长度限制")
+	private java.lang.String areaCode; // 所在区域
+	@Length(max = 10, message = "address超过长度限制")
+	private java.lang.String address; // 详细地址
+	@Length(max = 10, message = "dlType超过长度限制")
+	private java.lang.String dlType; // 驾驶证类型
+	@Length(max = 10, message = "dlIssueDate超过长度限制")
+	private java.lang.String dlIssueDate; // 驾驶证领证日期
+	@Length(max = 10, message = "dlStartDate超过长度限制")
+	private java.lang.String dlStartDate; // 驾驶证有效期(起)
+	@Length(max = 10, message = "dlEndDate超过长度限制")
+	private java.lang.String dlEndDate; // 驾驶证有效期(止)
+	@Length(max = 50, message = "qcNo超过长度限制")
+	private java.lang.String qcNo; // 从业资格证号
+	@Length(max = 10, message = "qcType超过长度限制")
+	private java.lang.String qcType; // 从业资格证类型
+	@Length(max = 10, message = "qcIssueDate超过长度限制")
+	private java.lang.String qcIssueDate; // 从业资格领证日期
+	@Length(max = 10, message = "qcStartDate超过长度限制")
+	private java.lang.String qcStartDate; // 从业资格证有效期(起)
+	@Length(max = 10, message = "qcEndDate超过长度限制")
+	private java.lang.String qcEndDate; // 从业资格证有效期(止)
+	@Length(max = 36, message = "idFImageRefId超过长度限制")
+	private java.lang.String idFImageRefId; // 身份照片(正)
+	@Length(max = 36, message = "idBImageRefId超过长度限制")
+	private java.lang.String idBImageRefId; // 身份照片(反)
+	@Length(max = 36, message = "photoFImageRefId超过长度限制")
+	private java.lang.String photoFImageRefId; // 个人照片
+	@Length(max = 36, message = "drivingFImageRefId超过长度限制")
+	private java.lang.String drivingFImageRefId; // 驾驶证照片(正)
+	@Length(max = 36, message = "drivingBImageRefId超过长度限制")
+	private java.lang.String drivingBImageRefId; // 驾驶证照片(反)
+	@Length(max = 36, message = "qualifiImageRefId超过长度限制")
+	private java.lang.String qualifiImageRefId; // 从业资格证照片
+	@Length(max = 2, message = "source超过长度限制")
+	private java.lang.String source; // 数据来源
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 36, message = "belongDepartId超过长度限制")
+	private java.lang.String belongDepartId; // 所属部门
+	@Length(max = 36, message = "useDepartId超过长度限制")
+	private java.lang.String useDepartId; // 使用部门
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取驾驶员信息标识属性
+     *
+     * @return driverInfoId
+     */
+	public java.lang.String getDriverInfoId() {
+		return driverInfoId;
+	}
+	
+	/**
+	 * 设置驾驶员信息标识属性
+	 *
+	 * @param driverInfoId
+	 */
+	public void setDriverInfoId(java.lang.String driverInfoId) {
+		this.driverInfoId = driverInfoId;
+	}
+	
+	/**
+     * 获取驾驶员编号属性
+     *
+     * @return seqNo
+     */
+	public java.lang.String getSeqNo() {
+		return seqNo;
+	}
+	
+	/**
+	 * 设置驾驶员编号属性
+	 *
+	 * @param seqNo
+	 */
+	public void setSeqNo(java.lang.String seqNo) {
+		this.seqNo = seqNo;
+	}
+	
+	/**
+     * 获取真实姓名属性
+     *
+     * @return realName
+     */
+	public java.lang.String getRealName() {
+		return realName;
+	}
+	
+	/**
+	 * 设置真实姓名属性
+	 *
+	 * @param realName
+	 */
+	public void setRealName(java.lang.String realName) {
+		this.realName = realName;
+	}
+	
+	/**
+     * 获取身份证号属性
+     *
+     * @return idno
+     */
+	public java.lang.String getIdno() {
+		return idno;
+	}
+	
+	/**
+	 * 设置身份证号属性
+	 *
+	 * @param idno
+	 */
+	public void setIdno(java.lang.String idno) {
+		this.idno = idno;
+	}
+	
+	/**
+     * 获取性别属性
+     *
+     * @return sex
+     */
+	public java.lang.String getSex() {
+		return sex;
+	}
+	
+	/**
+	 * 设置性别属性
+	 *
+	 * @param sex
+	 */
+	public void setSex(java.lang.String sex) {
+		this.sex = sex;
+	}
+	
+	/**
+     * 获取出生年月属性
+     *
+     * @return birthday
+     */
+	public java.lang.String getBirthday() {
+		return birthday;
+	}
+	
+	/**
+	 * 设置出生年月属性
+	 *
+	 * @param birthday
+	 */
+	public void setBirthday(java.lang.String birthday) {
+		this.birthday = birthday;
+	}
+	
+	/**
+     * 获取犯罪记录属性
+     *
+     * @return criminalRecord
+     */
+	public java.lang.String getCriminalRecord() {
+		return criminalRecord;
+	}
+	
+	/**
+	 * 设置犯罪记录属性
+	 *
+	 * @param criminalRecord
+	 */
+	public void setCriminalRecord(java.lang.String criminalRecord) {
+		this.criminalRecord = criminalRecord;
+	}
+	
+	/**
+     * 获取手机号属性
+     *
+     * @return telphone
+     */
+	public java.lang.String getTelphone() {
+		return telphone;
+	}
+	
+	/**
+	 * 设置手机号属性
+	 *
+	 * @param telphone
+	 */
+	public void setTelphone(java.lang.String telphone) {
+		this.telphone = telphone;
+	}
+	
+	/**
+     * 获取驾驶员属性属性
+     *
+     * @return attributes
+     */
+	public java.lang.String getAttributes() {
+		return attributes;
+	}
+	
+	/**
+	 * 设置驾驶员属性属性
+	 *
+	 * @param attributes
+	 */
+	public void setAttributes(java.lang.String attributes) {
+		this.attributes = attributes;
+	}
+	
+	/**
+     * 获取所在区域属性
+     *
+     * @return areaCode
+     */
+	public java.lang.String getAreaCode() {
+		return areaCode;
+	}
+	
+	/**
+	 * 设置所在区域属性
+	 *
+	 * @param areaCode
+	 */
+	public void setAreaCode(java.lang.String areaCode) {
+		this.areaCode = areaCode;
+	}
+	
+	/**
+     * 获取详细地址属性
+     *
+     * @return address
+     */
+	public java.lang.String getAddress() {
+		return address;
+	}
+	
+	/**
+	 * 设置详细地址属性
+	 *
+	 * @param address
+	 */
+	public void setAddress(java.lang.String address) {
+		this.address = address;
+	}
+	
+	/**
+     * 获取驾驶证类型属性
+     *
+     * @return dlType
+     */
+	public java.lang.String getDlType() {
+		return dlType;
+	}
+	
+	/**
+	 * 设置驾驶证类型属性
+	 *
+	 * @param dlType
+	 */
+	public void setDlType(java.lang.String dlType) {
+		this.dlType = dlType;
+	}
+	
+	/**
+     * 获取驾驶证领证日期属性
+     *
+     * @return dlIssueDate
+     */
+	public java.lang.String getDlIssueDate() {
+		return dlIssueDate;
+	}
+	
+	/**
+	 * 设置驾驶证领证日期属性
+	 *
+	 * @param dlIssueDate
+	 */
+	public void setDlIssueDate(java.lang.String dlIssueDate) {
+		this.dlIssueDate = dlIssueDate;
+	}
+	
+	/**
+     * 获取驾驶证有效期(起)属性
+     *
+     * @return dlStartDate
+     */
+	public java.lang.String getDlStartDate() {
+		return dlStartDate;
+	}
+	
+	/**
+	 * 设置驾驶证有效期(起)属性
+	 *
+	 * @param dlStartDate
+	 */
+	public void setDlStartDate(java.lang.String dlStartDate) {
+		this.dlStartDate = dlStartDate;
+	}
+	
+	/**
+     * 获取驾驶证有效期(止)属性
+     *
+     * @return dlEndDate
+     */
+	public java.lang.String getDlEndDate() {
+		return dlEndDate;
+	}
+	
+	/**
+	 * 设置驾驶证有效期(止)属性
+	 *
+	 * @param dlEndDate
+	 */
+	public void setDlEndDate(java.lang.String dlEndDate) {
+		this.dlEndDate = dlEndDate;
+	}
+	
+	/**
+     * 获取从业资格证号属性
+     *
+     * @return qcNo
+     */
+	public java.lang.String getQcNo() {
+		return qcNo;
+	}
+	
+	/**
+	 * 设置从业资格证号属性
+	 *
+	 * @param qcNo
+	 */
+	public void setQcNo(java.lang.String qcNo) {
+		this.qcNo = qcNo;
+	}
+	
+	/**
+     * 获取从业资格证类型属性
+     *
+     * @return qcType
+     */
+	public java.lang.String getQcType() {
+		return qcType;
+	}
+	
+	/**
+	 * 设置从业资格证类型属性
+	 *
+	 * @param qcType
+	 */
+	public void setQcType(java.lang.String qcType) {
+		this.qcType = qcType;
+	}
+	
+	/**
+     * 获取从业资格领证日期属性
+     *
+     * @return qcIssueDate
+     */
+	public java.lang.String getQcIssueDate() {
+		return qcIssueDate;
+	}
+	
+	/**
+	 * 设置从业资格领证日期属性
+	 *
+	 * @param qcIssueDate
+	 */
+	public void setQcIssueDate(java.lang.String qcIssueDate) {
+		this.qcIssueDate = qcIssueDate;
+	}
+	
+	/**
+     * 获取从业资格证有效期(起)属性
+     *
+     * @return qcStartDate
+     */
+	public java.lang.String getQcStartDate() {
+		return qcStartDate;
+	}
+	
+	/**
+	 * 设置从业资格证有效期(起)属性
+	 *
+	 * @param qcStartDate
+	 */
+	public void setQcStartDate(java.lang.String qcStartDate) {
+		this.qcStartDate = qcStartDate;
+	}
+	
+	/**
+     * 获取从业资格证有效期(止)属性
+     *
+     * @return qcEndDate
+     */
+	public java.lang.String getQcEndDate() {
+		return qcEndDate;
+	}
+	
+	/**
+	 * 设置从业资格证有效期(止)属性
+	 *
+	 * @param qcEndDate
+	 */
+	public void setQcEndDate(java.lang.String qcEndDate) {
+		this.qcEndDate = qcEndDate;
+	}
+	
+	/**
+     * 获取身份照片(正)属性
+     *
+     * @return idFImageRefId
+     */
+	public java.lang.String getIdFImageRefId() {
+		return idFImageRefId;
+	}
+	
+	/**
+	 * 设置身份照片(正)属性
+	 *
+	 * @param idFImageRefId
+	 */
+	public void setIdFImageRefId(java.lang.String idFImageRefId) {
+		this.idFImageRefId = idFImageRefId;
+	}
+	
+	/**
+     * 获取身份照片(反)属性
+     *
+     * @return idBImageRefId
+     */
+	public java.lang.String getIdBImageRefId() {
+		return idBImageRefId;
+	}
+	
+	/**
+	 * 设置身份照片(反)属性
+	 *
+	 * @param idBImageRefId
+	 */
+	public void setIdBImageRefId(java.lang.String idBImageRefId) {
+		this.idBImageRefId = idBImageRefId;
+	}
+	
+	/**
+     * 获取个人照片属性
+     *
+     * @return photoFImageRefId
+     */
+	public java.lang.String getPhotoFImageRefId() {
+		return photoFImageRefId;
+	}
+	
+	/**
+	 * 设置个人照片属性
+	 *
+	 * @param photoFImageRefId
+	 */
+	public void setPhotoFImageRefId(java.lang.String photoFImageRefId) {
+		this.photoFImageRefId = photoFImageRefId;
+	}
+	
+	/**
+     * 获取驾驶证照片(正)属性
+     *
+     * @return drivingFImageRefId
+     */
+	public java.lang.String getDrivingFImageRefId() {
+		return drivingFImageRefId;
+	}
+	
+	/**
+	 * 设置驾驶证照片(正)属性
+	 *
+	 * @param drivingFImageRefId
+	 */
+	public void setDrivingFImageRefId(java.lang.String drivingFImageRefId) {
+		this.drivingFImageRefId = drivingFImageRefId;
+	}
+	
+	/**
+     * 获取驾驶证照片(反)属性
+     *
+     * @return drivingBImageRefId
+     */
+	public java.lang.String getDrivingBImageRefId() {
+		return drivingBImageRefId;
+	}
+	
+	/**
+	 * 设置驾驶证照片(反)属性
+	 *
+	 * @param drivingBImageRefId
+	 */
+	public void setDrivingBImageRefId(java.lang.String drivingBImageRefId) {
+		this.drivingBImageRefId = drivingBImageRefId;
+	}
+	
+	/**
+     * 获取从业资格证照片属性
+     *
+     * @return qualifiImageRefId
+     */
+	public java.lang.String getQualifiImageRefId() {
+		return qualifiImageRefId;
+	}
+	
+	/**
+	 * 设置从业资格证照片属性
+	 *
+	 * @param qualifiImageRefId
+	 */
+	public void setQualifiImageRefId(java.lang.String qualifiImageRefId) {
+		this.qualifiImageRefId = qualifiImageRefId;
+	}
+	
+	/**
+     * 获取数据来源属性
+     *
+     * @return source
+     */
+	public java.lang.String getSource() {
+		return source;
+	}
+	
+	/**
+	 * 设置数据来源属性
+	 *
+	 * @param source
+	 */
+	public void setSource(java.lang.String source) {
+		this.source = source;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改人属性
+     *
+     * @return updatedBy
+     */
+	public java.lang.String getUpdatedBy() {
+		return updatedBy;
+	}
+	
+	/**
+	 * 设置修改人属性
+	 *
+	 * @param updatedBy
+	 */
+	public void setUpdatedBy(java.lang.String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取所属部门属性
+     *
+     * @return belongDepartId
+     */
+	public java.lang.String getBelongDepartId() {
+		return belongDepartId;
+	}
+	
+	/**
+	 * 设置所属部门属性
+	 *
+	 * @param belongDepartId
+	 */
+	public void setBelongDepartId(java.lang.String belongDepartId) {
+		this.belongDepartId = belongDepartId;
+	}
+	
+	/**
+     * 获取使用部门属性
+     *
+     * @return useDepartId
+     */
+	public java.lang.String getUseDepartId() {
+		return useDepartId;
+	}
+	
+	/**
+	 * 设置使用部门属性
+	 *
+	 * @param useDepartId
+	 */
+	public void setUseDepartId(java.lang.String useDepartId) {
+		this.useDepartId = useDepartId;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("RealDriverInfo");
+        sb.append("{driverInfoId=").append(driverInfoId);
+        sb.append(", seqNo=").append(seqNo);
+        sb.append(", realName=").append(realName);
+        sb.append(", idno=").append(idno);
+        sb.append(", sex=").append(sex);
+        sb.append(", birthday=").append(birthday);
+        sb.append(", criminalRecord=").append(criminalRecord);
+        sb.append(", telphone=").append(telphone);
+        sb.append(", attributes=").append(attributes);
+        sb.append(", areaCode=").append(areaCode);
+        sb.append(", address=").append(address);
+        sb.append(", dlType=").append(dlType);
+        sb.append(", dlIssueDate=").append(dlIssueDate);
+        sb.append(", dlStartDate=").append(dlStartDate);
+        sb.append(", dlEndDate=").append(dlEndDate);
+        sb.append(", qcNo=").append(qcNo);
+        sb.append(", qcType=").append(qcType);
+        sb.append(", qcIssueDate=").append(qcIssueDate);
+        sb.append(", qcStartDate=").append(qcStartDate);
+        sb.append(", qcEndDate=").append(qcEndDate);
+        sb.append(", idFImageRefId=").append(idFImageRefId);
+        sb.append(", idBImageRefId=").append(idBImageRefId);
+        sb.append(", photoFImageRefId=").append(photoFImageRefId);
+        sb.append(", drivingFImageRefId=").append(drivingFImageRefId);
+        sb.append(", drivingBImageRefId=").append(drivingBImageRefId);
+        sb.append(", qualifiImageRefId=").append(qualifiImageRefId);
+        sb.append(", source=").append(source);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedBy=").append(updatedBy);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", belongDepartId=").append(belongDepartId);
+        sb.append(", useDepartId=").append(useDepartId);
+        sb.append(", status=").append(status);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

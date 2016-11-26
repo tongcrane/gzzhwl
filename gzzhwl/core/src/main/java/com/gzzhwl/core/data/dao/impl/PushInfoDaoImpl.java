@@ -1,0 +1,45 @@
+package com.gzzhwl.core.data.dao.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.gzzhwl.core.data.dao.PushInfoDao;
+import com.gzzhwl.core.data.model.PushDevice;
+import com.gzzhwl.core.data.model.PushInfo;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+
+/**
+ * 数据访问接口
+ * 
+ * @author mew
+ *
+ */
+@Repository
+public class PushInfoDaoImpl implements PushInfoDao {
+	@Autowired
+	private DaoSupport dao;
+
+	@Override
+	public <T, K, V> List<T> find(Map<String, Object> params) {
+		return dao.find(PREFIX + ".find", params);
+	}
+
+	@Override
+	public int insert(PushInfo pushInfo) {
+		return dao.insert(PREFIX + ".insert", pushInfo);
+	}
+
+	@Override
+	public int updateSelective(PushInfo pushInfo) {
+		return dao.update(PREFIX + ".updateSelective", pushInfo);
+	}
+
+	@Override
+	public int delInfoByToken(Map<String, Object> params) {
+		return dao.delete(PREFIX + ".delInfoByToken", params);
+	}
+
+}

@@ -1,0 +1,63 @@
+package com.gzzhwl.api.load.validator;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+public class ArrivedValidator {
+	
+	/**
+	 * 电子回单提交验证
+	 * @param loadId
+	 * @param loadNo
+	 * @param receiptImageRefId
+	 * @param actionTime
+	 */
+	public static void elecr_commit_validator(String loadId,String loadNo,String receiptImageRefId,String actionTime){
+		
+		if(StringUtils.isBlank(receiptImageRefId)){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"回单照片ID"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(StringUtils.isBlank(actionTime)){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"回单时间"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(StringUtils.isBlank(actionTime)){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"上报时间"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(StringUtils.isBlank(loadId)&&StringUtils.isBlank(loadNo)){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"loadId与loadNo请至少输入一个。");
+		}
+		
+	}
+
+	/**
+	 * 纸质回单提交验证
+	 * @param loadId
+	 * @param loadNo
+	 * @param expressDelivery
+	 * @param billNo
+	 */
+	public static void printr_commit_validator(String loadId,String loadNo,String expressDelivery,String billNo){
+		
+		if(StringUtils.isBlank(expressDelivery)){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"快递公司名称"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(StringUtils.isBlank(billNo)){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"快递单号"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(StringUtils.isBlank(loadId)&&StringUtils.isBlank(loadNo)){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"loadId与loadNo请至少输入一个。");
+		}
+		
+	}
+	
+	
+}

@@ -1,0 +1,31 @@
+package com.gzzhwl.admin.transit.vo;
+
+import java.util.Map;
+
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.springmvc.validate.ParamEmptyValidator;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class MapSearchVO {
+	private static String[] VALID_TYPE = { "01", "02", "03" };
+	private String type;// 类型
+	private String billNo;// 单号
+
+	public Map<String, Object> getParam() {
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.type, this.billNo);
+		Map<String, Object> result = Maps.newHashMap();
+		if (!ArrayUtils.contains(VALID_TYPE, this.type)) {
+			throw new RestException("300003", "不支持该类型的查询");
+		}
+		result.put("billNo", this.billNo);
+		result.put("type", this.type);
+		return result;
+	}
+}

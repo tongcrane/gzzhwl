@@ -1,0 +1,864 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.VehicleInfoDao">
+
+	<resultMap id="vehicleInfoResultMap" type="VehicleInfo">
+		<id property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="accountId" column="account_id" />
+		<result property="vehicleType" column="vehicle_type" />
+		<result property="headstockType" column="headstock_type" />
+		<result property="type" column="type" />
+		<result property="plateNumber" column="plate_number" />
+		<result property="models" column="models" />
+		<result property="length" column="length" />
+		<result property="power" column="power" />
+		<result property="brand" column="brand" />
+		<result property="color" column="color" />
+		<result property="vin" column="vin" />
+		<result property="engineNo" column="engine_no" />
+		<result property="ownerName" column="owner_name" />
+		<result property="ownerPhone" column="owner_phone" />
+		<result property="ownerMobile" column="owner_mobile" />
+		<result property="regDate" column="reg_date" />
+		<result property="regCertCode" column="reg_cert_code" />
+		<result property="loadWeight" column="load_weight" />
+		<result property="wheelsNum" column="wheels_num" />
+		<result property="ownerType" column="owner_type" />
+		<result property="attributes" column="attributes" />
+		<result property="maintenanceDate" column="maintenance_date" />
+		<result property="maintenanceBill" column="maintenance_bill" />
+		<result property="licenseNo" column="license_no" />
+		<result property="licenseRegDate" column="license_reg_date" />
+		<result property="licenseIssueDate" column="license_issue_date" />
+		<result property="licenseValidDate" column="license_valid_date" />
+		<result property="operatingCertNo" column="operating_cert_no" />
+		<result property="operatingCertIssueDate" column="operating_cert_issue_date" />
+		<result property="operatingCertValidDate" column="operating_cert_valid_date" />
+		<result property="regImageRefId" column="reg_image_ref_id" />
+		<result property="licenseImageRefId" column="license_image_ref_id" />
+		<result property="ocImageRefId" column="oc_image_ref_id" />
+		<result property="vehicleImageRefId" column="vehicle_image_ref_id" />
+		<result property="source" column="source" />
+		<result property="remark" column="remark" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="bridgeType" column="bridge_type" />
+		<result property="licenseImage2RefId" column="license_image_2_ref_id" />
+		<result property="ocImage3RefId" column="oc_image_3_ref_id" />
+		<result property="ocImage2RefId" column="oc_image_2_ref_id" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="vehicleInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="vehicleInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="VehicleInfo">
+	   insert into zh_vehicle_info (
+	     vehicle_info_id,
+	     account_id,
+	     vehicle_type,
+	     headstock_type,
+	     type,
+	     plate_number,
+	     models,
+	     length,
+	     power,
+	     brand,
+	     color,
+	     vin,
+	     engine_no,
+	     owner_name,
+	     owner_phone,
+	     owner_mobile,
+	     reg_date,
+	     reg_cert_code,
+	     load_weight,
+	     wheels_num,
+	     owner_type,
+	     attributes,
+	     maintenance_date,
+	     maintenance_bill,
+	     license_no,
+	     license_reg_date,
+	     license_issue_date,
+	     license_valid_date,
+	     operating_cert_no,
+	     operating_cert_issue_date,
+	     operating_cert_valid_date,
+	     reg_image_ref_id,
+	     license_image_ref_id,
+	     oc_image_ref_id,
+	     vehicle_image_ref_id,
+	     source,
+	     remark,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     status,
+	     is_deleted,
+	     bridge_type,
+	     license_image_2_ref_id,
+	     oc_image_3_ref_id,
+	     oc_image_2_ref_id
+	   )values (
+	     #{vehicleInfoId},
+	     #{accountId},
+	     #{vehicleType},
+	     #{headstockType},
+	     #{type},
+	     #{plateNumber},
+	     #{models},
+	     #{length},
+	     #{power},
+	     #{brand},
+	     #{color},
+	     #{vin},
+	     #{engineNo},
+	     #{ownerName},
+	     #{ownerPhone},
+	     #{ownerMobile},
+	     #{regDate},
+	     #{regCertCode},
+	     #{loadWeight},
+	     #{wheelsNum},
+	     #{ownerType},
+	     #{attributes},
+	     #{maintenanceDate},
+	     #{maintenanceBill},
+	     #{licenseNo},
+	     #{licenseRegDate},
+	     #{licenseIssueDate},
+	     #{licenseValidDate},
+	     #{operatingCertNo},
+	     #{operatingCertIssueDate},
+	     #{operatingCertValidDate},
+	     #{regImageRefId},
+	     #{licenseImageRefId},
+	     #{ocImageRefId},
+	     #{vehicleImageRefId},
+	     #{source},
+	     #{remark},
+	     #{createdBy},
+	      now(),
+	     #{updatedBy},
+	      now(),
+	     #{status},
+	     #{isDeleted},
+	     #{bridgeType},
+	     #{licenseImage2RefId},
+	     #{ocImage3RefId},
+	     #{ocImage2RefId}
+	   )
+	</insert>
+
+	<update id="update" parameterType="VehicleInfo">
+	   update zh_vehicle_info set
+	     vehicle_info_id=#{vehicleInfoId},
+	     account_id=#{accountId},
+	     vehicle_type=#{vehicleType},
+	     headstock_type=#{headstockType},
+	     type=#{type},
+	     plate_number=#{plateNumber},
+	     models=#{models},
+	     length=#{length},
+	     power=#{power},
+	     brand=#{brand},
+	     color=#{color},
+	     vin=#{vin},
+	     engine_no=#{engineNo},
+	     owner_name=#{ownerName},
+	     owner_phone=#{ownerPhone},
+	     owner_mobile=#{ownerMobile},
+	     reg_date=#{regDate},
+	     reg_cert_code=#{regCertCode},
+	     load_weight=#{loadWeight},
+	     wheels_num=#{wheelsNum},
+	     owner_type=#{ownerType},
+	     attributes=#{attributes},
+	     maintenance_date=#{maintenanceDate},
+	     maintenance_bill=#{maintenanceBill},
+	     license_no=#{licenseNo},
+	     license_reg_date=#{licenseRegDate},
+	     license_issue_date=#{licenseIssueDate},
+	     license_valid_date=#{licenseValidDate},
+	     operating_cert_no=#{operatingCertNo},
+	     operating_cert_issue_date=#{operatingCertIssueDate},
+	     operating_cert_valid_date=#{operatingCertValidDate},
+	     reg_image_ref_id=#{regImageRefId},
+	     license_image_ref_id=#{licenseImageRefId},
+	     oc_image_ref_id=#{ocImageRefId},
+	     vehicle_image_ref_id=#{vehicleImageRefId},
+	     source=#{source},
+	     remark=#{remark},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     updated_by=#{updatedBy},
+	     status=#{status},
+	     is_deleted=#{isDeleted},
+	     bridge_type=#{bridgeType},
+	     license_image_2_ref_id=#{licenseImage2RefId},
+	     oc_image_3_ref_id=#{ocImage3RefId},
+	     oc_image_2_ref_id=#{ocImage2RefId},
+	     updated_time=now()
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="VehicleInfo">
+	   update zh_vehicle_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="vehicleInfoId != null">
+		       vehicle_info_id=#{vehicleInfoId},
+		     </if>
+		     <if test="accountId != null">
+		       account_id=#{accountId},
+		     </if>
+		     <if test="vehicleType != null">
+		       vehicle_type=#{vehicleType},
+		     </if>
+		     <if test="headstockType != null">
+		       headstock_type=#{headstockType},
+		     </if>
+		     <if test="type != null">
+		       type=#{type},
+		     </if>
+		     <if test="plateNumber != null">
+		       plate_number=#{plateNumber},
+		     </if>
+		     <if test="models != null">
+		       models=#{models},
+		     </if>
+		     <if test="length != null">
+		       length=#{length},
+		     </if>
+		     <if test="power != null">
+		       power=#{power},
+		     </if>
+		     <if test="brand != null">
+		       brand=#{brand},
+		     </if>
+		     <if test="color != null">
+		       color=#{color},
+		     </if>
+		     <if test="vin != null">
+		       vin=#{vin},
+		     </if>
+		     <if test="engineNo != null">
+		       engine_no=#{engineNo},
+		     </if>
+		     <if test="ownerName != null">
+		       owner_name=#{ownerName},
+		     </if>
+		     <if test="ownerPhone != null">
+		       owner_phone=#{ownerPhone},
+		     </if>
+		     <if test="ownerMobile != null">
+		       owner_mobile=#{ownerMobile},
+		     </if>
+		     <if test="regDate != null">
+		       reg_date=#{regDate},
+		     </if>
+		     <if test="regCertCode != null">
+		       reg_cert_code=#{regCertCode},
+		     </if>
+		     <if test="loadWeight != null">
+		       load_weight=#{loadWeight},
+		     </if>
+		     <if test="wheelsNum != null">
+		       wheels_num=#{wheelsNum},
+		     </if>
+		     <if test="ownerType != null">
+		       owner_type=#{ownerType},
+		     </if>
+		     <if test="attributes != null">
+		       attributes=#{attributes},
+		     </if>
+		     <if test="maintenanceDate != null">
+		       maintenance_date=#{maintenanceDate},
+		     </if>
+		     <if test="maintenanceBill != null">
+		       maintenance_bill=#{maintenanceBill},
+		     </if>
+		     <if test="licenseNo != null">
+		       license_no=#{licenseNo},
+		     </if>
+		     <if test="licenseRegDate != null">
+		       license_reg_date=#{licenseRegDate},
+		     </if>
+		     <if test="licenseIssueDate != null">
+		       license_issue_date=#{licenseIssueDate},
+		     </if>
+		     <if test="licenseValidDate != null">
+		       license_valid_date=#{licenseValidDate},
+		     </if>
+		     <if test="operatingCertNo != null">
+		       operating_cert_no=#{operatingCertNo},
+		     </if>
+		     <if test="operatingCertIssueDate != null">
+		       operating_cert_issue_date=#{operatingCertIssueDate},
+		     </if>
+		     <if test="operatingCertValidDate != null">
+		       operating_cert_valid_date=#{operatingCertValidDate},
+		     </if>
+		     <if test="regImageRefId != null">
+		       reg_image_ref_id=#{regImageRefId},
+		     </if>
+		     <if test="licenseImageRefId != null">
+		       license_image_ref_id=#{licenseImageRefId},
+		     </if>
+		     <if test="ocImageRefId != null">
+		       oc_image_ref_id=#{ocImageRefId},
+		     </if>
+		     <if test="vehicleImageRefId != null">
+		       vehicle_image_ref_id=#{vehicleImageRefId},
+		     </if>
+		     <if test="source != null">
+		       source=#{source},
+		     </if>
+		     <if test="remark != null">
+		       remark=#{remark},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted},
+		     </if>
+		     <if test="bridgeType != null">
+		       bridge_type=#{bridgeType},
+		     </if>
+		     <if test="licenseImage2RefId != null">
+		       license_image_2_ref_id=#{licenseImage2RefId},
+		     </if>
+		     <if test="ocImage3RefId != null">
+		       oc_image_3_ref_id=#{ocImage3RefId},
+		     </if>
+		     <if test="ocImage2RefId != null">
+		       oc_image_2_ref_id=#{ocImage2RefId},
+		     </if>
+		     updated_time=now()
+	   </trim>
+	
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_vehicle_info 
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="vehicleInfoResultMap">
+	   select 
+	    vehicle_info_id,
+	    account_id,
+	    vehicle_type,
+	    headstock_type,
+	    type,
+	    plate_number,
+	    models,
+	    length,
+	    power,
+	    brand,
+	    color,
+	    vin,
+	    engine_no,
+	    owner_name,
+	    owner_phone,
+	    owner_mobile,
+	    reg_date,
+	    reg_cert_code,
+	    load_weight,
+	    wheels_num,
+	    owner_type,
+	    attributes,
+	    maintenance_date,
+	    maintenance_bill,
+	    license_no,
+	    license_reg_date,
+	    license_issue_date,
+	    license_valid_date,
+	    operating_cert_no,
+	    operating_cert_issue_date,
+	    operating_cert_valid_date,
+	    reg_image_ref_id,
+	    license_image_ref_id,
+	    oc_image_ref_id,
+	    vehicle_image_ref_id,
+	    source,
+	    remark,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    status,
+	    is_deleted,
+	    bridge_type,
+	    license_image_2_ref_id,
+	    oc_image_3_ref_id,
+	    oc_image_2_ref_id
+	   from zh_vehicle_info
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	    and is_deleted ='00'
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    vehicle_info_id,
+	    account_id,
+	    vehicle_type,
+	    headstock_type,
+	    type,
+	    plate_number,
+	    models,
+	    length,
+	    power,
+	    brand,
+	    color,
+	    vin,
+	    engine_no,
+	    owner_name,
+	    owner_phone,
+	    owner_mobile,
+	    reg_date,
+	    reg_cert_code,
+	    load_weight,
+	    wheels_num,
+	    owner_type,
+	    attributes,
+	    maintenance_date,
+	    maintenance_bill,
+	    license_no,
+	    license_reg_date,
+	    license_issue_date,
+	    license_valid_date,
+	    operating_cert_no,
+	    operating_cert_issue_date,
+	    operating_cert_valid_date,
+	    reg_image_ref_id,
+	    license_image_ref_id,
+	    oc_image_ref_id,
+	    vehicle_image_ref_id,
+	    source,
+	    remark,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    status,
+	    is_deleted,
+	    bridge_type,
+	    license_image_2_ref_id,
+	    oc_image_3_ref_id,
+	    oc_image_2_ref_id
+	   from zh_vehicle_info
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     vehicle_info_id,
+	     account_id,
+	     vehicle_type,
+	     headstock_type,
+	     type,
+	     plate_number,
+	     models,
+	     length,
+	     power,
+	     brand,
+	     color,
+	     vin,
+	     engine_no,
+	     owner_name,
+	     owner_phone,
+	     owner_mobile,
+	     reg_date,
+	     reg_cert_code,
+	     load_weight,
+	     wheels_num,
+	     owner_type,
+	     attributes,
+	     maintenance_date,
+	     maintenance_bill,
+	     license_no,
+	     license_reg_date,
+	     license_issue_date,
+	     license_valid_date,
+	     operating_cert_no,
+	     operating_cert_issue_date,
+	     operating_cert_valid_date,
+	     reg_image_ref_id,
+	     license_image_ref_id,
+	     oc_image_ref_id,
+	     vehicle_image_ref_id,
+	     source,
+	     remark,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     status,
+	     is_deleted,
+	     bridge_type,
+	     license_image_2_ref_id,
+	     oc_image_3_ref_id,
+	     oc_image_2_ref_id
+	   from zh_vehicle_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="vehicleInfoId != null">
+	        vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="vehicleType != null">
+	        and vehicle_type=#{vehicleType}
+	     </if>
+	     <if test="headstockType != null">
+	        and headstock_type=#{headstockType}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="plateNumber != null">
+	        and plate_number=#{plateNumber}
+	     </if>
+	     <if test="models != null">
+	        and models=#{models}
+	     </if>
+	     <if test="length != null">
+	        and length=#{length}
+	     </if>
+	     <if test="power != null">
+	        and power=#{power}
+	     </if>
+	     <if test="brand != null">
+	        and brand=#{brand}
+	     </if>
+	     <if test="color != null">
+	        and color=#{color}
+	     </if>
+	     <if test="vin != null">
+	        and vin=#{vin}
+	     </if>
+	     <if test="engineNo != null">
+	        and engine_no=#{engineNo}
+	     </if>
+	     <if test="ownerName != null">
+	        and owner_name=#{ownerName}
+	     </if>
+	     <if test="ownerPhone != null">
+	        and owner_phone=#{ownerPhone}
+	     </if>
+	     <if test="ownerMobile != null">
+	        and owner_mobile=#{ownerMobile}
+	     </if>
+	     <if test="regDate != null">
+	        and reg_date=#{regDate}
+	     </if>
+	     <if test="regCertCode != null">
+	        and reg_cert_code=#{regCertCode}
+	     </if>
+	     <if test="loadWeight != null">
+	        and load_weight=#{loadWeight}
+	     </if>
+	     <if test="wheelsNum != null">
+	        and wheels_num=#{wheelsNum}
+	     </if>
+	     <if test="ownerType != null">
+	        and owner_type=#{ownerType}
+	     </if>
+	     <if test="attributes != null">
+	        and attributes=#{attributes}
+	     </if>
+	     <if test="maintenanceDate != null">
+	        and maintenance_date=#{maintenanceDate}
+	     </if>
+	     <if test="maintenanceBill != null">
+	        and maintenance_bill=#{maintenanceBill}
+	     </if>
+	     <if test="licenseNo != null">
+	        and license_no=#{licenseNo}
+	     </if>
+	     <if test="licenseRegDate != null">
+	        and license_reg_date=#{licenseRegDate}
+	     </if>
+	     <if test="licenseIssueDate != null">
+	        and license_issue_date=#{licenseIssueDate}
+	     </if>
+	     <if test="licenseValidDate != null">
+	        and license_valid_date=#{licenseValidDate}
+	     </if>
+	     <if test="operatingCertNo != null">
+	        and operating_cert_no=#{operatingCertNo}
+	     </if>
+	     <if test="operatingCertIssueDate != null">
+	        and operating_cert_issue_date=#{operatingCertIssueDate}
+	     </if>
+	     <if test="operatingCertValidDate != null">
+	        and operating_cert_valid_date=#{operatingCertValidDate}
+	     </if>
+	     <if test="regImageRefId != null">
+	        and reg_image_ref_id=#{regImageRefId}
+	     </if>
+	     <if test="licenseImageRefId != null">
+	        and license_image_ref_id=#{licenseImageRefId}
+	     </if>
+	     <if test="ocImageRefId != null">
+	        and oc_image_ref_id=#{ocImageRefId}
+	     </if>
+	     <if test="vehicleImageRefId != null">
+	        and vehicle_image_ref_id=#{vehicleImageRefId}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	     <if test="bridgeType != null">
+	        and bridge_type=#{bridgeType}
+	     </if>
+	     <if test="licenseImage2RefId != null">
+	        and license_image_2_ref_id=#{licenseImage2RefId}
+	     </if>
+	     <if test="ocImage3RefId != null">
+	        and oc_image_3_ref_id=#{ocImage3RefId}
+	     </if>
+	     <if test="ocImage2RefId != null">
+	        and oc_image_2_ref_id=#{ocImage2RefId}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     vehicle_info_id,
+	     account_id,
+	     vehicle_type,
+	     headstock_type,
+	     type,
+	     plate_number,
+	     models,
+	     length,
+	     power,
+	     brand,
+	     color,
+	     vin,
+	     engine_no,
+	     owner_name,
+	     owner_phone,
+	     owner_mobile,
+	     reg_date,
+	     reg_cert_code,
+	     load_weight,
+	     wheels_num,
+	     owner_type,
+	     attributes,
+	     maintenance_date,
+	     maintenance_bill,
+	     license_no,
+	     license_reg_date,
+	     license_issue_date,
+	     license_valid_date,
+	     operating_cert_no,
+	     operating_cert_issue_date,
+	     operating_cert_valid_date,
+	     reg_image_ref_id,
+	     license_image_ref_id,
+	     oc_image_ref_id,
+	     vehicle_image_ref_id,
+	     source,
+	     remark,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     status,
+	     is_deleted,
+	     bridge_type,
+	     license_image_2_ref_id,
+	     oc_image_3_ref_id,
+	     oc_image_2_ref_id
+	   from zh_vehicle_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="vehicleInfoId != null">
+	        vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="vehicleType != null">
+	        and vehicle_type=#{vehicleType}
+	     </if>
+	     <if test="headstockType != null">
+	        and headstock_type=#{headstockType}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="plateNumber != null">
+	        and plate_number=#{plateNumber}
+	     </if>
+	     <if test="models != null">
+	        and models=#{models}
+	     </if>
+	     <if test="length != null">
+	        and length=#{length}
+	     </if>
+	     <if test="power != null">
+	        and power=#{power}
+	     </if>
+	     <if test="brand != null">
+	        and brand=#{brand}
+	     </if>
+	     <if test="color != null">
+	        and color=#{color}
+	     </if>
+	     <if test="vin != null">
+	        and vin=#{vin}
+	     </if>
+	     <if test="engineNo != null">
+	        and engine_no=#{engineNo}
+	     </if>
+	     <if test="ownerName != null">
+	        and owner_name=#{ownerName}
+	     </if>
+	     <if test="ownerPhone != null">
+	        and owner_phone=#{ownerPhone}
+	     </if>
+	     <if test="ownerMobile != null">
+	        and owner_mobile=#{ownerMobile}
+	     </if>
+	     <if test="regDate != null">
+	        and reg_date=#{regDate}
+	     </if>
+	     <if test="regCertCode != null">
+	        and reg_cert_code=#{regCertCode}
+	     </if>
+	     <if test="loadWeight != null">
+	        and load_weight=#{loadWeight}
+	     </if>
+	     <if test="wheelsNum != null">
+	        and wheels_num=#{wheelsNum}
+	     </if>
+	     <if test="ownerType != null">
+	        and owner_type=#{ownerType}
+	     </if>
+	     <if test="attributes != null">
+	        and attributes=#{attributes}
+	     </if>
+	     <if test="maintenanceDate != null">
+	        and maintenance_date=#{maintenanceDate}
+	     </if>
+	     <if test="maintenanceBill != null">
+	        and maintenance_bill=#{maintenanceBill}
+	     </if>
+	     <if test="licenseNo != null">
+	        and license_no=#{licenseNo}
+	     </if>
+	     <if test="licenseRegDate != null">
+	        and license_reg_date=#{licenseRegDate}
+	     </if>
+	     <if test="licenseIssueDate != null">
+	        and license_issue_date=#{licenseIssueDate}
+	     </if>
+	     <if test="licenseValidDate != null">
+	        and license_valid_date=#{licenseValidDate}
+	     </if>
+	     <if test="operatingCertNo != null">
+	        and operating_cert_no=#{operatingCertNo}
+	     </if>
+	     <if test="operatingCertIssueDate != null">
+	        and operating_cert_issue_date=#{operatingCertIssueDate}
+	     </if>
+	     <if test="operatingCertValidDate != null">
+	        and operating_cert_valid_date=#{operatingCertValidDate}
+	     </if>
+	     <if test="regImageRefId != null">
+	        and reg_image_ref_id=#{regImageRefId}
+	     </if>
+	     <if test="licenseImageRefId != null">
+	        and license_image_ref_id=#{licenseImageRefId}
+	     </if>
+	     <if test="ocImageRefId != null">
+	        and oc_image_ref_id=#{ocImageRefId}
+	     </if>
+	     <if test="vehicleImageRefId != null">
+	        and vehicle_image_ref_id=#{vehicleImageRefId}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	     <if test="bridgeType != null">
+	        and bridge_type=#{bridgeType}
+	     </if>
+	     <if test="licenseImage2RefId != null">
+	        and license_image_2_ref_id=#{licenseImage2RefId}
+	     </if>
+	     <if test="ocImage3RefId != null">
+	        and oc_image_3_ref_id=#{ocImage3RefId}
+	     </if>
+	     <if test="ocImage2RefId != null">
+	        and oc_image_2_ref_id=#{ocImage2RefId}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

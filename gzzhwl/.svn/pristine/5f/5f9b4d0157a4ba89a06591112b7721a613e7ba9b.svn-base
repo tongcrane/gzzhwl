@@ -1,0 +1,58 @@
+package com.gzzhwl.admin.load.controller;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.admin.load.vo.LoadFeedbackListVo;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.rest.security.utils.SecurityUtils;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+@RestController
+@RequestMapping("/admin/feedback")
+public class LoadFeedbackController {
+	
+	@Autowired
+	private LoadFeedbackService loadFeedbackService;
+
+	/**
+	 * 获取异常反馈列表
+	 * 
+	 * @param loadFeedbackListVo
+	 * @return
+	 */
+	@RequestMapping(value = "/getLoadFeedbackList", method = RequestMethod.GET)
+	public ResponseModel getLoadFeedbackList(@RequestParam(required = true)String loadId) {
+
+		Map<String,Object> resMap = loadFeedbackService.getCbsLoadFeedbackList(loadId);
+
+		return new ResponseModel(resMap);
+	}
+	
+	/**
+	 * 保存异常反馈
+	 * 
+	 * @param loadFeedbackListVo
+	 * @return
+	 */
+	@RequestMapping(value = "/saveLoadFeedback", method = RequestMethod.POST, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel saveLoadFeedback(@RequestBody LoadFeedbackListVo loadFeedbackListVo) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		loadFeedbackService.saveLoadFeedback(loadFeedbackListVo, staffId,DataSource.PLATFORM,null,null);
+
+		return new ResponseModel(null);
+	}
+	
+}

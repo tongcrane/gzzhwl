@@ -1,0 +1,949 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_real_vehicle_info表
+ * @author mew
+ *
+ */
+public class RealVehicleInfo implements Serializable {
+	@Length(max = 36, message = "vehicleInfoId超过长度限制")
+	private java.lang.String vehicleInfoId; // 车辆信息标识
+	@Length(max = 30, message = "seqNo超过长度限制")
+	private java.lang.String seqNo; // 车辆编号
+	@Length(max = 2, message = "vehicleType超过长度限制")
+	private java.lang.String vehicleType; // 数据类型
+	@Length(max = 20, message = "headstockType超过长度限制")
+	private java.lang.String headstockType; // 车头类型
+	@Length(max = 20, message = "type超过长度限制")
+	private java.lang.String type; // 车辆类型
+	@Length(max = 10, message = "plateNumber超过长度限制")
+	private java.lang.String plateNumber; // 车牌号
+	@Length(max = 10, message = "models超过长度限制")
+	private java.lang.String models; // 车辆型号
+	@Length(max = 10, message = "length超过长度限制")
+	private java.lang.String length; // 车长
+	@Length(max = 10, message = "power超过长度限制")
+	private java.lang.String power; // 马力
+	@Length(max = 10, message = "brand超过长度限制")
+	private java.lang.String brand; // 品牌
+	@Length(max = 10, message = "color超过长度限制")
+	private java.lang.String color; // 车头颜色
+	@Length(max = 17, message = "vin超过长度限制")
+	private java.lang.String vin; // 车架号
+	@Length(max = 10, message = "engineNo超过长度限制")
+	private java.lang.String engineNo; // 发动机号
+	@Length(max = 36, message = "ownerName超过长度限制")
+	private java.lang.String ownerName; // 车主
+	@Length(max = 20, message = "ownerPhone超过长度限制")
+	private java.lang.String ownerPhone; // 车主电话
+	@Length(max = 11, message = "ownerMobile超过长度限制")
+	private java.lang.String ownerMobile; // 车主手机
+	@Length(max = 20, message = "regDate超过长度限制")
+	private java.lang.String regDate; // 登记日期
+	@Length(max = 20, message = "regCertCode超过长度限制")
+	private java.lang.String regCertCode; // 登记证书号
+	@Length(max = 10, message = "loadWeight超过长度限制")
+	private java.lang.String loadWeight; // 核载重量
+	@Length(max = 10, message = "wheelsNum超过长度限制")
+	private java.lang.String wheelsNum; // 车轮数
+	@Length(max = 50, message = "ownerType超过长度限制")
+	private java.lang.String ownerType; // 所有权
+	@Length(max = 10, message = "attributes超过长度限制")
+	private java.lang.String attributes; // 车辆属性
+	@Length(max = 10, message = "maintenanceDate超过长度限制")
+	private java.lang.String maintenanceDate; // 上次保养时间
+	@Length(max = 36, message = "maintenanceBill超过长度限制")
+	private java.lang.String maintenanceBill; // 保养票据
+	@Length(max = 20, message = "licenseNo超过长度限制")
+	private java.lang.String licenseNo; // 行驶证号码
+	@Length(max = 10, message = "licenseRegDate超过长度限制")
+	private java.lang.String licenseRegDate; // 行驶证注册日期
+	@Length(max = 10, message = "licenseIssueDate超过长度限制")
+	private java.lang.String licenseIssueDate; // 行驶证发证日期
+	@Length(max = 10, message = "licenseValidDate超过长度限制")
+	private java.lang.String licenseValidDate; // 行驶证有效期至
+	@Length(max = 20, message = "operatingCertNo超过长度限制")
+	private java.lang.String operatingCertNo; // 营运证号码
+	@Length(max = 10, message = "operatingCertIssueDate超过长度限制")
+	private java.lang.String operatingCertIssueDate; // 营运证发证日期
+	@Length(max = 10, message = "operatingCertValidDate超过长度限制")
+	private java.lang.String operatingCertValidDate; // 营运证有效期至
+	@Length(max = 36, message = "regImageRefId超过长度限制")
+	private java.lang.String regImageRefId; // 登记证照片
+	@Length(max = 36, message = "licenseImageRefId超过长度限制")
+	private java.lang.String licenseImageRefId; // 行驶证照片
+	@Length(max = 36, message = "ocImageRefId超过长度限制")
+	private java.lang.String ocImageRefId; // 营运证照片
+	@Length(max = 36, message = "vehicleImageRefId超过长度限制")
+	private java.lang.String vehicleImageRefId; // 车辆照片
+	@Length(max = 2, message = "source超过长度限制")
+	private java.lang.String source; // 数据来源
+	@Length(max = 400, message = "remark超过长度限制")
+	private java.lang.String remark; // 备注
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+	@Length(max = 2, message = "bridgeType超过长度限制")
+	private java.lang.String bridgeType; // 车桥类型
+
+
+	/**
+     * 获取车辆信息标识属性
+     *
+     * @return vehicleInfoId
+     */
+	public java.lang.String getVehicleInfoId() {
+		return vehicleInfoId;
+	}
+	
+	/**
+	 * 设置车辆信息标识属性
+	 *
+	 * @param vehicleInfoId
+	 */
+	public void setVehicleInfoId(java.lang.String vehicleInfoId) {
+		this.vehicleInfoId = vehicleInfoId;
+	}
+	
+	/**
+     * 获取车辆编号属性
+     *
+     * @return seqNo
+     */
+	public java.lang.String getSeqNo() {
+		return seqNo;
+	}
+	
+	/**
+	 * 设置车辆编号属性
+	 *
+	 * @param seqNo
+	 */
+	public void setSeqNo(java.lang.String seqNo) {
+		this.seqNo = seqNo;
+	}
+	
+	/**
+     * 获取数据类型属性
+     *
+     * @return vehicleType
+     */
+	public java.lang.String getVehicleType() {
+		return vehicleType;
+	}
+	
+	/**
+	 * 设置数据类型属性
+	 *
+	 * @param vehicleType
+	 */
+	public void setVehicleType(java.lang.String vehicleType) {
+		this.vehicleType = vehicleType;
+	}
+	
+	/**
+     * 获取车头类型属性
+     *
+     * @return headstockType
+     */
+	public java.lang.String getHeadstockType() {
+		return headstockType;
+	}
+	
+	/**
+	 * 设置车头类型属性
+	 *
+	 * @param headstockType
+	 */
+	public void setHeadstockType(java.lang.String headstockType) {
+		this.headstockType = headstockType;
+	}
+	
+	/**
+     * 获取车辆类型属性
+     *
+     * @return type
+     */
+	public java.lang.String getType() {
+		return type;
+	}
+	
+	/**
+	 * 设置车辆类型属性
+	 *
+	 * @param type
+	 */
+	public void setType(java.lang.String type) {
+		this.type = type;
+	}
+	
+	/**
+     * 获取车牌号属性
+     *
+     * @return plateNumber
+     */
+	public java.lang.String getPlateNumber() {
+		return plateNumber;
+	}
+	
+	/**
+	 * 设置车牌号属性
+	 *
+	 * @param plateNumber
+	 */
+	public void setPlateNumber(java.lang.String plateNumber) {
+		this.plateNumber = plateNumber;
+	}
+	
+	/**
+     * 获取车辆型号属性
+     *
+     * @return models
+     */
+	public java.lang.String getModels() {
+		return models;
+	}
+	
+	/**
+	 * 设置车辆型号属性
+	 *
+	 * @param models
+	 */
+	public void setModels(java.lang.String models) {
+		this.models = models;
+	}
+	
+	/**
+     * 获取车长属性
+     *
+     * @return length
+     */
+	public java.lang.String getLength() {
+		return length;
+	}
+	
+	/**
+	 * 设置车长属性
+	 *
+	 * @param length
+	 */
+	public void setLength(java.lang.String length) {
+		this.length = length;
+	}
+	
+	/**
+     * 获取马力属性
+     *
+     * @return power
+     */
+	public java.lang.String getPower() {
+		return power;
+	}
+	
+	/**
+	 * 设置马力属性
+	 *
+	 * @param power
+	 */
+	public void setPower(java.lang.String power) {
+		this.power = power;
+	}
+	
+	/**
+     * 获取品牌属性
+     *
+     * @return brand
+     */
+	public java.lang.String getBrand() {
+		return brand;
+	}
+	
+	/**
+	 * 设置品牌属性
+	 *
+	 * @param brand
+	 */
+	public void setBrand(java.lang.String brand) {
+		this.brand = brand;
+	}
+	
+	/**
+     * 获取车头颜色属性
+     *
+     * @return color
+     */
+	public java.lang.String getColor() {
+		return color;
+	}
+	
+	/**
+	 * 设置车头颜色属性
+	 *
+	 * @param color
+	 */
+	public void setColor(java.lang.String color) {
+		this.color = color;
+	}
+	
+	/**
+     * 获取车架号属性
+     *
+     * @return vin
+     */
+	public java.lang.String getVin() {
+		return vin;
+	}
+	
+	/**
+	 * 设置车架号属性
+	 *
+	 * @param vin
+	 */
+	public void setVin(java.lang.String vin) {
+		this.vin = vin;
+	}
+	
+	/**
+     * 获取发动机号属性
+     *
+     * @return engineNo
+     */
+	public java.lang.String getEngineNo() {
+		return engineNo;
+	}
+	
+	/**
+	 * 设置发动机号属性
+	 *
+	 * @param engineNo
+	 */
+	public void setEngineNo(java.lang.String engineNo) {
+		this.engineNo = engineNo;
+	}
+	
+	/**
+     * 获取车主属性
+     *
+     * @return ownerName
+     */
+	public java.lang.String getOwnerName() {
+		return ownerName;
+	}
+	
+	/**
+	 * 设置车主属性
+	 *
+	 * @param ownerName
+	 */
+	public void setOwnerName(java.lang.String ownerName) {
+		this.ownerName = ownerName;
+	}
+	
+	/**
+     * 获取车主电话属性
+     *
+     * @return ownerPhone
+     */
+	public java.lang.String getOwnerPhone() {
+		return ownerPhone;
+	}
+	
+	/**
+	 * 设置车主电话属性
+	 *
+	 * @param ownerPhone
+	 */
+	public void setOwnerPhone(java.lang.String ownerPhone) {
+		this.ownerPhone = ownerPhone;
+	}
+	
+	/**
+     * 获取车主手机属性
+     *
+     * @return ownerMobile
+     */
+	public java.lang.String getOwnerMobile() {
+		return ownerMobile;
+	}
+	
+	/**
+	 * 设置车主手机属性
+	 *
+	 * @param ownerMobile
+	 */
+	public void setOwnerMobile(java.lang.String ownerMobile) {
+		this.ownerMobile = ownerMobile;
+	}
+	
+	/**
+     * 获取登记日期属性
+     *
+     * @return regDate
+     */
+	public java.lang.String getRegDate() {
+		return regDate;
+	}
+	
+	/**
+	 * 设置登记日期属性
+	 *
+	 * @param regDate
+	 */
+	public void setRegDate(java.lang.String regDate) {
+		this.regDate = regDate;
+	}
+	
+	/**
+     * 获取登记证书号属性
+     *
+     * @return regCertCode
+     */
+	public java.lang.String getRegCertCode() {
+		return regCertCode;
+	}
+	
+	/**
+	 * 设置登记证书号属性
+	 *
+	 * @param regCertCode
+	 */
+	public void setRegCertCode(java.lang.String regCertCode) {
+		this.regCertCode = regCertCode;
+	}
+	
+	/**
+     * 获取核载重量属性
+     *
+     * @return loadWeight
+     */
+	public java.lang.String getLoadWeight() {
+		return loadWeight;
+	}
+	
+	/**
+	 * 设置核载重量属性
+	 *
+	 * @param loadWeight
+	 */
+	public void setLoadWeight(java.lang.String loadWeight) {
+		this.loadWeight = loadWeight;
+	}
+	
+	/**
+     * 获取车轮数属性
+     *
+     * @return wheelsNum
+     */
+	public java.lang.String getWheelsNum() {
+		return wheelsNum;
+	}
+	
+	/**
+	 * 设置车轮数属性
+	 *
+	 * @param wheelsNum
+	 */
+	public void setWheelsNum(java.lang.String wheelsNum) {
+		this.wheelsNum = wheelsNum;
+	}
+	
+	/**
+     * 获取所有权属性
+     *
+     * @return ownerType
+     */
+	public java.lang.String getOwnerType() {
+		return ownerType;
+	}
+	
+	/**
+	 * 设置所有权属性
+	 *
+	 * @param ownerType
+	 */
+	public void setOwnerType(java.lang.String ownerType) {
+		this.ownerType = ownerType;
+	}
+	
+	/**
+     * 获取车辆属性属性
+     *
+     * @return attributes
+     */
+	public java.lang.String getAttributes() {
+		return attributes;
+	}
+	
+	/**
+	 * 设置车辆属性属性
+	 *
+	 * @param attributes
+	 */
+	public void setAttributes(java.lang.String attributes) {
+		this.attributes = attributes;
+	}
+	
+	/**
+     * 获取上次保养时间属性
+     *
+     * @return maintenanceDate
+     */
+	public java.lang.String getMaintenanceDate() {
+		return maintenanceDate;
+	}
+	
+	/**
+	 * 设置上次保养时间属性
+	 *
+	 * @param maintenanceDate
+	 */
+	public void setMaintenanceDate(java.lang.String maintenanceDate) {
+		this.maintenanceDate = maintenanceDate;
+	}
+	
+	/**
+     * 获取保养票据属性
+     *
+     * @return maintenanceBill
+     */
+	public java.lang.String getMaintenanceBill() {
+		return maintenanceBill;
+	}
+	
+	/**
+	 * 设置保养票据属性
+	 *
+	 * @param maintenanceBill
+	 */
+	public void setMaintenanceBill(java.lang.String maintenanceBill) {
+		this.maintenanceBill = maintenanceBill;
+	}
+	
+	/**
+     * 获取行驶证号码属性
+     *
+     * @return licenseNo
+     */
+	public java.lang.String getLicenseNo() {
+		return licenseNo;
+	}
+	
+	/**
+	 * 设置行驶证号码属性
+	 *
+	 * @param licenseNo
+	 */
+	public void setLicenseNo(java.lang.String licenseNo) {
+		this.licenseNo = licenseNo;
+	}
+	
+	/**
+     * 获取行驶证注册日期属性
+     *
+     * @return licenseRegDate
+     */
+	public java.lang.String getLicenseRegDate() {
+		return licenseRegDate;
+	}
+	
+	/**
+	 * 设置行驶证注册日期属性
+	 *
+	 * @param licenseRegDate
+	 */
+	public void setLicenseRegDate(java.lang.String licenseRegDate) {
+		this.licenseRegDate = licenseRegDate;
+	}
+	
+	/**
+     * 获取行驶证发证日期属性
+     *
+     * @return licenseIssueDate
+     */
+	public java.lang.String getLicenseIssueDate() {
+		return licenseIssueDate;
+	}
+	
+	/**
+	 * 设置行驶证发证日期属性
+	 *
+	 * @param licenseIssueDate
+	 */
+	public void setLicenseIssueDate(java.lang.String licenseIssueDate) {
+		this.licenseIssueDate = licenseIssueDate;
+	}
+	
+	/**
+     * 获取行驶证有效期至属性
+     *
+     * @return licenseValidDate
+     */
+	public java.lang.String getLicenseValidDate() {
+		return licenseValidDate;
+	}
+	
+	/**
+	 * 设置行驶证有效期至属性
+	 *
+	 * @param licenseValidDate
+	 */
+	public void setLicenseValidDate(java.lang.String licenseValidDate) {
+		this.licenseValidDate = licenseValidDate;
+	}
+	
+	/**
+     * 获取营运证号码属性
+     *
+     * @return operatingCertNo
+     */
+	public java.lang.String getOperatingCertNo() {
+		return operatingCertNo;
+	}
+	
+	/**
+	 * 设置营运证号码属性
+	 *
+	 * @param operatingCertNo
+	 */
+	public void setOperatingCertNo(java.lang.String operatingCertNo) {
+		this.operatingCertNo = operatingCertNo;
+	}
+	
+	/**
+     * 获取营运证发证日期属性
+     *
+     * @return operatingCertIssueDate
+     */
+	public java.lang.String getOperatingCertIssueDate() {
+		return operatingCertIssueDate;
+	}
+	
+	/**
+	 * 设置营运证发证日期属性
+	 *
+	 * @param operatingCertIssueDate
+	 */
+	public void setOperatingCertIssueDate(java.lang.String operatingCertIssueDate) {
+		this.operatingCertIssueDate = operatingCertIssueDate;
+	}
+	
+	/**
+     * 获取营运证有效期至属性
+     *
+     * @return operatingCertValidDate
+     */
+	public java.lang.String getOperatingCertValidDate() {
+		return operatingCertValidDate;
+	}
+	
+	/**
+	 * 设置营运证有效期至属性
+	 *
+	 * @param operatingCertValidDate
+	 */
+	public void setOperatingCertValidDate(java.lang.String operatingCertValidDate) {
+		this.operatingCertValidDate = operatingCertValidDate;
+	}
+	
+	/**
+     * 获取登记证照片属性
+     *
+     * @return regImageRefId
+     */
+	public java.lang.String getRegImageRefId() {
+		return regImageRefId;
+	}
+	
+	/**
+	 * 设置登记证照片属性
+	 *
+	 * @param regImageRefId
+	 */
+	public void setRegImageRefId(java.lang.String regImageRefId) {
+		this.regImageRefId = regImageRefId;
+	}
+	
+	/**
+     * 获取行驶证照片属性
+     *
+     * @return licenseImageRefId
+     */
+	public java.lang.String getLicenseImageRefId() {
+		return licenseImageRefId;
+	}
+	
+	/**
+	 * 设置行驶证照片属性
+	 *
+	 * @param licenseImageRefId
+	 */
+	public void setLicenseImageRefId(java.lang.String licenseImageRefId) {
+		this.licenseImageRefId = licenseImageRefId;
+	}
+	
+	/**
+     * 获取营运证照片属性
+     *
+     * @return ocImageRefId
+     */
+	public java.lang.String getOcImageRefId() {
+		return ocImageRefId;
+	}
+	
+	/**
+	 * 设置营运证照片属性
+	 *
+	 * @param ocImageRefId
+	 */
+	public void setOcImageRefId(java.lang.String ocImageRefId) {
+		this.ocImageRefId = ocImageRefId;
+	}
+	
+	/**
+     * 获取车辆照片属性
+     *
+     * @return vehicleImageRefId
+     */
+	public java.lang.String getVehicleImageRefId() {
+		return vehicleImageRefId;
+	}
+	
+	/**
+	 * 设置车辆照片属性
+	 *
+	 * @param vehicleImageRefId
+	 */
+	public void setVehicleImageRefId(java.lang.String vehicleImageRefId) {
+		this.vehicleImageRefId = vehicleImageRefId;
+	}
+	
+	/**
+     * 获取数据来源属性
+     *
+     * @return source
+     */
+	public java.lang.String getSource() {
+		return source;
+	}
+	
+	/**
+	 * 设置数据来源属性
+	 *
+	 * @param source
+	 */
+	public void setSource(java.lang.String source) {
+		this.source = source;
+	}
+	
+	/**
+     * 获取备注属性
+     *
+     * @return remark
+     */
+	public java.lang.String getRemark() {
+		return remark;
+	}
+	
+	/**
+	 * 设置备注属性
+	 *
+	 * @param remark
+	 */
+	public void setRemark(java.lang.String remark) {
+		this.remark = remark;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改人属性
+     *
+     * @return updatedBy
+     */
+	public java.lang.String getUpdatedBy() {
+		return updatedBy;
+	}
+	
+	/**
+	 * 设置修改人属性
+	 *
+	 * @param updatedBy
+	 */
+	public void setUpdatedBy(java.lang.String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	/**
+     * 获取车桥类型属性
+     *
+     * @return bridgeType
+     */
+	public java.lang.String getBridgeType() {
+		return bridgeType;
+	}
+	
+	/**
+	 * 设置车桥类型属性
+	 *
+	 * @param bridgeType
+	 */
+	public void setBridgeType(java.lang.String bridgeType) {
+		this.bridgeType = bridgeType;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("RealVehicleInfo");
+        sb.append("{vehicleInfoId=").append(vehicleInfoId);
+        sb.append(", seqNo=").append(seqNo);
+        sb.append(", vehicleType=").append(vehicleType);
+        sb.append(", headstockType=").append(headstockType);
+        sb.append(", type=").append(type);
+        sb.append(", plateNumber=").append(plateNumber);
+        sb.append(", models=").append(models);
+        sb.append(", length=").append(length);
+        sb.append(", power=").append(power);
+        sb.append(", brand=").append(brand);
+        sb.append(", color=").append(color);
+        sb.append(", vin=").append(vin);
+        sb.append(", engineNo=").append(engineNo);
+        sb.append(", ownerName=").append(ownerName);
+        sb.append(", ownerPhone=").append(ownerPhone);
+        sb.append(", ownerMobile=").append(ownerMobile);
+        sb.append(", regDate=").append(regDate);
+        sb.append(", regCertCode=").append(regCertCode);
+        sb.append(", loadWeight=").append(loadWeight);
+        sb.append(", wheelsNum=").append(wheelsNum);
+        sb.append(", ownerType=").append(ownerType);
+        sb.append(", attributes=").append(attributes);
+        sb.append(", maintenanceDate=").append(maintenanceDate);
+        sb.append(", maintenanceBill=").append(maintenanceBill);
+        sb.append(", licenseNo=").append(licenseNo);
+        sb.append(", licenseRegDate=").append(licenseRegDate);
+        sb.append(", licenseIssueDate=").append(licenseIssueDate);
+        sb.append(", licenseValidDate=").append(licenseValidDate);
+        sb.append(", operatingCertNo=").append(operatingCertNo);
+        sb.append(", operatingCertIssueDate=").append(operatingCertIssueDate);
+        sb.append(", operatingCertValidDate=").append(operatingCertValidDate);
+        sb.append(", regImageRefId=").append(regImageRefId);
+        sb.append(", licenseImageRefId=").append(licenseImageRefId);
+        sb.append(", ocImageRefId=").append(ocImageRefId);
+        sb.append(", vehicleImageRefId=").append(vehicleImageRefId);
+        sb.append(", source=").append(source);
+        sb.append(", remark=").append(remark);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedBy=").append(updatedBy);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", status=").append(status);
+        sb.append(", isDeleted=").append(isDeleted);
+        sb.append(", bridgeType=").append(bridgeType);
+		sb.append('}');
+        return sb.toString();
+    }
+}

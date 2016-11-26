@@ -1,0 +1,16 @@
+package com.gzzhwl.api.account.service;
+
+import com.gzzhwl.core.data.model.LoginResultModel;
+import com.gzzhwl.rest.exception.RestException;
+
+public interface AccountService {
+	/**
+	 * 运势界司机扫码登录
+	 */
+	public LoginResultModel loginByBillForYSJ(String telphone, String idno, String loadNo, String deviceType) throws RestException;
+
+	/**
+	 * 内部司机扫码登录
+	 */
+	public LoginResultModel loginByBillForCBS(String idno, String loadNo, String deviceType) throws RestException;
+}

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.QuotedPlusInfoDao">
+
+	<resultMap id="quotedPlusInfoResultMap" type="QuotedPlusInfo">
+		<id property="driverInfoId" column="driver_info_id" />
+		<id property="quotedId" column="quoted_id" />
+		<id property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="quotedId" column="quoted_id" />
+		<result property="quotedId" column="quoted_id" />
+		<result property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="driverInfoId" column="driver_info_id" />
+		<result property="driverInfoId" column="driver_info_id" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="quotedPlusInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="quotedPlusInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="QuotedPlusInfo">
+	   insert into zh_quoted_plus_info (
+	     quoted_id,
+	     vehicle_info_id,
+	     driver_info_id
+	   )values (
+	     #{quotedId},
+	     #{vehicleInfoId},
+	     #{driverInfoId}
+	   )
+	</insert>
+
+	<update id="update" parameterType="QuotedPlusInfo">
+	   update zh_quoted_plus_info set
+	     quoted_id=#{quotedId},
+	     vehicle_info_id=#{vehicleInfoId},
+	     driver_info_id=#{driverInfoId}
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	    and quoted_id=#{quotedId} 
+	    and vehicle_info_id=#{vehicleInfoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="QuotedPlusInfo">
+	   update zh_quoted_plus_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="quotedId != null">
+		       quoted_id=#{quotedId},
+		     </if>
+		     <if test="vehicleInfoId != null">
+		       vehicle_info_id=#{vehicleInfoId},
+		     </if>
+		     <if test="driverInfoId != null">
+		       driver_info_id=#{driverInfoId}
+		     </if>
+	   </trim>
+	
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	    and quoted_id=#{quotedId} 
+	    and vehicle_info_id=#{vehicleInfoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_quoted_plus_info 
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	    and quoted_id=#{quotedId} 
+	    and vehicle_info_id=#{vehicleInfoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="quotedPlusInfoResultMap">
+	   select 
+	    quoted_id,
+	    vehicle_info_id,
+	    driver_info_id
+	   from zh_quoted_plus_info
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	    and quoted_id=#{quotedId} 
+	    and vehicle_info_id=#{vehicleInfoId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    quoted_id,
+	    vehicle_info_id,
+	    driver_info_id
+	   from zh_quoted_plus_info
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	    and quoted_id=#{quotedId} 
+	    and vehicle_info_id=#{vehicleInfoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     quoted_id,
+	     vehicle_info_id,
+	     driver_info_id
+	   from zh_quoted_plus_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="quotedId != null">
+	        quoted_id=#{quotedId}
+	     </if>
+	     <if test="vehicleInfoId != null">
+	        and vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="driverInfoId != null">
+	        and driver_info_id=#{driverInfoId}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     quoted_id,
+	     vehicle_info_id,
+	     driver_info_id
+	   from zh_quoted_plus_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="quotedId != null">
+	        quoted_id=#{quotedId}
+	     </if>
+	     <if test="vehicleInfoId != null">
+	        and vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="driverInfoId != null">
+	        and driver_info_id=#{driverInfoId}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

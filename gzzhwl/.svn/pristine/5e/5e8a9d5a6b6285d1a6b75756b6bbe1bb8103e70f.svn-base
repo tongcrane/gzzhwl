@@ -1,0 +1,132 @@
+package com.gzzhwl.admin.load.vo;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.rest.springmvc.validate.ParamEmptyValidator;
+
+public class LoadFeedbackVo {
+
+	private java.lang.String loadId; // 提货单标识
+	
+	private String linkedStatus; // 反馈环节
+	
+	private String type; // 异常类型
+	
+	private java.lang.String itemName; // 费用名称
+	
+	private java.lang.String itemPrice; // 费用金额
+	
+	private java.lang.String itemDesc; // 费用说明
+	
+	private java.lang.String feedbackTime; // 反馈时间
+
+	public java.lang.String getLoadId() {
+		return loadId;
+	}
+
+	public void setLoadId(java.lang.String loadId) {
+		this.loadId = loadId;
+	}
+
+	public String getLinkedStatus() {
+		return linkedStatus;
+	}
+
+	public void setLinkedStatus(String linkedStatus) {
+		this.linkedStatus = linkedStatus;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public java.lang.String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(java.lang.String itemName) {
+		this.itemName = itemName;
+	}
+
+	public java.lang.String getItemPrice() {
+		return itemPrice;
+	}
+
+	public void setItemPrice(java.lang.String itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+
+	public java.lang.String getItemDesc() {
+		return itemDesc;
+	}
+
+	public void setItemDesc(java.lang.String itemDesc) {
+		this.itemDesc = itemDesc;
+	}
+
+	public java.lang.String getFeedbackTime() {
+		return feedbackTime;
+	}
+
+	public void setFeedbackTime(java.lang.String feedbackTime) {
+		this.feedbackTime = feedbackTime;
+	}
+	
+	public LoadFeedbackLog getLoadFeedbackLog(){
+		
+		LoadFeedbackLog loadFeedbackLog = new LoadFeedbackLog();
+		
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.type);
+		
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.loadId);
+		
+//		ParamEmptyValidator.VALID_PARAM_EMPTY(this.itemName);
+		
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.itemPrice);
+		
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.itemDesc);
+		
+		loadFeedbackLog.setType(LoadFeedBackType.getLoadFeedBackType(type).getCode());
+		loadFeedbackLog.setItemName(this.itemName);
+		loadFeedbackLog.setItemPrice(this.itemPrice);
+		loadFeedbackLog.setItemDesc(this.itemDesc);
+		loadFeedbackLog.setLoadId(this.loadId);
+		
+		if(StringUtils.isNoneBlank(this.itemName)){
+			loadFeedbackLog.setItemName(this.itemName);
+		}
+		
+		if(StringUtils.isNoneBlank(this.feedbackTime)){
+			loadFeedbackLog.setFeedbackTime(feedbackTime);
+		}else{
+			loadFeedbackLog.setFeedbackTime(DateUtils.currentStringDate("yyyy-MM-dd HH:mm:ss"));
+		}
+		
+		if(StringUtils.isNoneBlank(this.linkedStatus)){
+			loadFeedbackLog.setLinkedStatus(LoadBillType.getLoadBillType(this.linkedStatus).getCode());
+		}
+		
+		return loadFeedbackLog;
+	}
+	
+	public static void main(String[] args) {
+		
+		LoadFeedbackVo loaffeed = new LoadFeedbackVo();
+		loaffeed.setItemDesc("测试一下啦");
+		loaffeed.setItemName("反馈异常");
+		loaffeed.setItemPrice("100.00");
+		loaffeed.setLoadId("132131321321");
+		loaffeed.setType("02");
+		loaffeed.setLinkedStatus("01");
+		System.out.println(JSON.toJSONString(loaffeed.getLoadFeedbackLog()));
+	}
+}

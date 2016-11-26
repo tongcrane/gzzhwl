@@ -1,0 +1,539 @@
+package com.gzzhwl.admin.payables.service.impl;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.contract.service.ContractService;
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.admin.payables.service.PayablesService;
+import com.gzzhwl.admin.payables.vo.PayStatementQueryVo;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.dao.CustomerInfoDao;
+import com.gzzhwl.core.data.dao.DepartmentInfoDao;
+import com.gzzhwl.core.data.dao.DriverContractInfoDao;
+import com.gzzhwl.core.data.dao.OrderLoadInfoDao;
+import com.gzzhwl.core.data.dao.PayablesInfoDao;
+import com.gzzhwl.core.data.dao.SupplyInfoDao;
+import com.gzzhwl.core.data.extdao.DriverContractInfoExtDao;
+import com.gzzhwl.core.data.extdao.OrderLoadInfoExtDao;
+import com.gzzhwl.core.data.model.CustomerInfo;
+import com.gzzhwl.core.data.model.DepartmentInfo;
+import com.gzzhwl.core.data.model.DriverContractInfo;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.data.model.PayablesInfo;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.utils.ValidateUtils;
+
+@Service
+public class PayablesServiceImpl implements PayablesService {
+
+	@Autowired
+	private OrderLoadInfoExtDao orderLoadInfoExtDao;
+	@Autowired
+	private ContractService contractService;
+	@Autowired
+	private DriverContractInfoExtDao driverContractInfoExtDao;
+	@Autowired
+	private OrderLoadInfoDao orderLoadInfoDao;
+	@Autowired
+	private LoadFeedbackService loadFeedbackService;
+	@Autowired
+	private RegionService regionService;
+	@Autowired
+	private PayablesInfoDao payablesDao;
+	@Autowired
+	private DriverContractInfoDao driverContractDao;
+	@Autowired
+	private DepartmentInfoDao departDao;
+	@Autowired
+	private SupplyInfoDao supplyInfoDao;
+	
+
+	@Override
+	public Map<String, Object> getPayDetail(String contractId) {
+		DriverContractInfo driverContractInfo = driverContractDao.get(contractId);
+		String loadId = driverContractInfo.getLoadId();
+
+		Map<String, Object> resMap = Maps.newHashMap();
+
+		Map<String, Object> payMap = driverContractInfoExtDao.payLoadDetail(contractId);
+
+		String startCodeP = (String) payMap.get("startCodeP");
+		String startCodePCn = this.getCodeCn(startCodeP);
+		payMap.put("startCodePCn", startCodePCn);
+
+		String startCodeC = (String) payMap.get("startCodeC");
+		String startCodeCCn = this.getCodeCn(startCodeC);
+		payMap.put("startCodeCCn", startCodeCCn);
+
+		String endCodeP = (String) payMap.get("endCodeP");
+		String endCodePCn = this.getCodeCn(endCodeP);
+		payMap.put("endCodePCn", endCodePCn);
+
+		String endCodeC = (String) payMap.get("endCodeC");
+		String endCodeCCn = this.getCodeCn(endCodeC);
+		payMap.put("endCodeCCn", endCodeCCn);
+
+		List<Map<String, Object>> feedBackList = loadFeedbackService.getLoadFeedbackList(loadId, null,
+				new String[] { LoadFeedBackType.VEHICLE.getCode() }, LoadFeedbackLog.ISEND_YES, null, null);
+
+		resMap.put("payVehicleInfo", payMap);
+		resMap.put("payChargesInfo", this.getPayChargesInfo(contractId));
+		resMap.put("feedBackList", feedBackList);
+
+		return resMap;
+	}
+
+	private String getCodeCn(String code) {
+		if (StringUtils.isNotBlank(code)) {
+			RegionInfo startCodePCn = regionService.findByCode(code);
+			if (startCodePCn != null) {
+				return startCodePCn.getRegionName();
+			}
+		}
+		return "";
+	}
+
+	@Override
+	public Map<String, Object> getPayChargesInfo(String contractId) {
+
+		DriverContractInfo driverContractInfo = driverContractDao.get(contractId);
+		String loadId = driverContractInfo.getLoadId();
+
+		OrderLoadInfo orderLoadInfo = orderLoadInfoDao.get(contractId);
+
+		String prePay = orderLoadInfo.getPrePay() != null ? orderLoadInfo.getPrePay() : "0";// 预付现金
+		String oilPay = orderLoadInfo.getOilPay() != null ? orderLoadInfo.getOilPay() : "0";// 预付油费
+		String oilCardNo = orderLoadInfo.getOilCardNo();// 油卡卡号
+		String freightPrice = orderLoadInfo.getFreightPrice() != null ? orderLoadInfo.getFreightPrice() : "0";// 纯运费
+		String feedBackPrice = loadFeedbackService.getPayFeedbackCharges(loadId);// 异常反馈费用
+		if (feedBackPrice == null) {
+			feedBackPrice = "0";
+		}
+		BigDecimal totalPrice = new BigDecimal(prePay).add(new BigDecimal(oilPay)).add(new BigDecimal(freightPrice))
+				.add(new BigDecimal(feedBackPrice));
+
+		Map<String, Object> chargesMap = Maps.newHashMap();
+		chargesMap.put("prePay", new DecimalFormat("#0.00").format(Double.parseDouble(prePay)));
+		chargesMap.put("oilPay", new DecimalFormat("#0.00").format(Double.parseDouble(oilPay)));
+		chargesMap.put("oilCardNo", oilCardNo);
+		chargesMap.put("freightPrice", new DecimalFormat("#0.00").format(Double.parseDouble(freightPrice)));
+		chargesMap.put("feedBackPrice", new DecimalFormat("#0.00").format(Double.parseDouble(feedBackPrice)));
+		chargesMap.put("totalPrice", new DecimalFormat("#0.00").format(totalPrice));
+
+		return chargesMap;
+	}
+
+	@Override
+	public void verifyPayables(String contractId, String staffId) {
+		DriverContractInfo driverContractInfo = driverContractDao.get(contractId);
+		String loadId = driverContractInfo.getLoadId();
+
+		OrderLoadInfo orderLoadInfo = orderLoadInfoDao.get(loadId);
+
+		// 验证异常反馈金额是否有为空的
+		loadFeedbackService.revFeedbackValidator(loadId);
+
+		// 司机合同流程结转
+		contractService.doVerified(contractId, staffId);
+
+		// 保存应付信息
+		this.savePayInfo(loadId, contractId, staffId);
+
+	}
+
+	private void savePayInfo(String loadId, String contractId, String staffId) {
+		OrderLoadInfo orderLoadInfo = orderLoadInfoDao.get(contractId);
+
+		String prePay = orderLoadInfo.getPrePay() != null ? orderLoadInfo.getPrePay() : "0";// 预付现金
+		String oilPay = orderLoadInfo.getOilPay() != null ? orderLoadInfo.getOilPay() : "0";// 预付油费
+		String oilCardNo = orderLoadInfo.getOilCardNo();// 油卡卡号
+		String freightPrice = orderLoadInfo.getFreightPrice() != null ? orderLoadInfo.getFreightPrice() : "0";// 纯运费
+		String feedBackPrice = loadFeedbackService.getPayFeedbackCharges(loadId);// 异常反馈费用
+		if (feedBackPrice == null) {
+			feedBackPrice = "0";
+		}
+		BigDecimal totalPrice = new BigDecimal(prePay).add(new BigDecimal(oilPay)).add(new BigDecimal(freightPrice))
+				.add(new BigDecimal(feedBackPrice));
+
+		PayablesInfo pay = new PayablesInfo();
+		pay.setContractId(contractId);
+		pay.setExceptionTotal(feedBackPrice);
+		pay.setFreightPrice(freightPrice);
+		pay.setOilCardNo(oilCardNo);
+		pay.setOilPay(oilPay);
+		pay.setPrePay(prePay);
+		pay.setTotal(totalPrice.toString());
+		pay.setCreatedBy(staffId);
+
+		payablesDao.insert(pay);
+	}
+
+	@Override
+	public List<Map<String, Object>> getPayStatementList(PayStatementQueryVo payStatementQueryVo)
+			throws ParseException {
+
+		return driverContractInfoExtDao.getPayStatementList(payStatementQueryVo.getParams());
+	}
+
+	private void setNumberCell(XSSFCell cell, CellStyle numberStyle) {
+		cell.setCellStyle(numberStyle);
+		cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+	}
+
+	private void setStringCell(XSSFCell cell, CellStyle stringStyle) {
+		cell.setCellStyle(stringStyle);
+		cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+	}
+
+	@Override
+	public void exportPayStatement(List<Map<String, Object>> payMapList, OutputStream os)
+			throws ParseException, IOException {
+
+		// 第一步，创建一个webbook，对应一个Excel文件
+		XSSFWorkbook wb = new XSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		XSSFSheet sheet = wb.createSheet("应收对账单");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		XSSFRow row = sheet.createRow((int) 0);
+		// 第四步，创建单元格，并设置值表头 设置表头居中
+		CellStyle stringStyle = wb.createCellStyle();
+
+		// 把水平对齐方式指定为居中
+		stringStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		// 把垂直对齐方式指定为居中
+		stringStyle.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER);
+		Font font = wb.createFont();
+		font.setFontName("宋体");
+		font.setFontHeightInPoints((short) 12);// 设置字体大小
+		stringStyle.setFont(font);
+
+		XSSFCellStyle numberStyle = wb.createCellStyle();
+		XSSFDataFormat format = wb.createDataFormat();
+		numberStyle.setDataFormat(format.getFormat("0.00"));
+		numberStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		numberStyle.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER);
+
+		XSSFCell cell = row.createCell(0);
+		cell.setCellValue("序号");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(1);
+		cell.setCellValue("客户全称");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(2);
+		cell.setCellValue("运单号");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(3);
+		cell.setCellValue("提货单号");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(4);
+		cell.setCellValue("司机合同号");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(5);
+		cell.setCellValue("结款对象");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(6);
+		cell.setCellValue("线路");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(7);
+		cell.setCellValue("发车时间");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(8);
+		cell.setCellValue("车牌号");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(9);
+		cell.setCellValue("业务部门");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(10);
+		cell.setCellValue("纯运费");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(11);
+		cell.setCellValue("是否预估");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(12);
+		cell.setCellValue("预付现金");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(13);
+		cell.setCellValue("预付油卡");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(14);
+		cell.setCellValue("其他费用合计");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(15);
+		cell.setCellValue("异常类型");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(16);
+		cell.setCellValue("异常时间");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(17);
+		cell.setCellValue("费用名称");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(18);
+		cell.setCellValue("费用金额");
+		cell.setCellStyle(stringStyle);
+		cell = row.createCell(19);
+		cell.setCellValue("上报人");
+		cell.setCellStyle(stringStyle);
+
+		int current = 1;
+		for (int i = 0; i < payMapList.size(); i++) {
+			Map<String, Object> payMap = payMapList.get(i);
+			row = sheet.createRow(current);
+			List<Map<String, Object>> feedbackList = (List<Map<String, Object>>) payMap.get("feedbackList");
+
+			for (int j = 0; j < 16; j++) {
+				if (j == 15) {
+					if (!ValidateUtils.isEmpty(feedbackList)) {
+						for (int j2 = 0; j2 < feedbackList.size(); j2++) {
+							Map<String, Object> feedbackMap = feedbackList.get(j2);
+							if (j2 > 0) {
+								row = sheet.createRow(current + j2);
+							}
+							for (int k = 0; k < 5; k++) {
+								cell = row.createCell(j + k);
+								String value = this.getValue(j + k, feedbackMap);
+								if (StringUtils.isBlank(value)) {
+									cell.setCellValue(value);
+									setStringCell(cell, stringStyle);
+								} else if ((j + k) == 18) {
+									cell.setCellValue(Double.parseDouble(value));
+									setNumberCell(cell, numberStyle);
+								} else {
+									cell.setCellValue(value);
+									setStringCell(cell, stringStyle);
+								}
+							}
+						}
+						current = current + feedbackList.size() - 1;
+					} else {
+						for (int j2 = 0; j2 < 5; j2++) {
+							cell = row.createCell(j + j2);
+							cell.setCellValue("");
+							setStringCell(cell, stringStyle);
+						}
+					}
+				} else {
+					cell = row.createCell(j);
+
+					if (!ValidateUtils.isEmpty(feedbackList)) {
+						CellRangeAddress region = new CellRangeAddress(current, current + feedbackList.size() - 1, j,
+								j);
+						sheet.addMergedRegion(region);
+					}
+
+					String value = this.getValue(j, payMap);
+
+					if (j == 0) {
+						cell.setCellValue((i + 1)+"");
+						setStringCell(cell, stringStyle);
+					} else if (StringUtils.isBlank(value)) {
+						cell.setCellValue(value);
+						setStringCell(cell, stringStyle);
+					} else if (j == 10 || j == 12 || j == 13 || j == 14) {
+						cell.setCellValue(Double.parseDouble(value));
+						setNumberCell(cell, numberStyle);
+					} else {
+						cell.setCellValue(value);
+						setStringCell(cell, stringStyle);
+					}
+				}
+			}
+			row = sheet.createRow(current = current + 1);// 空行
+			current++;// 换行
+		}
+
+		this.autoSizeColumn(sheet, 20);
+
+		// 第六步，将文件存到指定位置
+		try {
+			wb.write(os);
+			// FileOutputStream fout = new FileOutputStream("D:/应收对账单.xls");
+			// wb.write(fout);
+			// fout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (wb != null) {
+				wb.close();
+			}
+			if (os != null) {
+				os.close();
+			}
+		}
+
+	}
+
+	private void autoSizeColumn(XSSFSheet sheet, int tatalColumn) {
+		for (int i = 0; i < tatalColumn; i++) {
+			sheet.autoSizeColumn(i + 1);
+		}
+	}
+
+	private String getValue(int j, Map<String, Object> map) {
+		String returnVal = "";
+		switch (j) {
+		case 1:
+			returnVal = (String) map.get("customerName");
+			break;
+		case 2:
+			returnVal = (String) map.get("consignNo");
+			break;
+		case 3:
+			returnVal = (String) map.get("loadNo");
+			break;
+		case 4:
+			returnVal = (String) map.get("driverContractNo");
+			break;
+		case 5:
+			returnVal = (String) map.get("supplyFullName");
+			break;
+		case 6:
+			returnVal = this.getCodeCn((String) map.get("startCodeC")) + "-"
+					+ this.getCodeCn((String) map.get("endCodeC"));
+			break;
+		case 7:
+			returnVal = (String) map.get("tripTime");
+			break;
+		case 8:
+			returnVal = (String) map.get("plateNumber");
+			break;
+		case 9:
+			returnVal = (String) map.get("departmentName");
+			break;
+		case 10:
+			returnVal = (String) map.get("freightPrice");
+			break;
+		case 11:
+			String isPredict = (String) map.get("isPredict");
+			if ("01".equals(isPredict)) {
+				returnVal = "精确";
+			} else if ("02".equals(isPredict)) {
+				returnVal = "预估";
+			}
+			break;
+		case 12:
+			returnVal = (String) map.get("prePay");
+			break;
+		case 13:
+			returnVal = (String) map.get("oilPay");
+			break;
+		case 14:
+			returnVal = (String) map.get("exceptionTotal");
+			break;
+		case 15:
+			if (map != null) {
+				String status = (String) map.get("status");
+				if (LoadBillType.NOTVEHICLE.getCode().equals(status)) {
+					returnVal = "车检异常";
+				} else if (LoadBillType.VEHICLECHECK.getCode().equals(status)) {
+					returnVal = "靠台异常";
+				} else if (LoadBillType.CLOSETOSURFACE.getCode().equals(status)) {
+					returnVal = "发车异常";
+				} else if (LoadBillType.ARRIVED.getCode().equals(status)) {
+					returnVal = "电子回单异常";
+				}
+			}
+			break;
+		case 16:
+			if (map != null) {
+				returnVal = (String) map.get("feedbackTime");
+			}
+			break;
+		case 17:
+			if (map != null) {
+				returnVal = (String) map.get("itemName");
+			}
+			break;
+		case 18:
+			if (map != null) {
+				returnVal = (String) map.get("itemPrice");
+			}
+			break;
+		case 19:
+			if (map != null) {
+				returnVal = (String) map.get("realName");
+			}
+			break;
+		}
+
+		return returnVal;
+	}
+
+	@Override
+	public String getFileName(PayStatementQueryVo queryVo) {
+		StringBuffer buffer = new StringBuffer("应付对账单");
+		if (StringUtils.isNotBlank(queryVo.getSupplyId())) {
+
+			buffer.append("_" + supplyInfoDao.getSupplyName(queryVo.getSupplyId()));
+			
+		}
+		if (StringUtils.isNotBlank(queryVo.getStartCodeP())) {
+			String startCodePCn = this.getCodeCn(queryVo.getStartCodeP());
+			if (StringUtils.isNotBlank(startCodePCn)) {
+				buffer.append("_" + startCodePCn);
+			}
+		}
+		if (StringUtils.isNotBlank(queryVo.getStartCodeC())) {
+			String startCodeCCn = this.getCodeCn(queryVo.getStartCodeC());
+			if (StringUtils.isNotBlank(startCodeCCn)) {
+				buffer.append("_" + startCodeCCn);
+			}
+		}
+		if (StringUtils.isNotBlank(queryVo.getEndCodeP())) {
+			String endCodePCn = this.getCodeCn(queryVo.getEndCodeP());
+			if (StringUtils.isNotBlank(endCodePCn)) {
+				buffer.append("_" + endCodePCn);
+			}
+		}
+		if (StringUtils.isNotBlank(queryVo.getEndCodeC())) {
+			String endCodeCCn = this.getCodeCn(queryVo.getEndCodeC());
+			if (StringUtils.isNotBlank(endCodeCCn)) {
+				buffer.append("_" + endCodeCCn);
+			}
+		}
+		if (StringUtils.isNotBlank(queryVo.getDepartId())) {
+			DepartmentInfo depart = departDao.get(Integer.parseInt(queryVo.getDepartId()));
+			if (depart != null && StringUtils.isNotBlank(depart.getName())) {
+				buffer.append("_" + depart.getName());
+			}
+			;
+		}
+		if (StringUtils.isNotBlank(queryVo.getTripStartTime())) {
+			buffer.append("_" + queryVo.getTripStartTime());
+		}
+		if (StringUtils.isNotBlank(queryVo.getTripEndTime())) {
+			buffer.append("_" + queryVo.getTripEndTime());
+		}
+		if (StringUtils.isNotBlank(queryVo.getIsPredict())) {
+			if ("01".equals(queryVo.getIsPredict())) {
+				buffer.append("_精确");
+			} else if ("02".equals(queryVo.getIsPredict())) {
+				buffer.append("_预估");
+			}
+		}
+		return buffer.toString();
+	}
+
+}

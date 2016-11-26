@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.CustomerInfoDao">
+
+	<resultMap id="customerInfoResultMap" type="CustomerInfo">
+		<id property="customerId" column="customer_id" />
+		<result property="customerNo" column="customer_no" />
+		<result property="type" column="type" />
+		<result property="fullName" column="full_name" />
+		<result property="taxRegCode" column="tax_reg_code" />
+		<result property="contactName" column="contact_name" />
+		<result property="telphone" column="telphone" />
+		<result property="mobile" column="mobile" />
+		<result property="email" column="email" />
+		<result property="areaCode" column="area_code" />
+		<result property="address" column="address" />
+		<result property="isAgreement" column="is_agreement" />
+		<result property="agreementNo" column="agreement_no" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="belongDepartId" column="belong_depart_id" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="customerInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="customerInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="CustomerInfo">
+	   insert into zh_customer_info (
+	     customer_id,
+	     customer_no,
+	     type,
+	     full_name,
+	     tax_reg_code,
+	     contact_name,
+	     telphone,
+	     mobile,
+	     email,
+	     area_code,
+	     address,
+	     is_agreement,
+	     agreement_no,
+	     remark,
+	     status,
+	     belong_depart_id,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   )values (
+	     #{customerId},
+	     #{customerNo},
+	     #{type},
+	     #{fullName},
+	     #{taxRegCode},
+	     #{contactName},
+	     #{telphone},
+	     #{mobile},
+	     #{email},
+	     #{areaCode},
+	     #{address},
+	     #{isAgreement},
+	     #{agreementNo},
+	     #{remark},
+	     #{status},
+	     #{belongDepartId},
+	     #{createdBy},
+	     now(),
+	     #{updatedBy},
+	     now(),
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="CustomerInfo">
+	   update zh_customer_info set
+	     customer_id=#{customerId},
+	     customer_no=#{customerNo},
+	     type=#{type},
+	     full_name=#{fullName},
+	     tax_reg_code=#{taxRegCode},
+	     contact_name=#{contactName},
+	     telphone=#{telphone},
+	     mobile=#{mobile},
+	     email=#{email},
+	     area_code=#{areaCode},
+	     address=#{address},
+	     is_agreement=#{isAgreement},
+	     agreement_no=#{agreementNo},
+	     remark=#{remark},
+	     status=#{status},
+	     belong_depart_id=#{belongDepartId},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     updated_by=#{updatedBy},
+	     updated_time=now(),
+	     is_deleted=#{isDeleted}
+	   where 
+	    customer_id=#{customerId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="CustomerInfo">
+	   update zh_customer_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="customerId != null">
+		       customer_id=#{customerId},
+		     </if>
+		     <if test="customerNo != null">
+		       customer_no=#{customerNo},
+		     </if>
+		     <if test="type != null">
+		       type=#{type},
+		     </if>
+		     <if test="fullName != null">
+		       full_name=#{fullName},
+		     </if>
+		     <if test="taxRegCode != null">
+		       tax_reg_code=#{taxRegCode},
+		     </if>
+		     <if test="contactName != null">
+		       contact_name=#{contactName},
+		     </if>
+		     <if test="telphone != null">
+		       telphone=#{telphone},
+		     </if>
+		     <if test="mobile != null">
+		       mobile=#{mobile},
+		     </if>
+		     <if test="email != null">
+		       email=#{email},
+		     </if>
+		     <if test="areaCode != null">
+		       area_code=#{areaCode},
+		     </if>
+		     <if test="address != null">
+		       address=#{address},
+		     </if>
+		     <if test="isAgreement != null">
+		       is_agreement=#{isAgreement},
+		     </if>
+		     <if test="agreementNo != null">
+		       agreement_no=#{agreementNo},
+		     </if>
+		     <if test="remark != null">
+		       remark=#{remark},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="belongDepartId != null">
+		       belong_depart_id=#{belongDepartId},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		     <if test="updatedTime != null">
+		       updated_time=now(),
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    customer_id=#{customerId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_customer_info 
+	   where 
+	    customer_id=#{customerId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="customerInfoResultMap">
+	   select 
+	    customer_id,
+	    customer_no,
+	    type,
+	    full_name,
+	    tax_reg_code,
+	    contact_name,
+	    telphone,
+	    mobile,
+	    email,
+	    area_code,
+	    address,
+	    is_agreement,
+	    agreement_no,
+	    remark,
+	    status,
+	    belong_depart_id,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_customer_info
+	   where 
+	    customer_id=#{customerId} 
+	    and is_deleted ='00'
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    customer_id,
+	    customer_no,
+	    type,
+	    full_name,
+	    tax_reg_code,
+	    contact_name,
+	    telphone,
+	    mobile,
+	    email,
+	    area_code,
+	    address,
+	    is_agreement,
+	    agreement_no,
+	    remark,
+	    status,
+	    belong_depart_id,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_customer_info
+	   where 
+	    customer_id=#{customerId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     customer_id,
+	     customer_no,
+	     type,
+	     full_name,
+	     tax_reg_code,
+	     contact_name,
+	     telphone,
+	     mobile,
+	     email,
+	     area_code,
+	     address,
+	     is_agreement,
+	     agreement_no,
+	     remark,
+	     status,
+	     belong_depart_id,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_customer_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="customerId != null">
+	        customer_id=#{customerId}
+	     </if>
+	     <if test="customerNo != null">
+	        and customer_no=#{customerNo}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="fullName != null">
+	        and full_name=#{fullName}
+	     </if>
+	     <if test="taxRegCode != null">
+	        and tax_reg_code=#{taxRegCode}
+	     </if>
+	     <if test="contactName != null">
+	        and contact_name=#{contactName}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="mobile != null">
+	        and mobile=#{mobile}
+	     </if>
+	     <if test="email != null">
+	        and email=#{email}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	     <if test="isAgreement != null">
+	        and is_agreement=#{isAgreement}
+	     </if>
+	     <if test="agreementNo != null">
+	        and agreement_no=#{agreementNo}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     customer_id,
+	     customer_no,
+	     type,
+	     full_name,
+	     tax_reg_code,
+	     contact_name,
+	     telphone,
+	     mobile,
+	     email,
+	     area_code,
+	     address,
+	     is_agreement,
+	     agreement_no,
+	     remark,
+	     status,
+	     belong_depart_id,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_customer_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="customerId != null">
+	        customer_id=#{customerId}
+	     </if>
+	     <if test="customerNo != null">
+	        and customer_no=#{customerNo}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="fullName != null">
+	        and full_name=#{fullName}
+	     </if>
+	     <if test="taxRegCode != null">
+	        and tax_reg_code=#{taxRegCode}
+	     </if>
+	     <if test="contactName != null">
+	        and contact_name=#{contactName}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="mobile != null">
+	        and mobile=#{mobile}
+	     </if>
+	     <if test="email != null">
+	        and email=#{email}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	     <if test="isAgreement != null">
+	        and is_agreement=#{isAgreement}
+	     </if>
+	     <if test="agreementNo != null">
+	        and agreement_no=#{agreementNo}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

@@ -1,0 +1,273 @@
+package com.gzzhwl.admin.consignment.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.consignment.service.ConsignmentInfoService;
+import com.gzzhwl.admin.consignment.validate.ConsignmentValidate;
+import com.gzzhwl.admin.consignment.vo.ConsignmentInfoVo;
+import com.gzzhwl.admin.consignment.vo.consignQueryVo;
+import com.gzzhwl.admin.order.service.OrderQueryService;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.FlowsService;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.SeqNoKey;
+import com.gzzhwl.core.data.dao.ConsignmentInfoDao;
+import com.gzzhwl.core.data.dao.DepartmentInfoDao;
+import com.gzzhwl.core.data.dao.OrderBaseInfoDao;
+import com.gzzhwl.core.data.dao.OrderDetailInfoDao;
+import com.gzzhwl.core.data.dao.OrderLineInfoDao;
+import com.gzzhwl.core.data.dao.OrderReceiverInfoDao;
+import com.gzzhwl.core.data.dao.OrderSenderInfoDao;
+import com.gzzhwl.core.data.dao.StaffInfoDao;
+import com.gzzhwl.core.data.extdao.ConsignmentInfoExtDao;
+import com.gzzhwl.core.data.model.ConsignmentInfo;
+import com.gzzhwl.core.data.model.DepartmentInfo;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.FlowStatus;
+import com.gzzhwl.core.data.model.OrderBaseInfo;
+import com.gzzhwl.core.data.model.OrderDetailInfo;
+import com.gzzhwl.core.data.model.OrderLineInfo;
+import com.gzzhwl.core.data.model.OrderReceiverInfo;
+import com.gzzhwl.core.data.model.OrderSenderInfo;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.data.model.StaffInfo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+
+@Service
+public class ConsignmentInfoServiceImpl implements ConsignmentInfoService {
+	@Autowired
+	private OrderBaseInfoDao baseDao;
+	@Autowired
+	private OrderDetailInfoDao detailDao;
+	@Autowired
+	private OrderSenderInfoDao senderDao;
+	@Autowired
+	private OrderReceiverInfoDao receiverDao;
+	@Autowired
+	private OrderLineInfoDao lineDao;
+	@Autowired
+	private ConsignmentInfoDao consignDao;
+	@Autowired
+	private Mapper beanMapper;
+	@Autowired
+	private ConsignmentInfoExtDao consignExtDao;
+	@Autowired
+	private RegionService reginService;
+	@Autowired
+	private OrderQueryService orderQueryService;
+	@Autowired
+	private FlowsService flowService;
+	@Autowired
+	private StaffInfoDao staffDao;
+	@Autowired
+	private DepartmentInfoDao departDao;
+
+	private static final String NORMAL_QUERY = "0";
+
+	@Override
+	public String createConsignment(ConsignmentInfoVo consignmentInfoVo, Integer departId, String staffId) {
+		String oldOrderId = consignmentInfoVo.getOrderId();
+		// 订单号不能为空
+		ConsignmentValidate.valid_orderId_not_exist(StringUtils.isBlank(oldOrderId));
+
+		// 判断该订单是否已生成合同
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderId", oldOrderId);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		List<Map<String, Object>> result = consignDao.find(params);
+		ConsignmentValidate.valid_consign_exist(!ValidateUtils.isEmpty(result));
+
+		// 运单数据必输项及格式校验
+		ConsignmentValidate.valid_cosign(consignmentInfoVo);
+
+		// 根据订单号查询订单信息
+		OrderDetailInfo detailInfo = detailDao.get(oldOrderId);
+		ConsignmentValidate.valid_order_not_exist(ValidateUtils.isEmpty(detailInfo));
+		// 订单状态校验
+		ConsignmentValidate.valid_status(detailInfo.getStatus());
+
+		// 获取信息标志
+		String oldInfoId = detailInfo.getInfoId();
+
+		OrderBaseInfo baseInfo = baseDao.get(oldInfoId);
+		ConsignmentValidate.valid_order_not_exist(ValidateUtils.isEmpty(baseInfo));
+		// 保存合同信息
+		String consignId = IdentifierUtils.getId().generate().toString();
+
+		// String infoId = IdentifierUtils.getId().generate().toString();
+		OrderBaseInfo newBaseInfo = beanMapper.map(baseInfo, OrderBaseInfo.class);
+		newBaseInfo.setInfoId(consignId);
+		if (departId != null) {
+			newBaseInfo.setBelongDepartId(departId + "");
+		}
+		newBaseInfo.setCreatedBy(staffId);
+		newBaseInfo.setGoodsWeight(consignmentInfoVo.getGoodsWeight());
+		newBaseInfo.setGoodsVolume(consignmentInfoVo.getGoodsVolume());
+		newBaseInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		newBaseInfo.setUpdatedBy(staffId);
+		newBaseInfo.setType(OrderBaseInfo.CONSIGNMENT_BILL);
+
+		// 根据信息标志查询订单信息
+		// String orderId = IdentifierUtils.getId().generate().toString();
+		// String orderNo =
+		// IdentifierUtils.getSequence(SeqNoKey.ORDER).generate().toString();
+		// OrderDetailInfo newDetailInfo = beanMapper.map(detailInfo,
+		// OrderDetailInfo.class);
+		// newDetailInfo.setInfoId(infoId);
+		// newDetailInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		// newDetailInfo.setOrderId(consignId);
+		// newDetailInfo.setOrderNo(orderNo);
+		// newDetailInfo.setCreatedBy(staffId);
+		// newDetailInfo.setUpdatedBy(staffId);
+		// //TODO
+		// newDetailInfo.setStatus(Global.STATUS_CREATED.toString());
+		// detailDao.insert(newDetailInfo);
+
+		// 根据信息标志查询发货人信息
+		OrderSenderInfo senderInfo = senderDao.get(oldInfoId);
+		ConsignmentValidate.valid_order_not_exist(ValidateUtils.isEmpty(senderInfo));
+		OrderSenderInfo newSenderInfo = beanMapper.map(senderInfo, OrderSenderInfo.class);
+
+		// 根据信息标志查询收货人信息
+		OrderReceiverInfo receiverInfo = receiverDao.get(oldInfoId);
+		ConsignmentValidate.valid_order_not_exist(ValidateUtils.isEmpty(receiverInfo));
+		OrderReceiverInfo newReceiverInfo = beanMapper.map(receiverInfo, OrderReceiverInfo.class);
+
+		// 根据信息标志查询线路信息
+		OrderLineInfo lineInfo = lineDao.get(oldInfoId);
+		ConsignmentValidate.valid_order_not_exist(ValidateUtils.isEmpty(lineInfo));
+		OrderLineInfo newLineInfo = beanMapper.map(lineInfo, OrderLineInfo.class);
+
+		newLineInfo.setInfoId(consignId);
+		newReceiverInfo.setInfoId(consignId);
+		newSenderInfo.setInfoId(consignId);
+
+		// 保存合同信息
+		ConsignmentInfo consignmentInfo = beanMapper.map(consignmentInfoVo, ConsignmentInfo.class);
+		// String consignId = IdentifierUtils.getId().generate().toString();
+		String consignNo = IdentifierUtils.getSequence(SeqNoKey.CONSIGN).generate().toString();
+		consignmentInfo.setConsignId(consignId);
+		consignmentInfo.setConsignNo(consignNo);
+		consignmentInfo.setOrderId(oldOrderId);
+		FlowDef flowDef = flowService.startFlow(ZHFlow.CONSIGN, FlowActionCategory.CBS);
+		consignmentInfo.setStatus(flowDef.getTransitionStatus());
+		consignmentInfo.setCreatedBy(staffId);
+		consignmentInfo.setUpdatedBy(staffId);
+		consignmentInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+
+		consignDao.insert(consignmentInfo);
+		baseDao.insert(newBaseInfo);
+		senderDao.insert(newSenderInfo);
+		lineDao.insert(newLineInfo);
+		receiverDao.insert(newReceiverInfo);
+
+		return consignId;
+	}
+
+	@Override
+	public Page<Map<String, Object>> pageConsignList(consignQueryVo queryVo, int currentPage, int pageSize) {
+		Map<String, Object> params = queryVo.getParam();
+		Page<Map<String, Object>> data = consignExtDao.pageConsignList(params, currentPage, pageSize);
+		List<Map<String, Object>> lists = data.getRows();
+		if (!ValidateUtils.isEmpty(lists)) {
+			for (Map<String, Object> map : lists) {
+				String status = (String) map.get("status");
+				FlowStatus flowStatus = flowService.getStatus(ZHFlow.CONSIGN, status);
+				if (!ValidateUtils.isEmpty(flowStatus)) {
+					map.put("statusCn", flowStatus.getName());
+				} else {
+					map.put("statusCn", "");
+				}
+
+				String startCodeP = (String) map.get("startCodeP");
+				String startCodePCn = this.getCodeCn(startCodeP);
+				map.put("startCodePCn", startCodePCn);
+
+				String startCodeC = (String) map.get("startCodeC");
+				String startCodeCCn = this.getCodeCn(startCodeC);
+				map.put("startCodeCCn", startCodeCCn);
+
+				String endCodeP = (String) map.get("endCodeP");
+				String endCodePCn = this.getCodeCn(endCodeP);
+				map.put("endCodePCn", endCodePCn);
+
+				String endCodeC = (String) map.get("endCodeC");
+				String endCodeCCn = this.getCodeCn(endCodeC);
+				map.put("endCodeCCn", endCodeCCn);
+			}
+		}
+
+		return data;
+	}
+
+	private String getCodeCn(String code) {
+		if (StringUtils.isNotBlank(code)) {
+			RegionInfo startCodePCn = reginService.findByCode(code);
+			if (startCodePCn != null) {
+				return startCodePCn.getRegionName();
+			}
+		}
+		return "";
+	}
+
+	@Override
+	public Map<String, Object> getConsignDetail(String consignId) {
+		ConsignmentInfo consign = consignDao.get(consignId);
+		// 合同信息是否存在
+		ConsignmentValidate.valid_consignment_exist(!ValidateUtils.isEmpty(consign));
+
+		String orderId = consign.getOrderId();
+
+		// 获取订单detail表信息
+		OrderDetailInfo detailInfo = detailDao.get(orderId);
+		ConsignmentValidate.valid_order_not_exist(ValidateUtils.isEmpty(detailInfo));
+
+		Map<String, Object> map = orderQueryService.getOrderInfoByInfoId(consign.getConsignId());
+		map.put("orderDetailInfo", detailInfo);
+		map.put("consignmentInfo", consign);
+		map.put("hasConsign", "是");
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> getConsignByOrderId(String orderId) {
+		Map<String, Object> cosignMap = null;
+		// 获取运单合同信息
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderId", orderId);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		List<Map<String, Object>> consigns = consignDao.find(params);
+		if (!ValidateUtils.isEmpty(consigns)) {
+			cosignMap = consigns.get(0);
+
+			String staffId = (String) consigns.get(0).get("createdBy");
+			StaffInfo staff = staffDao.get(staffId);
+			if (ValidateUtils.isEmpty(staff)) {
+				cosignMap.put("consignDepartName", "");
+			} else {
+				DepartmentInfo depart = departDao.get(staff.getDepartId());
+				if (ValidateUtils.isEmpty(depart)) {
+					cosignMap.put("consignDepartName", "");
+				} else {
+					cosignMap.put("consignDepartName", depart.getName());
+				}
+			}
+		} else {
+			return cosignMap;
+		}
+
+		return cosignMap;
+	}
+
+}

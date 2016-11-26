@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder charset="UTF-8">
+			<pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+
+	<root level="DEBUG">
+		<appender-ref ref="stdout" />
+	</root>
+
+	<logger name="com.gzzhwl" level="info" />
+	<logger name="com.gzzhwl.rest" level="debug" />
+
+	<logger name="org.springframework" level="info" />
+	<logger name="org.mybatis.spring" level="off" />
+	<logger name="org.apache.ibatis" level="off" />
+	<logger name="com.github.miemiedev" level="off" />
+	<logger name="net.sf.ehcache" level="off" />
+	<logger name="org.apache.commons.beanutils" level="off" />
+	<logger name="org.dozer.fieldmap.FieldMap" level="off" />
+
+</configuration>

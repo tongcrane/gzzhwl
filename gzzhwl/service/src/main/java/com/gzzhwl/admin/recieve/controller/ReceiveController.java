@@ -1,0 +1,93 @@
+package com.gzzhwl.admin.recieve.controller;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.text.ParseException;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
+
+import com.gzzhwl.admin.recieve.service.ReceiveService;
+import com.gzzhwl.admin.recieve.vo.ReceiveQueryVo;
+import com.gzzhwl.admin.recieve.vo.ReceiveStatementQueryVo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.security.annotation.RequirePerm;
+import com.gzzhwl.rest.security.utils.SecurityUtils;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+import com.gzzhwl.rest.springmvc.utils.WebRequestResolve;
+
+@RestController
+@RequestMapping("/admin/receive")
+public class ReceiveController {
+	@Autowired
+	private ReceiveService service;
+
+	/**
+	 * 查询应收列表
+	 * 
+	 * @throws ParseException
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/page", method = { RequestMethod.GET })
+	public ResponseModel pageReceiveList(ReceiveQueryVo queryVo, @Pagination PageParameter page) throws ParseException {
+		Page<Map<String, Object>> data = service.pageReceiveList(queryVo, page.getPageIndex(), page.getPageSize());
+		return new ResponseModel(data);
+	}
+
+	/**
+	 * 查询应收详情
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/getReceiveDetail", method = { RequestMethod.GET })
+	public ResponseModel getReceiveDetail(@RequestParam String consignId) {
+		Map<String, Object> data = service.getReceiveDetail(consignId);
+		return new ResponseModel(data);
+	}
+
+	/**
+	 * 应收审核
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/verifyReceive", method = { RequestMethod.POST })
+	public ResponseModel verifyReceive(@RequestParam String consignId) {
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		boolean success = service.verifyReceive(consignId, staffId);
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 导出文件名 @throws IOException @throws
+	 * 
+	 * @throws ParseException
+	 * @throws IOException
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/export", method = RequestMethod.POST)
+	public void exportReceiveStatement(ReceiveStatementQueryVo vo, WebRequest request, HttpServletResponse response)
+			throws ParseException, IOException {
+		// String staffId = SecurityUtils.getSubject().getStaffId();
+
+		String fileName = service.getFileName(vo) + ".xlsx";
+		// System.out.println(fileName);
+		response.reset();
+		response.setContentType("application/vnd.ms-excel");
+		boolean isIE = WebRequestResolve.isIE(request);
+		String name = StringUtils.replace(fileName, ",", "_");
+		if (isIE) {
+			response.setHeader("Content-Disposition", "filename=\"" + URLEncoder.encode(name, "UTF-8") + "\"");
+		} else {
+			response.setHeader("Content-disposition", "filename=" + new String(name.getBytes("utf-8"), "iso8859-1"));
+		}
+		service.exportReceiveStatement(vo, response.getOutputStream());
+	}
+}

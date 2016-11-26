@@ -1,0 +1,22 @@
+package com.gzzhwl.core.data.extdao;
+
+
+import java.util.Map;
+import java.util.List;
+import com.gzzhwl.core.data.model.RemarkInfo;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ *
+ */
+public interface RemarkInfoExtDao {    
+    public final static String PREFIX = RemarkInfoExtDao.class.getName();
+    
+    public <T, K, V> List<T> getSourceRecordList(String target_id);
+    
+    public <T, K, V> List<T> getOrderRecordList(String target_id);
+
+}
+
+

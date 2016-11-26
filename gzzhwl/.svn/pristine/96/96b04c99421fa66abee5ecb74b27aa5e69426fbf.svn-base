@@ -1,0 +1,5 @@
+package com.gzzhwl.admin.load.vo;
+
+public class TripQueryVo {
+
+}

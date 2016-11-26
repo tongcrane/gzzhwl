@@ -1,0 +1,270 @@
+package com.gzzhwl.api.driver.controller;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.admin.driver.service.DriverManagerService;
+import com.gzzhwl.admin.vehicle.service.VehicleManageService;
+import com.gzzhwl.admin.vehicle.vo.DriverAndVehicleVo;
+import com.gzzhwl.api.driver.service.DriverInfoService;
+import com.gzzhwl.api.driver.vo.DriverInfoQueryVo;
+import com.gzzhwl.api.driver.vo.DriverInfoVo;
+import com.gzzhwl.api.vehicle.vo.VehicleInfoVo;
+import com.gzzhwl.core.data.model.AccountInfo;
+import com.gzzhwl.core.data.model.VehicleInfo;
+import com.gzzhwl.core.data.model.VehiclePlusInfo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.springmvc.annotation.Authorization;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+/**
+ * 驾驶员controller
+ *
+ */
+
+@RestController
+@RequestMapping("/api/driver")
+public class DriverInfoController {
+	@Autowired
+	DriverInfoService service;
+	@Autowired
+	VehicleManageService vehicleManageService;
+	@Autowired
+	private Mapper beanMapper;
+
+	/**
+	 * 司机车辆临时信息保存-保存并返回首页按钮
+	 * 
+	 * @param params
+	 * @param accountInfo
+	 * @return
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
+	@RequestMapping(value = "/addDriverAndVehicleTemp", method = RequestMethod.POST, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel addDriverAndVehicleTemp(@RequestBody VehicleInfoVo vehicleVo,
+			@Authorization AccountInfo accountInfo) {
+		String accountId = accountInfo.getAccountId();
+		// 获取车辆信息
+		VehicleInfo vehicleInfo = beanMapper.map(vehicleVo, VehicleInfo.class);
+		// 获取车辆附加信息
+		VehiclePlusInfo vehiclePlusInfo = beanMapper.map(vehicleVo, VehiclePlusInfo.class);
+		String vehicleInfoId = service.saveDriverAndVehicleTemp(accountId, vehicleVo.getDriverList(), vehicleInfo,
+				vehiclePlusInfo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("vehicleInfoId", vehicleInfoId);
+		return new ResponseModel(map);
+	}
+
+	/**
+	 * 司机车辆基础信息录入-提交按钮
+	 * 
+	 * @param params
+	 * @param accountInfo
+	 * @return
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
+	@RequestMapping(value = "/addDriverAndVehicle", method = RequestMethod.POST, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel saveDriverAndVehicle(@RequestBody VehicleInfoVo vehicleVo,
+			@Authorization AccountInfo accountInfo) {
+		String accountId = accountInfo.getAccountId();
+		// 获取车辆信息
+		VehicleInfo vehicleInfo = beanMapper.map(vehicleVo, VehicleInfo.class);
+		// 获取车辆附加信息
+		VehiclePlusInfo vehiclePlusInfo = beanMapper.map(vehicleVo, VehiclePlusInfo.class);
+		// 获取路线
+		// LineInfo lineInfo = beanMapper.map(addVo, LineInfo.class);
+		String vehicleInfoId = service.saveDriverAndVehicle(accountId, vehicleVo.getDriverList(), vehicleInfo,
+				vehiclePlusInfo);
+		Map<String, Object> map = new HashMap<>();
+		map.put("vehicleInfoId", vehicleInfoId);
+		return new ResponseModel(map);
+	}
+
+	/**
+	 * 司机和车辆图片上传或修改
+	 * 
+	 * @param file
+	 * @param driverInfoId
+	 * @param accountInfo
+	 * @param imageType
+	 * @return
+	 */
+	@RequestMapping(value = "/imageUpload", method = RequestMethod.POST)
+	public ResponseModel imageUpload(@RequestParam MultipartFile image,
+			@Authorization(required = false) AccountInfo accountInfo) {
+		String accountId = null;
+		if (accountInfo != null) {
+			accountId = accountInfo.getAccountId();
+		}
+		String imageId = service.updateImageInfo(image, accountId);
+		Map<String, String> result = new HashMap<String, String>();
+		result.put("imageId", imageId);
+		return new ResponseModel(result);
+	}
+
+	/**
+	 * 司机车辆列表查询-分页查询
+	 * 
+	 * @param accountInfo
+	 * @param driverInfoId
+	 * @param page
+	 * @return
+	 */
+	@RequestMapping(value = "/pageDriverAndVehicleList", method = RequestMethod.POST)
+	public ResponseModel getDriverAndVehicleInfoList(@Authorization AccountInfo accountInfo,
+			@Pagination PageParameter page, DriverInfoQueryVo queryVo) {
+		String accountId = accountInfo.getAccountId();
+		Page<Map<String, Object>> data = service.pageDriverAndVehicleList(accountId, queryVo, page.getPageIndex(),
+				page.getPageSize());
+		return new ResponseModel(data);
+	}
+
+	/**
+	 * 查询司机和车辆详细信息
+	 * 
+	 * @param accountInfo
+	 * @param driverInfoId
+	 * @return
+	 */
+	@RequestMapping(value = "/queryDriverAndVehicleDetail", method = RequestMethod.GET)
+	public ResponseModel queryDriverAndVehicleDetail(@Authorization AccountInfo accountInfo,
+			@RequestParam String vehicleInfoId) {
+		String accountId = accountInfo.getAccountId();
+		VehicleInfoVo data = service.getDriverAndVehicleInfo(vehicleInfoId, accountId);
+		return new ResponseModel(data);
+	}
+
+	/**
+	 * 司机列表查询
+	 * 
+	 * @param accountInfo
+	 * @param driverInfoId
+	 * @param page
+	 * @return
+	 */
+	@RequestMapping(value = "/queryDriverList", method = RequestMethod.GET)
+	public ResponseModel getDriverBaseInfoList(@Authorization AccountInfo accountInfo, @Pagination PageParameter page) {
+		String accountId = accountInfo.getAccountId();
+		Page<Map<String, Object>> data = service.page(accountId, page.getPageIndex(), page.getPageSize());
+		return new ResponseModel(data);
+	}
+
+	/**
+	 * 司机及车辆信息修改
+	 * 
+	 * @param driverInfo
+	 * @param driverInfoId
+	 * @param accountInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/updateDriverAndVehicleInfo", method = RequestMethod.POST, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel updateDriverAndVehicleInfo(@RequestBody VehicleInfoVo vehicleVo,
+			@Authorization AccountInfo accountInfo) {
+		String accountId = accountInfo.getAccountId();
+		// 车辆信息
+		VehicleInfo vehicleInfo = beanMapper.map(vehicleVo, VehicleInfo.class);
+		// 获取车辆附加信息
+		VehiclePlusInfo vehiclePlusInfo = beanMapper.map(vehicleVo, VehiclePlusInfo.class);
+
+		String vehicleInfoId = service.updateDriverAndVehicle(vehicleVo.getDriverList(), vehicleInfo, vehiclePlusInfo,
+				accountId);
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("vehicleInfoId", vehicleInfoId);
+		return new ResponseModel(data);
+	}
+
+	@RequestMapping(value = "/removeDriver", method = RequestMethod.POST)
+	public ResponseModel removeDriver(@RequestParam String driverInfoId, @Authorization AccountInfo accountInfo) {
+		String accountId = accountInfo.getAccountId();
+		service.remove(driverInfoId, accountId);
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 司机唯一性校验
+	 * 
+	 * @param idno
+	 * @param accountInfo
+	 * @return
+	 */
+	// @RequestMapping(value = "/driverExistValidator", method =
+	// RequestMethod.GET)
+	// public ResponseModel updateDriverAndVehicleInfo(@RequestParam String
+	// idno, @Authorization AccountInfo accountInfo, @RequestParam(required =
+	// false) String driverInfoId) {
+	//
+	// boolean exist = service.driverExistValidator(idno,
+	// accountInfo.getAccountId(),driverInfoId);
+	// Map<String, Object> resMap = new HashMap<>();
+	// resMap.put("result", exist);
+	// return new ResponseModel(resMap);
+	// }
+
+	/**
+	 * 车辆是否待审核
+	 * 
+	 * @param plateNumber
+	 * @param accountInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/isPendingAudit", method = RequestMethod.GET)
+	public ResponseModel isPendingAudit(@RequestParam String plateNumber, @Authorization AccountInfo accountInfo) {
+		String accountId = accountInfo.getAccountId();
+		boolean isPendingAudit = service.isPendingAudit(plateNumber, accountId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("isPendingAudit", isPendingAudit);
+		return new ResponseModel(map);
+	}
+
+	@RequestMapping(value = "/getReviewedDriverAndVehicleList", method = RequestMethod.GET)
+	public ResponseModel getReviewedDriverAndVehicleList(@Authorization AccountInfo accountInfo) {
+		String accountId = accountInfo.getAccountId();
+		List<Map<String, Object>> resMap = service.getDriverAndVehicleListByAccountId(accountId);
+		return new ResponseModel(resMap);
+	}
+	
+	@RequestMapping(value = "/getCBSDriver", method = RequestMethod.GET)
+	public ResponseModel getCBSDriver(@Authorization AccountInfo accountInfo) {
+		String accountId = accountInfo.getAccountId();
+		DriverInfoVo vo = service.getCBSDriverInfo(accountId);
+		return new ResponseModel(vo);
+	}
+	
+	/**
+	 * 查询司机车辆明细
+	 * 
+	 * @param driverInfoId
+	 * @return
+	 */
+	@RequestMapping(value = "/queryDriverandVehicleDetail", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel queryDriverandVehicleDetail(@RequestBody DriverAndVehicleVo driverAndVehicleVo,@Authorization AccountInfo accountInfo) {
+		driverAndVehicleVo.setAccountId(accountInfo.getAccountId());
+		Map<String, Object> result = vehicleManageService.getDriverandVehicleDetail(driverAndVehicleVo);
+		return new ResponseModel(result);
+	}
+	
+
+}

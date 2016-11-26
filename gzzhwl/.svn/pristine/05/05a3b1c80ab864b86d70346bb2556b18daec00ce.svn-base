@@ -1,0 +1,34 @@
+package com.gzzhwl.core.data.dao;
+
+
+import java.util.Map;
+import java.util.List;
+import com.gzzhwl.core.data.model.LendLog;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ *
+ */
+public interface LendLogDao {    
+    public final static String PREFIX = LendLogDao.class.getName();
+    
+	public LendLog get(java.lang.String lendId);
+	
+	public <K, V> Map<K, V> findOne(java.lang.String lendId);
+	
+	public <T, K, V> List<T> find(Map<K, V> params);
+	
+	public int insert(LendLog lendLog);
+	
+	public int update(LendLog lendLog);
+	
+	public int updateSelective(LendLog lendLog);
+	
+	public int delete(java.lang.String lendId );
+
+	public <E, K, V> Page<E> page(Map<K, V> params, int current, int pagesize);
+
+}
+
+

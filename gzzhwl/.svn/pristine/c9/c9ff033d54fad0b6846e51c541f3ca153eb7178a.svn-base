@@ -1,0 +1,36 @@
+package com.gzzhwl.core.message;
+
+public enum TipsCategory {
+	
+	/**
+	 * 注册成功
+	 */
+	TIPS_C01("01"),
+	/**
+	 * 账号认证成功
+	 */
+	TIPS_C02("02"),
+	/**
+	 * 账号认证失败
+	 */
+	TIPS_C03("03"),
+	/**
+	 * 中标提醒
+	 */
+	TIPS_C04("04"),
+	/**
+	 * 发车提醒
+	 */
+	TIPS_C05("05");
+	
+	private String code;
+
+	public String getCode() {
+		return code;
+	}
+
+	private TipsCategory(String code) {
+		this.code = code;
+	}
+
+}

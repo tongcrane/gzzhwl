@@ -1,0 +1,256 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_quoted_info表
+ * @author mew
+ *
+ */
+public class QuotedInfo implements Serializable {
+	@Length(max = 36, message = "quotedId超过长度限制")
+	private java.lang.String quotedId; // 报价标识
+	@Length(max = 36, message = "accountId超过长度限制")
+	private java.lang.String accountId; // 账户标识
+	@Length(max = 36, message = "sourceId超过长度限制")
+	private java.lang.String sourceId; // 货源标识
+	@Length(max = 10, message = "price超过长度限制")
+	private java.lang.String price; // 报价
+	@Length(max = 400, message = "remark超过长度限制")
+	private java.lang.String remark; // 备注
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取报价标识属性
+     *
+     * @return quotedId
+     */
+	public java.lang.String getQuotedId() {
+		return quotedId;
+	}
+	
+	/**
+	 * 设置报价标识属性
+	 *
+	 * @param quotedId
+	 */
+	public void setQuotedId(java.lang.String quotedId) {
+		this.quotedId = quotedId;
+	}
+	
+	/**
+     * 获取账户标识属性
+     *
+     * @return accountId
+     */
+	public java.lang.String getAccountId() {
+		return accountId;
+	}
+	
+	/**
+	 * 设置账户标识属性
+	 *
+	 * @param accountId
+	 */
+	public void setAccountId(java.lang.String accountId) {
+		this.accountId = accountId;
+	}
+	
+	/**
+     * 获取货源标识属性
+     *
+     * @return sourceId
+     */
+	public java.lang.String getSourceId() {
+		return sourceId;
+	}
+	
+	/**
+	 * 设置货源标识属性
+	 *
+	 * @param sourceId
+	 */
+	public void setSourceId(java.lang.String sourceId) {
+		this.sourceId = sourceId;
+	}
+	
+	/**
+     * 获取报价属性
+     *
+     * @return price
+     */
+	public java.lang.String getPrice() {
+		return price;
+	}
+	
+	/**
+	 * 设置报价属性
+	 *
+	 * @param price
+	 */
+	public void setPrice(java.lang.String price) {
+		this.price = price;
+	}
+	
+	/**
+     * 获取备注属性
+     *
+     * @return remark
+     */
+	public java.lang.String getRemark() {
+		return remark;
+	}
+	
+	/**
+	 * 设置备注属性
+	 *
+	 * @param remark
+	 */
+	public void setRemark(java.lang.String remark) {
+		this.remark = remark;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改人属性
+     *
+     * @return updatedBy
+     */
+	public java.lang.String getUpdatedBy() {
+		return updatedBy;
+	}
+	
+	/**
+	 * 设置修改人属性
+	 *
+	 * @param updatedBy
+	 */
+	public void setUpdatedBy(java.lang.String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("QuotedInfo");
+        sb.append("{quotedId=").append(quotedId);
+        sb.append(", accountId=").append(accountId);
+        sb.append(", sourceId=").append(sourceId);
+        sb.append(", price=").append(price);
+        sb.append(", remark=").append(remark);
+        sb.append(", status=").append(status);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedBy=").append(updatedBy);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

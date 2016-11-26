@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.MenuInfoDao">
+
+	<resultMap id="menuInfoResultMap" type="MenuInfo">
+		<id property="menuId" column="menu_id" />
+		<result property="menuName" column="menu_name" />
+		<result property="menuPath" column="menu_path" />
+		<result property="menuGroupId" column="menu_group_id" />
+		<result property="isLeaf" column="is_leaf" />
+		<result property="description" column="description" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<select id="findMenu" parameterType="map" resultMap="menuInfoResultMap">
+	   select 
+	     menu_id,
+	     menu_name,
+	     menu_path,
+	     menu_group_id,
+	     is_leaf,
+	     description,
+	     status
+	   from zh_menu_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	   </trim>
+	   order by menu_id
+	</select>
+	
+	<select id="findStaffFunction" parameterType="map" resultType="Integer">
+	SELECT
+			DISTINCT(zmi.menu_id) as menu_id
+		FROM
+			zh_menu_info zmi
+		INNER JOIN zh_staff_menu_info zsmi ON zsmi.menu_id = zmi.menu_id AND zsmi.staff_id = #{staffId}
+		AND zmi.is_leaf = #{isLeaf}
+		AND zmi.status = #{status}
+	</select>
+	
+</mapper> 

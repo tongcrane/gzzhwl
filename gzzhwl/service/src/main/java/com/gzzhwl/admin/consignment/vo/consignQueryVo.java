@@ -1,0 +1,122 @@
+package com.gzzhwl.admin.consignment.vo;
+
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class consignQueryVo {
+	private String queryType;// 0-快捷搜索 1-高级搜索
+	private String keyWord;// 关键字
+	private String orderNo;// 订单号
+	private String consignNo;// 运单号
+	private String customerId;// 客户id
+	private String customerName;// 客户全称
+	private String createdTimeS;// 订单创建时间（始）
+	private String createdTimeE;// 订单创建时间（止）
+	private String consignCreatedTimeS;// 运单创建时间（始）
+	private String consignCreatedTimeE;// 运单创建时间（止）
+	private String agreementId;// 客户合同
+	private String startCodeP;// 线路（起）-省
+	private String startCodeC;// 线路（起）-市
+	private String endCodeP;// 线路（止）-省
+	private String endCodeC;// 线路（止）-市
+	private String createDepartName;// 订单创建部门
+	private String seContractName;// 发货联系人
+	private String reContractName;// 0-
+	private String sort;
+
+	private static final String NORMAL_QUERY = "0";
+	private static final String QUERYTYPE_SENIOR = "1";// 高级查询
+
+	public Map<String, Object> getParam() throws ParseException {
+		String queryType = this.getQueryType();
+		if (StringUtils.isBlank(queryType)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "queryType" + ErrorCode.ERROR_900003.getDesc());
+		}
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (NORMAL_QUERY.equals(queryType)) {
+			// 快捷查询
+			if (StringUtils.isNotBlank(this.getKeyWord())) {
+				params.put("keyWord", this.getKeyWord());
+				params.put("keyWordLike", "%" + this.getKeyWord() + "%");
+			}
+
+		} else if (QUERYTYPE_SENIOR.equals(queryType)) {
+			// 高级查询
+			if (StringUtils.isNotBlank(this.getOrderNo())) {
+				params.put("orderNo", this.getOrderNo());
+			}
+
+			if (StringUtils.isNotBlank(this.getConsignNo())) {
+				params.put("consignNo", this.getConsignNo());
+			}
+			if (StringUtils.isNotBlank(this.getCustomerId())) {
+				params.put("customerId", this.getCustomerId());
+			}
+			if (StringUtils.isNotBlank(this.getCustomerName())) {
+				params.put("customerName", "%" + this.getCustomerName() + "%");
+			}
+			if (StringUtils.isNotBlank(this.getCreatedTimeS())) {
+				params.put("createdTimeS", DateUtils.getStartTime(this.getCreatedTimeS()));
+			}
+			if (StringUtils.isNotBlank(this.getCreatedTimeE())) {
+				params.put("createdTimeE", DateUtils.getEndTime(this.getCreatedTimeE()));
+			}
+			if (StringUtils.isNotBlank(this.getConsignCreatedTimeS())) {
+				params.put("consignCreatedTimeS", DateUtils.getStartTime(this.getConsignCreatedTimeS()));
+			}
+			if (StringUtils.isNotBlank(this.getConsignCreatedTimeE())) {
+				params.put("consignCreatedTimeE", DateUtils.getEndTime(this.getConsignCreatedTimeE()));
+			}
+			if (StringUtils.isNotBlank(this.getAgreementId())) {
+				params.put("agreementId", this.getAgreementId());
+			}
+			if (StringUtils.isNotBlank(this.getStartCodeP())) {
+				params.put("lineStartP", this.getStartCodeP());
+			}
+			if (StringUtils.isNotBlank(this.getStartCodeC())) {
+				params.put("lineStartC", this.getStartCodeC());
+			}
+			if (StringUtils.isNotBlank(this.getEndCodeP())) {
+				params.put("lineEndP", this.getEndCodeP());
+			}
+			if (StringUtils.isNotBlank(this.getEndCodeC())) {
+				params.put("lineEndC", this.getEndCodeC());
+			}
+			if (StringUtils.isNotBlank(this.getSeContractName())) {
+				params.put("seContractName", "%" + this.getSeContractName() + "%");
+			}
+			if (StringUtils.isNotBlank(this.getReContractName())) {
+				params.put("reContractName", "%" + this.getReContractName() + "%");
+			}
+			if (StringUtils.isNotBlank(this.getCreateDepartName())) {
+				params.put("createDepartName", "%" + this.getCreateDepartName() + "%");
+			}
+
+		} else {
+			throw new RestException(ErrorCode.ERROR_900006);
+		}
+
+		if (StringUtils.isNotBlank(this.getSort())) {
+			params.put("sort", this.getSort());
+
+		} else {
+			params.put("sort", "01");
+		}
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+
+		return params;
+	}
+}

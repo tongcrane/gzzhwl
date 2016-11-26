@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.CommonCardInfoExtDao">
+
+	<resultMap id="sourceResultMap"  type="java.util.HashMap">
+		<id property="sourceId" column="source_id" />
+		<result property="startCodeP" column="start_code_p" />
+		<result property="startCodeC" column="start_code_c" />
+		<result property="endCodeP" column="end_code_p" />
+		<result property="endCodeC" column="end_code_c" />
+		<result property="needType" column="need_type" />
+		<result property="needLength" column="need_length" />
+		<result property="needArriveTime" column="need_arrive_time" />
+		<result property="needStartTime" column="need_start_time" />
+		<result property="arriveCustomerTime" column="arrive_customer_time" />
+		<result property="needDriverNum" column="need_driver_num" />
+		<result property="miles" column="miles" />
+		<result property="estimatedPrice" column="estimated_price" />
+		<result property="transitRequire" column="transit_require" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="status" column="status" />
+		<result property="goodsVolumne" column="goods_volume" />
+		<result property="goodsWeight" column="goods_weight" />
+		<result property="goodsName" column="goods_name" />
+		<result property="quoteNum" column="quote_num" />
+		<result property="hasQuote" column="has_quote" />
+		<result property="ageTime" column="ago_time" />
+		<result property="hasBegin" column="has_begin" />
+		<result property="statusCn" column="status_cn" />
+		<result property="transferCodeP" column="transfer_code_p" />
+		<result property="transferCodeC" column="transfer_code_c" />
+		<result property="senderAreaCode" column="sender_area_code" />
+		<result property="sourceNo" column="source_no" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	
+	<resultMap id="quoteResultMap"  type="java.util.HashMap">
+		<id property="quotedId" column="quoted_id" />
+		<result property="sourceId" column="source_id" />
+		<result property="startCodeP" column="start_code_p" />
+		<result property="startCodeC" column="start_code_c" />
+		<result property="endCodeP" column="end_code_p" />
+		<result property="endCodeC" column="end_code_c" />
+		<result property="needType" column="need_type" />
+		<result property="needLength" column="need_length" />
+		<result property="needArriveTime" column="need_arrive_time" />
+		<result property="needStartTime" column="need_start_time" />
+		<result property="arriveCustomerTime" column="arrive_customer_time" />
+		<result property="needDriverNum" column="need_driver_num" />
+		<result property="miles" column="miles" />
+		<result property="estimatedPrice" column="estimated_price" />
+		<result property="transitRequire" column="transit_require" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="status" column="status" />
+		<result property="goodsVolumne" column="goods_volume" />
+		<result property="goodsWeight" column="goods_weight" />
+		<result property="goodsName" column="goods_name" />
+		<result property="quoteNum" column="quote_num" />
+		<result property="hasQuote" column="has_quote" />
+		<result property="ageTime" column="ago_time" />
+		<result property="hasBegin" column="has_begin" />
+		<result property="statusCn" column="status_cn" />
+		<result property="transferCodeP" column="transfer_code_p" />
+		<result property="transferCodeC" column="transfer_code_c" />
+		<result property="senderAreaCode" column="sender_area_code" />
+		<result property="sourceNo" column="source_no" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	
+	
+
+	<select id="getSourceCardInfo" parameterType="map" resultMap="sourceResultMap">
+		SELECT
+			zosi.source_id,
+			zosi.need_arrive_time as arrive_customer_time,
+			zobi.need_arrive_time as need_arrive_time,
+			zobi.need_start_time,
+			zosi.need_driver_num,
+			zosi.miles,
+			zosi.start_code_p,
+			zosi.start_code_c,
+			zosi.estimated_price,
+			zosi.transit_require,
+			zosi.end_code_p,
+			zosi.end_code_c,
+			zosi.need_type,
+			zosi.need_length,
+			zosi.start_time,
+			zosi.end_time,
+			zosi.created_time,
+			zosi.status,
+			zodi.goods_volume,
+			zodi.goods_weight,
+			zobi.goods_name,
+			zoli.transfer_code_p,
+			zoli.transfer_code_c,
+			zsbi.source_no,
+			(
+				SELECT
+					count(1)
+				FROM
+					zh_quoted_info zqi
+				WHERE
+					zqi.source_id = zosi.source_id
+			) as quote_num,
+			<if test="accountId == null">
+				0 as has_quote,
+			</if>
+			<if test="accountId != null">
+				(
+					SELECT
+						count(1)
+					FROM
+						zh_quoted_info zqi
+					WHERE
+						zqi.source_id = zosi.source_id
+					AND zqi.account_id = #{accountId}
+					AND zqi.status != #{status}
+				) as has_quote,
+			</if>
+			case
+			when now() >= zosi.start_time
+			then TIMESTAMPDIFF(SECOND, now(), zosi.end_time)
+			else TIMESTAMPDIFF(SECOND, now(), zosi.start_time)
+			end	as ago_time,
+			now() >= zosi.start_time as has_begin,
+			zfs.name as status_cn,
+			zosis.area_code as sender_area_code
+		FROM
+			zh_order_source_info zosi
+		INNER JOIN (
+			zh_source_base_info zsbi
+			INNER JOIN (
+				zh_order_detail_info zodi
+				INNER JOIN (
+					zh_order_base_info zobi
+					INNER JOIN zh_order_line_info zoli ON zoli.info_id = zobi.info_id
+					inner join zh_order_sender_info zosis on zosis.info_id = zobi.info_id
+				) ON zobi.info_id = zodi.info_id
+			) ON zsbi.order_id = zodi.order_id
+		) ON zosi.info_id = zsbi.info_id
+		INNER JOIN (
+			zh_flow_status zfs
+			INNER JOIN zh_flows zf ON zf.flow_id = zfs.flow_id
+			AND zf.name = #{flowName}
+		) ON zfs.code = zosi.status
+		WHERE zosi.source_id in 
+	   	<foreach collection="sourceIds" index="index" item="sourceId" open="(" separator="," close=")">  
+	           #{sourceId}
+	   	</foreach>
+	   	<if test="sourceIds.length > 1 ">
+	   	order by
+	   	<foreach collection="sourceIds" index="index" item="sourceId" open="field(zosi.source_id, " separator="," close=")">  
+	           #{sourceId}
+	   	</foreach>
+	   	</if>
+	</select>
+	
+	
+	<select id="findQuoteCardInfo" parameterType="map" resultMap="quoteResultMap">
+		SELECT
+			zqi.quoted_id,
+			zsbi.source_no,
+			zqi.status,
+			zosi.source_id,
+			zosi.need_arrive_time as arrive_customer_time,
+			zobi.need_arrive_time as need_arrive_time,
+			zobi.need_start_time,
+			zosi.need_driver_num,
+			zosi.miles,
+			zosi.start_code_p,
+			zosi.start_code_c,
+			zosi.estimated_price,
+			zosi.transit_require,
+			zosi.created_time,
+			zosi.end_code_p,
+			zosi.end_code_c,
+			zosi.need_type,
+			zosi.need_length,
+			zosi.start_time,
+			zosi.end_time,
+			zodi.goods_volume,
+			zodi.goods_weight,
+			zobi.goods_name,
+			zoli.transfer_code_p,
+			zoli.transfer_code_c,
+			(
+				SELECT
+					count(1)
+				FROM
+					zh_quoted_info zqi
+				WHERE
+					zqi.source_id = zosi.source_id
+			) AS quote_num,
+
+				1 as has_quote,
+			CASE
+		WHEN now() >= zosi.start_time THEN
+			TIMESTAMPDIFF(SECOND, now(), zosi.end_time)
+		ELSE
+			TIMESTAMPDIFF(SECOND, now(), zosi.start_time)
+		END AS ago_time,
+		 now() >= zosi.start_time AS has_begin,
+		 zfs.NAME AS status_cn,
+		 zosis.area_code as sender_area_code
+		FROM
+			zh_quoted_info zqi
+		INNER JOIN zh_order_source_info zosi ON zqi.source_id = zosi.source_id
+		INNER JOIN (
+			zh_source_base_info zsbi
+			INNER JOIN (
+				zh_order_detail_info zodi
+				INNER JOIN (
+					zh_order_base_info zobi
+					INNER JOIN zh_order_line_info zoli ON zoli.info_id = zobi.info_id
+					inner join zh_order_sender_info zosis on zosis.info_id = zobi.info_id
+				) ON zobi.info_id = zodi.info_id
+			) ON zsbi.order_id = zodi.order_id
+		) ON zosi.info_id = zsbi.info_id
+		INNER JOIN (
+			zh_flow_status zfs
+			INNER JOIN zh_flows zf ON zf.flow_id = zfs.flow_id
+			AND zf.NAME = #{flowName}
+		) ON zfs.CODE = zqi.STATUS
+		WHERE zqi.quoted_id in 
+	   	<foreach collection="quoteIds" index="index" item="quoteId" open="(" separator="," close=")">  
+	           #{quoteId}
+	   	</foreach>
+	   	<if test="quoteIds.length > 1 ">
+	   	order by
+	   	<foreach collection="quoteIds" index="index" item="quoteId" open="field(zqi.quoted_id, " separator="," close=")">  
+	           #{quoteId}
+	   	</foreach>
+	   	</if>
+	</select>
+	
+</mapper> 

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.LoadFeedbackAttaDao">
+
+	<resultMap id="loadFeedbackAttaResultMap" type="LoadFeedbackAtta">
+		<id property="attaId" column="atta_id" />
+		<result property="feedbackId" column="feedback_id" />
+		<result property="fileId" column="file_id" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="loadFeedbackAttaResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="loadFeedbackAttaResultMap"></resultMap>
+
+	<insert id="insert" parameterType="LoadFeedbackAtta">
+	   insert into zh_load_feedback_atta (
+	     atta_id,
+	     feedback_id,
+	     file_id
+	   )values (
+	     #{attaId},
+	     #{feedbackId},
+	     #{fileId}
+	   )
+	</insert>
+
+	<update id="update" parameterType="LoadFeedbackAtta">
+	   update zh_load_feedback_atta set
+	     atta_id=#{attaId},
+	     feedback_id=#{feedbackId},
+	     file_id=#{fileId}
+	   where 
+	    atta_id=#{attaId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="LoadFeedbackAtta">
+	   update zh_load_feedback_atta
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="attaId != null">
+		       atta_id=#{attaId},
+		     </if>
+		     <if test="feedbackId != null">
+		       feedback_id=#{feedbackId},
+		     </if>
+		     <if test="fileId != null">
+		       file_id=#{fileId}
+		     </if>
+	   </trim>
+	
+	   where 
+	    atta_id=#{attaId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_load_feedback_atta 
+	   where 
+	    atta_id=#{attaId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="loadFeedbackAttaResultMap">
+	   select 
+	    atta_id,
+	    feedback_id,
+	    file_id
+	   from zh_load_feedback_atta
+	   where 
+	    atta_id=#{attaId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    atta_id,
+	    feedback_id,
+	    file_id
+	   from zh_load_feedback_atta
+	   where 
+	    atta_id=#{attaId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     atta_id,
+	     feedback_id,
+	     file_id
+	   from zh_load_feedback_atta
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="attaId != null">
+	        atta_id=#{attaId}
+	     </if>
+	     <if test="feedbackId != null">
+	        and feedback_id=#{feedbackId}
+	     </if>
+	     <if test="fileId != null">
+	        and file_id=#{fileId}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     atta_id,
+	     feedback_id,
+	     file_id
+	   from zh_load_feedback_atta
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="attaId != null">
+	        atta_id=#{attaId}
+	     </if>
+	     <if test="feedbackId != null">
+	        and feedback_id=#{feedbackId}
+	     </if>
+	     <if test="fileId != null">
+	        and file_id=#{fileId}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

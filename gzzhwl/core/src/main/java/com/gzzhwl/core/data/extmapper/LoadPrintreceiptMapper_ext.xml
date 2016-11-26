@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.LoadPrintreceiptExtDao">
+
+	<resultMap id="loadPrintreceiptResultMap" type="LoadPrintreceipt">
+		<id property="pid" column="pid" />
+		<id property="receiptId" column="receipt_id" />
+		<result property="loadId" column="load_id" />
+		<result property="type" column="type" />
+		<result property="expressDelivery" column="express_delivery" />
+		<result property="billNo" column="bill_no" />
+		<result property="signTime" column="sign_time" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="loadPrintreceiptResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="loadPrintreceiptResultMap">
+		<result property="checkPosition" column="check_position" />
+		<result property="subPosition" column="sub_position" />
+		<result property="checkName" column="check_name" />
+		<result property="subName" column="sub_name" />
+	</resultMap>
+
+
+	<select id="get" parameterType="map" resultMap="loadPrintreceiptResultMap">
+	   select 
+	    pid,
+	    receipt_id,
+	    load_id,
+	    type,
+	    express_delivery,
+	    bill_no,
+	    sign_time,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_load_printreceipt
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="pid != null">
+	        pid=#{pid}
+	     </if>
+	     <if test="receiptId != null">
+	        and receipt_id=#{receiptId}
+	     </if>
+	     <if test="loadId != null">
+	        and load_id=#{loadId}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="getCurrentPrintreceipt" parameterType="map"
+		resultMap="findResultMap">
+		select 
+	    t1.receipt_id,
+	    t1.load_id,
+	    t1.type,
+	    t1.express_delivery,
+	    t1.bill_no,
+	    t1.sign_time,
+	    t1.status,
+	    t1.created_time,
+	    t1.updated_time,
+		case when t2.staff_id is not null
+		then t2.position
+		else "司机"
+		end as sub_position,
+		case when t2.staff_id is not null
+		then t2.real_name
+		else t3.real_name
+		end as sub_name,
+		t4.position as check_position,
+		t4.real_name as check_name
+		from zh_load_printreceipt t1
+		left join
+		zh_staff_info t2 on t1.created_by = t2.staff_id
+		left join
+		zh_agent_info t3 on t1.created_by = t3.account_id
+		left join
+		zh_staff_info t4 on t1.updated_by = t4.staff_id
+		where pid in
+		(
+		select
+		max(pid) 
+		from 
+		zh_load_printreceipt 
+		where 
+		load_id = #{loadId}
+		)
+	</select>
+
+
+</mapper> 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.PushRecordDao">
+
+	<resultMap id="pushRecordResultMap" type="PushRecord">
+		<id property="recordId" column="record_id" />
+		<result property="accountId" column="account_id" />
+		<result property="deviceId" column="device_id" />
+		<result property="token" column="token" />
+		<result property="content" column="content" />
+		<result property="createdTime" column="created_time" />
+		<result property="result" column="result" />
+		<result property="remark" column="remark" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="pushRecordResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="pushRecordResultMap"></resultMap>
+
+	<insert id="insert" parameterType="PushRecord">
+	   insert into zh_push_record (
+	     record_id,
+	     account_id,
+	     device_id,
+	     token,
+	     content,
+	     created_time,
+	     result,
+	     remark
+	   )values (
+	     #{recordId},
+	     #{accountId},
+	     #{deviceId},
+	     #{token},
+	     #{content},
+	     now(),
+	     #{result},
+	     #{remark}
+	   )
+	</insert>
+</mapper> 

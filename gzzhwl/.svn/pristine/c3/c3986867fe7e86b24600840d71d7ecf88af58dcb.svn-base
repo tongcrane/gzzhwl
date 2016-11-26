@@ -1,0 +1,1114 @@
+package com.gzzhwl.admin.vehicle.service.impl;
+
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Transformer;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.admin.account.service.UserService;
+import com.gzzhwl.admin.driver.service.DriverManagerService;
+import com.gzzhwl.admin.vehicle.service.VehicleManageService;
+import com.gzzhwl.admin.vehicle.validator.VehicleManageValidator;
+import com.gzzhwl.admin.vehicle.vo.DriverAndVehicleCheckQueryVo;
+import com.gzzhwl.admin.vehicle.vo.DriverAndVehicleVo;
+import com.gzzhwl.admin.vehicle.vo.VehicleInfoQryVo;
+import com.gzzhwl.api.image.model.ImageCategory;
+import com.gzzhwl.api.image.model.ImageItem;
+import com.gzzhwl.api.image.service.ImageServiceFactory;
+import com.gzzhwl.api.message.service.MessageTipsService;
+import com.gzzhwl.api.vehicle.service.VehicleService;
+import com.gzzhwl.common.service.AccountVerifyService;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.SeqNoKey;
+import com.gzzhwl.core.constant.VehicleType;
+import com.gzzhwl.core.data.dao.DepartmentInfoDao;
+import com.gzzhwl.core.data.dao.DriverInfoDao;
+import com.gzzhwl.core.data.dao.RealDriverInfoDao;
+import com.gzzhwl.core.data.dao.RealDriverUsedInfoDao;
+import com.gzzhwl.core.data.dao.RealVehicleInfoDao;
+import com.gzzhwl.core.data.dao.RealVehiclePlusInfoDao;
+import com.gzzhwl.core.data.dao.RealVehicleUsedInfoDao;
+import com.gzzhwl.core.data.dao.SupplyInfoDao;
+import com.gzzhwl.core.data.dao.VehicleInfoDao;
+import com.gzzhwl.core.data.dao.VehiclePlusInfoDao;
+import com.gzzhwl.core.data.extdao.DriverInfoExtDao;
+import com.gzzhwl.core.data.extdao.RealDriverInfoExtDao;
+import com.gzzhwl.core.data.extdao.RealVehicleDriverInfoExtDao;
+import com.gzzhwl.core.data.extdao.RealVehicleInfoExtDao;
+import com.gzzhwl.core.data.extdao.VehicleInfoExtDao;
+import com.gzzhwl.core.data.model.DepartmentInfo;
+import com.gzzhwl.core.data.model.DriverInfo;
+import com.gzzhwl.core.data.model.RealDriverInfo;
+import com.gzzhwl.core.data.model.RealDriverUsedInfo;
+import com.gzzhwl.core.data.model.RealVehicleInfo;
+import com.gzzhwl.core.data.model.RealVehiclePlusInfo;
+import com.gzzhwl.core.data.model.RealVehicleUsedInfo;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.data.model.UsedInfoHis;
+import com.gzzhwl.core.data.model.VehicleInfo;
+import com.gzzhwl.core.data.model.VehiclePlusInfo;
+import com.gzzhwl.core.message.TipsCategory;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class VehicleManageServiceImpl implements VehicleManageService {
+
+	@Autowired
+	private RealVehicleInfoDao realVehicleDao;
+	@Autowired
+	private RealVehicleInfoExtDao realVehicleInfoExtDao;
+
+	@Autowired
+	private RealVehiclePlusInfoDao realVehiclePlusInfoDao;
+
+	@Autowired
+	private RealVehicleUsedInfoDao realVehicleUsedInfoDao;
+
+	@Autowired
+	private ImageServiceFactory imageServiceFactory;
+
+	@Autowired
+	private VehicleService vehicleService_tmp;
+
+	@Autowired
+	private DriverInfoExtDao driverInfoExtDao;
+
+	@Autowired
+	private RealDriverInfoExtDao realDriverInfoExtDao;
+
+	@Autowired
+	private RealVehicleDriverInfoExtDao realVehicleDriverInfoExtDao;
+
+	@Autowired
+	private DriverInfoDao driverDao_tmp;
+
+	@Autowired
+	private RealDriverInfoDao realDriverDao;
+
+	@Autowired
+	private VehicleInfoDao vehicleInfoDao_tmp;
+
+	@Autowired
+	private VehiclePlusInfoDao vehiclePlusInfoDao_tmp;
+
+	@Autowired
+	private DriverManagerService driverManagerService;
+
+	@Autowired
+	private AccountVerifyService accountVerifyService;
+
+	@Autowired
+	private VehicleInfoExtDao vehicleInfoExtDao;
+	
+	@Autowired
+	private SupplyInfoDao supplyInfoDao;
+
+	@Autowired
+	private Mapper beanMapper;
+	@Autowired
+	private RegionService reginService;
+
+	@Autowired
+	private RealDriverUsedInfoDao driverUsedDao;
+	@Autowired
+	private RealVehicleUsedInfoDao vehicleUsedDao;
+	@Autowired
+	private DepartmentInfoDao departmentInfoDao;
+	@Autowired
+	private MessageTipsService messageTipsService;
+	@Autowired
+	private UserService userService;
+
+	private final String AUTH_PASS = "0";
+
+	private final String AUTH_FAIL = "1";
+
+	private static final String QUERYTYPE_NORMAL = "0";// 普通查询
+
+	private static final String QUERYTYPE_ADVANCE = "1";// 高级查询
+	
+	@Value("${driver.check}")
+	private String driverCheck;
+	@Value("${driver.uncheck}")
+	private String driverUncheck;
+
+	@Override
+	public String saveVehicle(RealVehicleInfo vehicleInfo, RealVehiclePlusInfo vehicleInfoPlusInfo,
+			RealVehicleUsedInfo vehicleUsedInfo, String staffId) throws ParseException {
+
+		VehicleManageValidator.vehicle_commit_validator(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo);
+
+		boolean bool = vehicleManageExistValidator(vehicleInfo.getPlateNumber(), vehicleInfo.getLicenseNo(),
+				vehicleInfo.getEngineNo(), vehicleInfo.getVin(), vehicleInfo.getRegCertCode(),
+				vehicleInfo.getOperatingCertNo(), null);
+
+		if (bool) {
+			throw new RestException(ErrorCode.ERROR_900008);
+		}
+
+		vehicleInfo.setVehicleType(VehicleType.CAR.getCode());
+
+		return save(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo, staffId);
+	}
+
+	@Override
+	public String saveHung(RealVehicleInfo vehicleInfo, RealVehiclePlusInfo vehicleInfoPlusInfo,
+			RealVehicleUsedInfo vehicleUsedInfo, String staffId) {
+
+		VehicleManageValidator.hung_commit_validator(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo);
+
+		boolean bool = hungManageExistValidator(vehicleInfo.getPlateNumber(), vehicleInfo.getLicenseNo(),
+				vehicleInfo.getVin(), vehicleInfo.getRegCertCode(), vehicleInfo.getOperatingCertNo(), null);
+
+		if (bool) {
+			throw new RestException(ErrorCode.ERROR_900008);
+		}
+
+		vehicleInfo.setVehicleType(VehicleType.HUNG.getCode());
+
+		return save(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo, staffId);
+	}
+
+	@Override
+	public String updateVehicle(RealVehicleInfo vehicleInfo, RealVehiclePlusInfo vehicleInfoPlusInfo,
+			RealVehicleUsedInfo vehicleUsedInfo, String staffId) throws ParseException {
+
+		VehicleManageValidator.vehicle_update_validator(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo);
+
+		boolean bool = vehicleManageExistValidator(vehicleInfo.getPlateNumber(), vehicleInfo.getLicenseNo(),
+				vehicleInfo.getEngineNo(), vehicleInfo.getVin(), vehicleInfo.getRegCertCode(),
+				vehicleInfo.getOperatingCertNo(), vehicleInfo.getVehicleInfoId());
+
+		if (bool) {
+			throw new RestException(ErrorCode.ERROR_900008);
+		}
+
+		vehicleInfo.setVehicleType(VehicleType.CAR.getCode());
+
+		return update(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo, staffId);
+	}
+
+	@Override
+	public String updateHung(RealVehicleInfo vehicleInfo, RealVehiclePlusInfo vehicleInfoPlusInfo,
+			RealVehicleUsedInfo vehicleUsedInfo, String staffId) {
+
+		VehicleManageValidator.hung_update_validator(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo);
+
+		boolean bool = hungManageExistValidator(vehicleInfo.getPlateNumber(), vehicleInfo.getLicenseNo(),
+				vehicleInfo.getVin(), vehicleInfo.getRegCertCode(), vehicleInfo.getOperatingCertNo(),
+				vehicleInfo.getVehicleInfoId());
+
+		if (bool) {
+			throw new RestException(ErrorCode.ERROR_900008);
+		}
+
+		vehicleInfo.setVehicleType(VehicleType.HUNG.getCode());
+
+		return update(vehicleInfo, vehicleInfoPlusInfo, vehicleUsedInfo, staffId);
+	}
+
+	public String update(RealVehicleInfo vehicleInfo, RealVehiclePlusInfo vehicleInfoPlusInfo,
+			RealVehicleUsedInfo vehicleUsedInfo, String staffId) {
+
+		if (ValidateUtils.isEmpty(vehicleInfo.getVehicleInfoId())) {
+			throw new RestException(ErrorCode.ERROR_800001);
+		}
+
+		vehicleInfo.setUpdatedBy(staffId);
+		realVehicleDao.updateSelective(vehicleInfo);
+
+		if (vehicleInfoPlusInfo != null) {
+
+			if (ValidateUtils.isEmpty(vehicleInfoPlusInfo.getVehicleInfoId())) {
+				throw new RestException(ErrorCode.ERROR_800001);
+			}
+
+			realVehiclePlusInfoDao.updateSelective(vehicleInfoPlusInfo);
+		}
+
+		if (vehicleUsedInfo != null) {
+
+			if (ValidateUtils.isEmpty(vehicleUsedInfo.getVehicleInfoId())) {
+				throw new RestException(ErrorCode.ERROR_800001);
+			}
+
+			realVehicleUsedInfoDao.updateSelective(vehicleUsedInfo);
+		}
+
+		return vehicleInfo.getVehicleInfoId();
+	}
+
+	public String save(RealVehicleInfo vehicleInfo, RealVehiclePlusInfo vehicleInfoPlusInfo,
+			RealVehicleUsedInfo vehicleUsedInfo, String staffId) {
+
+		// 车辆唯一性校验
+		// vehicleExistValidator(vehicleInfo.getPlateNumber(),
+		// vehicleInfo.getAccountId());
+
+		String vehicleInfoId = IdentifierUtils.getId().generate().toString();
+		String seq = IdentifierUtils.getSequence(SeqNoKey.VEHICLE).generate().toString();
+		vehicleInfo.setVehicleInfoId(vehicleInfoId);
+
+		vehicleInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());// 是否删除
+		vehicleInfo.setStatus(Global.STATUS_NORMAL.toString());// 审核状态
+		vehicleInfo.setSource(DataSource.PLATFORM.getCode());// 来源
+		vehicleInfo.setSeqNo(seq);
+		vehicleInfo.setCreatedBy(staffId);// 创建人
+		vehicleInfoPlusInfo.setVehicleInfoId(vehicleInfoId);
+		vehicleUsedInfo.setVehicleInfoId(vehicleInfoId);
+		vehicleUsedInfo.setUseStatus(UsedInfoHis.UNUSED);
+		realVehicleDao.insert(vehicleInfo);
+		realVehiclePlusInfoDao.insert(vehicleInfoPlusInfo);
+		realVehicleUsedInfoDao.insert(vehicleUsedInfo);
+
+		return vehicleInfo.getVehicleInfoId();
+	}
+
+	public static void main(String[] args) {
+		System.out.println(IdentifierUtils.getId().generate().toString());
+	}
+
+	@Override
+	public Map<String, Object> queryDetail(String vehicleInfoId) {
+
+		if (ValidateUtils.isEmpty(vehicleInfoId)) {
+			throw new RestException(ErrorCode.ERROR_800001);
+		}
+
+		RealVehicleInfo vehicleInfo = realVehicleDao.get(vehicleInfoId);
+
+		if (vehicleInfo == null) {
+			throw new RestException(ErrorCode.ERROR_800005);
+		}
+
+		RealVehiclePlusInfo vehiclePlusInfo = realVehiclePlusInfoDao.get(vehicleInfoId);
+
+		RealVehicleUsedInfo vehicleUsedInfo = realVehicleUsedInfoDao.get(vehicleInfoId);
+
+		Map<String, Object> resmap = new HashMap<>();
+		if(vehicleInfo!=null){
+			beanMapper.map(vehicleInfo, resmap);
+		}
+		if(vehiclePlusInfo!=null){
+			beanMapper.map(vehiclePlusInfo, resmap);
+		}
+		if(vehicleUsedInfo!=null){
+			beanMapper.map(vehicleUsedInfo, resmap);
+		}
+		String useStatus = (String) resmap.get("useStatus");
+		if(useStatus!=null){
+			resmap.put("useStatusCn", UsedInfoHis.getUseStatusCn(useStatus));
+		}else{
+			resmap.put("useStatusCn", "");
+		}
+		
+		String useDepartId = (String) resmap.get("useDepartId");
+		resmap.put("useDepartName", departmentInfoDao.getDepartName(useDepartId));
+		
+		String belongDepartId = (String) resmap.get("belongDepartId");
+		resmap.put("belongDepartName", departmentInfoDao.getDepartName(belongDepartId));
+		
+		String ownerName = (String) resmap.get("ownerName");
+		resmap.put("ownerNameCn", supplyInfoDao.getSupplyName(ownerName));
+		
+		return resmap;
+	}
+
+	@Override
+	public String updateImage(MultipartFile file, String staffId) {
+
+		if (file == null) {
+			throw new RestException(ErrorCode.ERROR_900001);
+		}
+
+		ImageItem imageItem = imageServiceFactory.saveImage(ImageCategory.VEHICLE, file, staffId);
+
+		return imageItem.getFileId();
+	}
+
+	@Override
+	public Page<Map<String, Object>> queryVehicleInfoList(VehicleInfoQryVo vehicleInfoQryVo, int pageIndex,
+			int pageSize) {
+
+		if (ValidateUtils.isEmpty(vehicleInfoQryVo.getQueryType())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "queryType" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (!vehicleInfoQryVo.getQueryType().equals(QUERYTYPE_NORMAL)
+				&& !vehicleInfoQryVo.getQueryType().equals(QUERYTYPE_ADVANCE)) {
+			throw new RestException(ErrorCode.ERROR_900006);
+		}
+		
+		vehicleInfoQryVo.likeHandle();
+
+		Map<String, Object> paramsMap = beanMapper.map(vehicleInfoQryVo, Map.class);
+		Page<Map<String, Object>> page = realVehicleInfoExtDao.sysVehicleSelectPage(paramsMap, pageIndex, pageSize);
+		if (page != null) {
+			List<Map<String, Object>> rows = page.getRows();
+			Iterator<Map<String, Object>> i_r = rows.iterator();
+			while (i_r.hasNext()) {
+				Map<String, Object> _r = i_r.next();
+				String departureCode = (String) _r.get("departureCode");
+				String destinationCode = (String) _r.get("destinationCode");
+				List<RegionInfo> departure = reginService.findRootByCode(departureCode);
+				List<RegionInfo> destination = reginService.findRootByCode(destinationCode);
+				_r.put("departure", departure);
+				_r.put("destination", destination);
+				
+				String useDepartId = (String) _r.get("useDepartId");
+				_r.put("useDepartName", departmentInfoDao.getDepartName(useDepartId));
+				
+				String belongDepartId = (String) _r.get("belongDepartId");
+				_r.put("belongDepartName", departmentInfoDao.getDepartName(belongDepartId));
+				
+				String useStatus = (String) _r.get("useStatus");
+				_r.put("useStatusCn", UsedInfoHis.getUseStatusCn(useStatus));
+			
+				String ownerName = (String) _r.get("ownerName");
+				_r.put("ownerNameCn", supplyInfoDao.getSupplyName(ownerName));
+				
+			}
+		}
+		return page;
+	}
+
+	@Override
+	public void remove(String vehicleInfoId, String staffId) {
+
+		if (ValidateUtils.isEmpty(vehicleInfoId)) {
+			throw new RestException(ErrorCode.ERROR_800001);
+		}
+
+		RealVehicleInfo vehicleinfo = new RealVehicleInfo();
+
+		vehicleinfo.setVehicleInfoId(vehicleInfoId);
+		vehicleinfo.setIsDeleted(Global.ISDEL_DELETE.toString());
+		vehicleinfo.setCreatedBy(staffId);
+		realVehicleDao.updateSelective(vehicleinfo);
+
+	}
+
+	@Override
+	public Page<Map<String, Object>> queryHungList(VehicleInfoQryVo vehicleInfoQryVo, int pageIndex, int pageSize) {
+
+		if (ValidateUtils.isEmpty(vehicleInfoQryVo.getQueryType())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "queryType" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (!vehicleInfoQryVo.getQueryType().equals(QUERYTYPE_NORMAL)
+				&& !vehicleInfoQryVo.getQueryType().equals(QUERYTYPE_ADVANCE)) {
+			throw new RestException(ErrorCode.ERROR_900006);
+		}
+
+		Map<String, Object> paramsMap = beanMapper.map(vehicleInfoQryVo, Map.class);
+
+		Page<Map<String, Object>> pageMap = realVehicleInfoExtDao.sysHungSelectPage(paramsMap, pageIndex, pageSize);
+		
+		CollectionUtils.transform(pageMap.getRows(), new Transformer<Map<String, Object>, Map<String, Object>>() {
+			@Override
+			public Map<String, Object> transform(Map<String, Object> input) {
+				
+				String useDepartId = (String) input.get("useDepartId");
+				input.put("useDepartName", getDepartName(useDepartId));
+				
+				String belongDepartId = (String) input.get("belongDepartId");
+				input.put("belongDepartName", getDepartName(belongDepartId));
+				
+				String useStatus = (String) input.get("useStatus");
+				if(useStatus!=null){
+					input.put("useStatusCn", UsedInfoHis.getUseStatusCn(useStatus));
+				}else{
+					input.put("useStatusCn", "");
+				}
+				
+				return input;
+			}
+			
+			private String getDepartName(String departId){
+				
+				if(StringUtils.isNotBlank(departId)){
+					DepartmentInfo departmentInfo = departmentInfoDao.get(new Integer(departId));
+					if (departmentInfo != null) {
+						return departmentInfo.getName();
+					}
+				}
+				
+				return "";
+			}
+			
+		});
+		
+		return pageMap;
+	}
+
+	
+	
+	@Override
+	public boolean vehicleManageExistValidator(String plateNumber, String licenseNo, String engineNo, String vin,
+			String regCertCode, String operatingCertNo, String currentVehicleInfoId) {
+
+		return vehicleManageExistValidator(plateNumber, licenseNo, engineNo, vin, regCertCode, operatingCertNo,
+				currentVehicleInfoId, null);
+	}
+
+	@Override
+	public boolean hungManageExistValidator(String plateNumber, String licenseNo, String vin, String regCertCode,
+			String operatingCertNo, String currentVehicleInfoId) {
+
+		return hungManageExistValidator(plateNumber, licenseNo, vin, regCertCode, operatingCertNo, currentVehicleInfoId,
+				null);
+	}
+
+	@Override
+	public Page<Map<String, Object>> getDriverAndVehicleCheckList(
+			DriverAndVehicleCheckQueryVo driverAndVehicleCheckQueryVo, int current, int pagesize) {
+		Map<String, Object> param = driverAndVehicleCheckQueryVo.getParam();
+		
+		Page<Map<String, Object>> resPage = vehicleInfoExtDao.getDriverAndVehicleCheckList(param, current, pagesize);
+
+		// 返回功能按钮
+		CollectionUtils.transform(resPage.getRows(), new Transformer<Map<String, Object>, Map<String, Object>>() {
+			@Override
+			public Map<String, Object> transform(Map<String, Object> input) {
+
+				String status = (String) input.get("status");
+
+				if (Global.STATUS_PASSED.toString().equals(status)) {
+					input.put("statusCn", Global.STATUS_PASSED.getName());
+				} else if (Global.STATUS_FROZEN.toString().equals(status)) {
+					input.put("statusCn", Global.STATUS_FROZEN.getName());
+				} else if (Global.STATUS_NOT_PASSED.toString().equals(status)) {
+					input.put("statusCn", Global.STATUS_NOT_PASSED.getName());
+				} else if (Global.STATUS_WAIT.toString().equals(status)) {
+					input.put("statusCn", Global.STATUS_WAIT.getName());
+				} else if (Global.STATUS_ENTRY_NOT_FINISHED.toString().equals(status)) {
+					input.put("statusCn", Global.STATUS_ENTRY_NOT_FINISHED.getName());
+				}
+
+				return input;
+			}
+		});
+
+		return resPage;
+	}
+
+	// @Override
+	// public Map<String, Object> queryDriverandVehicleDetail(String
+	// driverInfoId, String accountId) {
+	//
+	// Map<String, Object> detailMap = null;
+	//
+	// if(ValidateUtils.isEmpty(accountId)) {
+	// //如果不存在accountId，则在司机车辆正式表里查询司机车辆明细
+	// detailMap =
+	// realDriverInfoExtDao.queryDriverandVehicleDetail(driverInfoId);
+	// }else {
+	// //如果存在accountId，则在司机车辆临时表里查询司机车辆明细
+	// detailMap = driverInfoExtDao.queryDriverandVehicleDetail(driverInfoId);
+	// }
+	//
+	// DriverManageValidate.valid_not_exist(detailMap);
+	// return detailMap;
+	// }
+
+	// @Override
+	// public void checkDriverAndVehicle(String driverInfoId, String staffId,
+	// String authFlag) {
+	//
+	// if (authFlag.equals(AUTH_PASS)) {
+	// checkDriverAndVehiclePass(driverInfoId, staffId);
+	// } else if (authFlag.equals(AUTH_FAIL)) {
+	// checkDriverAndVehicleFail(driverInfoId, staffId);
+	// } else {
+	// throw new RestException(ErrorCode.ERROR_800017.getCode(),
+	// ErrorCode.ERROR_800017.getDesc());
+	// }
+	//
+	// }
+	//
+	// /**
+	// * 审核通过
+	// *
+	// * @param driverInfoId
+	// * @param staffInfo
+	// */
+	// private void checkDriverAndVehiclePass(String driverInfoId, String
+	// StaffId) {
+	//
+	// DriverInfo driverInfo_tmp = driverDao_tmp.get(driverInfoId);
+	//
+	// if (driverInfo_tmp == null) {
+	// throw new RestException(ErrorCode.ERROR_800009.getCode(),
+	// ErrorCode.ERROR_800009.getDesc());
+	// }
+	//
+	// Map<String,Object> objMap =
+	// vehicleService_tmp.getTmpVehicleInfoByDriverInfoId(driverInfo_tmp.getDriverInfoId(),
+	// driverInfo_tmp.getAccountId());
+	//
+	// if(objMap == null){
+	// throw new RestException(ErrorCode.ERROR_800022.getCode(),
+	// ErrorCode.ERROR_800022.getDesc());
+	// }
+	//
+	// VehicleInfo vehicleInfo_tmp = beanMapper.map(objMap, VehicleInfo.class);
+	// VehiclePlusInfo vehiclePlusInfo_tmp = beanMapper.map(objMap,
+	// VehiclePlusInfo.class);
+	//
+	// //审核通过 删除司机车辆临时关系表 临时表数据转移到正式表 修改数据状态
+	// if
+	// (driverInfo_tmp.getStatus().equals(Global.STATUS_ENTRY_NOT_FINISHED.toString())
+	// ||
+	// driverInfo_tmp.getStatus().equals(Global.STATUS_NOT_PASSED.toString())) {
+	// throw new RestException(ErrorCode.ERROR_800020.getCode(),
+	// ErrorCode.ERROR_800020.getDesc());
+	// }
+	//
+	// if (driverInfo_tmp.getStatus().equals(Global.STATUS_PASSED.toString())) {
+	// throw new RestException(ErrorCode.ERROR_800021.getCode(),
+	// ErrorCode.ERROR_800021.getDesc());
+	// }
+	// //数据转换
+	// RealDriverInfo driverInfo_check = beanMapper.map(driverInfo_tmp,
+	// RealDriverInfo.class);
+	// driverInfo_check.setStatus(Global.STATUS_PASSED.toString());
+	//
+	// RealVehicleInfo vehicleInfo_check = beanMapper.map(vehicleInfo_tmp,
+	// RealVehicleInfo.class);
+	// vehicleInfo_check.setStatus(Global.STATUS_PASSED.toString());
+	// RealVehiclePlusInfo realVehiclePlusInfo_check =
+	// beanMapper.map(vehicleInfo_tmp, RealVehiclePlusInfo.class);
+	//
+	// String vehicleInfoid_res =
+	// vehicleService_tmp.saveOrUpdateRealVehicle(vehicleInfo_check,
+	// realVehiclePlusInfo_check);
+	//
+	// String driverInfoId_res =
+	// driverManagerService.insertOrUpdateDriver(driverInfo_check);
+	//
+	// //审核通过 添加司机车辆关系
+	// realVehicleDriverInfoExtDao.insert(driverInfo_tmp.getAccountId(),
+	// driverInfoId_res, vehicleInfoid_res);
+	//
+	// accountVerifyService.saveVerifyLog(VerifyType.DRIVER, driverInfoId,
+	// driverInfo_tmp.getStatus(),Global.STATUS_NORMAL.toString(), StaffId);
+	//
+	//// driverDao_tmp.updateSelective(driverInfo_check);
+	//
+	//// vehicleInfoDao_tmp.updateSelective(vehicleInfo_check);
+	//
+	//
+	// }
+	//
+	// /**
+	// * 审核未通过
+	// *
+	// * @param driverInfoId
+	// * @param staffInfo
+	// */
+	// private void checkDriverAndVehicleFail(String driverInfoId, String
+	// StaffId) {
+	//
+	// DriverInfo driverInfo_tmp = driverDao_tmp.get(driverInfoId);
+	//
+	// if (driverInfo_tmp == null) {
+	// throw new RestException(ErrorCode.ERROR_800009.getCode(),
+	// ErrorCode.ERROR_800009.getDesc());
+	// }
+	//
+	// Map<String,Object> objMap =
+	// vehicleService_tmp.getTmpVehicleInfoByDriverInfoId(driverInfo_tmp.getDriverInfoId(),
+	// driverInfo_tmp.getAccountId());
+	//
+	// if(objMap == null){
+	// throw new RestException(ErrorCode.ERROR_800022.getCode(),
+	// ErrorCode.ERROR_800022.getDesc());
+	// }
+	//
+	// VehicleInfo tmpvehicleInfo = beanMapper.map(objMap, VehicleInfo.class);
+	// // VehiclePlusInfo tmpvehiclePlusInfo = beanMapper.map(objMap,
+	// // VehiclePlusInfo.class);
+	//
+	// if
+	// (driverInfo_tmp.getStatus().equals(Global.STATUS_ENTRY_NOT_FINISHED.toString())
+	// ||
+	// driverInfo_tmp.getStatus().equals(Global.STATUS_NOT_PASSED.toString())) {
+	// throw new RestException(ErrorCode.ERROR_800020.getCode(),
+	// ErrorCode.ERROR_800020.getDesc());
+	// }
+	//
+	// if (driverInfo_tmp.getStatus().equals(Global.STATUS_PASSED.toString())) {
+	// throw new RestException(ErrorCode.ERROR_800021.getCode(),
+	// ErrorCode.ERROR_800021.getDesc());
+	// }
+	//
+	// DriverInfo driverInfo_check = new DriverInfo();
+	// driverInfo_check.setDriverInfoId(driverInfoId);
+	// driverInfo_check.setStatus(Global.STATUS_NOT_PASSED.toString());
+	// driverInfo_check.setUpdatedBy(StaffId);
+	//
+	// VehicleInfo vehicleInfo_check = new VehicleInfo();
+	// vehicleInfo_check.setVehicleInfoId(tmpvehicleInfo.getVehicleInfoId());
+	// vehicleInfo_check.setStatus(Global.STATUS_NOT_PASSED.toString());
+	// vehicleInfo_check.setUpdatedBy(StaffId);
+	//
+	// driverDao_tmp.updateSelective(driverInfo_check);
+	// vehicleInfoDao_tmp.updateSelective(vehicleInfo_check);
+	//
+	// accountVerifyService.saveVerifyLog(VerifyType.DRIVER,
+	// driverInfo_tmp.getDriverInfoId(),
+	// driverInfo_tmp.getStatus(),Global.STATUS_NOT_PASSED.toString(), StaffId);
+	//
+	// }
+
+	@Override
+	public void checkDriverAndVehicle(String vehicleInfoId, String accountId, String staffId, String authFlag) {
+
+		if (ValidateUtils.isEmpty(vehicleInfoId)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),
+					"vehicleInfoId" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (ValidateUtils.isEmpty(accountId)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "accountId" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (authFlag.equals(AUTH_PASS)) {
+			checkDriverAndVehiclePass(vehicleInfoId, accountId, staffId);
+			messageTipsService.addMessage(TipsCategory.TIPS_C02.getCode(), accountId, null, null, driverCheck, staffId);
+		} else if (authFlag.equals(AUTH_FAIL)) {
+			checkDriverAndVehicleFail(vehicleInfoId, accountId, staffId);
+			messageTipsService.addMessage(TipsCategory.TIPS_C02.getCode(), accountId, null, null, driverUncheck, staffId);
+		} else {
+			throw new RestException(ErrorCode.ERROR_800017);
+		}
+
+	}
+
+	/**
+	 * 审核不通过
+	 * 
+	 * @param vehicleInfoId
+	 * @param accountId
+	 * @param staffId
+	 */
+	private void checkDriverAndVehicleFail(String vehicleInfoId, String accountId, String staffId) {
+
+		// 获取车辆下待审核的司机
+		List<Map<String, Object>> resMapList = vehicleService_tmp
+				.getAuditDriverAndVehicleListByVehicleInfo(vehicleInfoId, accountId);
+
+		if (ValidateUtils.isEmpty(resMapList)) {
+			throw new RestException(ErrorCode.ERROR_900013);
+		}
+
+		for (int i = 0; i < resMapList.size(); i++) {
+
+			Map<String, Object> resMap = resMapList.get(i);
+
+			DriverInfo driverInfo_tmp = beanMapper.map(resMap, DriverInfo.class);
+
+			VehicleInfo vehicleInfo_tmp = beanMapper.map(resMap, VehicleInfo.class);
+
+			VehiclePlusInfo vehiclePlusInfo_tmp = beanMapper.map(resMap, VehiclePlusInfo.class);
+
+			// 审核通过 临时表数据转移到正式表 修改数据状态
+			if (driverInfo_tmp.getStatus().equals(Global.STATUS_ENTRY_NOT_FINISHED.toString())
+					|| driverInfo_tmp.getStatus().equals(Global.STATUS_NOT_PASSED.toString())) {
+				throw new RestException(ErrorCode.ERROR_800020);
+			}
+
+			if (driverInfo_tmp.getStatus().equals(Global.STATUS_PASSED.toString())) {
+				throw new RestException(ErrorCode.ERROR_800021);
+			}
+
+			// 数据转换
+			driverInfo_tmp.setUpdatedBy(staffId);
+			driverInfo_tmp.setStatus(Global.STATUS_NOT_PASSED.toString());
+			vehicleInfo_tmp.setUpdatedBy(staffId);
+			vehicleInfo_tmp.setStatus(Global.STATUS_NOT_PASSED.toString());
+
+			vehicleInfoDao_tmp.updateSelective(vehicleInfo_tmp);
+			driverDao_tmp.updateSelective(driverInfo_tmp);
+
+		}
+	}
+
+	/**
+	 * 审核通过
+	 * 
+	 * @param vehicleInfoId
+	 * @param accountId
+	 * @param staffId
+	 */
+	private void checkDriverAndVehiclePass(String vehicleInfoId, String accountId, String staffId) {
+
+		// 获取车辆下待审核的司机
+		List<Map<String, Object>> resMapList = vehicleInfoExtDao.getAuditDriverAndVehicleListByVehicleId(vehicleInfoId,
+				accountId);
+
+		if (ValidateUtils.isEmpty(resMapList)) {
+			throw new RestException(ErrorCode.ERROR_900013);
+		}
+
+		for (int i = 0; i < resMapList.size(); i++) {
+
+			Map<String, Object> resMap = resMapList.get(i);
+
+			DriverInfo driverInfo_tmp = beanMapper.map(resMap, DriverInfo.class);
+
+			VehicleInfo vehicleInfo_tmp = beanMapper.map(resMap, VehicleInfo.class);
+
+			VehiclePlusInfo vehiclePlusInfo_tmp = beanMapper.map(resMap, VehiclePlusInfo.class);
+
+			// 审核通过 临时表数据转移到正式表 修改数据状态
+			if (driverInfo_tmp.getStatus().equals(Global.STATUS_ENTRY_NOT_FINISHED.toString())
+					|| driverInfo_tmp.getStatus().equals(Global.STATUS_NOT_PASSED.toString())) {
+				throw new RestException(ErrorCode.ERROR_800020);
+			}
+
+			if (driverInfo_tmp.getStatus().equals(Global.STATUS_PASSED.toString())) {
+				throw new RestException(ErrorCode.ERROR_800021);
+			}
+
+			if (vehicleInfo_tmp.getStatus().equals(Global.STATUS_ENTRY_NOT_FINISHED.toString())
+					|| vehicleInfo_tmp.getStatus().equals(Global.STATUS_NOT_PASSED.toString())) {
+				throw new RestException(ErrorCode.ERROR_800020);
+			}
+
+			if (vehicleInfo_tmp.getStatus().equals(Global.STATUS_PASSED.toString())) {
+				throw new RestException(ErrorCode.ERROR_800021);
+			}
+
+			// 数据转换
+			driverInfo_tmp.setStatus(Global.STATUS_PASSED.toString());
+			driverInfo_tmp.setUpdatedBy(staffId);
+			RealDriverInfo driverInfo_check = beanMapper.map(driverInfo_tmp, RealDriverInfo.class);
+
+			vehicleInfo_tmp.setStatus(Global.STATUS_PASSED.toString());
+			vehicleInfo_tmp.setUpdatedBy(staffId);
+			RealVehicleInfo vehicleInfo_check = beanMapper.map(vehicleInfo_tmp, RealVehicleInfo.class);
+			RealVehiclePlusInfo realVehiclePlusInfo_check = beanMapper.map(vehiclePlusInfo_tmp,
+					RealVehiclePlusInfo.class);
+
+			// 更新临时表状态
+			vehicleInfoDao_tmp.updateSelective(vehicleInfo_tmp);
+			driverDao_tmp.updateSelective(driverInfo_tmp);
+
+			// 转换后的数据插入正式表
+			String vehicleInfoid_res = vehicleService_tmp.saveOrUpdateRealVehicle(vehicleInfo_check,
+					realVehiclePlusInfo_check);
+			String driverInfoId_res = driverManagerService.insertOrUpdateDriver(driverInfo_check);
+			// 删除原关系
+			if (i == 0) {
+				realVehicleDriverInfoExtDao.delete(accountId, vehicleInfoid_res, null);
+			}
+			// //如果已经存在司机车辆关系则不添加新的关系
+			if (ValidateUtils.isEmpty(realVehicleDriverInfoExtDao.get(driverInfo_tmp.getAccountId(), vehicleInfoid_res,
+					driverInfoId_res))) {
+				// 审核通过 添加司机车辆关系
+				realVehicleDriverInfoExtDao.insert(driverInfo_tmp.getAccountId(), vehicleInfoid_res, driverInfoId_res);
+			}
+
+			// 添加司机车辆使用表
+			inserOrUpdateDriverUsedInfo(driverInfoId_res);
+			inserOrUpdateVehicleUsedInfo(vehicleInfoid_res);
+
+		}
+	}
+
+	public void inserOrUpdateDriverUsedInfo(String driverInfoId) {
+		RealDriverUsedInfo info = driverUsedDao.get(driverInfoId);
+		if (ValidateUtils.isEmpty(info)) {
+			RealDriverUsedInfo driverUsedInfo = new RealDriverUsedInfo();
+			driverUsedInfo.setDriverInfoId(driverInfoId);
+			driverUsedInfo.setUseStatus(UsedInfoHis.UNUSED);
+			driverUsedDao.insert(driverUsedInfo);
+		}
+	}
+
+	public void inserOrUpdateVehicleUsedInfo(String vehicleInfoId) {
+		RealVehicleUsedInfo info = vehicleUsedDao.get(vehicleInfoId);
+		if (ValidateUtils.isEmpty(info)) {
+			RealVehicleUsedInfo vehicleUsedInfo = new RealVehicleUsedInfo();
+			vehicleUsedInfo.setVehicleInfoId(vehicleInfoId);
+			vehicleUsedInfo.setUseStatus(UsedInfoHis.UNUSED);
+			vehicleUsedDao.insert(vehicleUsedInfo);
+		}
+	}
+
+	@Override
+	public Map<String, Object> getDriverandVehicleCheckDetail(String vehicleInfoId, String accountId) {
+
+		if (ValidateUtils.isEmpty(vehicleInfoId)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), " queryType " + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (ValidateUtils.isEmpty(accountId)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), " accountId " + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("vehicleInfoId", vehicleInfoId);
+		paramMap.put("accountId", accountId);
+
+		List<Map<String, Object>> listMap = vehicleInfoExtDao.getDriverandVehicleCheckDetail(paramMap);
+
+		if (ValidateUtils.isEmpty(listMap)) {
+			return null;
+		}
+		Map<String,Object> userInfo=userService.getUserDetail(accountId);
+		Map<String,Object> result=listMap.get(0);
+		result.put("userInfo", userInfo);
+
+		return result;
+	}
+
+	@Override
+	public boolean hungManageExistValidator(String plateNumber, String licenseNo, String vin, String regCertCode,
+			String operatingCertNo, String currentVehicleInfoId, Map<String, Object> resMap) {
+
+		boolean res = false;
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("vehicleType", VehicleType.HUNG.getCode());
+		paramMap.put("currentVehicleInfoId", currentVehicleInfoId);
+		// 更新的时候如果没有需要校验的值则不校验
+		if (!ValidateUtils.isEmpty(currentVehicleInfoId)) {
+			if (ValidateUtils.isEmpty(plateNumber) && ValidateUtils.isEmpty(licenseNo) && ValidateUtils.isEmpty(vin)
+					&& ValidateUtils.isEmpty(regCertCode) && ValidateUtils.isEmpty(operatingCertNo)) {
+				return false;
+			}
+		}
+
+		if (!ValidateUtils.isEmpty(currentVehicleInfoId)) {
+			if (ValidateUtils.isEmpty(realVehicleDao.get(currentVehicleInfoId))) {
+				throw new RestException(ErrorCode.ERROR_800005);
+			}
+		}
+
+		if (!ValidateUtils.isEmpty(plateNumber)) {
+
+			paramMap.put("plateNumber", plateNumber);
+			Integer resInt = realVehicleInfoExtDao.vehicleManageExistValidator(paramMap);
+			res = resInt > 0;
+			if (resMap != null) {
+				resMap.put("existField", "plateNumber");
+			}
+			if (res)
+				return res;
+		}
+		if (!ValidateUtils.isEmpty(licenseNo)) {
+			paramMap.put("licenseNo", licenseNo);
+			Integer resInt = realVehicleInfoExtDao.vehicleManageExistValidator(paramMap);
+			res = resInt > 0;
+			if (resMap != null) {
+				resMap.put("existField", "licenseNo");
+			}
+			if (res)
+				return res;
+		}
+		if (!ValidateUtils.isEmpty(vin)) {
+			paramMap.put("vin", vin);
+			Integer resInt = realVehicleInfoExtDao.vehicleManageExistValidator(paramMap);
+			res = resInt > 0;
+			if (resMap != null) {
+				resMap.put("existField", "vin");
+			}
+			if (res)
+				return res;
+		}
+		if (!ValidateUtils.isEmpty(regCertCode)) {
+			paramMap.put("regCertCode", regCertCode);
+			Integer resInt = realVehicleInfoExtDao.vehicleManageExistValidator(paramMap);
+			res = resInt > 0;
+			if (resMap != null) {
+				resMap.put("existField", "regCertCode");
+			}
+			if (res)
+				return res;
+		}
+		if (!ValidateUtils.isEmpty(operatingCertNo)) {
+			paramMap.put("operatingCertNo", operatingCertNo);
+			Integer resInt = realVehicleInfoExtDao.vehicleManageExistValidator(paramMap);
+			res = resInt > 0;
+			if (resMap != null) {
+				resMap.put("existField", "operatingCertNo");
+			}
+			if (res)
+				return res;
+		}
+
+		return res;
+	}
+
+	@Override
+	public boolean vehicleManageExistValidator(String plateNumber, String licenseNo, String engineNo, String vin,
+			String regCertCode, String operatingCertNo, String currentVehicleInfoId, Map<String, Object> resMap) {
+
+		boolean res = false;
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("vehicleType", VehicleType.CAR.getCode());
+		paramMap.put("currentVehicleInfoId", currentVehicleInfoId);
+		// 更新的时候如果没有需要校验的值则不校验
+		if (!ValidateUtils.isEmpty(currentVehicleInfoId)) {
+			if (ValidateUtils.isEmpty(plateNumber) && ValidateUtils.isEmpty(licenseNo) && ValidateUtils.isEmpty(vin)
+					&& ValidateUtils.isEmpty(regCertCode) && ValidateUtils.isEmpty(engineNo)
+					&& ValidateUtils.isEmpty(operatingCertNo)) {
+				return res;
+			}
+		}
+
+		if (!ValidateUtils.isEmpty(currentVehicleInfoId)) {
+			if (ValidateUtils.isEmpty(realVehicleDao.get(currentVehicleInfoId))) {
+				throw new RestException(ErrorCode.ERROR_800005);
+			}
+		}
+
+		if (!ValidateUtils.isEmpty(plateNumber)) {
+			paramMap.put("plateNumber", plateNumber);
+			Integer resint = realVehicleInfoExtDao.vehicleManageExistValidator(paramMap);
+			res = resint > 0;
+			if (resMap != null) {
+				resMap.put("existField", "plateNumber");
+			}
+			if (res)
+				return res;
+		}
+		if (!ValidateUtils.isEmpty(licenseNo)) {
+			paramMap.put("licenseNo", licenseNo);
+			Integer resint = realVehicleInfoExtDao.vehicleManageExistValidator(paramMap);
+			res = resint > 0;
+			if (resMap != null) {
+				resMap.put("existField", "licenseNo");
+			}
+			if (res)
+				return res;
+		}
+		if (!ValidateUtils.isEmpty(vin)) {
+			paramMap.put("vin", vin);
+			Integer resint = realVehicleInfoExtDao.vehicleManageExistValidator(paramMap);
+			res = resint > 0;
+			if (resMap != null) {
+				resMap.put("existField", "vin");
+			}
+			if (res)
+				return res;
+		}
+		if (!ValidateUtils.isEmpty(regCertCode)) {
+			paramMap.put("regCertCode", regCertCode);
+			Integer resint = realVehicleInfoExtDao.vehicleManageExistValidator(paramMap);
+			res = resint > 0;
+			if (resMap != null) {
+				resMap.put("existField", "regCertCode");
+			}
+			if (res)
+				return res;
+		}
+		if (!ValidateUtils.isEmpty(operatingCertNo)) {
+			paramMap.put("operatingCertNo", operatingCertNo);
+			Integer resint = realVehicleInfoExtDao.vehicleManageExistValidator(paramMap);
+			res = resint > 0;
+			if (resMap != null) {
+				resMap.put("existField", "operatingCertNo");
+			}
+			if (res)
+				return res;
+		}
+		if (!ValidateUtils.isEmpty(engineNo)) {
+			paramMap.put("engineNo", engineNo);
+			Integer resint = realVehicleInfoExtDao.vehicleManageExistValidator(paramMap);
+			res = resint > 0;
+			if (resMap != null) {
+				resMap.put("existField", "engineNo");
+			}
+			if (res)
+				return res;
+		}
+
+		return res;
+	}
+
+	@Override
+	public Map<String, Object> getDriverandVehicleDetail(DriverAndVehicleVo driverAndVehicleVo) {
+
+		List<Map<String, Object>> listMap = realVehicleInfoExtDao
+				.getRealDriverandVehicleList(driverAndVehicleVo.getParam());
+
+		if (ValidateUtils.isEmpty(listMap)) {
+			return null;
+		}
+
+		return listMap.get(0);
+	}
+
+	@Override
+	public List<Map<String, Object>> listVehicle(String[] arrVehicleIds, Integer departId, String staffId) {
+		Map<String, Object> params = new HashMap<>();
+		if (ArrayUtils.isNotEmpty(arrVehicleIds)) {
+			params.put("arrVehicleIds", arrVehicleIds);
+		}
+		params.put("staffId", staffId);
+		params.put("departId", departId);
+		params.put("notVehicleType", VehicleType.HUNG.getCode());
+		params.put("useStatus", UsedInfoHis.UNUSED);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("source", DataSource.PLATFORM.getCode());
+		return realVehicleInfoExtDao.listVehicle(params);
+	}
+
+	@Override
+	public List<Map<String, Object>> listHung(String[] arrVehicleIds, Integer departId, String staffId) {
+		Map<String, Object> params = new HashMap<>();
+		if (ArrayUtils.isNotEmpty(arrVehicleIds)) {
+			params.put("arrVehicleIds", arrVehicleIds);
+		}
+		params.put("staffId", staffId);
+		params.put("departId", departId);
+		params.put("vehicleType", VehicleType.HUNG.getCode());
+		params.put("useStatus", UsedInfoHis.UNUSED);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("source", DataSource.PLATFORM.getCode());
+		return realVehicleInfoExtDao.listVehicle(params);
+	}
+
+	@Override
+	public List<Map<String, Object>> listAll(String staffId, Integer departId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("staffId", staffId);
+		params.put("departId", departId);
+		params.put("useStatus", UsedInfoHis.UNUSED);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("source", DataSource.PLATFORM.getCode());
+		return realVehicleInfoExtDao.listVehicle(params);
+	}
+
+	@Override
+	public List<Map<String, Object>> getRealDriverandVehicleList(String accountId) {
+		
+		Map<String,Object> param = new HashMap<>();
+		param.put("accountId", accountId);
+		param.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		param.put("source", DataSource.VLORRY.getCode());
+		
+		return realVehicleInfoExtDao .getRealDriverandVehicleList(param);
+	}
+
+
+}

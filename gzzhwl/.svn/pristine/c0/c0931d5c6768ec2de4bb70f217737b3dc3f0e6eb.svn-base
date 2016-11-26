@@ -1,0 +1,88 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_flows表
+ * @author mew
+ *
+ */
+public class Flows implements Serializable {
+	@Length(max = 36, message = "flowId超过长度限制")
+	private java.lang.String flowId; // 流程标识
+	@Length(max = 50, message = "name超过长度限制")
+	private java.lang.String name; // 流程名称
+	@Length(max = 10, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+
+
+	/**
+     * 获取流程标识属性
+     *
+     * @return flowId
+     */
+	public java.lang.String getFlowId() {
+		return flowId;
+	}
+	
+	/**
+	 * 设置流程标识属性
+	 *
+	 * @param flowId
+	 */
+	public void setFlowId(java.lang.String flowId) {
+		this.flowId = flowId;
+	}
+	
+	/**
+     * 获取流程名称属性
+     *
+     * @return name
+     */
+	public java.lang.String getName() {
+		return name;
+	}
+	
+	/**
+	 * 设置流程名称属性
+	 *
+	 * @param name
+	 */
+	public void setName(java.lang.String name) {
+		this.name = name;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Flows");
+        sb.append("{flowId=").append(flowId);
+        sb.append(", name=").append(name);
+        sb.append(", status=").append(status);
+		sb.append('}');
+        return sb.toString();
+    }
+}

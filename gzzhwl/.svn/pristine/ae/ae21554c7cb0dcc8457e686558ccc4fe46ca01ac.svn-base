@@ -1,0 +1,59 @@
+package com.gzzhwl.admin.consignment.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.admin.consignment.service.ConsignmentInfoService;
+import com.gzzhwl.admin.consignment.vo.ConsignmentInfoVo;
+import com.gzzhwl.admin.consignment.vo.consignQueryVo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.security.utils.SecurityUtils;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+@RestController
+@RequestMapping("/admin/consignment")
+public class ConsignmentController {
+	@Autowired
+	ConsignmentInfoService service;
+	
+	/**
+	 * 生成运单合同
+	 * @param infoVo
+	 * @return
+	 */
+	@RequestMapping(value = "/createConsignment", method = RequestMethod.POST)
+	public ResponseModel  createConsignment(ConsignmentInfoVo infoVo) {
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		Integer departId = SecurityUtils.getSubject().getDepartId();
+		String consignId = service.createConsignment(infoVo, departId, staffId);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("consignId", consignId);
+		return new ResponseModel(map);
+	}
+	
+	@RequestMapping(value = "/pageConsignList", method = RequestMethod.GET)
+	public ResponseModel pageConsignList(consignQueryVo queryVo,@Pagination PageParameter page) { 
+		Page<Map<String,Object>> data = service.pageConsignList(queryVo, page.getPageIndex(), page.getPageSize());
+		return new ResponseModel(data);
+	}
+	
+	@RequestMapping(value = "/getConsignDetail", method = RequestMethod.GET)
+	public ResponseModel getConsignDetail(@RequestParam String consignId) { 
+		Map<String,Object> data = service.getConsignDetail(consignId);
+		return new ResponseModel(data);
+	}
+	
+	@RequestMapping(value = "/cancleConsign", method = RequestMethod.GET)
+	public ResponseModel cancleConsign(@RequestParam String consignId) { 
+		service.cancleConsign(consignId);
+		return new ResponseModel(null);
+	}
+}

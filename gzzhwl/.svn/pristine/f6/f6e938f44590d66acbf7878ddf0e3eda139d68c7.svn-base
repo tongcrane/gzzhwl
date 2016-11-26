@@ -1,0 +1,37 @@
+package com.gzzhwl.admin.load.service.impl;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.load.service.LoadHistoryService;
+import com.gzzhwl.core.data.dao.LoadHisDao;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.LoadHis;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class LoadHistoryServiceImpl implements LoadHistoryService {
+	@Autowired
+	private LoadHisDao loadHisDao;
+
+	@Override
+	public String saveLoadHistory(String loadId, String current, String actionTime, FlowDef flowDef, String staffId)
+			throws RestException {
+		LoadHis loadHis = new LoadHis();
+		loadHis.setCreatedBy(staffId);
+		loadHis.setHisId(IdentifierUtils.getId().generate().toString());
+		loadHis.setLoadId(loadId);
+		if (StringUtils.isNotBlank(actionTime)) {
+			loadHis.setActionTime(actionTime);
+		}
+		loadHis.setUserType(flowDef.getCategory());
+		loadHis.setSrcStatus(current);
+		loadHis.setDestStatus(flowDef.getTransitionStatus());
+		loadHis.setMsgInfo(flowDef.getMsgTemplate());
+		loadHisDao.insert(loadHis);
+		return loadId;
+	}
+
+}

@@ -1,0 +1,54 @@
+package com.gzzhwl.api.load.service;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.rest.exception.RestException;
+
+public interface ArrivedService {
+	
+	/**
+	 * 到达
+	 * @param loadId
+	 * @param loadNo
+	 * @param actionTime
+	 * @throws RestException
+	 */
+	public void doArrived(String loadId, String loadNo, String actionTime,String accountId) throws RestException;
+	
+	/**
+	 * 添加电子回单
+	 * @param loadId
+	 * @param loadNo
+	 * @param billImageId
+	 * @param actionTime
+	 * @throws RestException
+	 */
+	public void addElecReceipt(String loadId,String loadNo,String billImageId,String actionTime) throws RestException;
+	
+	/**
+	 * 添加纸质回单
+	 * @param loadId
+	 * @param loadNo
+	 * @param expressCompany
+	 * @param expressNo
+	 * @param billImageId
+	 * @param actionTime
+	 * @throws RestException
+	 */
+	public void addPrintReceipt(String loadId,String loadNo,String expressDelivery,String billNo) throws RestException;
+	
+	/**
+	 * 上传电子回单图片
+	 * @param file
+	 * @param accountId
+	 */
+	public void updateElecmage(MultipartFile file, String accountId);
+	
+	/**
+	 * 上传快递单图片
+	 * @param file
+	 * @param accountId
+	 */
+	public void uploadExpressBillImage(MultipartFile file, String accountId);
+	
+}

@@ -1,0 +1,244 @@
+package com.gzzhwl.api.load.service.impl;
+
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.admin.load.service.LoadBillService;
+import com.gzzhwl.admin.load.service.LoadHistoryService;
+import com.gzzhwl.api.image.model.ImageCategory;
+import com.gzzhwl.api.image.model.ImageItem;
+import com.gzzhwl.api.image.service.ImageServiceFactory;
+import com.gzzhwl.api.load.service.ArrivedService;
+import com.gzzhwl.api.load.validator.ArrivedValidator;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.data.dao.LoadElecreceiptDao;
+import com.gzzhwl.core.data.dao.LoadPrintreceiptDao;
+import com.gzzhwl.core.data.dao.OrderLoadInfoDao;
+import com.gzzhwl.core.data.extdao.LoadElecreceiptExtDao;
+import com.gzzhwl.core.data.extdao.LoadPrintreceiptExtDao;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.LoadElecreceipt;
+import com.gzzhwl.core.data.model.LoadPrintreceipt;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class ArrivedServiceImpl implements ArrivedService {
+
+	@Autowired
+	private LoadPrintreceiptDao loadPrintreceiptDao;
+
+	@Autowired
+	private LoadElecreceiptDao loadElecreceiptDao;
+
+	@Autowired
+	private OrderLoadInfoDao orderLoadInfoDao;
+
+	@Autowired
+	private LoadHistoryService loadHistoryService;
+
+	@Autowired
+	private LoadBillService loadBillService;
+
+	@Autowired
+	private LoadElecreceiptExtDao elecReceiptExtDao;
+
+	@Autowired
+	private LoadPrintreceiptExtDao loadPrintreceiptExtDao;
+
+	@Autowired
+	private ImageServiceFactory imageServiceFactory;
+
+	@Autowired
+	private OrderLoadInfoDao loadDao;
+
+	@Autowired
+	private LoadPrintreceiptExtDao printReceiptExtDao;
+
+	private OrderLoadInfo getLoadInfo(String loadId, String loadNo) {
+
+		if (StringUtils.isNotBlank(loadNo)) {
+			return loadBillService.getLoadInfoByLoadNo(loadNo);
+		}
+
+		if (StringUtils.isNotBlank(loadId)) {
+			return orderLoadInfoDao.get(loadId);
+		}
+
+		return null;
+	}
+
+	@Override
+	public void addElecReceipt(String loadId, String loadNo, String receiptImageRefId, String actionTime,
+			String accountId) throws RestException {
+
+		ArrivedValidator.elecr_commit_validator(loadId, loadNo, receiptImageRefId, actionTime);
+
+		OrderLoadInfo orderLoadInfo = this.getLoadInfo(loadId, loadNo);
+		try {
+			if (orderLoadInfo == null) {
+				throw new RestException(ErrorCode.ERROR_900013);
+			}
+			Map<String, Object> curloadElecreceipt = elecReceiptExtDao.getCurrentElecreceipt(orderLoadInfo.getLoadId());
+			if (!ValidateUtils.isEmpty(curloadElecreceipt)) {
+				if (curloadElecreceipt.get("status").equals(Global.STATUS_NORMAL.toString())) {
+					throw new RestException(ErrorCode.ERROR_900020);
+				}
+				if (curloadElecreceipt.get("status").equals(Global.STATUS_WAIT.toString())) {
+					throw new RestException(ErrorCode.ERROR_900019);
+				}
+			}
+			LoadElecreceipt loadElecreceipt = new LoadElecreceipt();
+			loadElecreceipt.setReceiptId(IdentifierUtils.getId().generate().toString());
+			loadElecreceipt.setLoadId(orderLoadInfo.getLoadId());
+			loadElecreceipt.setReceiptImageRefId(receiptImageRefId);
+			loadElecreceipt.setSource(DataSource.VLORRY.getCode());
+			loadElecreceipt.setIsDeleted(Global.ISDEL_NORMAL.toString());
+			loadElecreceipt.setCreatedBy(accountId);
+			loadElecreceipt.setUpdatedBy(accountId);
+			loadElecreceipt.setStatus(Global.STATUS_WAIT.toString());
+			loadElecreceipt.setOpTime(actionTime);
+			loadElecreceiptDao.insert(loadElecreceipt);
+
+			FlowDef flowdef = new FlowDef();
+			flowdef.setCategory(FlowActionCategory.YSJ.getCode());
+			flowdef.setTransitionStatus(LoadBillType.ARRIVED.getCode());
+			flowdef.setMsgTemplate("上传电子回单");
+			loadHistoryService.saveElecReceiptHis(orderLoadInfo.getLoadId(), LoadBillType.ARRIVED.getCode(), actionTime,
+					flowdef, accountId, receiptImageRefId);
+		} catch (Exception e) {
+			FlowDef flowdef = new FlowDef();
+			flowdef.setCategory(FlowActionCategory.YSJ.getCode());
+			flowdef.setTransitionStatus(LoadBillType.ARRIVED.getCode());
+			flowdef.setMsgTemplate("上传电子回单");
+			loadHistoryService.saveErrorLoadHistory(orderLoadInfo.getLoadId(), orderLoadInfo.getStatus(), null, flowdef,
+					accountId);
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void addPrintReceipt(String loadId, String loadNo, String expressDelivery, String billNo, String accountId)
+			throws RestException {
+
+		ArrivedValidator.printr_commit_validator(loadId, loadNo, expressDelivery, billNo);
+		OrderLoadInfo orderLoadInfo = this.getLoadInfo(loadId, loadNo);
+		try {
+			if (orderLoadInfo == null) {
+				throw new RestException(ErrorCode.ERROR_900013);
+			}
+
+			Map<String, Object> currentPrintreceipt = loadPrintreceiptExtDao
+					.getCurrentPrintreceipt(orderLoadInfo.getLoadId());
+			if (!ValidateUtils.isEmpty(currentPrintreceipt)) {
+				if (currentPrintreceipt.get("status").equals(Global.STATUS_NORMAL.toString())) {
+					throw new RestException(ErrorCode.ERROR_900022.getCode(), ErrorCode.ERROR_900022.getDesc());
+				}
+				if (currentPrintreceipt.get("status").equals(Global.STATUS_WAIT.toString())) {
+					throw new RestException(ErrorCode.ERROR_900021.getCode(), ErrorCode.ERROR_900021.getDesc());
+				}
+			}
+			LoadPrintreceipt loadPrintreceipt = new LoadPrintreceipt();
+			loadPrintreceipt.setReceiptId(IdentifierUtils.getId().generate().toString());
+			loadPrintreceipt.setLoadId(orderLoadInfo.getLoadId());
+			loadPrintreceipt.setExpressDelivery(expressDelivery);
+			loadPrintreceipt.setIsDeleted(Global.ISDEL_NORMAL.toString());
+			loadPrintreceipt.setBillNo(billNo);
+			loadPrintreceipt.setType(LoadPrintreceipt.TYPE_EXPRESS);
+			loadPrintreceipt.setUpdatedBy(accountId);
+			loadPrintreceipt.setCreatedBy(accountId);
+			loadPrintreceipt.setStatus(Global.STATUS_WAIT.toString());
+			loadPrintreceiptDao.insert(loadPrintreceipt);
+
+			FlowDef flowdef = new FlowDef();
+			flowdef.setCategory(FlowActionCategory.YSJ.getCode());
+			flowdef.setTransitionStatus(LoadBillType.ELECRECEIPT.getCode());
+			flowdef.setMsgTemplate("返回纸质回单已完成");
+
+			loadHistoryService.saveLoadHistory(orderLoadInfo.getLoadId(), orderLoadInfo.getStatus(), null, flowdef,
+					accountId);
+		} catch (Exception e) {
+			FlowDef flowdef = new FlowDef();
+			flowdef.setCategory(FlowActionCategory.YSJ.getCode());
+			flowdef.setTransitionStatus(LoadBillType.ELECRECEIPT.getCode());
+			flowdef.setMsgTemplate("返回纸质回单已完成");
+			loadHistoryService.saveErrorLoadHistory(orderLoadInfo.getLoadId(), orderLoadInfo.getStatus(), null, flowdef,
+					accountId);
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public String updateElecmage(MultipartFile file, String accountId) {
+
+		if (file == null) {
+			throw new RestException(ErrorCode.ERROR_900001);
+		}
+
+		ImageItem imageItem = imageServiceFactory.saveImage(ImageCategory.ELEC, file, accountId);
+
+		return imageItem.getFileId();
+	}
+
+	@Override
+	public String uploadExpressBillImage(MultipartFile file, String accountId) {
+
+		if (file == null) {
+			throw new RestException(ErrorCode.ERROR_900001);
+		}
+
+		ImageItem imageItem = imageServiceFactory.saveImage(ImageCategory.EXPRESSBILL, file, accountId);
+
+		return imageItem.getFileId();
+	}
+
+	@Override
+	public String getCurrentPrintStatus(String loadId) {
+
+		Map<String, Object> currentPrintreceipt = printReceiptExtDao.getCurrentPrintreceipt(loadId);
+
+		if (!ValidateUtils.isEmpty(currentPrintreceipt)) {
+			return currentPrintreceipt.get("status").toString();
+		}
+
+		return null;
+	}
+
+	@Override
+	public String getCurrentElecStatus(String loadId) {
+
+		Map<String, Object> curloadElecreceipt = elecReceiptExtDao.getCurrentElecreceipt(loadId);
+
+		if (!ValidateUtils.isEmpty(curloadElecreceipt)) {
+			return curloadElecreceipt.get("status").toString();
+		}
+
+		return null;
+	}
+
+	@Override
+	public boolean isCanUploadReceipt(String currentStatus) {
+
+		if (!ValidateUtils.isEmpty(currentStatus)) {
+			if (currentStatus.equals(Global.STATUS_NORMAL.toString())) {
+				return false;
+			}
+			if (currentStatus.equals(Global.STATUS_WAIT.toString())) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+}

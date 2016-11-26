@@ -1,0 +1,62 @@
+package com.gzzhwl.admin.load.service;
+
+import java.util.Map;
+import com.gzzhwl.core.page.Page;
+
+public interface TripManageService {
+
+	/**
+	 * 车检
+	 * 
+	 * @param loadId
+	 */
+	public void vehicleCheck(String loadId,String staffId,String actionTime);
+
+	/**
+	 * 靠台
+	 * 
+	 * @param loadId
+	 */
+	public void closeToSurface(String loadId,String staffId,String actionTime);
+
+	/**
+	 * 发车
+	 * @param loadId
+	 * @param goodsWeight
+	 * @param goodsVolume
+	 * @param customerBillNo
+	 * @param contractImageRefId
+	 * @param tripTime
+	 */
+	public void tripTheCar(String loadId,String customerBillNo,String contractImageRefId,String tripTime,String staffId,Integer departId,String actionTime);
+	
+	/**
+	 * 获取发车反馈详情
+	 * 
+	 * @param loadId
+	 */
+	public Map<String,Object> getTripFeedbackDetail(String loadId);
+	
+	/**
+	 * 取消发车
+	 * 
+	 * @param loadId
+	 */
+	public void cancelTrip(String loadId,String staffId);
+
+	/**
+	 * 发车列表
+	 * 
+	 * @param departQueryVo
+	 * @return
+	 */
+	public Page<Map<String, Object>> tripPage(String keyWord, int pageIndex, int pageSize);
+
+	/**
+	 * 获取发车详情
+	 * @param loadId
+	 * @return
+	 */
+	public Map<String, Object> getTripDetail(String loadId);
+
+}

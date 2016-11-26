@@ -1,0 +1,13 @@
+package com.gzzhwl.api.load.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.gzzhwl.rest.exception.RestException;
+
+public interface TripMapService {
+
+	public Map<String, Object> findTrackInfo(String loadId) throws RestException;
+
+	public List<Map<String, Object>> getFeedBack(String loadId) throws RestException;
+}

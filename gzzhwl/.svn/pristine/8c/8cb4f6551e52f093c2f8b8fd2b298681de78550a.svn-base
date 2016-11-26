@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.DriverContractInfoDao">
+
+	<resultMap id="driverContractInfoResultMap" type="DriverContractInfo">
+		<id property="contractId" column="contract_id" />
+		<result property="loadId" column="load_id" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="driverContractInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="driverContractInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="DriverContractInfo">
+	   insert into zh_driver_contract_info (
+	     contract_id,
+	     load_id
+	   )values (
+	     #{contractId},
+	     #{loadId}
+	   )
+	</insert>
+
+	<update id="update" parameterType="DriverContractInfo">
+	   update zh_driver_contract_info set
+	     contract_id=#{contractId},
+	     load_id=#{loadId}
+	   where 
+	    contract_id=#{contractId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="DriverContractInfo">
+	   update zh_driver_contract_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="contractId != null">
+		       contract_id=#{contractId},
+		     </if>
+		     <if test="loadId != null">
+		       load_id=#{loadId}
+		     </if>
+	   </trim>
+	
+	   where 
+	    contract_id=#{contractId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_driver_contract_info 
+	   where 
+	    contract_id=#{contractId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="driverContractInfoResultMap">
+	   select 
+	    contract_id,
+	    load_id
+	   from zh_driver_contract_info
+	   where 
+	    contract_id=#{contractId} 
+	</select>
+	
+	<select id="getContractByLoad" parameterType="map" resultType="string">
+	   SELECT
+			zdci.contract_id
+		FROM
+			zh_driver_contract_info zdci
+		INNER JOIN (
+			zh_order_load_info zoli
+			INNER JOIN (
+				zh_flow_status zfs
+				INNER JOIN zh_flows zf ON zfs.flow_id = zf.flow_id
+				AND zf.name = #{flowName}
+			) ON zfs.code = zoli.status
+			AND zfs.type = #{statusType}
+		) ON zdci.contract_id = zoli.load_id
+		AND zoli.type = #{dataType}
+		WHERE
+			zdci.load_id = #{loadId}
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    contract_id,
+	    load_id
+	   from zh_driver_contract_info
+	   where 
+	    contract_id=#{contractId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     contract_id,
+	     load_id
+	   from zh_driver_contract_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="contractId != null">
+	        contract_id=#{contractId}
+	     </if>
+	     <if test="loadId != null">
+	        and load_id=#{loadId}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     contract_id,
+	     load_id
+	   from zh_driver_contract_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="contractId != null">
+	        contract_id=#{contractId}
+	     </if>
+	     <if test="loadId != null">
+	        and load_id=#{loadId}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

@@ -1,0 +1,41 @@
+package com.gzzhwl.admin.transit.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.transit.service.TransMapService;
+import com.gzzhwl.admin.transit.vo.MapSearchVO;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.data.extdao.LoadFeedbackLogExtDao;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class TransMapServiceImpl implements TransMapService {
+	@Autowired
+	private LoadFeedbackLogExtDao loadFeedbackLogExtDao;
+
+	@Override
+	public List<Map<String, Object>> mapSearch(MapSearchVO mapSearch) throws RestException {
+		Map<String, Object> params = mapSearch.getParam();
+
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getFeedBack(String loadId) throws RestException {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("loadId", loadId);
+		params.put("status", LoadBillType.DEPART.getCode());// 支查询已发车后的反馈
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("ysjSource", DataSource.VLORRY.getCode());
+		params.put("cbsSource", DataSource.PLATFORM.getCode());
+		return loadFeedbackLogExtDao.findFeedBackOnTrans(params);
+	}
+
+}

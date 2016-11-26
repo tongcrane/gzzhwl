@@ -1,0 +1,66 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_staff_org_rela表
+ * @author mew
+ *
+ */
+public class StaffOrgRela implements Serializable {
+	@Length(max = 36, message = "staffId超过长度限制")
+	private java.lang.String staffId; // 员工标识
+	private java.lang.Integer departId; // 所属部门
+
+
+	/**
+     * 获取员工标识属性
+     *
+     * @return staffId
+     */
+	public java.lang.String getStaffId() {
+		return staffId;
+	}
+	
+	/**
+	 * 设置员工标识属性
+	 *
+	 * @param staffId
+	 */
+	public void setStaffId(java.lang.String staffId) {
+		this.staffId = staffId;
+	}
+	
+	/**
+     * 获取所属部门属性
+     *
+     * @return departId
+     */
+	public java.lang.Integer getDepartId() {
+		return departId;
+	}
+	
+	/**
+	 * 设置所属部门属性
+	 *
+	 * @param departId
+	 */
+	public void setDepartId(java.lang.Integer departId) {
+		this.departId = departId;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("StaffOrgRela");
+        sb.append("{staffId=").append(staffId);
+        sb.append(", departId=").append(departId);
+		sb.append('}');
+        return sb.toString();
+    }
+}

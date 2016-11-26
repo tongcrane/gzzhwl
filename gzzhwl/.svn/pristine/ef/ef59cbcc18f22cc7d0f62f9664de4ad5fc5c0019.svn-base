@@ -1,0 +1,216 @@
+package com.gzzhwl.admin.lend.vo;
+
+import java.text.ParseException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.springmvc.validate.ParamEmptyValidator;
+
+public class LendQryVo {
+		
+	private String queryContent;
+	
+	private String queryType;
+	
+	private String startLendStartTime;
+	
+	private String endLendStartTime;
+	
+	private String startLendEndTime;
+	
+	private String endLendEndTime;
+	
+	private String startRealReturnedTime;
+	
+	private String endRealReturnedTime;
+	
+	private String status;
+	
+	private String sortField;
+	
+	private String sort;
+	
+	private String currentDepartId;
+	
+
+	public String getQueryContent() {
+		return queryContent;
+	}
+
+	public void setQueryContent(String queryContent) {
+		this.queryContent = queryContent;
+	}
+
+	public String getQueryType() {
+		return queryType;
+	}
+
+	public void setQueryType(String queryType) {
+		this.queryType = queryType;
+	}
+
+	public String getStartLendStartTime() {
+		return startLendStartTime;
+	}
+
+	public void setStartLendStartTime(String startLendStartTime) {
+		this.startLendStartTime = startLendStartTime;
+	}
+
+	public String getEndLendStartTime() {
+		return endLendStartTime;
+	}
+
+	public void setEndLendStartTime(String endLendStartTime) {
+		this.endLendStartTime = endLendStartTime;
+	}
+
+	public String getStartLendEndTime() {
+		return startLendEndTime;
+	}
+
+	public void setStartLendEndTime(String startLendEndTime) {
+		this.startLendEndTime = startLendEndTime;
+	}
+
+	public String getEndLendEndTime() {
+		return endLendEndTime;
+	}
+
+	public void setEndLendEndTime(String endLendEndTime) {
+		this.endLendEndTime = endLendEndTime;
+	}
+
+	public String getStartRealReturnedTime() {
+		return startRealReturnedTime;
+	}
+
+	public void setStartRealReturnedTime(String startRealReturnedTime) {
+		this.startRealReturnedTime = startRealReturnedTime;
+	}
+
+	public String getEndRealReturnedTime() {
+		return endRealReturnedTime;
+	}
+
+	public void setEndRealReturnedTime(String endRealReturnedTime) {
+		this.endRealReturnedTime = endRealReturnedTime;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getSortField() {
+		return sortField;
+	}
+
+	public void setSortField(String sortField) {
+		this.sortField = sortField;
+	}
+
+	public String getSort() {
+		return sort;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+	
+	
+	
+	public String getCurrentDepartId() {
+		return currentDepartId;
+	}
+
+	public void setCurrentDepartId(String currentDepartId) {
+		this.currentDepartId = currentDepartId;
+	}
+
+
+
+	private  static final String QUERYTYPE_NORMAL = "0";
+	
+	private  static final String QUERYTYPE_SENIOR = "1";
+	
+	public Map<String, Object> getParam()  {
+		
+		String queryType = this.getQueryType();
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.queryType);
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (QUERYTYPE_NORMAL.equals(queryType)) {
+			// 快捷搜索
+			if (StringUtils.isNoneBlank(this.queryContent)) {
+				params.put("queryContent", this.queryContent);
+			}
+			
+			
+		} else if (QUERYTYPE_SENIOR.equals(queryType)) {
+			// 高级搜索
+			if(StringUtils.isNotBlank(this.startLendStartTime)) {
+				params.put("startLendStartTime", this.getDateTime(this.startLendStartTime));
+			}
+			if(StringUtils.isNoneBlank(this.endLendStartTime)) {
+				params.put("endLendStartTime", this.getDateTime(this.endLendStartTime));
+			}
+			if(StringUtils.isNoneBlank(this.startLendEndTime)) {
+				params.put("startLendEndTime", this.getDateTime(this.startLendEndTime));
+			}
+			if(StringUtils.isNoneBlank(this.endLendEndTime)) {
+				params.put("endLendEndTime", this.getDateTime(this.endLendEndTime));
+			}
+			if(StringUtils.isNoneBlank(this.startRealReturnedTime)) {
+				params.put("startRealReturnedTime", this.getDateTime(this.startRealReturnedTime));
+			}
+			if(StringUtils.isNoneBlank(this.endRealReturnedTime)) {
+				params.put("endRealReturnedTime", this.getDateTime(this.endRealReturnedTime));
+			}
+		} else {
+			throw new RestException(ErrorCode.ERROR_900006.getCode(), ErrorCode.ERROR_900006.getDesc());
+		}
+		
+		if(StringUtils.isNoneBlank(this.status)) {
+			params.put("status", this.status);
+		}
+		
+		if(StringUtils.isNoneBlank(this.sortField)) {
+			params.put("sortField", this.sortField);
+		}
+		
+		params.put("currentDepartId", this.currentDepartId);
+
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("queryType", queryType);
+		
+
+		if (StringUtils.isNotBlank(this.getSort())) {
+			params.put("sort", this.getSort());
+
+		} else {
+			params.put("sort", "01");
+		}
+		
+		return params;
+	}
+	
+	private String getDateTime(String date){
+		try {
+			return  DateUtils.toString(DateUtils.parse(date), "yyyy-MM-dd HH:mm:ss");
+		} catch (ParseException e) {
+			throw new RestException(ErrorCode.ERROR_900005.getCode(),"时间"+ ErrorCode.ERROR_900005.getDesc());
+		}
+	}
+	
+}

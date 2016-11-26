@@ -1,0 +1,20 @@
+jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://rm-bp19l01t7ot1a4px1.mysql.rds.aliyuncs.com:3306/gzzhwl?useUnicode=true&characterEncoding=utf-8
+jdbc.username=ysj_admin
+jdbc.password=wsynedp@29
+
+setting.upload.path=/upload
+
+website.url=http://121.199.25.63
+
+#\u662f\u5426\u9700\u8981\u53d1\u77ed\u4fe1
+sms.send = true
+
+#\u662f\u5426\u9700\u8981\u9a8c\u8bc1\u77ed\u4fe1
+sms.check = true
+
+
+#\u4E2A\u63A8\u914D\u7F6E\u4FE1\u606F
+getui.appId=MS8fX37rGu66IS0q8Styq4
+getui.appKey=fqMcLjSIB18ZBo7ecY5Xc1
+getui.masterSecret=Dq834rYQyj5jBemATPVtYA

@@ -1,0 +1,21 @@
+jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://192.168.1.233:3306/gzzhwl?useUnicode=true&characterEncoding=utf-8
+jdbc.username=root
+jdbc.password=1qaz2wsx
+
+setting.upload.path=/upload
+
+website.url=http://192.168.1.233:8081/cbs
+
+
+
+#\u662f\u5426\u9700\u8981\u53d1\u77ed\u4fe1
+sms.send = false
+
+#\u662f\u5426\u9700\u8981\u9a8c\u8bc1\u77ed\u4fe1
+sms.check = false
+
+#\u4E2A\u63A8\u914D\u7F6E\u4FE1\u606F
+getui.appId=MS8fX37rGu66IS0q8Styq4
+getui.appKey=fqMcLjSIB18ZBo7ecY5Xc1
+getui.masterSecret=Dq834rYQyj5jBemATPVtYA

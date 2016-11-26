@@ -1,0 +1,298 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_load_feedback_log表
+ * @author mew
+ *
+ */
+public class LoadFeedbackLog implements Serializable {
+	@Length(max = 36, message = "feedbackId超过长度限制")
+	private java.lang.String feedbackId; // 反馈标识
+	@Length(max = 36, message = "loadId超过长度限制")
+	private java.lang.String loadId; // 提货单标识
+	@Length(max = 2, message = "linkedStatus超过长度限制")
+	private java.lang.String linkedStatus; // 反馈环节
+	@Length(max = 2, message = "type超过长度限制")
+	private java.lang.String type; // 异常类型
+	@Length(max = 10, message = "itemName超过长度限制")
+	private java.lang.String itemName; // 费用名称
+	@Length(max = 10, message = "itemPrice超过长度限制")
+	private java.lang.String itemPrice; // 费用金额
+	@Length(max = 400, message = "itemDesc超过长度限制")
+	private java.lang.String itemDesc; // 费用说明
+	@Length(max = 20, message = "feedbackTime超过长度限制")
+	private java.lang.String feedbackTime; // 反馈时间
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取反馈标识属性
+     *
+     * @return feedbackId
+     */
+	public java.lang.String getFeedbackId() {
+		return feedbackId;
+	}
+	
+	/**
+	 * 设置反馈标识属性
+	 *
+	 * @param feedbackId
+	 */
+	public void setFeedbackId(java.lang.String feedbackId) {
+		this.feedbackId = feedbackId;
+	}
+	
+	/**
+     * 获取提货单标识属性
+     *
+     * @return loadId
+     */
+	public java.lang.String getLoadId() {
+		return loadId;
+	}
+	
+	/**
+	 * 设置提货单标识属性
+	 *
+	 * @param loadId
+	 */
+	public void setLoadId(java.lang.String loadId) {
+		this.loadId = loadId;
+	}
+	
+	/**
+     * 获取反馈环节属性
+     *
+     * @return linkedStatus
+     */
+	public java.lang.String getLinkedStatus() {
+		return linkedStatus;
+	}
+	
+	/**
+	 * 设置反馈环节属性
+	 *
+	 * @param linkedStatus
+	 */
+	public void setLinkedStatus(java.lang.String linkedStatus) {
+		this.linkedStatus = linkedStatus;
+	}
+	
+	/**
+     * 获取异常类型属性
+     *
+     * @return type
+     */
+	public java.lang.String getType() {
+		return type;
+	}
+	
+	/**
+	 * 设置异常类型属性
+	 *
+	 * @param type
+	 */
+	public void setType(java.lang.String type) {
+		this.type = type;
+	}
+	
+	/**
+     * 获取费用名称属性
+     *
+     * @return itemName
+     */
+	public java.lang.String getItemName() {
+		return itemName;
+	}
+	
+	/**
+	 * 设置费用名称属性
+	 *
+	 * @param itemName
+	 */
+	public void setItemName(java.lang.String itemName) {
+		this.itemName = itemName;
+	}
+	
+	/**
+     * 获取费用金额属性
+     *
+     * @return itemPrice
+     */
+	public java.lang.String getItemPrice() {
+		return itemPrice;
+	}
+	
+	/**
+	 * 设置费用金额属性
+	 *
+	 * @param itemPrice
+	 */
+	public void setItemPrice(java.lang.String itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+	
+	/**
+     * 获取费用说明属性
+     *
+     * @return itemDesc
+     */
+	public java.lang.String getItemDesc() {
+		return itemDesc;
+	}
+	
+	/**
+	 * 设置费用说明属性
+	 *
+	 * @param itemDesc
+	 */
+	public void setItemDesc(java.lang.String itemDesc) {
+		this.itemDesc = itemDesc;
+	}
+	
+	/**
+     * 获取反馈时间属性
+     *
+     * @return feedbackTime
+     */
+	public java.lang.String getFeedbackTime() {
+		return feedbackTime;
+	}
+	
+	/**
+	 * 设置反馈时间属性
+	 *
+	 * @param feedbackTime
+	 */
+	public void setFeedbackTime(java.lang.String feedbackTime) {
+		this.feedbackTime = feedbackTime;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改人属性
+     *
+     * @return updatedBy
+     */
+	public java.lang.String getUpdatedBy() {
+		return updatedBy;
+	}
+	
+	/**
+	 * 设置修改人属性
+	 *
+	 * @param updatedBy
+	 */
+	public void setUpdatedBy(java.lang.String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("LoadFeedbackLog");
+        sb.append("{feedbackId=").append(feedbackId);
+        sb.append(", loadId=").append(loadId);
+        sb.append(", linkedStatus=").append(linkedStatus);
+        sb.append(", type=").append(type);
+        sb.append(", itemName=").append(itemName);
+        sb.append(", itemPrice=").append(itemPrice);
+        sb.append(", itemDesc=").append(itemDesc);
+        sb.append(", feedbackTime=").append(feedbackTime);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedBy=").append(updatedBy);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

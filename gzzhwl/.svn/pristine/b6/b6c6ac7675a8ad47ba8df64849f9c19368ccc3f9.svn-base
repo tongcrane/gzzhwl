@@ -1,0 +1,78 @@
+package com.gzzhwl.api.load.controller;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.api.load.service.TripMapService;
+import com.gzzhwl.api.load.service.TripService;
+import com.gzzhwl.core.data.model.AccountInfo;
+import com.gzzhwl.rest.springmvc.annotation.Authorization;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+import com.gzzhwl.rest.springmvc.validate.ParamEmptyValidator;
+
+@RestController
+@RequestMapping("/api/trip")
+public class TripController {
+
+	@Autowired
+	private TripService tripService;
+	@Autowired
+	private LoadFeedbackService loadFeedbackService;
+	@Autowired
+	private TripMapService tripMapService;
+
+	@RequestMapping(value = "/getDriverOrderList", method = RequestMethod.GET)
+	public ResponseModel getDriverOrderList(@Authorization AccountInfo accountInfo) throws ParseException, IOException {
+		String accountId = accountInfo.getAccountId();
+		List<Map<String, Object>> listMap = tripService.getDriverOrderList(accountId);
+		return new ResponseModel(listMap);
+	}
+
+	@RequestMapping(value = "/getDriverOrderHistoryList", method = RequestMethod.GET)
+	public ResponseModel getDriverOrderHistoryList(@Authorization AccountInfo accountInfo)
+			throws ParseException, IOException {
+		String accountId = accountInfo.getAccountId();
+		List<Map<String, Object>> listMap = tripService.getDriverOrderHistoryList(accountId);
+		return new ResponseModel(listMap);
+	}
+
+	@RequestMapping(value = "/trackInfo", method = RequestMethod.GET)
+	public ResponseModel trackInfo(@RequestParam String loadId, @Authorization AccountInfo accountInfo) {
+		ParamEmptyValidator.VALID_PARAM_EMPTY(loadId);
+		Map<String, Object> resMap = tripMapService.findTrackInfo(loadId);
+		return new ResponseModel(resMap);
+	}
+	
+	@RequestMapping(value = "/ysjVehicleCheck", method = RequestMethod.GET)
+	public ResponseModel ysjVehicleCheck(@RequestParam String loadNo,String actionTime,@Authorization AccountInfo accountInfo) {
+		ParamEmptyValidator.VALID_PARAM_EMPTY(loadNo,actionTime);
+		tripService.ysjVehicleCheck(loadNo, accountInfo.getAccountId(), actionTime);
+		return new ResponseModel(null);
+	}
+	
+	@RequestMapping(value = "/ysjCloseToSurface", method = RequestMethod.GET)
+	public ResponseModel ysjCloseToSurface(@RequestParam String loadNo,String actionTime,@Authorization AccountInfo accountInfo) {
+		ParamEmptyValidator.VALID_PARAM_EMPTY(loadNo,actionTime);
+		 tripService.ysjCloseToSurface(loadNo,  accountInfo.getAccountId(), actionTime);
+		return new ResponseModel(null);
+	}
+	
+	@RequestMapping(value = "/ysjTripTheCar", method = RequestMethod.GET)
+	public ResponseModel ysjTripTheCar(@RequestParam String loadNo,String actionTime,@Authorization AccountInfo accountInfo) {
+		ParamEmptyValidator.VALID_PARAM_EMPTY(loadNo,actionTime);
+		tripService.ysjTripTheCar(loadNo,  accountInfo.getAccountId(), actionTime);
+		return new ResponseModel(null);
+	}
+
+}

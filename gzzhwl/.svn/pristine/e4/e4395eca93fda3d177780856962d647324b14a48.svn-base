@@ -1,0 +1,20 @@
+package com.gzzhwl.admin.supply.validate;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.rest.exception.RestException;
+
+public class SupplyValidate {
+	public static void valid_supplyId(String supplyId) {
+		if(StringUtils.isBlank(supplyId)) {
+			throw new RestException(ErrorCode.ERROR_200001.getCode(), ErrorCode.ERROR_200001.getDesc());
+		}
+	}
+	
+	public static void valid_exist(boolean exist) {
+		if(!exist) {
+			throw new RestException(ErrorCode.ERROR_200002.getCode(), ErrorCode.ERROR_200002.getDesc());
+		}
+	}
+}

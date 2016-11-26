@@ -1,0 +1,111 @@
+package com.gzzhwl.admin.source.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.order.service.OrderLinkStatusService;
+import com.gzzhwl.admin.orderReturn.service.OrderReturnService;
+import com.gzzhwl.admin.quoted.service.QuotedManageService;
+import com.gzzhwl.admin.source.service.SourceHistoryService;
+import com.gzzhwl.admin.source.service.SourceLinkStatusService;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.FlowsService;
+import com.gzzhwl.core.data.dao.OrderSourceInfoDao;
+import com.gzzhwl.core.data.dao.SourceBaseInfoDao;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.OrderSourceInfo;
+import com.gzzhwl.core.data.model.SourceBaseInfo;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class SourceLinkStatusServiceImpl implements SourceLinkStatusService {
+	@Autowired
+	private FlowsService flowService;
+	@Autowired
+	private SourceHistoryService sourceHistoryService;
+	@Autowired
+	private OrderLinkStatusService orderService;
+	@Autowired
+	private OrderSourceInfoDao orderSourceInfoDao;
+	@Autowired
+	private SourceBaseInfoDao sourceBaseInfoDao;
+	@Autowired
+	private OrderReturnService orderReturnService;
+	@Autowired
+	private QuotedManageService quotedManageService;
+
+	private OrderSourceInfo executeFlow(String sourceId, String actionCode, String staffId) {
+		OrderSourceInfo orderSourceInfo = orderSourceInfoDao.get(sourceId);
+		String currentStatus = orderSourceInfo.getStatus();
+		FlowDef flowDef = flowService.executeFlow(ZHFlow.SOURCE, actionCode, currentStatus, FlowActionCategory.SYSTEM);
+		orderSourceInfo.setStatus(flowDef.getTransitionStatus());
+		orderSourceInfo.setUpdatedBy(staffId);
+		orderSourceInfoDao.updateSelective(orderSourceInfo);
+		sourceHistoryService.saveSourceHistory(sourceId, currentStatus, flowDef, staffId);
+		return orderSourceInfo;
+	}
+
+	@Override
+	public boolean bidSource(String sourceId, String staffId) throws RestException {
+		String actionCode = "04";// 中标动作
+		OrderSourceInfo orderSourceInfo = this.executeFlow(sourceId, actionCode, staffId);
+		String infoId = orderSourceInfo.getInfoId();
+		SourceBaseInfo sourceBaseInfo = sourceBaseInfoDao.get(infoId);
+		String orderId = sourceBaseInfo.getOrderId();
+		orderService.bidOrder(orderId, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean avttSource(String sourceId, String staffId) throws RestException {
+		String actionCode = "05";// 配载动作
+		OrderSourceInfo orderSourceInfo = this.executeFlow(sourceId, actionCode, staffId);
+		String infoId = orderSourceInfo.getInfoId();
+		SourceBaseInfo sourceBaseInfo = sourceBaseInfoDao.get(infoId);
+		String orderId = sourceBaseInfo.getOrderId();
+		orderService.avttSource(orderId, staffId);
+		return true;
+	}
+
+	@Override
+	public boolean breakPromiseSourceByUser(String sourceId, String accountId) throws RestException {
+		String actionCode = "06";// 用户违约
+		OrderSourceInfo orderSourceInfo = this.executeFlow(sourceId, actionCode, accountId);
+		String infoId = orderSourceInfo.getInfoId();
+		SourceBaseInfo sourceBaseInfo = sourceBaseInfoDao.get(infoId);
+		String orderId = sourceBaseInfo.getOrderId();
+		orderService.breakPromiseOrder(orderId, accountId);
+		orderReturnService.autoAgreeReturn(sourceId, null);
+		return true;
+	}
+
+	@Override
+	public boolean breakPromiseSourceByAdmin(String sourceId, String staffId) throws RestException {
+		String actionCode = "08";// 后台违约
+		OrderSourceInfo orderSourceInfo = this.executeFlow(sourceId, actionCode, staffId);
+		String infoId = orderSourceInfo.getInfoId();
+		SourceBaseInfo sourceBaseInfo = sourceBaseInfoDao.get(infoId);
+		String orderId = sourceBaseInfo.getOrderId();
+		orderService.breakPromiseOrder(orderId, staffId);
+		orderReturnService.autoAgreeReturn(sourceId, staffId);
+		// TODO
+		return true;
+	}
+
+	@Override
+	public boolean autoCloseSource(String sourceId, String staffId) throws RestException {
+		String actionCode = "09";// 货源自动结束动作
+		OrderSourceInfo orderSourceInfo = this.executeFlow(sourceId, actionCode, staffId);
+		String infoId = orderSourceInfo.getInfoId();
+		SourceBaseInfo sourceBaseInfo = sourceBaseInfoDao.get(infoId);
+		String orderId = sourceBaseInfo.getOrderId();
+		// 订单自动结束
+		orderService.autoClose(orderId, staffId);
+		// 自动同意退回申请
+		orderReturnService.autoAgreeReturn(sourceId, staffId);
+		// TODO:自动结束报价
+		quotedManageService.closeSourceLinkageHandler(sourceId, staffId);
+		return true;
+	}
+}

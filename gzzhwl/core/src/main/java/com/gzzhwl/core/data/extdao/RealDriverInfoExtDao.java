@@ -1,0 +1,37 @@
+package com.gzzhwl.core.data.extdao;
+
+import java.util.List;
+import java.util.Map;
+
+import com.gzzhwl.core.data.model.RealDriverInfo;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ *
+ */
+public interface RealDriverInfoExtDao {
+
+	public final static String PREFIX = RealDriverInfoExtDao.class.getName();
+
+	public <E, K, V> Page<E> pageDriverListByCondition(Map<K, V> params, int current, int pagesize);
+
+	public <T, K, V> List<T> getDriverInfoByCondition(String accountId, String driverInfoId, String idno, String qcNo);
+
+	public <K, V> Map<K, V> queryDriverandVehicleDetail(String driverInfoId);
+
+	public <T, K, V> List<T> getDriverListByCondition(Map<K, V> params);
+
+	public <E, K, V> Page<E> getRealDriverAndVehicleCheckList(Map<K, V> params, int current, int pagesize);
+
+	public <E, K, V> Page<E> pageDriverAndVehicleList(Map<K, V> params, int current, int pagesize);
+
+	public <K, V> Map<K, V> getDriverInfo(String driverInfoId);
+
+	public <T, K, V> List<T> getDriverList(String vehicleInfoId, String accountId);
+
+	public <T, K, V> List<T> getCanLoadDrivers(Map<K, V> params);
+	
+	public RealDriverInfo getDriverInfoByAccountId(String accountId);
+
+}

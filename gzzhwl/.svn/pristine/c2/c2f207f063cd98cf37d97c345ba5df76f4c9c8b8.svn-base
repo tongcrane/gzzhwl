@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property resource="properties/application.properties" />
+	
+	<property name="log_dir" value="${setting.upload.path:-.}/logs" />
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder charset="UTF-8">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger -%msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/server.log</file>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/server-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date %-5level %logger{80} - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender> -->
+	
+	<appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/error-log.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>  
+    </appender>
+    
+    <appender name="warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/warn-log.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder charset="UTF-8">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/info-log.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder charset="UTF-8">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	
+	<appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/debug-log.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder charset="UTF-8">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="trace" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>TRACE</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/trace-log.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder charset="UTF-8">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	
+	<root level="debug">
+    	<appender-ref ref="stdout" />
+		<appender-ref ref="error" />
+		<appender-ref ref="info" />
+		<appender-ref ref="warn" />
+		<appender-ref ref="debug" />
+		<appender-ref ref="trace" />
+	</root>
+	
+<!-- 	<if condition='property("spring.profiles.active").equalsIgnoreCase("development")'>
+	    <then>
+	        <appender-ref ref="stdout" />
+	    </then>
+	    <else>
+	    	<appender-ref ref="stdout" />
+			<appender-ref ref="error" />
+			<appender-ref ref="info" />
+			<appender-ref ref="warn" />
+			<appender-ref ref="debug" />
+			<appender-ref ref="trace" />
+	    </else>
+	</if> -->
+
+	<logger name="com.gzzhwl" level="info" />
+	<logger name="com.gzzhwl.rest" level="debug" />
+	<logger name="org.springframework" level="info" />
+	<logger name="org.mybatis.spring" level="off" />
+	<logger name="druid.sql.Connection" level="off" />
+	<logger name="org.apache.ibatis" level="off" />
+	<logger name="com.github.miemiedev" level="off" />
+	<logger name="net.sf.ehcache" level="off" />
+	<logger name="org.apache.commons.beanutils" level="off" />
+	<logger name="com.gzzhwl.rest.cache.BaseCacheAspect" level="off" />
+	<logger name="org.dozer" level="off" />
+
+</configuration>

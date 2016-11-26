@@ -1,0 +1,27 @@
+package com.gzzhwl.admin.payables.service;
+
+import java.util.List;
+import java.util.Map;
+
+public interface PayablesService {
+
+	/**
+	 * 查询应付明细
+	 */
+	public Map<String, Object> getPayDetail(String contractId);
+	
+	/**
+	 * 获取应付费用
+	 * @param loadId
+	 * @return
+	 */
+	public Map<String,Object> getPayChargesInfo(String contractId); 
+	
+	
+	public void verifyPayables(String loadId, String staffId);
+	
+	public void exportedExcel(List<Map<String,Object>> exportObj);
+	
+	
+	
+}

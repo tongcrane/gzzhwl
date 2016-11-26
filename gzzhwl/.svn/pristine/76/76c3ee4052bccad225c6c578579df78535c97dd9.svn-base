@@ -1,0 +1,14 @@
+package com.gzzhwl.admin.load.validator;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.rest.exception.RestException;
+
+public class LoadValidate {
+	public static void valid_load_id(String loadId) {
+		if(StringUtils.isBlank(loadId)) {
+			throw new RestException(ErrorCode.ERROR_110001.getCode(), ErrorCode.ERROR_110001.getDesc());
+		}
+	}
+}

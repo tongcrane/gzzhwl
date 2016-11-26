@@ -1,0 +1,88 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_source_base_info表
+ * @author mew
+ *
+ */
+public class SourceBaseInfo implements Serializable {
+	@Length(max = 36, message = "infoId超过长度限制")
+	private java.lang.String infoId; // 信息标识
+	@Length(max = 50, message = "sourceNo超过长度限制")
+	private java.lang.String sourceNo; // 货源编号
+	@Length(max = 36, message = "orderId超过长度限制")
+	private java.lang.String orderId; // 订单标识
+
+
+	/**
+     * 获取信息标识属性
+     *
+     * @return infoId
+     */
+	public java.lang.String getInfoId() {
+		return infoId;
+	}
+	
+	/**
+	 * 设置信息标识属性
+	 *
+	 * @param infoId
+	 */
+	public void setInfoId(java.lang.String infoId) {
+		this.infoId = infoId;
+	}
+	
+	/**
+     * 获取货源编号属性
+     *
+     * @return sourceNo
+     */
+	public java.lang.String getSourceNo() {
+		return sourceNo;
+	}
+	
+	/**
+	 * 设置货源编号属性
+	 *
+	 * @param sourceNo
+	 */
+	public void setSourceNo(java.lang.String sourceNo) {
+		this.sourceNo = sourceNo;
+	}
+	
+	/**
+     * 获取订单标识属性
+     *
+     * @return orderId
+     */
+	public java.lang.String getOrderId() {
+		return orderId;
+	}
+	
+	/**
+	 * 设置订单标识属性
+	 *
+	 * @param orderId
+	 */
+	public void setOrderId(java.lang.String orderId) {
+		this.orderId = orderId;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("SourceBaseInfo");
+        sb.append("{infoId=").append(infoId);
+        sb.append(", sourceNo=").append(sourceNo);
+        sb.append(", orderId=").append(orderId);
+		sb.append('}');
+        return sb.toString();
+    }
+}

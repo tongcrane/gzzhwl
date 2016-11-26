@@ -1,0 +1,45 @@
+package com.gzzhwl.admin.load.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.admin.load.vo.LoadFeedbackListVo;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.dao.LoadFeedbackLogDao;
+
+public class LoadFeedbackServiceImpl implements LoadFeedbackService {
+	
+	@Autowired
+	private Mapper beanMapper;
+	@Autowired
+	private LoadFeedbackLogDao loadFeedbackLogDao;
+
+	@Override
+	public void saveLoadFeedback(LoadFeedbackListVo LoadFeedbackList, String staffId) {
+		
+		
+	}
+
+	@Override
+	public List<Map<String, Object>> getLoadFeedbackList(String loadId, LoadFeedBackType loadFeedBackType,
+			LoadBillType loadBillType) {
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("loadId", loadId);
+		if(loadFeedBackType!=null){
+			params.put("type", loadFeedBackType.getCode());
+		}
+		if(loadBillType!=null){
+			params.put("linkedStatus", loadBillType.getCode());
+		}
+		
+		return loadFeedbackLogDao.find(params);
+	}
+
+}

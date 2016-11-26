@@ -1,0 +1,76 @@
+package com.gzzhwl.admin.vehicle.vo;
+
+import lombok.Data;
+import lombok.ToString;
+
+/**
+ * 车辆信息vo
+ * 
+ * @author jly
+ *
+ */
+@Data
+@ToString
+public class VehicleInfoDetailVo {
+
+	private java.lang.String vehicleInfoId; // 车辆信息标识
+	private java.lang.String vehicleType; // 车头类型
+	private java.lang.String plateNumber; // 车牌号
+	private java.lang.String models; // 车型
+	private java.lang.String length; // 车长
+	private java.lang.String brand; // 品牌
+	private java.lang.String color; // 车头颜色
+	private java.lang.String vin; // 车架号
+	private java.lang.String engineNo; // 发动机号
+	private java.lang.String ownerName; // 车主
+	private java.lang.String ownerPhone; // 车主电话
+	private java.lang.String ownerMobile; // 车主手机
+	private java.lang.String regDate; // 登记日期
+	private java.lang.String regCertCode; // 登记证书号
+	private java.lang.String loadWeight; // 核载重量
+	private java.lang.String wheelsNum; // 车轮数
+	private java.lang.String ownerType; // 所有权
+	private java.lang.String attributes; // 车辆属性
+	private java.lang.String licenseNo; // 行驶证号码
+	private java.lang.String licenseRegDate; // 行驶证注册日期
+	private java.lang.String licenseIssueDate; // 行驶证发证日期
+	private java.lang.String licenseValidDate; // 行驶证有效期至
+	private java.lang.String operatingCertNo; // 营运证号码
+	private java.lang.String operatingCertIssueDate; // 营运证发证日期
+	private java.lang.String licenseImageRefId; // 行驶证照片
+	private java.lang.String licenseImage2RefId; // 行驶证照片2
+	private java.lang.String ocImageRefId; // 营运证照片
+	private java.lang.String ocImage2RefId; // 营运证照片2
+	private java.lang.String ocImage3RefId; // 营运证照片3
+	private java.lang.String vehicleImageRefId; // 车辆照片
+	private java.lang.String ciEffectDate; // 强制险有效期-起
+	private java.lang.String ciName; // 强制险公司名称
+	private java.lang.String ciNo; // 强制险保单号
+	private java.lang.String viEffectDate; // 商业险有效期-起
+	private java.lang.String viName; // 商业险公司名称
+	private java.lang.String viNo; // 商业险保单号
+	private java.lang.String ciImageRefId; // 强制险图片
+	private java.lang.String viImageRefId; // 商业险图片
+	private java.lang.String type; // 车辆类型
+	private java.lang.String belongDepartName; // 所属部门名称
+	private java.lang.String useDepartName; // 使用部门名称
+	private java.lang.String departureCode; // 线路出发地
+	private java.lang.String destinationCode; // 线路目的地
+	private java.lang.String useStatus; // 状态
+	private java.lang.String operatingCertValidDate; // 营运证有效期至
+	// add by 20160622
+	private java.lang.String regImageRefId; // 登记证照片
+	private java.lang.String headstockType; // 车头类型
+	private java.lang.String remark; // 备注
+	private java.lang.String ciValidDate; // 强制险有效期-止
+	private java.lang.String viValidDate; // 商业险有效期-止
+	private java.lang.String bridgeType; // 车桥类型
+	// add by 20160801
+	// private java.lang.String bridgeType; // 车桥类型
+	private java.lang.String belongDepartId; // 所属部门
+	private java.lang.String useDepartId; // 使用部门
+	private String useStatusCn;
+	private String ownerNameCn;
+	
+	
+}

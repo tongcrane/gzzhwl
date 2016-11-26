@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.LoadExceptionDao">
+
+	<resultMap id="loadExceptionResultMap" type="LoadException">
+		<id property="loadId" column="load_id" />
+		<result property="reason" column="reason" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="loadExceptionResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="loadExceptionResultMap"></resultMap>
+
+	<insert id="insert" parameterType="LoadException">
+	   insert into zh_load_exception (
+	     load_id,
+	     reason,
+	     created_by,
+	     created_time
+	   )values (
+	     #{loadId},
+	     #{reason},
+	     #{createdBy},
+	     #{createdTime}
+	   )
+	</insert>
+
+	<update id="update" parameterType="LoadException">
+	   update zh_load_exception set
+	     load_id=#{loadId},
+	     reason=#{reason},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime}
+	   where 
+	    load_id=#{loadId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="LoadException">
+	   update zh_load_exception
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="loadId != null">
+		       load_id=#{loadId},
+		     </if>
+		     <if test="reason != null">
+		       reason=#{reason},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime}
+		     </if>
+	   </trim>
+	
+	   where 
+	    load_id=#{loadId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_load_exception 
+	   where 
+	    load_id=#{loadId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="loadExceptionResultMap">
+	   select 
+	    load_id,
+	    reason,
+	    created_by,
+	    created_time
+	   from zh_load_exception
+	   where 
+	    load_id=#{loadId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    load_id,
+	    reason,
+	    created_by,
+	    created_time
+	   from zh_load_exception
+	   where 
+	    load_id=#{loadId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     load_id,
+	     reason,
+	     created_by,
+	     created_time
+	   from zh_load_exception
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        load_id=#{loadId}
+	     </if>
+	     <if test="reason != null">
+	        and reason=#{reason}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     load_id,
+	     reason,
+	     created_by,
+	     created_time
+	   from zh_load_exception
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        load_id=#{loadId}
+	     </if>
+	     <if test="reason != null">
+	        and reason=#{reason}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

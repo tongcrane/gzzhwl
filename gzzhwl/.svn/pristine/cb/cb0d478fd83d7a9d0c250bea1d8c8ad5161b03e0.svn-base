@@ -1,0 +1,172 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_order_receiver_info表
+ * @author mew
+ *
+ */
+public class OrderReceiverInfo implements Serializable {
+	@Length(max = 36, message = "infoId超过长度限制")
+	private java.lang.String infoId; // 订单标识
+	@Length(max = 50, message = "customerName超过长度限制")
+	private java.lang.String customerName; // 客户名称
+	@Length(max = 50, message = "contactName超过长度限制")
+	private java.lang.String contactName; // 联系人
+	@Length(max = 20, message = "telphone超过长度限制")
+	private java.lang.String telphone; // 联系电话
+	@Length(max = 20, message = "mobile超过长度限制")
+	private java.lang.String mobile; // 联系手机
+	@Length(max = 10, message = "areaCode超过长度限制")
+	private java.lang.String areaCode; // 所在区域
+	@Length(max = 200, message = "address超过长度限制")
+	private java.lang.String address; // 联系地址
+
+
+	/**
+     * 获取订单标识属性
+     *
+     * @return infoId
+     */
+	public java.lang.String getInfoId() {
+		return infoId;
+	}
+	
+	/**
+	 * 设置订单标识属性
+	 *
+	 * @param infoId
+	 */
+	public void setInfoId(java.lang.String infoId) {
+		this.infoId = infoId;
+	}
+	
+	/**
+     * 获取客户名称属性
+     *
+     * @return customerName
+     */
+	public java.lang.String getCustomerName() {
+		return customerName;
+	}
+	
+	/**
+	 * 设置客户名称属性
+	 *
+	 * @param customerName
+	 */
+	public void setCustomerName(java.lang.String customerName) {
+		this.customerName = customerName;
+	}
+	
+	/**
+     * 获取联系人属性
+     *
+     * @return contactName
+     */
+	public java.lang.String getContactName() {
+		return contactName;
+	}
+	
+	/**
+	 * 设置联系人属性
+	 *
+	 * @param contactName
+	 */
+	public void setContactName(java.lang.String contactName) {
+		this.contactName = contactName;
+	}
+	
+	/**
+     * 获取联系电话属性
+     *
+     * @return telphone
+     */
+	public java.lang.String getTelphone() {
+		return telphone;
+	}
+	
+	/**
+	 * 设置联系电话属性
+	 *
+	 * @param telphone
+	 */
+	public void setTelphone(java.lang.String telphone) {
+		this.telphone = telphone;
+	}
+	
+	/**
+     * 获取联系手机属性
+     *
+     * @return mobile
+     */
+	public java.lang.String getMobile() {
+		return mobile;
+	}
+	
+	/**
+	 * 设置联系手机属性
+	 *
+	 * @param mobile
+	 */
+	public void setMobile(java.lang.String mobile) {
+		this.mobile = mobile;
+	}
+	
+	/**
+     * 获取所在区域属性
+     *
+     * @return areaCode
+     */
+	public java.lang.String getAreaCode() {
+		return areaCode;
+	}
+	
+	/**
+	 * 设置所在区域属性
+	 *
+	 * @param areaCode
+	 */
+	public void setAreaCode(java.lang.String areaCode) {
+		this.areaCode = areaCode;
+	}
+	
+	/**
+     * 获取联系地址属性
+     *
+     * @return address
+     */
+	public java.lang.String getAddress() {
+		return address;
+	}
+	
+	/**
+	 * 设置联系地址属性
+	 *
+	 * @param address
+	 */
+	public void setAddress(java.lang.String address) {
+		this.address = address;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("OrderReceiverInfo");
+        sb.append("{infoId=").append(infoId);
+        sb.append(", customerName=").append(customerName);
+        sb.append(", contactName=").append(contactName);
+        sb.append(", telphone=").append(telphone);
+        sb.append(", mobile=").append(mobile);
+        sb.append(", areaCode=").append(areaCode);
+        sb.append(", address=").append(address);
+		sb.append('}');
+        return sb.toString();
+    }
+}

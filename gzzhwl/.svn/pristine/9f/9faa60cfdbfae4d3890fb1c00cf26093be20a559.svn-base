@@ -1,0 +1,277 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_image_info表
+ * @author mew
+ *
+ */
+public class ImageInfo implements Serializable {
+	@Length(max = 36, message = "imageId超过长度限制")
+	private java.lang.String imageId; // 图片标识
+	@Length(max = 2, message = "category超过长度限制")
+	private java.lang.String category; // 分类
+	@Length(max = 100, message = "name超过长度限制")
+	private java.lang.String name; // 名字
+	@Length(max = 255, message = "src超过长度限制")
+	private java.lang.String src; // 路径
+	@Length(max = 10, message = "height超过长度限制")
+	private java.lang.String height; // 高度
+	@Length(max = 10, message = "width超过长度限制")
+	private java.lang.String width; // 宽度
+	@Length(max = 10, message = "size超过长度限制")
+	private java.lang.String size; // 大小
+	@Length(max = 36, message = "accountId超过长度限制")
+	private java.lang.String accountId; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取图片标识属性
+     *
+     * @return imageId
+     */
+	public java.lang.String getImageId() {
+		return imageId;
+	}
+	
+	/**
+	 * 设置图片标识属性
+	 *
+	 * @param imageId
+	 */
+	public void setImageId(java.lang.String imageId) {
+		this.imageId = imageId;
+	}
+	
+	/**
+     * 获取分类属性
+     *
+     * @return category
+     */
+	public java.lang.String getCategory() {
+		return category;
+	}
+	
+	/**
+	 * 设置分类属性
+	 *
+	 * @param category
+	 */
+	public void setCategory(java.lang.String category) {
+		this.category = category;
+	}
+	
+	/**
+     * 获取名字属性
+     *
+     * @return name
+     */
+	public java.lang.String getName() {
+		return name;
+	}
+	
+	/**
+	 * 设置名字属性
+	 *
+	 * @param name
+	 */
+	public void setName(java.lang.String name) {
+		this.name = name;
+	}
+	
+	/**
+     * 获取路径属性
+     *
+     * @return src
+     */
+	public java.lang.String getSrc() {
+		return src;
+	}
+	
+	/**
+	 * 设置路径属性
+	 *
+	 * @param src
+	 */
+	public void setSrc(java.lang.String src) {
+		this.src = src;
+	}
+	
+	/**
+     * 获取高度属性
+     *
+     * @return height
+     */
+	public java.lang.String getHeight() {
+		return height;
+	}
+	
+	/**
+	 * 设置高度属性
+	 *
+	 * @param height
+	 */
+	public void setHeight(java.lang.String height) {
+		this.height = height;
+	}
+	
+	/**
+     * 获取宽度属性
+     *
+     * @return width
+     */
+	public java.lang.String getWidth() {
+		return width;
+	}
+	
+	/**
+	 * 设置宽度属性
+	 *
+	 * @param width
+	 */
+	public void setWidth(java.lang.String width) {
+		this.width = width;
+	}
+	
+	/**
+     * 获取大小属性
+     *
+     * @return size
+     */
+	public java.lang.String getSize() {
+		return size;
+	}
+	
+	/**
+	 * 设置大小属性
+	 *
+	 * @param size
+	 */
+	public void setSize(java.lang.String size) {
+		this.size = size;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return accountId
+     */
+	public java.lang.String getAccountId() {
+		return accountId;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param accountId
+	 */
+	public void setAccountId(java.lang.String accountId) {
+		this.accountId = accountId;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("ImageInfo");
+        sb.append("{imageId=").append(imageId);
+        sb.append(", category=").append(category);
+        sb.append(", name=").append(name);
+        sb.append(", src=").append(src);
+        sb.append(", height=").append(height);
+        sb.append(", width=").append(width);
+        sb.append(", size=").append(size);
+        sb.append(", accountId=").append(accountId);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", status=").append(status);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

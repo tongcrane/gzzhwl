@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.OrderSourceInfoExtDao">
+
+	<resultMap id="orderSourceInfoResultMap" type="OrderSourceInfo">
+		<id property="sourceId" column="source_id" />
+		<result property="infoId" column="info_id" />
+		<result property="startCodeP" column="start_code_p" />
+		<result property="startCodeC" column="start_code_c" />
+		<result property="endCodeP" column="end_code_p" />
+		<result property="endCodeC" column="end_code_c" />
+		<result property="needType" column="need_type" />
+		<result property="needLength" column="need_length" />
+		<result property="needArriveTime" column="need_arrive_time" />
+		<result property="needDriverNum" column="need_driver_num" />
+		<result property="miles" column="miles" />
+		<result property="level" column="level" />
+		<result property="estimatedPrice" column="estimated_price" />
+		<result property="transitRequire" column="transit_require" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="remark" column="remark" />
+		<result property="rejectReason" column="reject_reason" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="orderSourceInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="orderSourceInfoResultMap"></resultMap>
+	
+	<resultMap id="quotedSourceDetailResultMap"  type="java.util.HashMap" extends="orderSourceInfoResultMap">
+		<result property="sourceNo" column="source_no" />
+	</resultMap>
+	
+	<resultMap id="orderSourceResultMap"  type="java.util.HashMap" extends="orderSourceInfoResultMap">
+		<result property="needStartTime" column="need_start_time" />
+		<result property="needArriveTime" column="need_arrive_time" />
+		<result property="orderNo" column="order_no" />
+	</resultMap>
+	
+
+	<select id="getQuotedSourceDetail" parameterType="map" resultMap="quotedSourceDetailResultMap">
+	   SELECT
+		t1.source_id,
+		t1.need_type,
+		t1.need_length,
+		t1.need_driver_num,
+		t1.miles,
+		t1.level,
+		t1.estimated_price,
+		t1.transit_require,
+		t1.start_time,
+		t1.end_time,
+		t1.remark,
+		t1.created_time,
+		t2.source_no,
+		t1.status
+		FROM
+		zh_order_source_info t1,
+		zh_source_base_info t2
+	   where 
+	    t1.info_id = t2.info_id
+	    and
+	    t1.source_id=#{sourceId}
+	</select>
+	
+	<select id="getOrderSourcePage" parameterType="map" resultMap="orderSourceResultMap">
+	   select
+		t1.source_id,
+		t1.info_id,
+		t1.status,
+		t1.created_time,
+		t1.start_code_p,
+		t1.start_code_c,
+		t1.end_code_p,
+		t1.end_code_c,
+		t1.need_type,
+		t1.remark,
+		t1.need_length,
+		t2.need_start_time,
+		t2.need_arrive_time,
+		t3.order_no,
+		t5.quotedCount,
+		t6.hisRemark
+		FROM
+		zh_order_source_info t1
+		left join
+		(
+		select count(1)  as quotedCount,source_id from zh_quoted_info 
+		group by source_id
+		) t5 on
+		t1.source_id = t5.source_id
+		left join 
+		(select r1.content as hisRemark,r1.target_id from zh_remark_info r1
+		where r1.pid in 
+		(
+		select max(r2.pid) from zh_remark_info r2
+		where
+		type = '02'
+		group by r2.target_id
+		)
+		 ) t6 on
+		t6.target_id = t1.source_id
+		,
+		zh_order_base_info t2,
+		zh_order_detail_info t3,
+		zh_source_base_info t4
+		where
+		t1.info_id = t4.info_id
+		and
+		t3.order_id = t4.order_id
+		and
+		t2.info_id = t3.info_id
+		<if test="queryContent != null and queryContent!=''">
+		 and	t3.order_no = #{queryContent}
+	    </if>
+	    <if test="isStart == true">
+		<![CDATA[ and	t1.start_time <= now() ]]>
+	    </if>
+		<if test="sourceStatusList != null">
+		 and
+		  <foreach collection="sourceStatusList" index="index" item="sourceStatus" open="(" separator=" or " close=")">  
+		       t1.status = #{sourceStatus}
+		   </foreach>
+	    </if>
+		 order by t1.created_time desc
+	</select>
+	
+	<!-- 获取热门线路货源列表 -->
+	<select id="getHotLineSourceList" parameterType="map" resultMap="quotedSourceDetailResultMap">
+	   SELECT
+		t1.source_id
+		FROM
+		zh_order_source_info t1
+		<if test="startCodeC==null">
+		where
+		t1.start_code_p = #{startCodeP}
+		and
+		t1.end_code_p in
+		(
+		 select  distinct destination_code from  zh_line_info
+		 where
+			is_deleted = '00'
+			and
+			account_Id=#{accountId}
+		 and
+		 departure_code = #{startCodeP}
+		)
+		</if>
+		<trim prefix="WHERE" prefixOverrides="AND |OR">
+			<if test="startCodeC != null ">
+			and t1.start_code_c = #{startCodeC}
+			</if>
+			<if test="endCodeC != null">
+			and t1.end_code_c = #{endCodeC}
+			</if>
+		</trim>
+	
+		<if test="sourceStatusArray!=null">
+			and t1.status in
+			<foreach collection="sourceStatusArray" index="index" item="sourceStatus" open="(" separator="," close=")"> 
+		 		#{sourceStatus}
+		 	</foreach>
+		</if>
+		 order by t1.start_time desc
+	</select>
+	
+	<!-- 获取推荐货源列表 -->
+	<select id="getRecommandSourceList" parameterType="map" resultMap="quotedSourceDetailResultMap">
+	   SELECT
+		t1.source_id
+		FROM
+		zh_order_source_info t1
+		<trim prefix="WHERE" prefixOverrides="AND |OR">
+		<if test="mapArray != null">
+			<foreach collection="mapArray" index="index" item="map" open="(" separator="  or " close=")"> 
+				 <foreach collection="map.keys" item="k" >   
+				    <if test="k == 'startCodeP' ">    
+				       	( t1.start_code_p = ${map[k]} 
+				    </if>
+				    <if test="k == 'endCodeP' ">    
+				       	 and  t1.end_code_p = ${map[k]})
+				    </if>  
+				</foreach>
+		 	</foreach>
+		</if>
+		<if test="sourceStatusArray!=null">
+			and t1.status in
+			<foreach collection="sourceStatusArray" index="index" item="sourceStatus" open="(" separator="," close=")"> 
+		 		#{sourceStatus}
+		 	</foreach>
+		</if>
+		</trim>
+		 order by t1.start_time desc
+	</select>
+	
+	
+	<!-- 获取当前最新发布的货源 -->
+	<select id="getNewSource" parameterType="map" resultMap="quotedSourceDetailResultMap">
+		select 
+			source_id
+		from 
+			zh_order_source_info
+		<trim prefix="WHERE" prefixOverrides="AND |OR">
+			<if test="status != null">
+	        	status=#{status}
+	     	</if>
+	     	<if test="isDeleted != null">
+	     		and is_deleted = #{isDeleted}
+	     	</if>
+	     </trim>
+	     order by updated_time desc
+	     <if test="count != null">
+	     	limit #{count}
+	     </if>
+	     
+	</select>
+	
+	
+	<!-- 获取今天新发布的货源条数 -->
+	<select id="getNewSourceCnt" parameterType="map" resultType="int">
+		select 
+			count(*) cnt
+		from 
+			zh_order_source_info
+		<trim prefix="WHERE" prefixOverrides="AND |OR">
+			<if test="startDate != null">
+	        	start_time >= #{startDate}
+	     	</if>
+	     	<if test="endDate != null">
+	        	and <![CDATA[start_time < #{endDate}]]>
+	     	</if>
+	     	<if test="isDeleted != null">
+	     		and is_deleted = #{isDeleted}
+	     	</if>
+	     </trim>
+	</select>	
+	
+	<!--获取当前成功签单的司机和经纪人人数  -->
+	<select id="getQutoSuccessCnt" parameterType="map" resultType="int">
+		select 
+			count(*) cnt
+		from 
+			zh_quoted_info
+		<trim prefix="WHERE" prefixOverrides="AND |OR">
+			<if test="status != null">
+	        	status in (${status})
+	     	</if>
+	     	<if test="isDeleted != null">
+	     		and is_deleted = #{isDeleted}
+	     	</if>
+	     </trim>
+	</select>
+
+</mapper> 

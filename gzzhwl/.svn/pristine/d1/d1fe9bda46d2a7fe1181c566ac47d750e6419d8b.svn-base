@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.OrderLineInfoDao">
+
+	<resultMap id="orderLineInfoResultMap" type="OrderLineInfo">
+		<id property="infoId" column="info_id" />
+		<result property="startCodeP" column="start_code_p" />
+		<result property="startCodeC" column="start_code_c" />
+		<result property="transferCodeP" column="transfer_code_p" />
+		<result property="transferCodeC" column="transfer_code_c" />
+		<result property="endCodeP" column="end_code_p" />
+		<result property="endCodeC" column="end_code_c" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="orderLineInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="orderLineInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="OrderLineInfo">
+	   insert into zh_order_line_info (
+	     info_id,
+	     start_code_p,
+	     start_code_c,
+	     transfer_code_p,
+	     transfer_code_c,
+	     end_code_p,
+	     end_code_c
+	   )values (
+	     #{infoId},
+	     #{startCodeP},
+	     #{startCodeC},
+	     #{transferCodeP},
+	     #{transferCodeC},
+	     #{endCodeP},
+	     #{endCodeC}
+	   )
+	</insert>
+
+	<update id="update" parameterType="OrderLineInfo">
+	   update zh_order_line_info set
+	     info_id=#{infoId},
+	     start_code_p=#{startCodeP},
+	     start_code_c=#{startCodeC},
+	     transfer_code_p=#{transferCodeP},
+	     transfer_code_c=#{transferCodeC},
+	     end_code_p=#{endCodeP},
+	     end_code_c=#{endCodeC}
+	   where 
+	    info_id=#{infoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="OrderLineInfo">
+	   update zh_order_line_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="infoId != null">
+		       info_id=#{infoId},
+		     </if>
+		     <if test="startCodeP != null">
+		       start_code_p=#{startCodeP},
+		     </if>
+		     <if test="startCodeC != null">
+		       start_code_c=#{startCodeC},
+		     </if>
+		     <if test="transferCodeP != null">
+		       transfer_code_p=#{transferCodeP},
+		     </if>
+		     <if test="transferCodeC != null">
+		       transfer_code_c=#{transferCodeC},
+		     </if>
+		     <if test="endCodeP != null">
+		       end_code_p=#{endCodeP},
+		     </if>
+		     <if test="endCodeC != null">
+		       end_code_c=#{endCodeC}
+		     </if>
+	   </trim>
+	
+	   where 
+	    info_id=#{infoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_order_line_info 
+	   where 
+	    info_id=#{infoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="orderLineInfoResultMap">
+	   select 
+	    info_id,
+	    start_code_p,
+	    start_code_c,
+	    transfer_code_p,
+	    transfer_code_c,
+	    end_code_p,
+	    end_code_c
+	   from zh_order_line_info
+	   where 
+	    info_id=#{infoId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    info_id,
+	    start_code_p,
+	    start_code_c,
+	    transfer_code_p,
+	    transfer_code_c,
+	    end_code_p,
+	    end_code_c
+	   from zh_order_line_info
+	   where 
+	    info_id=#{infoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     info_id,
+	     start_code_p,
+	     start_code_c,
+	     transfer_code_p,
+	     transfer_code_c,
+	     end_code_p,
+	     end_code_c
+	   from zh_order_line_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="startCodeP != null">
+	        and start_code_p=#{startCodeP}
+	     </if>
+	     <if test="startCodeC != null">
+	        and start_code_c=#{startCodeC}
+	     </if>
+	     <if test="transferCodeP != null">
+	        and transfer_code_p=#{transferCodeP}
+	     </if>
+	     <if test="transferCodeC != null">
+	        and transfer_code_c=#{transferCodeC}
+	     </if>
+	     <if test="endCodeP != null">
+	        and end_code_p=#{endCodeP}
+	     </if>
+	     <if test="endCodeC != null">
+	        and end_code_c=#{endCodeC}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     info_id,
+	     start_code_p,
+	     start_code_c,
+	     transfer_code_p,
+	     transfer_code_c,
+	     end_code_p,
+	     end_code_c
+	   from zh_order_line_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="startCodeP != null">
+	        and start_code_p=#{startCodeP}
+	     </if>
+	     <if test="startCodeC != null">
+	        and start_code_c=#{startCodeC}
+	     </if>
+	     <if test="transferCodeP != null">
+	        and transfer_code_p=#{transferCodeP}
+	     </if>
+	     <if test="transferCodeC != null">
+	        and transfer_code_c=#{transferCodeC}
+	     </if>
+	     <if test="endCodeP != null">
+	        and end_code_p=#{endCodeP}
+	     </if>
+	     <if test="endCodeC != null">
+	        and end_code_c=#{endCodeC}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

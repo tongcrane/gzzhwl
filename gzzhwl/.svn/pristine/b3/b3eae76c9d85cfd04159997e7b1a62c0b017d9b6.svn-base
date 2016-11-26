@@ -1,0 +1,14 @@
+package com.gzzhwl.api.account.vo;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class AutoRegVO {
+	private String telphone;
+	private String password;
+	private String idno;
+	private String billNo;
+
+}

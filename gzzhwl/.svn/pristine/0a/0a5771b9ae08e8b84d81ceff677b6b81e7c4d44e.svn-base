@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.SupplyInfoExtDao">
+
+	<resultMap id="supplyInfoResultMap" type="SupplyInfo">
+		<id property="supplyId" column="supply_id" />
+		<result property="supplyNo" column="supply_no" />
+		<result property="type" column="type" />
+		<result property="fullName" column="full_name" />
+		<result property="taxRegCode" column="tax_reg_code" />
+		<result property="contactName" column="contact_name" />
+		<result property="mobile" column="mobile" />
+		<result property="areaCode" column="area_code" />
+		<result property="address" column="address" />
+		<result property="paymentType" column="payment_type" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="belongDepartId" column="belong_depart_id" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="supplyInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="supplyInfoResultMap"></resultMap>
+
+	<select id="getSupplyList" parameterType="map" resultMap="supplyInfoResultMap">
+	   select 
+	    supply_id,
+	    supply_no,
+	    type,
+	    full_name,
+	    tax_reg_code,
+	    contact_name,
+	    mobile,
+	    area_code,
+	    address,
+	    payment_type,
+	    remark,
+	    status,
+	    belong_depart_id,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_supply_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="keyWord != null">
+	        full_name like '%${keyWord}%'
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted = #{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	
+	<select id="page" parameterType="map" resultMap="supplyInfoResultMap">
+	   select 
+	    supply_id,
+	    supply_no,
+	    type,
+	    full_name,
+	    tax_reg_code,
+	    contact_name,
+	    mobile,
+	    area_code,
+	    address,
+	    payment_type,
+	    remark,
+	    status,
+	    belong_depart_id,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_supply_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="keyWord != null">
+	        (full_name like '%${keyWord}%'
+	     </if>
+	     <if test="keyWord != null">
+	        or mobile = #{keyWord})
+	     </if>
+	     <if test="type != null">
+	        and type = #{type}
+	     </if>	    
+	     <if test="paymentType != null">
+	        and payment_type = #{paymentType}
+	     </if>	 	 
+	     <if test="taxRegCode != null">
+	        and tax_reg_code = #{taxRegCode}
+	     </if>	 
+	     <if test="status != null">
+	        and status = #{status}
+	     </if>	 	        
+	     <if test="isDeleted != null">
+	        and is_deleted = #{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     supply_id,
+	     supply_no,
+	     type,
+	     full_name,
+	     tax_reg_code,
+	     contact_name,
+	     mobile,
+	     area_code,
+	     address,
+	     payment_type,
+	     remark,
+	     status,
+	     belong_depart_id,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_supply_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="supplyId != null">
+	       <![CDATA[ supply_id <> #{supplyId}]]>
+	     </if>
+	     <if test="fullName != null">
+	        and full_name=#{fullName}
+	     </if>
+	     <if test="taxRegCode != null">
+	        and tax_reg_code=#{taxRegCode}
+	     </if>
+	     <if test="contactName != null">
+	        and contact_name=#{contactName}
+	     </if>
+	     <if test="mobile != null">
+	        and mobile=#{mobile}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+
+</mapper> 

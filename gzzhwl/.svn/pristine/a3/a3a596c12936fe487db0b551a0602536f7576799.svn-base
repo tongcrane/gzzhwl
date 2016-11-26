@@ -1,0 +1,65 @@
+package com.gzzhwl.admin.account.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.gzzhwl.admin.account.validate.accountValidate;
+import com.gzzhwl.api.notice.validate.SendSmsValidator;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.data.dao.AccountInfoDao;
+import com.gzzhwl.core.data.dao.AgentInfoDao;
+import com.gzzhwl.core.data.model.AccountInfo;
+import com.gzzhwl.core.data.model.AgentInfo;
+import com.gzzhwl.core.utils.ValidateUtils;
+
+public class AccountServiceImpl implements AccountService{
+	@Autowired
+	private AgentInfoDao agentDao;
+	@Autowired
+	private AccountInfoDao accountInfoDao;
+	
+	@Override
+	public boolean createAccountForCBS(String idno, String realName, String telphone, String idFImageRefId,
+			String idBImageRefId) {
+		//判断手机号是否被占用
+		validTelUsed(telphone, idno);
+		
+		
+		return true;
+	}
+
+	private boolean validTelUsed(String telphone, String idno) {
+		accountValidate.valid_telphone(telphone);
+		AccountInfo accountInfo = this.getLoginInfoByParam(telphone, true);
+		if(!ValidateUtils.isEmpty(accountInfo)) {
+			AgentInfo agentInfo = agentDao.get(accountInfo.getAccountId());
+			//验证经纪人信息是否存在
+			accountValidate.valid_agent(agentInfo);
+			//验证app账户身份证和司机身份证号是否一致
+			accountValidate.valid_idno_Accordence(agentInfo.getIdno(), idno);
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public AccountInfo getLoginInfoByParam(String telphone, boolean isDel) {
+		SendSmsValidator.valid_sendSms(telphone);
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (isDel) {
+			params.put("isDel", Global.ISDEL_NORMAL.toString());
+		}
+		params.put("telphone", telphone);
+		List<AccountInfo> loginList = accountInfoDao.findAccountInfoToLogin(params);
+		if (CollectionUtils.isEmpty(loginList)) {
+			return null;
+		} else {
+			return loginList.get(0);
+		}
+	}
+}

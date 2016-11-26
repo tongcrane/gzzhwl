@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.OrderLoadInfoExtDao">
+
+	<resultMap id="orderLoadInfoResultMap" type="OrderLoadInfo">
+		<id property="loadId" column="load_id" />
+		<result property="source" column="source" />
+		<result property="type" column="type" />
+		<result property="belongDepartId" column="belong_depart_id" />
+		<result property="loadNo" column="load_no" />
+		<result property="orderId" column="order_id" />
+		<result property="quotedId" column="quoted_id" />
+		<result property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="loadInfoId" column="load_info_id" />
+		<result property="needArriveTime" column="need_arrive_time" />
+		<result property="freightPrice" column="freight_price" />
+		<result property="isPredict" column="is_predict" />
+		<result property="prePay" column="pre_pay" />
+		<result property="oilPay" column="oil_pay" />
+		<result property="oilCardNo" column="oil_card_no" />
+		<result property="paymentType" column="payment_type" />
+		<result property="paymentName" column="payment_name" />
+		<result property="supplyId" column="supply_id" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="orderLoadInfoResultMap">
+		<result property="orderId" column="order_id"/>
+		<result property="orderNo" column="order_no"/>
+		<result property="plateNumber" column="plate_number"/>
+		<result property="realName" column="real_name"/>
+		<result property="telphone" column="telphone"/>
+		<result property="startCodeP" column="start_code_p"/>
+		<result property="startCodeC" column="start_code_c"/>
+		<result property="endCodeP" column="end_code_p"/>
+		<result property="endCodeC" column="end_code_c"/>
+	</resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="orderLoadInfoResultMap"></resultMap>
+	
+	<!-- 获取发车列表  -->
+	<select id="pageTripList" parameterType="map" resultMap="pageResultMap">
+		SELECT
+			zoli.load_id,
+			zoli.load_no,
+			zrvi.plate_number,
+			zrdi.real_name,
+			zrdi.telphone,
+			line.start_code_p,
+			line.start_code_c,
+			line.end_code_p,
+			line.end_code_c,
+			zoli.need_arrive_time,
+			zoli.status
+		FROM
+			zh_order_load_info zoli
+		LEFT JOIN (
+			zh_order_detail_info zodi
+			LEFT JOIN zh_order_line_info line ON zodi.info_id = line.info_id
+		) ON zoli.order_id = zodi.order_id
+		LEFT JOIN (
+			SELECT
+				*
+			FROM
+				zh_real_vehicle_info
+			WHERE
+				is_deleted = #{isDeleted}
+		) zrvi ON zoli.vehicle_info_id = zrvi.vehicle_info_id
+		LEFT JOIN (
+			zh_load_driver_info zldi
+			LEFT JOIN (
+				SELECT
+					*
+				FROM
+					zh_real_driver_info
+				WHERE
+					is_deleted = #{isDeleted}
+			) zrdi ON zldi.driver_info_id = zrdi.driver_info_id
+		) ON zoli.load_id = zldi.load_id	
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			zoli. status IN ${status}
+			<if test="keyWord!=null">
+				and (zoli.load_no=#{keyWord} or zrvi.plate_number=#{keyWord} or zrdi.real_name=#{keyWord} or zrdi.telphone =#{keyWord})
+			</if>
+		</trim>
+		order by zoli.created_time desc
+
+	</select>
+</mapper> 

@@ -1,0 +1,25 @@
+package com.gzzhwl.core.data.extdao;
+
+
+import java.util.List;
+import java.util.Map;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ *
+ */
+public interface DriverContractInfoExtDao {    
+    public final static String PREFIX = DriverContractInfoExtDao.class.getName();
+
+    public <E, K, V> Page<E> pageContractList(Map<K, V> params, int current, int pagesize);
+    
+    public <E, K, V> Page<E> pagePayContractList(Map<String, Object> params, int current, int pagesize);
+
+    public <K, V> Map<K, V>  payLoadDetail(String contractId);
+    
+    public <T, K, V> List<T>  getPayStatementList(Map<String, Object> params);
+
+}
+
+

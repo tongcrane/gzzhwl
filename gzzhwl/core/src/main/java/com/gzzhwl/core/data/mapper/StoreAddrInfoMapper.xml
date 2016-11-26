@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.StoreAddrInfoDao">
+
+	<resultMap id="storeAddrInfoResultMap" type="StoreAddrInfo">
+		<id property="addrId" column="addr_id" />
+		<result property="addrName" column="addr_name" />
+		<result property="provinceCode" column="province_code" />
+		<result property="cityCode" column="city_code" />
+		<result property="districtCode" column="district_code" />
+		<result property="address" column="address" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+
+	<select id="get" parameterType="map" resultMap="storeAddrInfoResultMap">
+	   select 
+	    addr_id,
+	    addr_name,
+	    province_code,
+	    city_code,
+	    district_code,
+	    address,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_store_addr_info
+	   where 
+	    addr_id=#{addrId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="storeAddrInfoResultMap">
+	   SELECT
+			zsai.addr_id,
+			zsai.addr_name,
+			zsai.province_code,
+			zsai.city_code,
+			zsai.district_code,
+			zsai.address,
+			zsai. STATUS,
+			zsai.created_by,
+			zsai.created_time,
+			zsai.updated_by,
+			zsai.updated_time,
+			zsai.is_deleted
+		FROM
+			zh_store_addr_info zsai
+	   <trim prefix="WHERE" prefixOverrides="AND | OR ">
+	     <if test="departId != null">
+	        and EXISTS (
+				SELECT
+					1
+				FROM
+					zh_store_depart_info zsdi
+				WHERE
+					zsai.addr_id = zsdi.addr_id
+				AND zsdi.depart_id = #{departId}
+			)
+	     </if>
+	     <if test="addrName != null">
+	        and zsai.addr_name=#{addrName}
+	     </if>
+	     <if test="status != null">
+	        and zsai.status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and zsai.is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+</mapper> 

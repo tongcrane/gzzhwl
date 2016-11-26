@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.SmsCaptchaDao">
+
+	<resultMap id="smsCaptchaResultMap" type="SmsCaptcha">
+		<id property="captchaId" column="captcha_id" />
+		<result property="accountId" column="account_id" />
+		<result property="telphone" column="telphone" />
+		<result property="captcha" column="captcha" />
+		<result property="type" column="type" />
+		<result property="status" column="status" />
+		<result property="createdTime" column="created_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="smsCaptchaResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="smsCaptchaResultMap">
+		<result property="timeAgo" column="TIME_AGO"/>
+	</resultMap>
+
+	<insert id="insert" parameterType="SmsCaptcha">
+	   insert into zh_sms_captcha (
+	     captcha_id,
+	     account_id,
+	     telphone,
+	     captcha,
+	     type,
+	     status,
+	     created_time,
+	     is_deleted
+	   )values (
+	     #{captchaId},
+	     #{accountId},
+	     #{telphone},
+	     #{captcha},
+	     #{type},
+	     #{status},
+	     now(),
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="SmsCaptcha">
+	   update zh_sms_captcha set
+	     captcha_id=#{captchaId},
+	     account_id=#{accountId},
+	     telphone=#{telphone},
+	     captcha=#{captcha},
+	     type=#{type},
+	     status=#{status},
+	     created_time=#{createdTime},
+	     is_deleted=#{isDeleted}
+	   where 
+	    captcha_id=#{captchaId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="SmsCaptcha">
+	   update zh_sms_captcha
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="captchaId != null">
+		       captcha_id=#{captchaId},
+		     </if>
+		     <if test="accountId != null">
+		       account_id=#{accountId},
+		     </if>
+		     <if test="telphone != null">
+		       telphone=#{telphone},
+		     </if>
+		     <if test="captcha != null">
+		       captcha=#{captcha},
+		     </if>
+		     <if test="type != null">
+		       type=#{type},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    captcha_id=#{captchaId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_sms_captcha 
+	   where 
+	    captcha_id=#{captchaId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="smsCaptchaResultMap">
+	   select 
+	    captcha_id,
+	    account_id,
+	    telphone,
+	    captcha,
+	    type,
+	    status,
+	    created_time,
+	    is_deleted
+	   from zh_sms_captcha
+	   where 
+	    captcha_id=#{captchaId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    captcha_id,
+	    account_id,
+	    telphone,
+	    captcha,
+	    type,
+	    status,
+	    created_time,
+	    is_deleted
+	   from zh_sms_captcha
+	   where 
+	    captcha_id=#{captchaId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     captcha_id,
+	     account_id,
+	     telphone,
+	     captcha,
+	     type,
+	     status,
+	     created_time,
+	     is_deleted,
+	     TIMESTAMPDIFF(MINUTE, CREATED_TIME, now()) AS TIME_AGO
+	   from zh_sms_captcha
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="captchaId != null">
+	        captcha_id=#{captchaId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="captcha != null">
+	        and captcha=#{captcha}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     captcha_id,
+	     account_id,
+	     telphone,
+	     captcha,
+	     type,
+	     status,
+	     created_time,
+	     is_deleted
+	   from zh_sms_captcha
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="captchaId != null">
+	        captcha_id=#{captchaId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="captcha != null">
+	        and captcha=#{captcha}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="findCountSameDay" parameterType="map" resultMap="findResultMap">
+	   select 
+	     CAPTCHA_ID,
+	     ACCOUNT_ID,
+	     TELPHONE,
+	     CAPTCHA,
+	     TYPE,
+	     STATUS,
+	     CREATED_TIME,
+	     IS_DELETED
+	   from zh_sms_captcha
+	   where 
+	   	substring(created_time,1,10)=substring(NOW(),1,10)
+	     <if test="captchaId != null">
+	        and CAPTCHA_ID=#{captchaId}
+	     </if>
+	     <if test="accountId != null">
+	        and ACCOUNT_ID=#{accountId}
+	     </if>
+	     <if test="telphone != null">
+	        and TELPHONE=#{telphone}
+	     </if>
+	     <if test="captcha != null">
+	        and CAPTCHA=#{captcha}
+	     </if>
+	     <if test="type != null">
+	        and TYPE=#{type}
+	     </if>
+	     <if test="status != null">
+	        and STATUS=#{status}
+	     </if>
+	     <if test="createdTime != null">
+	        and CREATED_TIME=#{createdTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and IS_DELETED=#{isDeleted}
+	     </if>
+	</select>
+	
+	<select id="findOneByTel" parameterType="map" resultMap="findResultMap">
+	   select 
+	    CAPTCHA_ID,
+	    ACCOUNT_ID,
+	    TELPHONE,
+	    CAPTCHA,
+	    TYPE,
+	    STATUS,
+	    CREATED_TIME,
+	    IS_DELETED,
+	    TIMESTAMPDIFF(SECOND, CREATED_TIME, now()) AS TIME_AGO
+	   from zh_sms_captcha
+	   where 
+	   		TELPHONE=#{telphone}
+	     <if test="type != null">
+	        and TYPE=#{type}
+	     </if>
+	     order by CREATED_TIME DESC LIMIT 1
+	</select>
+	
+	<update id="deleteExpiredCaptcha" parameterType="map">
+		UPDATE zh_sms_captcha SET 
+		STATUS = #{overdue}
+		WHERE TELPHONE = #{telphone}
+		AND STATUS = #{status}
+		AND TYPE = #{type}
+		AND IS_DELETED = #{isDeleted}
+	</update>
+</mapper> 

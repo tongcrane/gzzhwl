@@ -1,0 +1,158 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_reset_password_log表
+ * @author mew
+ *
+ */
+public class ResetPasswordLog implements Serializable {
+	@Length(max = 36, message = "ticketId超过长度限制")
+	private java.lang.String ticketId; // 票据标识
+	@Length(max = 36, message = "staffId超过长度限制")
+	private java.lang.String staffId; // 员工标识
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 36, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 获取时间
+	@Length(max = 36, message = "expirationTime超过长度限制")
+	private java.lang.String expirationTime; // 失效时间
+	private Integer minuteDiff;//当前时间与获取时间的间隔（分钟）
+
+
+	/**
+     * 获取票据标识属性
+     *
+     * @return ticketId
+     */
+	public java.lang.String getTicketId() {
+		return ticketId;
+	}
+	
+	/**
+	 * 设置票据标识属性
+	 *
+	 * @param ticketId
+	 */
+	public void setTicketId(java.lang.String ticketId) {
+		this.ticketId = ticketId;
+	}
+	
+	/**
+     * 获取员工标识属性
+     *
+     * @return staffId
+     */
+	public java.lang.String getStaffId() {
+		return staffId;
+	}
+	
+	/**
+	 * 设置员工标识属性
+	 *
+	 * @param staffId
+	 */
+	public void setStaffId(java.lang.String staffId) {
+		this.staffId = staffId;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取获取时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置获取时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取失效时间属性
+     *
+     * @return expirationTime
+     */
+	public java.lang.String getExpirationTime() {
+		return expirationTime;
+	}
+	
+	/**
+	 * 设置失效时间属性
+	 *
+	 * @param expirationTime
+	 */
+	public void setExpirationTime(java.lang.String expirationTime) {
+		this.expirationTime = expirationTime;
+	}
+	public Integer getMinuteDiff() {
+		return minuteDiff;
+	}
+
+	public void setMinuteDiff(Integer minuteDiff) {
+		this.minuteDiff = minuteDiff;
+	}
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("ResetPasswordLog");
+        sb.append("{ticketId=").append(ticketId);
+        sb.append(", staffId=").append(staffId);
+        sb.append(", status=").append(status);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", expirationTime=").append(expirationTime);
+		sb.append('}');
+        return sb.toString();
+    }
+}

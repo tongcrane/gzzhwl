@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.LineInfoDao">
+
+	<resultMap id="lineInfoResultMap" type="LineInfo">
+		<id property="lineInfoId" column="line_info_id" />
+		<result property="accountId" column="account_id" />
+		<result property="driverInfoId" column="driver_info_id" />
+		<result property="departureCode" column="departure_code" />
+		<result property="destinationCode" column="destination_code" />
+		<result property="source" column="source" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="lineInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="lineInfoResultMap">
+		<result property="departureCodeCn" column="departure_code_cn" />
+		<result property="destinationCodeCn" column="destination_code_cn" />
+	</resultMap>
+
+	<insert id="insert" parameterType="LineInfo">
+	   insert into zh_line_info (
+	     line_info_id,
+	     account_id,
+	     driver_info_id,
+	     departure_code,
+	     destination_code,
+	     source,
+	     created_by,
+	     created_time,
+	     updated_time,
+	     status,
+	     is_deleted
+	   )values (
+	     #{lineInfoId},
+	     #{accountId},
+	     #{driverInfoId},
+	     #{departureCode},
+	     #{destinationCode},
+	     #{source},
+	     #{createdBy},
+	     now(),
+	     now(),
+	     #{status},
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="LineInfo">
+	   update zh_line_info set
+	     line_info_id=#{lineInfoId},
+	     account_id=#{accountId},
+	     driver_info_id=#{driverInfoId},
+	     departure_code=#{departureCode},
+	     destination_code=#{destinationCode},
+	     source=#{source},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     updated_time=#{updatedTime},
+	     status=#{status},
+	     is_deleted=#{isDeleted}
+	   where 
+	    line_info_id=#{lineInfoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="LineInfo">
+	   update zh_line_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="lineInfoId != null">
+		       line_info_id=#{lineInfoId},
+		     </if>
+		     <if test="accountId != null">
+		       account_id=#{accountId},
+		     </if>
+		     <if test="driverInfoId != null">
+		       driver_info_id=#{driverInfoId},
+		     </if>
+		     <if test="departureCode != null">
+		       departure_code=#{departureCode},
+		     </if>
+		     <if test="destinationCode != null">
+		       destination_code=#{destinationCode},
+		     </if>
+		     <if test="source != null">
+		       source=#{source},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="updatedTime != null">
+		       updated_time=now(),
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    line_info_id=#{lineInfoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_line_info 
+	   where 
+	    line_info_id=#{lineInfoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="lineInfoResultMap">
+	   select 
+	    line_info_id,
+	    account_id,
+	    driver_info_id,
+	    departure_code,
+	    destination_code,
+	    source,
+	    created_by,
+	    created_time,
+	    updated_time,
+	    status,
+	    is_deleted
+	   from zh_line_info
+	   where 
+	    line_info_id=#{lineInfoId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    line_info_id,
+	    account_id,
+	    driver_info_id,
+	    departure_code,
+	    destination_code,
+	    source,
+	    created_by,
+	    created_time,
+	    updated_time,
+	    status,
+	    is_deleted
+	   from zh_line_info
+	   where 
+	    line_info_id=#{lineInfoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     zli.line_info_id,
+	     zli.account_id,
+	     zli.driver_info_id,
+	     zli.departure_code,
+	     zli.destination_code,
+	     zli.source,
+	     zli.created_by,
+	     zli.created_time,
+	     zli.updated_time,
+	     zli.status,
+	     zli.is_deleted,
+		 zris.region_name as departure_code_cn,
+		 zrie.region_name as destination_code_cn
+	   from zh_line_info zli
+	   inner join zh_region_info zris
+		on zris.region_code = zli.departure_code
+		inner join zh_region_info zrie
+		on zrie.region_code = zli.destination_code
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="lineInfoId != null">
+	        line_info_id=#{lineInfoId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="driverInfoId != null">
+	        and driver_info_id=#{driverInfoId}
+	     </if>
+	     <if test="departureCode != null">
+	        and departure_code=#{departureCode}
+	     </if>
+	     <if test="destinationCode != null">
+	        and destination_code=#{destinationCode}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     line_info_id,
+	     account_id,
+	     driver_info_id,
+	     departure_code,
+	     destination_code,
+	     source,
+	     created_by,
+	     created_time,
+	     updated_time,
+	     status,
+	     is_deleted
+	   from zh_line_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="lineInfoId != null">
+	        line_info_id=#{lineInfoId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="driverInfoId != null">
+	        and driver_info_id=#{driverInfoId}
+	     </if>
+	     <if test="departureCode != null">
+	        and departure_code=#{departureCode}
+	     </if>
+	     <if test="destinationCode != null">
+	        and destination_code=#{destinationCode}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<!-- 获取账号下热门线路 -->
+	<select id="getHotLineList" parameterType="map" resultMap="findResultMap">
+	  select  distinct t1.departure_code, (select  line_info_id from zh_line_info where departure_code =t1.departure_code and account_id = #{accountId} and is_deleted = '00' order by t1.updated_time desc    limit 0,1 ) as  line_info_id  from  zh_line_info t1,zh_order_source_info t2
+	  where
+	  t1.departure_code = t2.start_code_p
+	  and
+	  t1.is_deleted = '00'
+	  and
+	  t1.account_Id=#{accountId}
+	  <if test="sourceStatusArray!=null">
+			and t2.status in
+			<foreach collection="sourceStatusArray" index="index" item="sourceStatus" open="(" separator="," close=")"> 
+		 		#{sourceStatus}
+		 	</foreach>
+	  </if>
+	  order by t1.updated_time desc
+	  limit 0,#{lineCount}
+	</select>
+	
+</mapper> 

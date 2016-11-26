@@ -1,0 +1,108 @@
+package com.gzzhwl.admin.load.controller;
+
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.admin.load.service.TripManageService;
+import com.gzzhwl.admin.load.vo.LoadFeedbackListVo;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.security.utils.SecurityUtils;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+@RestController
+@RequestMapping("/admin/trip")
+public class TripManageController {
+	@Autowired
+	private TripManageService service;
+	
+	@RequestMapping(value="/pageTripList", method= RequestMethod.GET)
+	public ResponseModel pageTripList(@RequestParam(required = false) String keyWord, @Pagination PageParameter page) {
+		Page<Map<String,Object>> data = service.tripPage(keyWord, page.getPageIndex(), page.getPageSize());
+		return new ResponseModel(data);
+		
+	}
+	
+//	@Autowired
+//	private TripManageService tripManageService;
+	
+	@Autowired
+	private LoadFeedbackService loadFeedbackService;
+	
+	/**
+	 * 保存异常反馈
+	 * @param loadFeedbackListVo
+	 * @return
+	 */
+	@RequestMapping(value = "/saveLoadFeedback", method = RequestMethod.POST, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel saveLoadFeedback(@RequestBody LoadFeedbackListVo loadFeedbackListVo) {
+		
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		
+		loadFeedbackService.saveLoadFeedback(loadFeedbackListVo, staffId);
+		
+		return new ResponseModel(null);
+	}
+	
+	/**
+	 * 删除异常反馈
+	 * @param loadFeedbackListVo
+	 * @return
+	 */
+	@RequestMapping(value = "/removeLoadFeedback", method = RequestMethod.GET)
+	public ResponseModel removeLoadFeedback(@RequestParam(required=true)String feedbackId) {
+		
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		
+		loadFeedbackService.removeLoadFeedback(feedbackId, staffId);
+		
+		return new ResponseModel(null);
+	}
+	
+	
+	/**
+	 * 获取异常反馈列表
+	 * @param loadId
+	 * @param linkedStatus
+	 * @param type
+	 * @return
+	 */
+	@RequestMapping(value = "/getLoadFeedbackList", method = RequestMethod.GET)
+	public ResponseModel getLoadFeedbackList(@RequestParam(required=true)String loadId,String linkedStatus,String type) {
+		
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		
+		LoadFeedBackType loadFeedBackType = null;
+		if(type!=null){
+			loadFeedBackType = LoadFeedBackType.getLoadFeedBackType(type);
+		}
+		
+		LoadBillType loadBillType = null;
+		if(linkedStatus!=null){
+			loadBillType = LoadBillType.getLoadBillType(linkedStatus);
+		}
+		
+		
+		List<Map<String,Object>> list = loadFeedbackService.getLoadFeedbackList(loadId, loadFeedBackType, loadBillType);
+		
+		return new ResponseModel(list);
+	}
+	
+	
+	
+	
+}

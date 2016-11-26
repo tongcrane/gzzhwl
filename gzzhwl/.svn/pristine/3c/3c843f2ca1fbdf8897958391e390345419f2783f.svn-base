@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.DriverContractInfoExtDao">
+
+	<resultMap id="driverContractInfoResultMap" type="DriverContractInfo">
+		<id property="contractId" column="contract_id" />
+		<result property="loadId" column="load_id" />
+	</resultMap>
+	<resultMap id="pageResultMap" type="java.util.HashMap"
+		extends="driverContractInfoResultMap">
+		<result property="loadNo" column="load_no" />
+		<result property="plateNumber" column="plate_number" />
+		<result property="startCodeP" column="start_code_p" />
+		<result property="startCodeC" column="start_code_c" />
+		<result property="endCodeP" column="end_code_p" />
+		<result property="endCodeC" column="end_code_c" />
+		<result property="freightPrice" column="freight_price" />
+		<result property="orderNo" column="order_no" />
+		<result property="status" column="status" />
+		<result property="createdTime" column="created_time" />
+		<result property="oilPay" column="oil_pay" />
+		<result property="oilCardNo" column="oil_card_no" />
+		<result property="otherPrice" column="other_price" />
+	</resultMap>
+
+	<resultMap id="findResultMap" type="java.util.HashMap"
+		extends="driverContractInfoResultMap"></resultMap>
+
+	<select id="getContractList" parameterType="map" resultMap="pageResultMap">
+		SELECT DISTINCT
+		zdci.contract_id,
+		zoli.load_no,
+		zrvi.plate_number,
+		line.start_code_p,
+		line.start_code_c,
+		line.end_code_p,
+		line.end_code_c,
+		zoli.freight_price,
+		zodi.order_no,
+		zoli.status,
+		zoli.created_time
+		FROM
+		zh_driver_contract_info zdci
+		INNER JOIN (
+		zh_order_load_info zoli
+		LEFT JOIN zh_real_vehicle_info zrvi ON zoli.vehicle_info_id =
+		zrvi.vehicle_info_id
+		INNER JOIN (
+		zh_order_detail_info zodi
+		LEFT JOIN zh_order_line_info line ON zodi.info_id = line.info_id
+		) ON zoli.order_id = zodi.order_id and zodi.is_deleted = #{isDeleted}
+		)
+		ON zdci.contract_id = zoli.load_id
+		AND zoli.type = #{contractType}
+		INNER JOIN zh_order_load_info load_zoli ON zdci.load_id =
+		load_zoli.load_id
+		AND load_zoli.type = #{loadType}
+		LEFT JOIN (
+		zh_load_driver_info zldi
+		LEFT JOIN zh_real_driver_info zrdi ON zldi.driver_info_id =
+		zrdi.driver_info_id and zrdi.is_deleted = #{isDeleted}
+		)ON
+		zdci.contract_id = zldi.load_id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="keyWord != null">
+				(zoli.load_no = #{keyWord} or load_zoli.load_no = #{keyWord} or zrvi.plate_number
+				= #{keyWord})
+			</if>
+			<if test="status != null">
+				and zoli.status=#{status}
+			</if>
+			<if test="supplyId != null">
+				and zoli.supply_id=#{supplyId}
+			</if>
+			<if test="startCodeP != null">
+				and line.start_code_p=#{startCodeP}
+			</if>
+			<if test="startCodeC != null">
+				and line.start_code_c=#{startCodeC}
+			</if>
+			<if test="endCodeP != null">
+				and line.end_code_p=#{endCodeP}
+			</if>
+			<if test="endCodeC != null">
+				and line.end_code_c=#{endCodeC}
+			</if>
+			<if test="realName != null">
+				and zrdi.real_name=#{realName}
+			</if>
+			<if test="telphone != null">
+				and zrdi.telphone=#{telphone}
+			</if>
+			<if test="loadStartTime != null">
+				and load_zoli.created_time >= #{loadStartTime}
+			</if>
+			<if test="loadEndTime != null">
+	        <![CDATA[ and load_zoli.created_time <= #{loadEndTime} ]]>
+			</if>
+			<if test="conStartTime != null">
+				and zoli.created_time >= #{conStartTime}
+			</if>
+			<if test="conEndTime != null">
+	        <![CDATA[ and zoli.created_time <= #{conEndTime} ]]>
+			</if>
+			<if test="contractStatus != null">
+				and zoli.status = #{contractStatus}
+			</if>
+			<if test="sort != null and  sort == 00">
+				order by zoli.created_time asc
+			</if>
+			<if test="sort != null and sort == 01">
+				order by zoli.created_time desc
+			</if>
+		</trim>
+	</select>
+
+	<select id="getPayContractList" parameterType="map" resultMap="pageResultMap">
+		SELECT
+		load_zoli.load_id,
+		zdci.contract_id,
+		zoli.load_no,
+		zrvi.plate_number,
+		line.start_code_p,
+		line.start_code_c,
+		line.end_code_p,
+		line.end_code_c,
+		zoli.freight_price,
+		zoli.oil_pay,
+		zoli.oil_card_no,
+		zlfl.other_price,
+		zoli.status,
+		zoli.created_time
+		FROM
+		zh_driver_contract_info zdci
+		INNER JOIN (
+		zh_order_load_info zoli
+		LEFT JOIN zh_real_vehicle_info zrvi ON zoli.vehicle_info_id =
+		zrvi.vehicle_info_id
+		INNER JOIN (
+		zh_order_detail_info zodi
+		LEFT JOIN zh_order_line_info line ON zodi.info_id = line.info_id
+		) ON zoli.order_id = zodi.order_id and zodi.is_deleted = '00'
+		) ON
+		zdci.contract_id = zoli.load_id
+		AND zoli.type = #{contractType}
+		INNER JOIN
+		zh_order_load_info load_zoli ON zdci.load_id = load_zoli.load_id
+		AND
+		load_zoli.type = #{loadType}
+		LEFT JOIN (
+		zh_load_driver_info zldi
+		LEFT JOIN zh_real_driver_info zrdi ON zldi.driver_info_id =
+		zrdi.driver_info_id
+		)ON zdci.contract_id = zldi.load_id
+		LEFT JOIN(
+		select sum(item_price) AS other_price , load_id from zh_load_feedback_log
+		where
+		type=#{feedbackType} and is_exception = #{isException} and is_deleted = #{isDeleted}
+		group by load_id
+		) zlfl on zlfl.load_id = zdci.load_id
+		LEFT JOIN 
+        ( 
+        	SELECT 
+			load_id,
+			created_time
+            FROM 
+            zh_load_exception
+        ) zlen ON zdci.load_id = zlen.load_id
+		LEFT JOIN
+		(
+			select 
+			updated_time,
+			load_id
+			from
+			zh_load_printreceipt 
+			where
+			<if test="checkStatus!=null">
+				status =#{checkStatus}
+		 	</if>
+		) zlpt on  zdci.load_id = zlpt.load_id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="keyWord != null">
+				(zoli.load_no = #{keyWord} or load_zoli.load_no = #{keyWord} or zrvi.plate_number
+				= #{keyWord})
+			</if>
+			<if test="oilCardNo != null">
+				and zoli.oil_card_no=#{oilCardNo}
+			</if>
+			<if test="supplyId != null">
+				and zoli.supply_id=#{supplyId}
+			</if>
+			<if test="isPredict != null">
+				and zoli.is_predict=#{isPredict}
+			</if>
+			<if test="startCodeP != null">
+				and line.start_code_p=#{startCodeP}
+			</if>
+			<if test="startCodeC != null">
+				and line.start_code_c=#{startCodeC}
+			</if>
+			<if test="endCodeP != null">
+				and line.end_code_p=#{endCodeP}
+			</if>
+			<if test="endCodeC != null">
+				and line.end_code_c=#{endCodeC}
+			</if>
+			<if test="realName != null">
+				and zrdi.real_name=#{realName}
+			</if>
+			<if test="telphone != null">
+				and zrdi.telphone=#{telphone}
+			</if>
+			<if test="conStartTime != null">
+			<![CDATA[ and zoli.created_time >= #{conStartTime} ]]>
+			</if>
+			<if test="conEndTime != null">
+	        <![CDATA[ and zoli.created_time <= #{conEndTime} ]]>
+			</if>
+			<if test="printStartTime!=null">
+				<![CDATA[ and (zlpt.updated_time >= #{printStartTime} or zlen.created_time>= #{printStartTime} )]]>
+			</if>
+			<if test="printEndTime!=null">
+				<![CDATA[ and (zlpt.updated_time <= #{printEndTime} or  zlen.created_time<= #{printEndTime} )]]>
+			</if>
+			<if test="status != null">
+				and zoli.status = #{status}
+			</if>
+			<if test="contractStatusArray != null">
+				and zoli.status in 
+				<foreach collection="contractStatusArray" index="index" item="contractStatus" open="(" separator="," close=")">  
+        		#{contractStatus}
+   				</foreach>
+			</if>
+			<if test="sort != null and  sort == 00">
+				order by zoli.created_time asc
+			</if>
+			<if test="sort != null and sort == 01">
+				order by zoli.created_time desc
+			</if>
+		</trim>
+	</select>
+
+</mapper> 

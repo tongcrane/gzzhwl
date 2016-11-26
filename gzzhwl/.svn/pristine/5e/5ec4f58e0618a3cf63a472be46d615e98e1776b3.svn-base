@@ -1,0 +1,172 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_order_line_info表
+ * @author mew
+ *
+ */
+public class OrderLineInfo implements Serializable {
+	@Length(max = 36, message = "infoId超过长度限制")
+	private java.lang.String infoId; // 订单标识
+	@Length(max = 10, message = "startCodeP超过长度限制")
+	private java.lang.String startCodeP; // 起始区域(省)
+	@Length(max = 10, message = "startCodeC超过长度限制")
+	private java.lang.String startCodeC; // 起始区域(市)
+	@Length(max = 10, message = "transferCodeP超过长度限制")
+	private java.lang.String transferCodeP; // 中转区域(省)
+	@Length(max = 10, message = "transferCodeC超过长度限制")
+	private java.lang.String transferCodeC; // 中转区域(市)
+	@Length(max = 10, message = "endCodeP超过长度限制")
+	private java.lang.String endCodeP; // 终点区域(省)
+	@Length(max = 10, message = "endCodeC超过长度限制")
+	private java.lang.String endCodeC; // 终点区域(市)
+
+
+	/**
+     * 获取订单标识属性
+     *
+     * @return infoId
+     */
+	public java.lang.String getInfoId() {
+		return infoId;
+	}
+	
+	/**
+	 * 设置订单标识属性
+	 *
+	 * @param infoId
+	 */
+	public void setInfoId(java.lang.String infoId) {
+		this.infoId = infoId;
+	}
+	
+	/**
+     * 获取起始区域(省)属性
+     *
+     * @return startCodeP
+     */
+	public java.lang.String getStartCodeP() {
+		return startCodeP;
+	}
+	
+	/**
+	 * 设置起始区域(省)属性
+	 *
+	 * @param startCodeP
+	 */
+	public void setStartCodeP(java.lang.String startCodeP) {
+		this.startCodeP = startCodeP;
+	}
+	
+	/**
+     * 获取起始区域(市)属性
+     *
+     * @return startCodeC
+     */
+	public java.lang.String getStartCodeC() {
+		return startCodeC;
+	}
+	
+	/**
+	 * 设置起始区域(市)属性
+	 *
+	 * @param startCodeC
+	 */
+	public void setStartCodeC(java.lang.String startCodeC) {
+		this.startCodeC = startCodeC;
+	}
+	
+	/**
+     * 获取中转区域(省)属性
+     *
+     * @return transferCodeP
+     */
+	public java.lang.String getTransferCodeP() {
+		return transferCodeP;
+	}
+	
+	/**
+	 * 设置中转区域(省)属性
+	 *
+	 * @param transferCodeP
+	 */
+	public void setTransferCodeP(java.lang.String transferCodeP) {
+		this.transferCodeP = transferCodeP;
+	}
+	
+	/**
+     * 获取中转区域(市)属性
+     *
+     * @return transferCodeC
+     */
+	public java.lang.String getTransferCodeC() {
+		return transferCodeC;
+	}
+	
+	/**
+	 * 设置中转区域(市)属性
+	 *
+	 * @param transferCodeC
+	 */
+	public void setTransferCodeC(java.lang.String transferCodeC) {
+		this.transferCodeC = transferCodeC;
+	}
+	
+	/**
+     * 获取终点区域(省)属性
+     *
+     * @return endCodeP
+     */
+	public java.lang.String getEndCodeP() {
+		return endCodeP;
+	}
+	
+	/**
+	 * 设置终点区域(省)属性
+	 *
+	 * @param endCodeP
+	 */
+	public void setEndCodeP(java.lang.String endCodeP) {
+		this.endCodeP = endCodeP;
+	}
+	
+	/**
+     * 获取终点区域(市)属性
+     *
+     * @return endCodeC
+     */
+	public java.lang.String getEndCodeC() {
+		return endCodeC;
+	}
+	
+	/**
+	 * 设置终点区域(市)属性
+	 *
+	 * @param endCodeC
+	 */
+	public void setEndCodeC(java.lang.String endCodeC) {
+		this.endCodeC = endCodeC;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("OrderLineInfo");
+        sb.append("{infoId=").append(infoId);
+        sb.append(", startCodeP=").append(startCodeP);
+        sb.append(", startCodeC=").append(startCodeC);
+        sb.append(", transferCodeP=").append(transferCodeP);
+        sb.append(", transferCodeC=").append(transferCodeC);
+        sb.append(", endCodeP=").append(endCodeP);
+        sb.append(", endCodeC=").append(endCodeC);
+		sb.append('}');
+        return sb.toString();
+    }
+}

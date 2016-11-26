@@ -1,0 +1,424 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_supply_info表
+ * @author mew
+ *
+ */
+public class SupplyInfo implements Serializable {
+	@Length(max = 36, message = "supplyId超过长度限制")
+	private java.lang.String supplyId; // 供应商标识
+	@Length(max = 50, message = "supplyNo超过长度限制")
+	private java.lang.String supplyNo; // 供应商编号
+	@Length(max = 2, message = "type超过长度限制")
+	private java.lang.String type; // 供应商类型
+	@Length(max = 50, message = "fullName超过长度限制")
+	private java.lang.String fullName; // 供应商全名
+	@Length(max = 18, message = "idno超过长度限制")
+	private java.lang.String idno; // 身份证号
+	@Length(max = 20, message = "taxRegCode超过长度限制")
+	private java.lang.String taxRegCode; // 税务登记证代码
+	@Length(max = 50, message = "contactName超过长度限制")
+	private java.lang.String contactName; // 联系人
+	@Length(max = 20, message = "mobile超过长度限制")
+	private java.lang.String mobile; // 联系手机
+	@Length(max = 10, message = "areaCode超过长度限制")
+	private java.lang.String areaCode; // 所在区域
+	@Length(max = 200, message = "address超过长度限制")
+	private java.lang.String address; // 联系地址
+	@Length(max = 10, message = "paymentType超过长度限制")
+	private java.lang.String paymentType; // 结算方式
+	@Length(max = 400, message = "remark超过长度限制")
+	private java.lang.String remark; // 备注
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 36, message = "belongDepartId超过长度限制")
+	private java.lang.String belongDepartId; // 所属部门
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取供应商标识属性
+     *
+     * @return supplyId
+     */
+	public java.lang.String getSupplyId() {
+		return supplyId;
+	}
+	
+	/**
+	 * 设置供应商标识属性
+	 *
+	 * @param supplyId
+	 */
+	public void setSupplyId(java.lang.String supplyId) {
+		this.supplyId = supplyId;
+	}
+	
+	/**
+     * 获取供应商编号属性
+     *
+     * @return supplyNo
+     */
+	public java.lang.String getSupplyNo() {
+		return supplyNo;
+	}
+	
+	/**
+	 * 设置供应商编号属性
+	 *
+	 * @param supplyNo
+	 */
+	public void setSupplyNo(java.lang.String supplyNo) {
+		this.supplyNo = supplyNo;
+	}
+	
+	/**
+     * 获取供应商类型属性
+     *
+     * @return type
+     */
+	public java.lang.String getType() {
+		return type;
+	}
+	
+	/**
+	 * 设置供应商类型属性
+	 *
+	 * @param type
+	 */
+	public void setType(java.lang.String type) {
+		this.type = type;
+	}
+	
+	/**
+     * 获取供应商全名属性
+     *
+     * @return fullName
+     */
+	public java.lang.String getFullName() {
+		return fullName;
+	}
+	
+	/**
+	 * 设置供应商全名属性
+	 *
+	 * @param fullName
+	 */
+	public void setFullName(java.lang.String fullName) {
+		this.fullName = fullName;
+	}
+	
+	/**
+     * 获取身份证号属性
+     *
+     * @return idno
+     */
+	public java.lang.String getIdno() {
+		return idno;
+	}
+	
+	/**
+	 * 设置身份证号属性
+	 *
+	 * @param idno
+	 */
+	public void setIdno(java.lang.String idno) {
+		this.idno = idno;
+	}
+	
+	/**
+     * 获取税务登记证代码属性
+     *
+     * @return taxRegCode
+     */
+	public java.lang.String getTaxRegCode() {
+		return taxRegCode;
+	}
+	
+	/**
+	 * 设置税务登记证代码属性
+	 *
+	 * @param taxRegCode
+	 */
+	public void setTaxRegCode(java.lang.String taxRegCode) {
+		this.taxRegCode = taxRegCode;
+	}
+	
+	/**
+     * 获取联系人属性
+     *
+     * @return contactName
+     */
+	public java.lang.String getContactName() {
+		return contactName;
+	}
+	
+	/**
+	 * 设置联系人属性
+	 *
+	 * @param contactName
+	 */
+	public void setContactName(java.lang.String contactName) {
+		this.contactName = contactName;
+	}
+	
+	/**
+     * 获取联系手机属性
+     *
+     * @return mobile
+     */
+	public java.lang.String getMobile() {
+		return mobile;
+	}
+	
+	/**
+	 * 设置联系手机属性
+	 *
+	 * @param mobile
+	 */
+	public void setMobile(java.lang.String mobile) {
+		this.mobile = mobile;
+	}
+	
+	/**
+     * 获取所在区域属性
+     *
+     * @return areaCode
+     */
+	public java.lang.String getAreaCode() {
+		return areaCode;
+	}
+	
+	/**
+	 * 设置所在区域属性
+	 *
+	 * @param areaCode
+	 */
+	public void setAreaCode(java.lang.String areaCode) {
+		this.areaCode = areaCode;
+	}
+	
+	/**
+     * 获取联系地址属性
+     *
+     * @return address
+     */
+	public java.lang.String getAddress() {
+		return address;
+	}
+	
+	/**
+	 * 设置联系地址属性
+	 *
+	 * @param address
+	 */
+	public void setAddress(java.lang.String address) {
+		this.address = address;
+	}
+	
+	/**
+     * 获取结算方式属性
+     *
+     * @return paymentType
+     */
+	public java.lang.String getPaymentType() {
+		return paymentType;
+	}
+	
+	/**
+	 * 设置结算方式属性
+	 *
+	 * @param paymentType
+	 */
+	public void setPaymentType(java.lang.String paymentType) {
+		this.paymentType = paymentType;
+	}
+	
+	/**
+     * 获取备注属性
+     *
+     * @return remark
+     */
+	public java.lang.String getRemark() {
+		return remark;
+	}
+	
+	/**
+	 * 设置备注属性
+	 *
+	 * @param remark
+	 */
+	public void setRemark(java.lang.String remark) {
+		this.remark = remark;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取所属部门属性
+     *
+     * @return belongDepartId
+     */
+	public java.lang.String getBelongDepartId() {
+		return belongDepartId;
+	}
+	
+	/**
+	 * 设置所属部门属性
+	 *
+	 * @param belongDepartId
+	 */
+	public void setBelongDepartId(java.lang.String belongDepartId) {
+		this.belongDepartId = belongDepartId;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改人属性
+     *
+     * @return updatedBy
+     */
+	public java.lang.String getUpdatedBy() {
+		return updatedBy;
+	}
+	
+	/**
+	 * 设置修改人属性
+	 *
+	 * @param updatedBy
+	 */
+	public void setUpdatedBy(java.lang.String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("SupplyInfo");
+        sb.append("{supplyId=").append(supplyId);
+        sb.append(", supplyNo=").append(supplyNo);
+        sb.append(", type=").append(type);
+        sb.append(", fullName=").append(fullName);
+        sb.append(", idno=").append(idno);
+        sb.append(", taxRegCode=").append(taxRegCode);
+        sb.append(", contactName=").append(contactName);
+        sb.append(", mobile=").append(mobile);
+        sb.append(", areaCode=").append(areaCode);
+        sb.append(", address=").append(address);
+        sb.append(", paymentType=").append(paymentType);
+        sb.append(", remark=").append(remark);
+        sb.append(", status=").append(status);
+        sb.append(", belongDepartId=").append(belongDepartId);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedBy=").append(updatedBy);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

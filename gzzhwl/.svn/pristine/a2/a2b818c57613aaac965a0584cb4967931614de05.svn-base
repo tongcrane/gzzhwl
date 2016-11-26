@@ -1,0 +1,5 @@
+package com.gzzhwl.admin.payables.service.impl;
+
+public class PayablesServiceImpl {
+
+}

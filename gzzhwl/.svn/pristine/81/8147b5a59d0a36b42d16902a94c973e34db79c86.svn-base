@@ -1,0 +1,115 @@
+package com.gzzhwl.admin.load.vo;
+
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.springmvc.validate.ParamEmptyValidator;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class ReceiptQueryVo {
+	
+	private String keyWord;
+	private String startCodeP;
+	private String startCodeC;
+	private String endCodeP;
+	private String endCodeC;
+	private String customerId;//客户全称ID
+	private String customerBillNo;//客户单号
+	private String driverTelphone;//司机手机
+	private String driverName;//司机姓名
+	private String elecStartTime;
+	private String elecEndTime;
+	private String printStartTime;
+	private String printEndTime;
+	private String status;
+	private String sortField;
+	private String sort;
+	private String queryType;
+	
+	private static final String QUERYTYPE_NORMAL = "0";// 快捷查询
+	private static final String QUERYTYPE_SENIOR = "1";// 高级查询
+	
+	public Map<String, Object> getParam() throws ParseException {
+		String queryType = this.getQueryType();
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.queryType);
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (QUERYTYPE_NORMAL.equals(queryType)) {
+			// 快捷搜索
+			if (StringUtils.isNoneBlank(this.getKeyWord())) {
+				params.put("keyWord", this.getKeyWord());
+			}
+		} else if (QUERYTYPE_SENIOR.equals(queryType)) {
+			// 高级搜索
+			if (StringUtils.isNotBlank(this.getStatus())) {
+				params.put("status", this.getStatus());
+			}
+			if (StringUtils.isNotBlank(this.getStartCodeP())) {
+				params.put("startCodeP", this.getStartCodeP());
+			}
+			if (StringUtils.isNotBlank(this.getStartCodeC())) {
+				params.put("startCodeC", this.getStartCodeC());
+			}
+			if (StringUtils.isNotBlank(this.getEndCodeP())) {
+				params.put("endCodeP", this.getEndCodeP());
+			}
+			if (StringUtils.isNotBlank(this.getEndCodeC())) {
+				params.put("endCodeC", this.getEndCodeC());
+			}
+			if (StringUtils.isNotBlank(this.getCustomerId())) {
+				params.put("customerId", this.getCustomerId());
+			}
+			if (StringUtils.isNotBlank(this.getCustomerBillNo())) {
+				params.put("customerBillNo", this.getCustomerBillNo());
+			}
+			if (StringUtils.isNotBlank(this.getDriverTelphone())) {
+				params.put("driverTelphone", this.getDriverTelphone());
+			}
+			if (StringUtils.isNotBlank(this.getElecStartTime())) {
+				params.put("elecStartTime", DateUtils.getStartTime(this.getElecStartTime()));
+			}
+			if (StringUtils.isNotBlank(this.getElecEndTime())) {
+				params.put("elecEndTime", DateUtils.getEndTime(this.getElecEndTime()));
+			}
+			if (StringUtils.isNotBlank(this.getPrintStartTime())) {
+				params.put("printStartTime", DateUtils.getStartTime(this.getPrintStartTime()));
+			}
+			if (StringUtils.isNotBlank(this.getPrintEndTime())) {
+				params.put("printEndTime", DateUtils.getEndTime(this.getPrintEndTime()));
+			}
+			if (StringUtils.isNoneBlank(this.getDriverName())) {
+				params.put("driverName", "%" + this.getDriverName() + "%");
+			}
+			
+			
+		} else {
+			throw new RestException(ErrorCode.ERROR_900006);
+		}
+
+		params.put("flowName", ZHFlow.DRIVER_CONTRACT_BILL.getName());
+
+		if (StringUtils.isNoneBlank(this.getSortField())) {
+			params.put("sortField", this.getSortField());
+		}
+
+		if (StringUtils.isNotBlank(this.getSort())) {
+			params.put("sort", this.getSort());
+		} 
+		if (StringUtils.isNotBlank(this.getSort())) {
+			params.put("sort", this.getSort());
+		} 
+		
+		return params;
+	}
+} 

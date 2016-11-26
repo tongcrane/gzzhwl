@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.LoadDriverInfoDao">
+
+	<resultMap id="loadDriverInfoResultMap" type="LoadDriverInfo">
+		<id property="driverInfoId" column="driver_info_id" />
+		<id property="loadId" column="load_id" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="loadDriverInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="loadDriverInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="LoadDriverInfo">
+	   insert into zh_load_driver_info (
+	     load_id,
+	     driver_info_id
+	   )values (
+	     #{loadId},
+	     #{driverInfoId}
+	   )
+	</insert>
+
+	<update id="update" parameterType="LoadDriverInfo">
+	   update zh_load_driver_info set
+	     load_id=#{loadId},
+	     driver_info_id=#{driverInfoId}
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	    and load_id=#{loadId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="LoadDriverInfo">
+	   update zh_load_driver_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="loadId != null">
+		       load_id=#{loadId},
+		     </if>
+		     <if test="driverInfoId != null">
+		       driver_info_id=#{driverInfoId}
+		     </if>
+	   </trim>
+	
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	    and load_id=#{loadId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_load_driver_info 
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	    and load_id=#{loadId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="loadDriverInfoResultMap">
+	   select 
+	    load_id,
+	    driver_info_id
+	   from zh_load_driver_info
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	    and load_id=#{loadId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    load_id,
+	    driver_info_id
+	   from zh_load_driver_info
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	    and load_id=#{loadId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     load_id,
+	     driver_info_id
+	   from zh_load_driver_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        load_id=#{loadId}
+	     </if>
+	     <if test="driverInfoId != null">
+	        and driver_info_id=#{driverInfoId}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     load_id,
+	     driver_info_id
+	   from zh_load_driver_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        load_id=#{loadId}
+	     </if>
+	     <if test="driverInfoId != null">
+	        and driver_info_id=#{driverInfoId}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

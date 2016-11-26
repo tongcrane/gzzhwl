@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 如下实现是通过线程池执行的 -->
+    <task:executor id="executor" pool-size="10"/>
+    <task:scheduler id="scheduler" pool-size="10"/>
+    <task:annotation-driven scheduler="scheduler" executor="executor" proxy-target-class="true"/>
+
+    <task:scheduled-tasks scheduler="scheduler">
+        <!--每1分钟执行 0 * * * * ? -->
+        <task:scheduled ref="captchaTask" method="clear" cron="0 * * * * ?"/>
+        <!--每1分钟执行 0 * * * * ? -->
+        <task:scheduled ref="sourceTask" method="close" cron="0 * * * * ?"/>
+        <!--每天凌晨执行 0 0 0 * * ? -->
+        <task:scheduled ref="lendTask" method="offLend" cron="0 0 0 * * ?"/>
+       	<!--每天22:00执行 0 0 22 * * ? -->
+        <task:scheduled ref="orderTask" method="autoCreate" cron="0 0 22 * * ?"/>
+    </task:scheduled-tasks>
+
+
+</beans>

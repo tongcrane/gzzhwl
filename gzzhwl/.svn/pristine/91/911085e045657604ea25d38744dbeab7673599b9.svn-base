@@ -1,0 +1,96 @@
+package com.gzzhwl.core.data.dao.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.gzzhwl.core.data.dao.OrderSourceInfoDao;
+import com.gzzhwl.core.data.model.OrderSourceInfo;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ * 
+ * @author mew
+ *
+ */
+@Repository
+public class OrderSourceInfoDaoImpl implements OrderSourceInfoDao {
+	@Autowired
+	private DaoSupport dao;
+
+	@Override
+	public OrderSourceInfo get(java.lang.String sourceId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sourceId", sourceId);
+		return dao.get(PREFIX + ".get", params);
+	}
+
+	@Override
+	public <K, V> Map<K, V> findOne(java.lang.String sourceId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sourceId", sourceId);
+		return dao.get(PREFIX + ".findOne", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> find(Map<K, V> params) {
+		return dao.find(PREFIX + ".find", params);
+	}
+
+	@Override
+	public int insert(OrderSourceInfo orderSourceInfo) {
+		return dao.insert(PREFIX + ".insert", orderSourceInfo);
+	}
+
+	@Override
+	public int update(OrderSourceInfo orderSourceInfo) {
+		return dao.update(PREFIX + ".update", orderSourceInfo);
+	}
+
+	@Override
+	public int updateSelective(OrderSourceInfo orderSourceInfo) {
+		return dao.update(PREFIX + ".updateSelective", orderSourceInfo);
+	}
+
+	@Override
+	public int delete(java.lang.String sourceId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sourceId", sourceId);
+		return dao.delete(PREFIX + ".delete", params);
+	}
+
+	@Override
+	public <E, K, V> Page<E> page(Map<K, V> params, int current, int pagesize) {
+		return dao.page(PREFIX + ".page", params, current, pagesize);
+	}
+
+	@Override
+	public <E, K, V> Page<E> pageSource(Map<K, V> params, int current, int pagesize) {
+		return dao.page(PREFIX + ".pageSource", params, current, pagesize);
+	}
+
+	@Override
+	public int hasBidBegin(Map<String, Object> params) {
+		return dao.get(PREFIX + ".hasBidBegin", params);
+	}
+
+	@Override
+	public String getSourceByOrder(Map<String, Object> params) {
+		return dao.get(PREFIX + ".getSourceByOrder", params);
+	}
+
+	@Override
+	public List<String> findSourceClose(Map<String, Object> params) {
+		return dao.find(PREFIX + ".findSourceClose", params);
+	}
+
+	@Override
+	public <E, K, V> Page<E> pageSourceHall(Map<K, V> params, int current, int pagesize) {
+		return dao.page(PREFIX + ".pageSourceHall", params, current, pagesize);
+	}
+}

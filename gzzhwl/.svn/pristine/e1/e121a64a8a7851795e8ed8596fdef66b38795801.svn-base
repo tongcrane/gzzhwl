@@ -1,0 +1,51 @@
+package com.gzzhwl.api.load.controller;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.api.load.service.TripService;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.data.model.AccountInfo;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.springmvc.annotation.Authorization;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+
+@RestController
+@RequestMapping("/api/trip")
+public class TripController {
+	
+	@Autowired
+	private TripService tripService;
+
+
+	 @RequestMapping(value = "/downLoadDriverOrderList", method =
+	 RequestMethod.GET,produces = {"application/octet-stream;charset=UTF-8"})
+	public ResponseModel getDriverOrderList(@RequestParam String timeStamp,HttpServletResponse response, @Authorization AccountInfo accountInfo) throws ParseException, IOException {
+		 
+		 String accountId = accountInfo.getAccountId();
+		 String fileName = accountId+DateUtils.parse(timeStamp, "yyyy-MM-dd HH:mm:ss").getTime();
+		 response.setHeader("Content-Disposition","attachment;filename="+fileName);
+		 
+		 if (ValidateUtils.isEmpty(timeStamp)) {
+				throw new RestException(ErrorCode.ERROR_900003.getCode(),"timeStamp "+ErrorCode.ERROR_900003.getDesc());
+			}
+		 
+		tripService.getDriverOrderListStream(accountId, timeStamp, response.getOutputStream());
+
+		return null;
+	}
+	
+}

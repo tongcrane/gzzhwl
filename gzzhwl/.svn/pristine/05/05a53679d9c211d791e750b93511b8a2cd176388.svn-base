@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.UsedInfoHisDao">
+
+	<resultMap id="usedInfoHisResultMap" type="UsedInfoHis">
+		<id property="hisId" column="his_id" />
+		<result property="loadId" column="load_id" />
+		<result property="targetId" column="target_id" />
+		<result property="targetType" column="target_type" />
+		<result property="srcStatus" column="src_status" />
+		<result property="destStatus" column="dest_status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="usedInfoHisResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="usedInfoHisResultMap"></resultMap>
+
+	<insert id="insert" parameterType="UsedInfoHis">
+	   insert into zh_used_info_his (
+	     his_id,
+	     load_id,
+	     target_id,
+	     target_type,
+	     src_status,
+	     dest_status,
+	     created_by,
+	     created_time
+	   )values (
+	     #{hisId},
+	     #{loadId},
+	     #{targetId},
+	     #{targetType},
+	     #{srcStatus},
+	     #{destStatus},
+	     #{createdBy},
+	     #{createdTime}
+	   )
+	</insert>
+
+	<update id="update" parameterType="UsedInfoHis">
+	   update zh_used_info_his set
+	     his_id=#{hisId},
+	     load_id=#{loadId},
+	     target_id=#{targetId},
+	     target_type=#{targetType},
+	     src_status=#{srcStatus},
+	     dest_status=#{destStatus},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime}
+	   where 
+	    his_id=#{hisId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="UsedInfoHis">
+	   update zh_used_info_his
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="hisId != null">
+		       his_id=#{hisId},
+		     </if>
+		     <if test="loadId != null">
+		       load_id=#{loadId},
+		     </if>
+		     <if test="targetId != null">
+		       target_id=#{targetId},
+		     </if>
+		     <if test="targetType != null">
+		       target_type=#{targetType},
+		     </if>
+		     <if test="srcStatus != null">
+		       src_status=#{srcStatus},
+		     </if>
+		     <if test="destStatus != null">
+		       dest_status=#{destStatus},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime}
+		     </if>
+	   </trim>
+	
+	   where 
+	    his_id=#{hisId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_used_info_his 
+	   where 
+	    his_id=#{hisId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="usedInfoHisResultMap">
+	   select 
+	    his_id,
+	    load_id,
+	    target_id,
+	    target_type,
+	    src_status,
+	    dest_status,
+	    created_by,
+	    created_time
+	   from zh_used_info_his
+	   where 
+	    his_id=#{hisId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    his_id,
+	    load_id,
+	    target_id,
+	    target_type,
+	    src_status,
+	    dest_status,
+	    created_by,
+	    created_time
+	   from zh_used_info_his
+	   where 
+	    his_id=#{hisId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     his_id,
+	     load_id,
+	     target_id,
+	     target_type,
+	     src_status,
+	     dest_status,
+	     created_by,
+	     created_time
+	   from zh_used_info_his
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="hisId != null">
+	        his_id=#{hisId}
+	     </if>
+	     <if test="loadId != null">
+	        and load_id=#{loadId}
+	     </if>
+	     <if test="targetId != null">
+	        and target_id=#{targetId}
+	     </if>
+	     <if test="targetType != null">
+	        and target_type=#{targetType}
+	     </if>
+	     <if test="srcStatus != null">
+	        and src_status=#{srcStatus}
+	     </if>
+	     <if test="destStatus != null">
+	        and dest_status=#{destStatus}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     his_id,
+	     load_id,
+	     target_id,
+	     target_type,
+	     src_status,
+	     dest_status,
+	     created_by,
+	     created_time
+	   from zh_used_info_his
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="hisId != null">
+	        his_id=#{hisId}
+	     </if>
+	     <if test="loadId != null">
+	        and load_id=#{loadId}
+	     </if>
+	     <if test="targetId != null">
+	        and target_id=#{targetId}
+	     </if>
+	     <if test="targetType != null">
+	        and target_type=#{targetType}
+	     </if>
+	     <if test="srcStatus != null">
+	        and src_status=#{srcStatus}
+	     </if>
+	     <if test="destStatus != null">
+	        and dest_status=#{destStatus}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

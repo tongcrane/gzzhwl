@@ -1,0 +1,236 @@
+package com.gzzhwl.admin.load.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.load.service.LoadBillService;
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.admin.load.service.LoadHistoryService;
+import com.gzzhwl.admin.load.service.TripManageService;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.FlowsService;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.dao.LoadTripInfoDao;
+import com.gzzhwl.core.data.dao.OrderLoadInfoDao;
+import com.gzzhwl.core.data.extdao.OrderLoadInfoExtDao;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.FlowStatus;
+import com.gzzhwl.core.data.model.LoadTripInfo;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class TripManageServiceImpl implements TripManageService {
+	@Autowired
+	private OrderLoadInfoExtDao loadExtDao;
+	@Autowired
+	private OrderLoadInfoDao orderLoadInfoDao;
+	@Autowired
+	private RegionService regionService;
+	@Autowired
+	private FlowsService flowsService;
+	@Autowired
+	private LoadHistoryService loadHistoryService;
+	@Autowired
+	private LoadTripInfoDao loadTripInfoDao;
+	@Autowired
+	private LoadBillService loadBillService;
+	@Autowired
+	private LoadFeedbackService feedBackService;
+
+	@Override
+	public void vehicleCheck(String loadId, String staffId,String actionTime) {
+
+		OrderLoadInfo orderLoadInfo = orderLoadInfoDao.get(loadId);
+
+		if (orderLoadInfo == null) {
+			throw new RestException(ErrorCode.ERROR_900013.getCode(), ErrorCode.ERROR_900013.getDesc());
+		}
+
+		FlowDef flowdef = flowsService.executeFlow(ZHFlow.LOAD_BILL, "02", orderLoadInfo.getStatus(),
+				FlowActionCategory.CBS);
+		
+		if(ValidateUtils.isEmpty(actionTime)){
+			actionTime = DateUtils.currentStringDate("yyyy-MM-dd HH:mm:ss");
+		}
+		
+		loadHistoryService.saveLoadHistory(orderLoadInfo.getLoadId(), orderLoadInfo.getStatus(),
+				actionTime, flowdef, staffId);
+
+	}
+
+	@Override
+	public void closeToSurface(String loadId, String staffId,String actionTime) {
+
+		OrderLoadInfo orderLoadInfo = orderLoadInfoDao.get(loadId);
+
+		if (orderLoadInfo == null) {
+			throw new RestException(ErrorCode.ERROR_900013.getCode(), ErrorCode.ERROR_900013.getDesc());
+		}
+
+		FlowDef flowdef = flowsService.executeFlow(ZHFlow.LOAD_BILL, "03", orderLoadInfo.getStatus(),
+				FlowActionCategory.CBS);
+
+		if(ValidateUtils.isEmpty(actionTime)){
+			actionTime = DateUtils.currentStringDate("yyyy-MM-dd HH:mm:ss");
+		}
+		
+		loadHistoryService.saveLoadHistory(orderLoadInfo.getLoadId(), orderLoadInfo.getStatus(),
+				actionTime, flowdef, staffId);
+
+	}
+	
+	@Override
+	public void tripTheCar(String loadId, String customerBillNo,
+			String contractImageRefId, String tripTime,String staffId,String actionTime) {
+		OrderLoadInfo orderLoadInfo =  orderLoadInfoDao.get(loadId);
+		
+		if(orderLoadInfo==null){
+			throw new RestException(ErrorCode.ERROR_900013.getCode(), ErrorCode.ERROR_900013.getDesc());
+		}
+
+		//判断是否有运单,有运单则获取运单瞎的重量,体积。  没有则创建新的运单
+		
+		//判断是否有司机合同，没有则重新创建
+		
+		LoadTripInfo loadTripInfo = new LoadTripInfo();
+		loadTripInfo.setLoadId(loadId);
+		loadTripInfo.setTripTime(tripTime);
+		loadTripInfo.setContractImageRefId(contractImageRefId);
+		loadTripInfo.setCustomerBillNo(customerBillNo);
+		loadTripInfo.setCreatedBy(staffId);
+		//来自运单
+		loadTripInfo.setGoodsVolume("");
+		loadTripInfo.setGoodsWeight("");
+		
+		FlowDef flowdef = flowsService.executeFlow(ZHFlow.LOAD_BILL, "05", orderLoadInfo.getStatus(),
+				FlowActionCategory.CBS);
+		
+		if(ValidateUtils.isEmpty(actionTime)){
+			actionTime = DateUtils.currentStringDate("yyyy-MM-dd HH:mm:ss");
+		}
+
+		loadHistoryService.saveLoadHistory(orderLoadInfo.getLoadId(), orderLoadInfo.getStatus(),
+				actionTime, flowdef, staffId);
+		
+	}
+
+	@Override
+	public Map<String,Object> getTripFeedbackDetail(String loadId) {
+		
+		if(loadId==null){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "loadId"+ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		return loadExtDao.getTripDetail(loadId);
+	}
+
+	@Override
+	public Page<Map<String, Object>> tripPage(String keyWord, int pageIndex, int pageSize) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (StringUtils.isNotBlank(keyWord)) {
+			params.put("keyWord", keyWord);
+		}
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		// 已取消和已发车的不用查出来
+		params.put("status", "('01','02','03','04','07')");
+		params.put("vehicleType", "03");
+		Page<Map<String, Object>> tripPage = loadExtDao.pageTripList(params, pageIndex, pageSize);
+		List<Map<String, Object>> trips = tripPage.getRows();
+		if (!ValidateUtils.isEmpty(trips)) {
+			for (Map<String, Object> map : trips) {
+				String status = (String) map.get("status");
+				FlowStatus flow = flowsService.getStatus(ZHFlow.LOAD_BILL, status);
+				if (!ValidateUtils.isEmpty(flow)) {
+					map.put("statusCn", flow.getName());
+				} else {
+					map.put("statusCn", "");
+				}
+
+				String startCodeP = (String) map.get("startCodeP");
+				map.put("startCodePCn", this.getCodeCn(startCodeP));
+
+				String startCodeC = (String) map.get("startCodeC");
+				map.put("startCodeCCn", this.getCodeCn(startCodeC));
+
+				String endCodeP = (String) map.get("endCodeP");
+				map.put("endCodePCn", this.getCodeCn(endCodeP));
+
+				String endCodeC = (String) map.get("endCodeC");
+				map.put("endCodeCCn", this.getCodeCn(endCodeC));
+
+				// 获取发车司机信息
+				String loadId = (String) map.get("loadId");
+				List<Map<String, Object>> drivers = loadExtDao.getTripDrivers(loadId);
+
+				map.put("driverList", drivers);
+			}
+		}
+		return tripPage;
+	}
+
+	public String getCodeCn(String code) {
+		if (StringUtils.isNotBlank(code)) {
+			RegionInfo startCodePCn = regionService.findByCode(code);
+			if (startCodePCn != null) {
+				return startCodePCn.getRegionName();
+			}
+		}
+		return "";
+	}
+
+	@Override
+	public void cancelTrip(String loadId, String staffId) {
+
+		OrderLoadInfo orderLoadInfo = orderLoadInfoDao.get(loadId);
+
+		if (orderLoadInfo == null) {
+			throw new RestException(ErrorCode.ERROR_900013.getCode(), ErrorCode.ERROR_900013.getDesc());
+		}
+
+		/**
+		 * 判断①订单是否有运单生成；
+		 * 
+		 * ②提货单是否生成司机合同；
+		 * 
+		 * 只有两个都否，才可提交成功；
+		 */
+
+		FlowDef flowdef = flowsService.executeFlow(ZHFlow.LOAD_BILL, "06", orderLoadInfo.getStatus(),
+				FlowActionCategory.CBS);
+
+		loadHistoryService.saveLoadHistory(orderLoadInfo.getLoadId(), orderLoadInfo.getStatus(),
+				DateUtils.currentStringDate("yyyy-MM-dd HH:mm:ss"), flowdef, staffId);
+
+	}
+
+	@Override
+	public Map<String, Object> getTripDetail(String loadId) {
+		Map<String,Object> tripDetail = loadBillService.getLoadDetail(loadId);
+		//获取货主异常反馈信息
+		List<Map<String,Object>> sourceFeedBackList = feedBackService.getLoadFeedbackList(loadId, LoadFeedBackType.SOURCEADMIN, null);
+		//获取车辆异常反馈信息
+		List<Map<String,Object>> vehicleFeedBackList = feedBackService.getLoadFeedbackList(loadId, LoadFeedBackType.SOURCEADMIN, null);
+		//获取发车反馈
+		Map<String,Object> tripFeedBackDetail = this.getTripFeedbackDetail(loadId);
+		tripDetail.put("sourceFeedBackList", sourceFeedBackList);
+		tripDetail.put("vehicleFeedBackList", vehicleFeedBackList);
+		tripDetail.put("tripFeedBackDetail", tripFeedBackDetail);
+		return tripDetail;
+	}
+	
+
+}

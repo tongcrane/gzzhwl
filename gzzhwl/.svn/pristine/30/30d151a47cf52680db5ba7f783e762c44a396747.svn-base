@@ -1,0 +1,214 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_load_his表
+ * @author mew
+ *
+ */
+public class LoadHis implements Serializable {
+	@Length(max = 36, message = "hisId超过长度限制")
+	private java.lang.String hisId; // 记录标识
+	@Length(max = 36, message = "loadId超过长度限制")
+	private java.lang.String loadId; // 提货单标识
+	@Length(max = 2, message = "srcStatus超过长度限制")
+	private java.lang.String srcStatus; // 原始状态
+	@Length(max = 2, message = "destStatus超过长度限制")
+	private java.lang.String destStatus; // 目标状态
+	@Length(max = 2, message = "userType超过长度限制")
+	private java.lang.String userType; // 用户类型
+	@Length(max = 400, message = "msgInfo超过长度限制")
+	private java.lang.String msgInfo; // 消息信息
+	@Length(max = 20, message = "actionTime超过长度限制")
+	private java.lang.String actionTime; // 动作执行时间
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+
+
+	/**
+     * 获取记录标识属性
+     *
+     * @return hisId
+     */
+	public java.lang.String getHisId() {
+		return hisId;
+	}
+	
+	/**
+	 * 设置记录标识属性
+	 *
+	 * @param hisId
+	 */
+	public void setHisId(java.lang.String hisId) {
+		this.hisId = hisId;
+	}
+	
+	/**
+     * 获取提货单标识属性
+     *
+     * @return loadId
+     */
+	public java.lang.String getLoadId() {
+		return loadId;
+	}
+	
+	/**
+	 * 设置提货单标识属性
+	 *
+	 * @param loadId
+	 */
+	public void setLoadId(java.lang.String loadId) {
+		this.loadId = loadId;
+	}
+	
+	/**
+     * 获取原始状态属性
+     *
+     * @return srcStatus
+     */
+	public java.lang.String getSrcStatus() {
+		return srcStatus;
+	}
+	
+	/**
+	 * 设置原始状态属性
+	 *
+	 * @param srcStatus
+	 */
+	public void setSrcStatus(java.lang.String srcStatus) {
+		this.srcStatus = srcStatus;
+	}
+	
+	/**
+     * 获取目标状态属性
+     *
+     * @return destStatus
+     */
+	public java.lang.String getDestStatus() {
+		return destStatus;
+	}
+	
+	/**
+	 * 设置目标状态属性
+	 *
+	 * @param destStatus
+	 */
+	public void setDestStatus(java.lang.String destStatus) {
+		this.destStatus = destStatus;
+	}
+	
+	/**
+     * 获取用户类型属性
+     *
+     * @return userType
+     */
+	public java.lang.String getUserType() {
+		return userType;
+	}
+	
+	/**
+	 * 设置用户类型属性
+	 *
+	 * @param userType
+	 */
+	public void setUserType(java.lang.String userType) {
+		this.userType = userType;
+	}
+	
+	/**
+     * 获取消息信息属性
+     *
+     * @return msgInfo
+     */
+	public java.lang.String getMsgInfo() {
+		return msgInfo;
+	}
+	
+	/**
+	 * 设置消息信息属性
+	 *
+	 * @param msgInfo
+	 */
+	public void setMsgInfo(java.lang.String msgInfo) {
+		this.msgInfo = msgInfo;
+	}
+	
+	/**
+     * 获取动作执行时间属性
+     *
+     * @return actionTime
+     */
+	public java.lang.String getActionTime() {
+		return actionTime;
+	}
+	
+	/**
+	 * 设置动作执行时间属性
+	 *
+	 * @param actionTime
+	 */
+	public void setActionTime(java.lang.String actionTime) {
+		this.actionTime = actionTime;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("LoadHis");
+        sb.append("{hisId=").append(hisId);
+        sb.append(", loadId=").append(loadId);
+        sb.append(", srcStatus=").append(srcStatus);
+        sb.append(", destStatus=").append(destStatus);
+        sb.append(", userType=").append(userType);
+        sb.append(", msgInfo=").append(msgInfo);
+        sb.append(", actionTime=").append(actionTime);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+		sb.append('}');
+        return sb.toString();
+    }
+}

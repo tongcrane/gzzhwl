@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.LoadPrintreceiptExtDao">
+
+	<resultMap id="loadPrintreceiptResultMap" type="LoadPrintreceipt">
+		<id property="pid" column="pid" />
+		<id property="receiptId" column="receipt_id" />
+		<result property="loadId" column="load_id" />
+		<result property="type" column="type" />
+		<result property="expressDelivery" column="express_delivery" />
+		<result property="billNo" column="bill_no" />
+		<result property="signTime" column="sign_time" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="loadPrintreceiptResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="loadPrintreceiptResultMap"></resultMap>
+
+
+	<select id="get" parameterType="map" resultMap="loadPrintreceiptResultMap">
+	   select 
+	    pid,
+	    receipt_id,
+	    load_id,
+	    type,
+	    express_delivery,
+	    bill_no,
+	    sign_time,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_load_printreceipt
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="pid != null">
+	        pid=#{pid}
+	     </if>
+	     <if test="receiptId != null">
+	        and receipt_id=#{receiptId}
+	     </if>
+	     <if test="loadId != null">
+	        and load_id=#{loadId}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="getCurrentPrintreceipt" parameterType="map"
+		resultMap="loadPrintreceiptResultMap">
+		select 
+	    pid,
+	    receipt_id,
+	    load_id,
+	    type,
+	    express_delivery,
+	    bill_no,
+	    sign_time,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+		from zh_load_printreceipt
+		where pid in
+		(
+		select
+		max(pid) 
+		from 
+		zh_load_printreceipt 
+		where 
+		load_id = #{loadId}
+		)
+	</select>
+
+
+</mapper> 

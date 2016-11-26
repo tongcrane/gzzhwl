@@ -1,0 +1,181 @@
+package com.gzzhwl.admin.load.vo;
+
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.model.LoadFeedbackAtta;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.springmvc.validate.ParamEmptyValidator;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class LoadFeedbackVo {
+
+	private java.lang.String loadId; // 提货单标识
+
+	private java.lang.String loadNo; // 提货单编号
+
+	private String status; // 反馈状态
+
+	private String type; // 异常类型
+
+	private java.lang.String itemName; // 费用名称
+
+	private java.lang.String itemPrice; // 费用金额
+
+	private java.lang.String itemDesc; // 费用说明
+
+	private java.lang.String feedbackTime; // 反馈时间
+
+	private java.lang.String longitude; // 经度
+
+	private java.lang.String latitude; // 纬度
+
+	private java.lang.String address; // 地址
+
+	private java.lang.String isException; // 是否异常 00 无异常 01异常
+
+	private java.lang.String endTime; // 结束时间
+
+	private java.lang.String speed; // 行驶速度
+
+	private String distances;// 离终点距离
+	
+	private String priceSymbol;// 费用类型 00扣款 01补偿
+
+	private List<LoadFeedBackAttVo> imageIdList; // 异常反馈上传图片列表
+
+	public LoadFeedbackLog getLoadFeedbackLog() throws ParseException{
+		
+		LoadFeedbackLog loadFeedbackLog = new LoadFeedbackLog();
+		
+		if(ValidateUtils.isEmpty(this.loadId)){
+			ParamEmptyValidator.VALID_PARAM_EMPTY(this.loadNo);
+		}
+
+//		ParamEmptyValidator.VALID_PARAM_EMPTY(this.loadId);
+//		ParamEmptyValidator.VALID_PARAM_EMPTY(this.itemName);
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.status);
+		ParamEmptyValidator.VALID_PARAM_EMPTY(this.type);
+		
+		loadFeedbackLog.setType(LoadFeedBackType.getLoadFeedBackType(type).getCode());
+		
+		loadFeedbackLog.setItemDesc(this.itemDesc);
+		loadFeedbackLog.setLoadId(this.loadId);
+		loadFeedbackLog.setAddress(this.address);
+		loadFeedbackLog.setLatitude(this.latitude);
+		loadFeedbackLog.setLongitude(this.longitude);
+		
+		LoadBillType loadBillType = LoadBillType.getLoadBillType(this.status);
+		
+		if(!(LoadBillType.NOTVEHICLE.equals(loadBillType)||LoadBillType.VEHICLECHECK.equals(loadBillType)||
+		   LoadBillType.CLOSETOSURFACE.equals(loadBillType)||LoadBillType.DEPART.equals(loadBillType)
+		   ||LoadBillType.ELECRECEIPT.equals(loadBillType)||LoadBillType.ARRIVED.equals(loadBillType))){
+			throw new RestException(ErrorCode.ERROR_900014.getCode(), "status"+ErrorCode.ERROR_900014.getDesc());
+		}
+		
+		loadFeedbackLog.setStatus(loadBillType.getCode());
+		
+		if(StringUtils.isNotBlank(this.itemName)){
+			loadFeedbackLog.setItemName(this.itemName);
+		}
+		
+		//异常反馈金额处理
+		if(StringUtils.isNotBlank(this.itemPrice)){
+			
+			double price = Double.parseDouble(this.itemPrice);
+			DecimalFormat df = new DecimalFormat("#0.00"); 
+
+			if(StringUtils.isNotBlank(this.priceSymbol)){
+				if(this.priceSymbol.equals(LoadFeedbackLog.PRICE_DELETED)){
+					this.itemPrice = df.format(Math.abs(price));
+				}else{
+					this.itemPrice = "-"+df.format(Math.abs(price));
+				}
+			}else{
+				this.itemPrice = "-"+df.format(Math.abs(price));
+			}
+			loadFeedbackLog.setItemPrice(this.itemPrice);
+		}
+		
+		if(StringUtils.isNotBlank(this.feedbackTime)){
+			
+			Date date = null;
+			if(DateUtils.isValidDate(this.feedbackTime,"yyyy-MM-dd HH:mm")){
+				date = DateUtils.parse(this.feedbackTime, "yyyy-MM-dd HH:mm");
+			}else{
+				date = DateUtils.parse(this.feedbackTime, "yyyy-MM-dd HH:mm:ss");
+			}
+			
+			this.feedbackTime = DateUtils.toString(date,"yyyy-MM-dd HH:mm:ss");
+			loadFeedbackLog.setFeedbackTime(this.feedbackTime);
+		}
+		
+		if(StringUtils.isNotBlank(this.isException)){
+			loadFeedbackLog.setIsException(this.isException);
+		}
+		
+		if(StringUtils.isNotBlank(this.endTime)){
+			
+			Date date = null;
+			if(DateUtils.isValidDate(this.endTime,"yyyy-MM-dd HH:mm")){
+				date = DateUtils.parse(this.endTime, "yyyy-MM-dd HH:mm");
+			}else{
+				date = DateUtils.parse(this.endTime, "yyyy-MM-dd HH:mm:ss");
+			}
+			
+			this.endTime = DateUtils.toString(date,"yyyy-MM-dd HH:mm:ss");
+			
+			loadFeedbackLog.setEndTime(this.endTime);
+		}
+		
+		if(StringUtils.isNotBlank(this.speed)){
+			loadFeedbackLog.setSpeed(this.speed);
+		}
+		
+		if(StringUtils.isNotBlank(this.distances)){
+			loadFeedbackLog.setDistances(this.distances);
+		}
+		
+		
+		return loadFeedbackLog;
+	}
+
+	public List<LoadFeedbackAtta> getLoadFeedbackAttaList() {
+
+		List<LoadFeedbackAtta> loadFeedbackAttaList = new ArrayList<>();
+
+		if (!ValidateUtils.isEmpty(this.imageIdList)) {
+
+			if (imageIdList.size() > 5) {
+				throw new RestException(ErrorCode.ERROR_900015.getCode(), ErrorCode.ERROR_900015.getDesc());
+			}
+
+			for (int i = 0; i < imageIdList.size(); i++) {
+
+				LoadFeedbackAtta loadFeedbackAtta = new LoadFeedbackAtta();
+
+				loadFeedbackAtta.setFileId(imageIdList.get(i).getImageId());
+
+				loadFeedbackAttaList.add(loadFeedbackAtta);
+			}
+
+		}
+		return loadFeedbackAttaList;
+	}
+
+}

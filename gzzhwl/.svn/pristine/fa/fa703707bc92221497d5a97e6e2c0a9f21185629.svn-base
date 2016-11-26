@@ -1,0 +1,35 @@
+package com.gzzhwl.admin.load.service;
+
+import java.util.Map;
+
+import com.gzzhwl.admin.load.vo.LoadInfoVO;
+import com.gzzhwl.admin.load.vo.LoadQueryVo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.exception.RestException;
+
+public interface LoadBillService {
+	/**
+	 * 创建提货单
+	 */
+	public String createLoad(LoadInfoVO loadInfo, Integer departId, String staffId) throws RestException;
+
+	/**
+	 * 取消提货单
+	 */
+	public boolean cancelLoad(String orderId, String staffId) throws RestException;
+
+	/**
+	 * 根据订单ID获取当前的提货单
+	 */
+	public String getCurrentLoadBill(String orderId) throws RestException;
+	
+	/**
+	 * 提货单分页
+	 */
+	public Page<Map<String, Object>> pageLoads(LoadQueryVo queryVo, int pageIndex, int pageSize);
+	
+	/**
+	 * 提货单详情
+	 */
+	public Map<String, Object> getLoadDetail(String orderId);
+}

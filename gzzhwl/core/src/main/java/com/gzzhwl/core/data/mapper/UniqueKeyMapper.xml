@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.UniqueKeyDao">
+
+	<resultMap id="uniqueKeyResultMap" type="UniqueKey">
+		<id property="seqName" column="seq_name" />
+		<result property="nextHi" column="next_hi" />
+		<result property="dateHi" column="date_hi" />
+		<result property="currentDate" column="current_date" />
+	</resultMap>
+
+	<update id="update" parameterType="UniqueKey">
+	   update zh_unique_key set
+	     seq_name=#{seqName},
+	     next_hi=#{nextHi},
+	     date_hi=#{dateHi}
+	   where 
+	    seq_name=#{seqName} 
+	</update>
+
+	<select id="get" parameterType="map" resultMap="uniqueKeyResultMap">
+	   select 
+	    seq_name,
+	    next_hi,
+	    date_hi,
+	    date_format(now(),'%Y%m%d') as `current_date`
+	   from zh_unique_key
+	   where 
+	    seq_name=#{seqName} 
+	</select>
+	
+</mapper> 

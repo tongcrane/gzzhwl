@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.MessageTipsDao">
+
+	<resultMap id="messageTipsResultMap" type="MessageTips">
+		<id property="messageId" column="message_id" />
+		<result property="category" column="category" />
+		<result property="accountId" column="account_id" />
+		<result property="sourceId" column="source_id" />
+		<result property="sourceType" column="source_type" />
+		<result property="content" column="content" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="status" column="status" />
+		<result property="isRead" column="is_read" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="messageTipsResultMap">
+		<association property="quotedInfo" notNullColumn="quoted_id" columnPrefix="quoted_" resultMap="quotedResultMap" />
+		<association property="loadInfo" notNullColumn="load_id" columnPrefix="load_" resultMap="loadResultMap" />
+	</resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="messageTipsResultMap"></resultMap>
+	
+	<resultMap id="quotedResultMap" type="map">
+		<id property="quotedId" column="quoted_id" />
+		<result property="price" column="price" />
+		<result property="status" column="status" />
+	</resultMap>
+	
+	<resultMap id="loadResultMap" type="map">
+		<id property="loadId" column="load_id" />
+		<result property="loadNo" column="load_no" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<insert id="insert" parameterType="MessageTips">
+	   insert into zh_message_tips (
+	     message_id,
+	     category,
+	     account_id,
+	     source_id,
+	     source_type,
+	     content,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     status,
+	     is_read,
+	     is_deleted
+	   )values (
+	     #{messageId},
+	     #{category},
+	     #{accountId},
+	     #{sourceId},
+	     #{sourceType},
+	     #{content},
+	     #{createdBy},
+	     now(),
+	     #{updatedBy},
+	     now(),
+	     #{status},
+	     #{isRead},
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="MessageTips">
+	   update zh_message_tips set
+	     message_id=#{messageId},
+	     category=#{category},
+	     account_id=#{accountId},
+	     source_id=#{sourceId},
+	     source_type=#{sourceType},
+	     content=#{content},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     updated_by=#{updatedBy},
+	     updated_time=#{updatedTime},
+	     status=#{status},
+	     is_read=#{isRead},
+	     is_deleted=#{isDeleted}
+	   where 
+	    message_id=#{messageId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="MessageTips">
+	   update zh_message_tips
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="messageId != null">
+		       message_id=#{messageId},
+		     </if>
+		     <if test="category != null">
+		       category=#{category},
+		     </if>
+		     <if test="accountId != null">
+		       account_id=#{accountId},
+		     </if>
+		     <if test="sourceId != null">
+		       source_id=#{sourceId},
+		     </if>
+		     <if test="sourceType != null">
+		       source_type=#{sourceType},
+		     </if>
+		     <if test="content != null">
+		       content=#{content},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		     
+		       updated_time=now(),
+		       
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="isRead != null">
+		       is_read=#{isRead},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    message_id=#{messageId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_message_tips 
+	   where 
+	    message_id=#{messageId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="messageTipsResultMap">
+	   select 
+	    message_id,
+	    category,
+	    account_id,
+	    source_id,
+	    source_type,
+	    content,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    status,
+	    is_read,
+	    is_deleted
+	   from zh_message_tips
+	   where 
+	    message_id=#{messageId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    message_id,
+	    category,
+	    account_id,
+	    source_id,
+	    source_type,
+	    content,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    status,
+	    is_read,
+	    is_deleted
+	   from zh_message_tips
+	   where 
+	    message_id=#{messageId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     message_id,
+	     category,
+	     account_id,
+	     source_id,
+	     source_type,
+	     content,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     status,
+	     is_read,
+	     is_deleted
+	   from zh_message_tips
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="messageId != null">
+	        message_id=#{messageId}
+	     </if>
+	     <if test="category != null">
+	        and category=#{category}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="sourceId != null">
+	        and source_id=#{sourceId}
+	     </if>
+	     <if test="sourceType != null">
+	        and source_type=#{sourceType}
+	     </if>
+	     <if test="content != null">
+	        and content=#{content}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isRead != null">
+	        and is_read=#{isRead}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   SELECT
+			zmt.message_id,
+			zmt.category,
+			zmt.account_id,
+			zmt.source_id,
+			zmt.source_type,
+			zmt.content,
+			zmt.created_by,
+			zmt.created_time,
+			zmt.is_read,
+			zqi.quoted_id AS quoted_quoted_id,
+			zqi.price AS quoted_price,
+			zqi.status AS quoted_status,
+			zoli.load_id AS load_load_id,
+			zoli.load_no AS load_load_no,
+			zoli.status as load_status
+		FROM
+			zh_message_tips zmt
+		LEFT JOIN zh_quoted_info zqi ON zqi.quoted_id = zmt.source_id
+		AND zmt.source_type = #{quotedType}
+		LEFT JOIN zh_order_load_info zoli ON zoli.load_id = zmt.source_id
+		AND zmt.source_type = #{loadType}
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="category != null">
+	        and zmt.category=#{category}
+	     </if>
+	     <if test="accountId != null">
+	        and zmt.account_id=#{accountId}
+	     </if>
+	     <if test="status != null">
+	        and zmt.status=#{status}
+	     </if>
+	     <if test="isRead != null">
+	        and zmt.is_read=#{isRead}
+	     </if>
+	     <if test="isDeleted != null">
+	        and zmt.is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	   order by zmt.updated_time desc
+	</select>
+	
+	<update id="updateMessageStatus" parameterType="map">
+	   update zh_message_tips set is_read=#{isRead} where 
+		message_id in
+		<foreach collection="messageIds" index="index" item="messageId" open="(" separator="," close=")">  
+            <![CDATA[#{messageId}]]>
+    	</foreach>
+	</update>
+	
+	<select id="getUnreadMessageCount" parameterType="map" resultType="int">
+	   select
+			count(1) AS message_count
+		from
+			zh_message_tips
+		where
+			account_id = #{accountId}
+		and status = #{status}
+		and is_deleted = #{isDeleted}
+		and is_read = #{isRead}
+		<if test="category != null">
+	        and catefory = #{category}
+	    </if>
+	</select>
+</mapper> 

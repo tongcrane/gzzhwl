@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.StaffMenuInfoDao">
+
+	<resultMap id="staffMenuInfoResultMap" type="StaffMenuInfo">
+		<id property="menuId" column="menu_id" />
+		<id property="staffId" column="staff_id" />
+		<result property="staffId" column="staff_id" />
+		<result property="menuId" column="menu_id" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="staffMenuInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="staffMenuInfoResultMap">
+		<result property="menuName" column="menu_name"/>
+	</resultMap>
+
+	<insert id="insert" parameterType="StaffMenuInfo">
+	   insert into zh_staff_menu_info (
+	     staff_id,
+	     menu_id
+	   )values (
+	     #{staffId},
+	     #{menuId}
+	   )
+	</insert>
+
+	<update id="update" parameterType="StaffMenuInfo">
+	   update zh_staff_menu_info set
+	     staff_id=#{staffId},
+	     menu_id=#{menuId}
+	   where 
+	    menu_id=#{menuId} 
+	    and staff_id=#{staffId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="StaffMenuInfo">
+	   update zh_staff_menu_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="staffId != null">
+		       staff_id=#{staffId},
+		     </if>
+		     <if test="menuId != null">
+		       menu_id=#{menuId}
+		     </if>
+	   </trim>
+	
+	   where 
+	    menu_id=#{menuId} 
+	    and staff_id=#{staffId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_staff_menu_info 
+	   where 
+	    menu_id=#{menuId} 
+	    and staff_id=#{staffId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="staffMenuInfoResultMap">
+	   select 
+	    staff_id,
+	    menu_id
+	   from zh_staff_menu_info
+	   where 
+	    menu_id=#{menuId} 
+	    and staff_id=#{staffId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    staff_id,
+	    menu_id
+	   from zh_staff_menu_info
+	   where 
+	    menu_id=#{menuId} 
+	    and staff_id=#{staffId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     zsmi.staff_id,
+	     zsmi.menu_id,
+	     zmi.menu_name
+	   from zh_staff_menu_info zsmi left join zh_menu_info zmi on zsmi.menu_id=zmi.menu_id
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="staffId != null">
+	        zsmi.staff_id=#{staffId}
+	     </if>
+	     <if test="menuId != null">
+	        and zsmi.menu_id=#{menuId}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     staff_id,
+	     menu_id
+	   from zh_staff_menu_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="staffId != null">
+	        staff_id=#{staffId}
+	     </if>
+	     <if test="menuId != null">
+	        and menu_id=#{menuId}
+	     </if>
+	   </trim>
+	</select>
+	
+	<delete id="delStaffMenu" parameterType="map">
+		delete from zh_staff_menu_info where staff_id=#{staffId}
+	</delete>
+</mapper> 

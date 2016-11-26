@@ -1,0 +1,103 @@
+package com.gzzhwl.admin.source.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.admin.source.service.SourceQueryService;
+import com.gzzhwl.admin.source.service.SourceService;
+import com.gzzhwl.admin.source.vo.PushSourceVO;
+import com.gzzhwl.admin.source.vo.SourceCommVo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.security.annotation.RequirePerm;
+import com.gzzhwl.rest.security.model.Subject;
+import com.gzzhwl.rest.security.utils.SecurityUtils;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+@RestController
+@RequestMapping("/admin/source")
+public class SourceController {
+	@Autowired
+	private SourceService sourceService;
+	@Autowired
+	private SourceQueryService sourceQueryService;
+
+	/**
+	 * 拒绝发布
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/reject", method = { RequestMethod.POST })
+	public ResponseModel rejectSource(@RequestParam String sourceId, @RequestParam(required = false) String reason) {
+		Subject subject = SecurityUtils.getSubject();
+		boolean success = sourceService.rejectSource(sourceId, reason, subject.getStaffId());
+		return new ResponseModel(success);
+	}
+
+	/**
+	 * 同意发布
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/public", method = { RequestMethod.POST })
+	public ResponseModel publicSource(@RequestBody PushSourceVO pushSource) {
+		Subject subject = SecurityUtils.getSubject();
+		boolean success = sourceService.publicSource(pushSource, subject.getStaffId());
+		return new ResponseModel(success);
+	}
+
+	/**
+	 * 关闭货源
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/close", method = { RequestMethod.POST })
+	public ResponseModel closeSource(@RequestParam String sourceId, @RequestParam(required = false) String reason) {
+		Subject subject = SecurityUtils.getSubject();
+		boolean success = sourceService.closeSource(sourceId, reason, subject.getStaffId());
+		return new ResponseModel(success);
+	}
+
+	/**
+	 * 查询货源详情
+	 * 
+	 * @param sourceId
+	 * @return
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/querySourceDetail", method = { RequestMethod.GET })
+	public ResponseModel querySourceDetail(@RequestParam String sourceId) {
+		Map<String, Object> data = sourceQueryService.querySourceDetail(sourceId);
+		return new ResponseModel(data);
+	}
+
+	/**
+	 * CBD-YSJ 货源列表
+	 * 
+	 * @param sourceId
+	 * @return
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/queryOrderSourceList", method = { RequestMethod.GET })
+	public ResponseModel queryOrderSourceList(SourceCommVo sourceCommVo, @Pagination PageParameter page) {
+		Page<Map<String, Object>> sourcePage = sourceQueryService.queryOrderSourcePage(sourceCommVo,
+				page.getPageIndex(), page.getPageSize());
+		return new ResponseModel(sourcePage);
+	}
+
+	/**
+	 * 按钮列表
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/wtd", method = { RequestMethod.GET })
+	public ResponseModel whatToDo(@RequestParam String sourceId) {
+		List<Map<String, Object>> data = sourceService.whatToDo(sourceId);
+		return new ResponseModel(data);
+	}
+
+}

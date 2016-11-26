@@ -1,0 +1,810 @@
+package com.gzzhwl.api.driver.service.impl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.api.agent.validate.AgentValidate;
+import com.gzzhwl.api.driver.service.DriverInfoService;
+import com.gzzhwl.api.driver.validate.DriverValidate;
+import com.gzzhwl.api.driver.vo.DriverInfoQueryVo;
+import com.gzzhwl.api.driver.vo.DriverInfoVo;
+import com.gzzhwl.api.image.model.ImageCategory;
+import com.gzzhwl.api.image.model.ImageItem;
+import com.gzzhwl.api.image.service.ImageServiceFactory;
+import com.gzzhwl.api.line.service.LineService;
+import com.gzzhwl.api.vehicle.service.VehicleService;
+import com.gzzhwl.api.vehicle.validator.VehicleValidator;
+import com.gzzhwl.api.vehicle.vo.VehicleInfoVo;
+import com.gzzhwl.api.vehicle.vo.VehicleVo;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.data.dao.AgentInfoDao;
+import com.gzzhwl.core.data.dao.DriverInfoDao;
+import com.gzzhwl.core.data.dao.RealDriverInfoDao;
+import com.gzzhwl.core.data.dao.RealVehicleInfoDao;
+import com.gzzhwl.core.data.dao.RealVehiclePlusInfoDao;
+import com.gzzhwl.core.data.dao.VehicleInfoDao;
+import com.gzzhwl.core.data.dao.VehiclePlusInfoDao;
+import com.gzzhwl.core.data.extdao.DriverInfoExtDao;
+import com.gzzhwl.core.data.extdao.RealDriverInfoExtDao;
+import com.gzzhwl.core.data.extdao.RealVehicleDriverInfoExtDao;
+import com.gzzhwl.core.data.extdao.RealVehicleInfoExtDao;
+import com.gzzhwl.core.data.extdao.VehicleDriverExtInfoDao;
+import com.gzzhwl.core.data.extdao.VehicleInfoExtDao;
+import com.gzzhwl.core.data.model.AgentInfo;
+import com.gzzhwl.core.data.model.DriverInfo;
+import com.gzzhwl.core.data.model.RealDriverInfo;
+import com.gzzhwl.core.data.model.RealVehicleInfo;
+import com.gzzhwl.core.data.model.RealVehiclePlusInfo;
+import com.gzzhwl.core.data.model.UsedInfoHis;
+import com.gzzhwl.core.data.model.VehicleInfo;
+import com.gzzhwl.core.data.model.VehiclePlusInfo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class DriverInfoServiceImpl implements DriverInfoService {
+	@Autowired
+	DriverInfoDao driverDao;
+	@Autowired
+	DriverInfoExtDao driverInfoExtDao;
+	@Autowired
+	ImageServiceFactory imageFactory;
+	@Autowired
+	VehicleService vehicleService;
+	@Autowired
+	LineService lineService;
+	@Autowired
+	VehicleInfoDao vehicleDao;
+	@Autowired
+	VehicleInfoExtDao vehicleExtDao;
+	@Autowired
+	VehiclePlusInfoDao vehiclePlusInfoDao;
+	@Autowired
+	RealVehiclePlusInfoDao realVehiclePlusInfoDao;
+	@Autowired
+	Mapper beanMapper;
+	@Autowired
+	VehicleDriverExtInfoDao vehicleDriverExtInfoDao;
+	@Autowired
+	RealDriverInfoExtDao realDriverExtDao;
+	@Autowired
+	RealDriverInfoDao realDriverDao;
+	@Autowired
+	RealVehicleDriverInfoExtDao realvehicleDriverExtInfoDao;
+	@Autowired
+	RealVehicleInfoDao realVehicleDao;
+	@Autowired
+	RealVehicleInfoExtDao realVehicleExtDao;
+	@Autowired
+	AgentInfoDao agentDao;
+
+	/***
+	 * 保存/修改车辆司机线路临时信息
+	 */
+	@Override
+	public String saveDriverAndVehicleTemp(String accountId, List<DriverInfoVo> driverList, VehicleInfo vehicleInfo,
+			VehiclePlusInfo vehiclePlusInfo) {
+		String vehicleInfoId = "";
+
+		// 根据车辆ID判断是新增还是修改
+		if (StringUtils.isNotBlank(vehicleInfo.getVehicleInfoId())) {
+			vehicleInfoId = updateDriverAndVehicleTemp(driverList, vehicleInfo, vehiclePlusInfo, accountId);
+		} else {
+			// 新增司机车辆信息
+			vehicleInfoId = insertDriverAndVehicleTemp(accountId, driverList, vehicleInfo, vehiclePlusInfo);
+		}
+
+		return vehicleInfoId;
+	}
+
+	/***
+	 * 保存车辆司机线路临时信息
+	 */
+	public String insertDriverAndVehicleTemp(String accountId, List<DriverInfoVo> driverList, VehicleInfo vehicleInfo,
+			VehiclePlusInfo vehiclePlusInfo) {
+		// 保存车辆临时信息
+		String vehicleInfoId = vehicleService.saveTemp(vehicleInfo, vehiclePlusInfo, accountId,
+				Global.STATUS_ENTRY_NOT_FINISHED.toString());
+
+		if (!ValidateUtils.isEmpty(driverList)) {
+			for (DriverInfoVo driverInfoVo : driverList) {
+				// 保存司机线路临时信息
+				saveDriverLineTemp(driverInfoVo, accountId, vehicleInfoId);
+			}
+		}
+
+		return vehicleInfoId;
+	}
+
+	/**
+	 * 保存司机线路临时信息
+	 * 
+	 * @param driverInfoVo
+	 * @param accountId
+	 * @param vehicleInfoId
+	 * @return
+	 */
+	public boolean saveDriverLineTemp(DriverInfoVo driverInfoVo, String accountId, String vehicleInfoId) {
+		DriverInfo driverInfo = beanMapper.map(driverInfoVo, DriverInfo.class);
+
+		String driverInfoId = saveDriverTemp(driverInfo, accountId, Global.STATUS_ENTRY_NOT_FINISHED.toString());
+
+		// List<LineInfoVo> lineList = driverInfoVo.getLineList();
+		// LineInfo lineInfo = new LineInfo();
+		// if(!ValidateUtils.isEmpty(lineList)) {
+		// for(LineInfoVo lineInfoVo : lineList) {
+		// beanMapper.map(lineInfoVo, lineInfo);
+		// //验证线路信息是否完整
+		// LineValidator.valid_line_complete(lineInfo.getDepartureCode(),
+		// lineInfo.getDestinationCode());
+		// //保存线路信息
+		// lineService.saveLine(accountId, driverInfoId,
+		// lineInfo.getDepartureCode(), lineInfo.getDestinationCode());
+		// }
+		// }
+
+		// 保存司机车辆关系表（临时表）
+		vehicleDriverExtInfoDao.insert(accountId, vehicleInfoId, driverInfoId);
+		return true;
+	}
+
+	/**
+	 * 保存司机临时信息
+	 * 
+	 * @param driverInfo
+	 * @param accountId
+	 * @param status
+	 * @return
+	 */
+	public String saveDriverTemp(DriverInfo driverInfo, String accountId, String status) {
+		// 草稿不需要校验唯一性
+		String driverInfoId = IdentifierUtils.getId().generate().toString();
+		driverInfo.setDriverInfoId(driverInfoId);
+		driverInfo.setAccountId(accountId);
+		driverInfo.setSource(DataSource.VLORRY.getCode());
+		driverInfo.setCreatedBy(accountId);
+		driverInfo.setStatus(status);
+		driverInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		driverDao.insert(driverInfo);
+		return driverInfoId;
+	}
+
+	/***
+	 * 更新司机车辆临时信息
+	 */
+	public String updateDriverAndVehicleTemp(List<DriverInfoVo> driverList, VehicleInfo vehicleInfo,
+			VehiclePlusInfo vehiclePlusInfo, String accountId) {
+		// 更新车辆信息
+		String vehicleInfoId = vehicleService.updateTemp(vehicleInfo, vehiclePlusInfo, accountId,
+				Global.STATUS_ENTRY_NOT_FINISHED.toString());
+
+		DriverInfo driverInfo = new DriverInfo();
+		if (!ValidateUtils.isEmpty(driverList)) {
+			for (DriverInfoVo driverInfoVo : driverList) {
+				beanMapper.map(driverInfoVo, driverInfo);
+				// 如果没有司机Id,则为新增，否则为修改
+				if (StringUtils.isBlank(driverInfo.getDriverInfoId())) {
+					saveDriverLineTemp(driverInfoVo, accountId, vehicleInfoId);
+				} else {
+					updateDriverLineTemp(driverInfoVo, accountId);
+				}
+			}
+		}
+		return vehicleInfoId;
+	}
+
+	/**
+	 * 更新司机线路临时信息
+	 * 
+	 * @param driverInfoVo
+	 * @param accountId
+	 * @return
+	 */
+	public boolean updateDriverLineTemp(DriverInfoVo driverInfoVo, String accountId) {
+		DriverInfo driverInfo = beanMapper.map(driverInfoVo, DriverInfo.class);
+		updateDriverTemp(driverInfo, accountId);
+
+		// List<LineInfoVo> lineList = driverInfoVo.getLineList();
+		// LineInfo line = new LineInfo();
+		//
+		// if(!ValidateUtils.isEmpty(lineList)) {
+		// for(LineInfoVo lineInfoVo : lineList) {
+		// beanMapper.map(lineInfoVo, line);
+		// String lineInfoId = line.getLineInfoId();
+		// if(StringUtils.isNotBlank(lineInfoId)) {
+		// //更新线路信息
+		// //验证线路信息是否完整
+		// LineValidator.valid_line_complete(line.getDepartureCode(),
+		// line.getDestinationCode());
+		// lineService.updateLine(lineInfoId, driverInfo.getDriverInfoId(),
+		// accountId, line.getDepartureCode(), line.getDestinationCode());
+		// }else {
+		// LineValidator.valid_line_complete(line.getDepartureCode(),
+		// line.getDestinationCode());
+		// lineService.saveLine(accountId,driverInfo.getDriverInfoId(),
+		// line.getDepartureCode(), line.getDestinationCode());
+		// }
+		// }
+		// }
+
+		return true;
+	}
+
+	// 更新临时信息
+	public boolean updateDriverTemp(DriverInfo driverInfo, String accountId) {
+		String driverInfoId = driverInfo.getDriverInfoId();
+		DriverValidate.valid_driver_id(driverInfoId);
+
+		DriverInfo info = driverDao.get(driverInfoId);
+		DriverValidate.valid_not_exist(info);
+		// 司机状态校验，只有草稿才能修改为草稿
+		DriverValidate.valid_temp_status(info);
+		driverInfo.setUpdatedBy(accountId);
+		driverInfo.setStatus(Global.STATUS_ENTRY_NOT_FINISHED.toString());
+		return driverDao.updateSelective(driverInfo) > 0;
+	}
+
+	/**
+	 * 保存车辆司机线路信息
+	 */
+	@Override
+	public String saveDriverAndVehicle(String accountId, List<DriverInfoVo> drivers, VehicleInfo vehicleInfo,
+			VehiclePlusInfo vehiclePlusInfo) {
+		// 保存车辆信息
+		String vehicleInfoId = vehicleService.saveVehicleInfo(vehicleInfo, vehiclePlusInfo, accountId,
+				Global.STATUS_WAIT.toString());
+
+		if (!ValidateUtils.isEmpty(drivers)) {
+			for (DriverInfoVo driverInfoVo : drivers) {
+				saveDriverLine(driverInfoVo, accountId, vehicleInfoId, vehicleInfo.getPlateNumber());
+			}
+		}
+
+		return vehicleInfoId;
+	}
+
+	/**
+	 * 保存司机线路信息
+	 * 
+	 * @param driverInfoVo
+	 * @param accountId
+	 * @param vehicleInfoId
+	 * @return
+	 */
+	public boolean saveDriverLine(DriverInfoVo driverInfoVo, String accountId, String vehicleInfoId,
+			String plateNumber) {
+		DriverInfo driverInfo = beanMapper.map(driverInfoVo, DriverInfo.class);
+		String driverInfoId = "";
+
+		driverInfoId = saveDriverInfo(driverInfo, accountId, plateNumber);
+
+		// List<LineInfoVo> lineList = driverInfoVo.getLineList();
+		// LineInfo lineInfo = new LineInfo();
+		// if(!ValidateUtils.isEmpty(lineList)) {
+		// for(LineInfoVo lineInfoVo : lineList) {
+		// beanMapper.map(lineInfoVo, lineInfo);
+		// //验证线路信息是否完整
+		// LineValidator.valid_line_complete(lineInfo.getDepartureCode(),
+		// lineInfo.getDestinationCode());
+		// //保存线路信息
+		// lineService.saveLine(accountId, driverInfoId,
+		// lineInfo.getDepartureCode(), lineInfo.getDestinationCode());
+		// }
+		// }
+
+		// 保存司机车辆关系表（临时表）
+		vehicleDriverExtInfoDao.insert(accountId, vehicleInfoId, driverInfoId);
+		return true;
+	}
+
+	public String saveDriverInfo(DriverInfo driverInfo, String accountId, String plateNumber) {
+		// 司机录入合法性校验
+		DriverValidate.valid_allow_save(driverInfo);
+
+		// 验证当前
+		boolean exist = hasWaitDriver(driverInfo.getIdno(), accountId, plateNumber);
+		DriverValidate.valid_has_wait_driver(exist);
+
+		String driverInfoId = driverInfo.getDriverInfoId();
+
+		if (StringUtils.isNotBlank(driverInfoId)) {
+			driverExistValidat(driverInfoId);
+		}
+
+		driverInfoId = IdentifierUtils.getId().generate().toString();
+
+		driverInfo.setDriverInfoId(driverInfoId);
+		driverInfo.setAccountId(accountId);
+		driverInfo.setSource(DataSource.VLORRY.getCode());
+		driverInfo.setCreatedBy(accountId);
+		driverInfo.setStatus(Global.STATUS_WAIT.toString());
+		driverInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		driverDao.insert(driverInfo);
+		return driverInfoId;
+	}
+
+	/**
+	 * 更新司机线路信息
+	 * 
+	 * @param driverInfoVo
+	 * @param accountId
+	 * @return
+	 */
+	public boolean updateDriverLine(DriverInfoVo driverInfoVo, String accountId) {
+		DriverInfo driverInfo = beanMapper.map(driverInfoVo, DriverInfo.class);
+		updateDriver(driverInfo, accountId);
+
+		// List<LineInfoVo> lineList = driverInfoVo.getLineList();
+		// LineInfo line = new LineInfo();
+		//
+		// if(!ValidateUtils.isEmpty(lineList)) {
+		// for(LineInfoVo lineInfoVo : lineList) {
+		// beanMapper.map(lineInfoVo, line);
+		// String lineInfoId = line.getLineInfoId();
+		// if(StringUtils.isNotBlank(lineInfoId)) {
+		// //更新线路信息
+		// //验证线路信息是否完整
+		// LineValidator.valid_line_complete(line.getDepartureCode(),
+		// line.getDestinationCode());
+		// lineService.updateLine(lineInfoId, driverInfo.getDriverInfoId(),
+		// accountId, line.getDepartureCode(), line.getDestinationCode());
+		// }else {
+		// LineValidator.valid_line_complete(line.getDepartureCode(),
+		// line.getDestinationCode());
+		// lineService.saveLine(accountId,driverInfo.getDriverInfoId(),
+		// line.getDepartureCode(), line.getDestinationCode());
+		// }
+		// }
+		// }
+
+		return true;
+	}
+
+	public boolean updateDriver(DriverInfo driverInfo, String accountId) {
+		// 司机输入合法性校验
+		DriverValidate.valid_allow_save(driverInfo);
+
+		DriverInfo info = driverDao.get(driverInfo.getDriverInfoId());
+		DriverValidate.valid_not_exist(info);
+
+		// 审核未通过，未审核,未完成录入的才能修改
+		DriverValidate.valid_status(info);
+
+		driverInfo.setUpdatedBy(accountId);
+		driverInfo.setStatus(Global.STATUS_WAIT.toString());
+		return driverDao.updateSelective(driverInfo) > 0;
+	}
+
+	/**
+	 * 更新司机车辆信息
+	 */
+	@Override
+	public String updateDriverAndVehicle(List<DriverInfoVo> drivers, VehicleInfo vehicleInfo,
+			VehiclePlusInfo vehicleInfoPlusInfo, String accountId) {
+		// 获取车辆状态
+		VehicleInfoVo vo = vehicleService.getVehicle(vehicleInfo.getVehicleInfoId());
+		String vehicleInfoId = "";
+
+		if (Global.STATUS_ENTRY_NOT_FINISHED.toString().equals(vo.getStatus())) {
+			// 如果为草稿，则更新数据
+			vehicleInfoId = vehicleService.updateVehicleInfo(vehicleInfo, vehicleInfoPlusInfo, accountId,
+					Global.STATUS_WAIT.toString());
+			if (!ValidateUtils.isEmpty(drivers)) {
+				for (DriverInfoVo driverInfoVo : drivers) {
+					String driverInfoId = driverInfoVo.getDriverInfoId();
+					if (StringUtils.isNotBlank(driverInfoId)) {
+						updateDriverLine(driverInfoVo, accountId);
+					} else {
+						saveDriverLine(driverInfoVo, accountId, vehicleInfoId, vehicleInfo.getPlateNumber());
+					}
+				}
+			}
+		} else {
+			// 否则，新增数据
+			vehicleInfoId = vehicleService.saveVehicleInfo(vehicleInfo, vehicleInfoPlusInfo, accountId,
+					Global.STATUS_WAIT.toString());
+			if (!ValidateUtils.isEmpty(drivers)) {
+				for (DriverInfoVo driverInfoVo : drivers) {
+					saveDriverLine(driverInfoVo, accountId, vehicleInfoId, vehicleInfo.getPlateNumber());
+
+				}
+			}
+		}
+
+		return vehicleInfo.getVehicleInfoId();
+	}
+
+	@Override
+	public boolean insertOrUpdate(DriverInfo zhDriverInfo) {
+		if (!StringUtils.isNotEmpty(zhDriverInfo.getDriverInfoId())) {
+			DriverInfo driverInfo = driverDao.get(zhDriverInfo.getDriverInfoId());
+			if (driverInfo == null) {
+				return driverDao.insert(zhDriverInfo) > 0;
+			} else {
+				return driverDao.update(zhDriverInfo) > 0;
+			}
+		} else {
+			return driverDao.insert(zhDriverInfo) > 0;
+		}
+	}
+
+	/**
+	 * 司机信息分页查询
+	 */
+	@Override
+	public Page<Map<String, Object>> page(String accountId, int pageIndex, int pageSize) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("accountId", accountId);
+		Page<Map<String, Object>> result = driverInfoExtDao.pageDriverList(params, pageIndex, pageSize);
+		return result;
+	}
+
+	/**
+	 * 司机照片上传
+	 */
+	@Override
+	public String updateImageInfo(MultipartFile file, String accountId) {
+
+		ImageItem item = new ImageItem();
+
+		if (file == null || file.isEmpty()) {
+			throw new RestException(ErrorCode.ERROR_800001);
+		} else {
+			item = imageFactory.saveImage(ImageCategory.DRIVER_VEHICLE, file, accountId);
+		}
+
+		return item.getFileId();
+	}
+
+	/**
+	 * 司机车辆信息分页查询
+	 */
+	@Override
+	public Page<Map<String, Object>> pageDriverAndVehicleList(String accountId, DriverInfoQueryVo queryVo,
+			int pageIndex, int pageSize) {
+		// 根据状态查询分页信息
+		String status = queryVo.getStatus();
+		if (StringUtils.isBlank(queryVo.getStatus())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "status不能为空");
+		}
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("status", queryVo.getStatus());
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("accountId", accountId);
+
+		params.put("source", DataSource.VLORRY.getCode());
+		if (StringUtils.isNotBlank(queryVo.getKeyWord())) {
+			params.put("keyWord", queryVo.getKeyWord());
+		}
+		if (StringUtils.isNotBlank(queryVo.getPlateNumber())) {
+			params.put("plateNumber", queryVo.getPlateNumber());
+		}
+		if (StringUtils.isNotBlank(queryVo.getRealName())) {
+			params.put("realName", queryVo.getRealName());
+		}
+		if (StringUtils.isNotBlank(queryVo.getTelphone())) {
+			params.put("telphone", queryVo.getTelphone());
+		}
+
+		Page<Map<String, Object>> result = null;
+		if (Global.STATUS_PASSED.toString().equals(status)) {
+			// 审核通过的查询正式表
+			result = realVehicleExtDao.pageVehicleList(params, pageIndex, pageSize);
+			for (Map<String, Object> map : result.getRows()) {
+				String vehicleInfoId = (String) map.get("vehicleInfoId");
+				String platNumber = (String) map.get("plateNumber");
+				List<Map<String, Object>> drivers = realDriverExtDao.getDriverList(vehicleInfoId, accountId);
+				map.put("driverList", drivers);
+				boolean canEdit = vehicleService.canEdit(status, platNumber, accountId);
+				map.put("canEdit", canEdit);
+			}
+
+		} else {
+			// 查临时表
+			result = vehicleExtDao.pageVehicleList(params, pageIndex, pageSize);
+			for (Map<String, Object> map : result.getRows()) {
+				String vehicleInfoId = (String) map.get("vehicleInfoId");
+				String platNumber = (String) map.get("plateNumber");
+				List<Map<String, Object>> drivers = driverInfoExtDao.getDriverList(vehicleInfoId, accountId);
+				map.put("driverList", drivers);
+				boolean canEdit = vehicleService.canEdit(status, platNumber, accountId);
+				map.put("canEdit", canEdit);
+			}
+
+		}
+
+		return result;
+	}
+
+	public List<Map<String, Object>> getDrivers(Map<String, Object> map, String vehicleInfoId, String accountId,
+			String flag) {
+		List<Map<String, Object>> data = null;
+		if ("temp".equals(flag)) {
+			data = driverInfoExtDao.getDriverList(vehicleInfoId, accountId);
+		} else {
+			data = realDriverExtDao.getDriverList(vehicleInfoId, accountId);
+		}
+		return data;
+	}
+
+	/**
+	 * 获取司机和车辆信息
+	 */
+	@Override
+	public VehicleInfoVo getDriverAndVehicleInfo(String vehicleInfoId, String accountId) {
+		// 查看临时中间表数据
+		RealVehicleInfo vehicleInfo = realVehicleDao.get(vehicleInfoId);
+
+		VehicleInfoVo vehicleInfoVo = null;
+
+		if (!ValidateUtils.isEmpty(vehicleInfo)) {
+			// 查正式表信息
+			vehicleInfoVo = getRealDriverAndVehicleInfo(vehicleInfoId, accountId);
+		} else {
+			// 查临时表信息
+			vehicleInfoVo = getTempDriverAndVehicleInfo(vehicleInfoId, accountId);
+		}
+
+		return vehicleInfoVo;
+	}
+
+	/**
+	 * 获取司机车辆线路临时表信息
+	 */
+	public VehicleInfoVo getTempDriverAndVehicleInfo(String vehicleInfoId, String accountId) {
+		VehicleInfo vehicleInfo = vehicleDao.get(vehicleInfoId);
+		VehicleValidator.valid_exist(!ValidateUtils.isEmpty(vehicleInfo));
+		VehicleInfoVo vehicleInfoVo = beanMapper.map(vehicleInfo, VehicleInfoVo.class);
+
+		boolean canEdit = true;
+		// 判断该车辆当前是否允许编辑
+		// 如果从临时表查出状态为审核通过，则不允许编辑（防止开多个页面导致审批通过后还通过原车辆ID进行修改）
+		if (Global.STATUS_PASSED.toString().equals(vehicleInfo.getStatus())) {
+			canEdit = false;
+		} else {
+			canEdit = vehicleService.canEdit(vehicleInfo.getStatus(), vehicleInfo.getPlateNumber(), accountId);
+		}
+		vehicleInfoVo.setCanEdit(canEdit);
+
+		// 获取车辆附加信息
+		VehiclePlusInfo vehiclePlusInfo = vehiclePlusInfoDao.get(vehicleInfoId);
+		if (vehiclePlusInfo != null) {
+			beanMapper.map(vehiclePlusInfo, vehicleInfoVo);
+		}
+
+		// 查询司机列表
+		List<Map<String, Object>> drivers = driverInfoExtDao.getDriverList(vehicleInfoId, accountId);
+		List<DriverInfoVo> driverList = new ArrayList<DriverInfoVo>();
+
+		for (Map<String, Object> map : drivers) {
+			DriverInfoVo driverInfoVo = beanMapper.map(map, DriverInfoVo.class);
+			// //查询线路信息
+			// List<Map<String, Object>> lines =
+			// lineService.getLineList(accountId,
+			// driverInfoVo.getDriverInfoId());
+			// List<LineInfoVo> lineList = new ArrayList<LineInfoVo>();
+			// for(Map<String,Object> lineMap : lines) {
+			// LineInfoVo lineVo = beanMapper.map(lineMap, LineInfoVo.class);
+			// lineList.add(lineVo);
+			// }
+			// driverInfoVo.setLineList(lineList);
+			driverList.add(driverInfoVo);
+		}
+
+		vehicleInfoVo.setDriverList(driverList);
+
+		return vehicleInfoVo;
+	}
+
+	/**
+	 * 获取司机和车辆正式表信息
+	 */
+	public VehicleInfoVo getRealDriverAndVehicleInfo(String vehicleInfoId, String accountId) {
+		// 获取车辆信息
+		RealVehicleInfo vehicleInfo = realVehicleDao.get(vehicleInfoId);
+		VehicleValidator.valid_exist(!ValidateUtils.isEmpty(vehicleInfo));
+		VehicleInfoVo vehicleInfoVo = beanMapper.map(vehicleInfo, VehicleInfoVo.class);
+
+		// 判断该车辆当前是否允许编辑
+		boolean canEdit = vehicleService.canEdit(vehicleInfo.getStatus(), vehicleInfo.getPlateNumber(), accountId);
+
+		vehicleInfoVo.setCanEdit(canEdit);
+
+		// 获取车辆附加信息
+		RealVehiclePlusInfo vehiclePlusInfo = realVehiclePlusInfoDao.get(vehicleInfoId);
+		if (vehiclePlusInfo != null) {
+			beanMapper.map(vehiclePlusInfo, vehicleInfoVo);
+		}
+
+		// 查询司机列表
+		List<Map<String, Object>> drivers = realDriverExtDao.getDriverList(vehicleInfoId, accountId);
+		List<DriverInfoVo> driverList = new ArrayList<DriverInfoVo>();
+		for (Map<String, Object> map : drivers) {
+			DriverInfoVo driverInfoVo = beanMapper.map(map, DriverInfoVo.class);
+			// //查询线路信息
+			// List<Map<String, Object>> lines =
+			// lineService.getLineList(accountId,
+			// driverInfoVo.getDriverInfoId());
+			// List<LineInfoVo> lineList = new ArrayList<LineInfoVo>();
+			// for(Map<String,Object> lineMap : lines) {
+			// LineInfoVo lineVo = beanMapper.map(lineMap, LineInfoVo.class);
+			// lineList.add(lineVo);
+			// }
+			// driverInfoVo.setLineList(lineList);
+			driverList.add(driverInfoVo);
+		}
+
+		vehicleInfoVo.setDriverList(driverList);
+
+		return vehicleInfoVo;
+	}
+
+	// /**
+	// * 司机唯一性校验
+	// */
+	// @Override
+	// public boolean driverExistValidator(String idno, String accountId, String
+	// driverInfoId) {
+	// if (StringUtils.isNotBlank(driverInfoId)) {
+	// // 如果修改司机信息时做唯一性校验，需要传driverInfoId,看是否修改的司机已存在
+	// Map<String, Object> map = this.getOtherDriverInfo(accountId,
+	// driverInfoId, idno);
+	// if (!ValidateUtils.isEmpty(map)) {
+	// return false;
+	// }
+	// } else {
+	// // 新增的时候，根据账户号和证件号码校验司机唯一性
+	// Map<String, Object> params = new HashMap<String, Object>();
+	// params.put("idno", idno);
+	// params.put("accountId", accountId);
+	// params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+	// List<Map<String, Object>> driverList = driverDao.find(params);
+	// return !ValidateUtils.isEmpty(driverList);
+	// }
+	// return true;
+	// }
+
+	// 获取当前司机是否已存在
+	public Map<String, Object> getOtherDriverInfo(String accountId, String driverInfoId, String idno) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("accountId", accountId);
+		params.put("driverInfoId", driverInfoId);
+		params.put("idno", idno);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		Map<String, Object> driverMap = driverInfoExtDao.getOtherDriverInfo(params);
+		return driverMap;
+	}
+
+	@Override
+	public boolean remove(String driverInfoId, String accountId) {
+		RealDriverInfo realDriverinfo = realDriverDao.get(driverInfoId);
+		if (!ValidateUtils.isEmpty(realDriverinfo)) {
+			realDriverinfo.setUpdatedBy(accountId);
+			realDriverinfo.setIsDeleted(Global.ISDEL_DELETE.toString());
+			realDriverDao.updateSelective(realDriverinfo);
+		} else {
+			DriverInfo driverInfo = driverDao.get(driverInfoId);
+			DriverValidate.valid_not_exist(driverInfo);
+			driverInfo.setUpdatedBy(accountId);
+			driverInfo.setIsDeleted(Global.ISDEL_DELETE.toString());
+			driverDao.updateSelective(driverInfo);
+		}
+		return true;
+	}
+
+	/**
+	 * 验证当前账户当前车辆下是否有待审核的司机
+	 * 
+	 * @param status
+	 * @param idno
+	 * @param accountId
+	 * @param plateNumber
+	 * @return
+	 */
+	public boolean hasWaitDriver(String idno, String accountId, String plateNumber) {
+		boolean canEdit = false;
+
+		// 根据车牌号,账户ID,司机身份证号码查询当前账户车下面的司机是否有待审核的记录
+		List<Map<String, Object>> drivers = driverInfoExtDao.getDriverWaitList(plateNumber, accountId, idno);
+		if (!ValidateUtils.isEmpty(drivers)) {
+			canEdit = true;
+		}
+		return canEdit;
+	}
+
+	public void driverExistValidat(String driverInfoId) {
+		RealDriverInfo realDriverInfo = realDriverDao.get(driverInfoId);
+		if (ValidateUtils.isEmpty(realDriverInfo)) {
+			DriverInfo driverInfo = driverDao.get(driverInfoId);
+			DriverValidate.valid_not_exist(driverInfo);
+		}
+
+	}
+
+	@Override
+	public boolean isPendingAudit(String plateNumber, String accountId) {
+		boolean isPendingAudit = true;
+		boolean canEdit = vehicleService.canEdit("", plateNumber, accountId);
+		if(canEdit) {
+			isPendingAudit = false;
+		}
+		return isPendingAudit;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDriverAndVehicleListByAccountId(String accountId) {
+		
+		return realvehicleDriverExtInfoDao.getDriverAndVehicleListByAccountId(accountId);
+	}
+
+	@Override
+	public DriverInfoVo getCBSDriverInfo(String accountId) {
+		AgentInfo agentInfo = agentDao.get(accountId);
+		AgentValidate.valid_not_exist(agentInfo);
+		Map<String,Object> driveMap = getRealDriverByIdno(agentInfo.getIdno());
+		DriverInfoVo vo = beanMapper.map(driveMap, DriverInfoVo.class);
+		return vo;
+	}
+
+	private Map<String, Object> getRealDriverByIdno(String idno) {
+		Map<String,Object> params = Maps.newHashMap();
+		params.put("idno", idno);
+		params.put("source", DataSource.PLATFORM.getCode());
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		List<Map<String,Object>> list = realDriverDao.find(params);
+		DriverValidate.valid_not_exist(ValidateUtils.isEmpty(list));
+		return list.get(0);
+	}
+
+	@Override
+	public Page<Map<String, Object>> pageUsableDriverAndVehicleList(String accountId, int pageIndex, int pageSize) {
+		Map<String,Object> params = Maps.newHashMap();
+		params.put("accountId",	accountId);
+		params.put("useStatus", UsedInfoHis.UNUSED);
+		params.put("source", DataSource.VLORRY.getCode());
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		
+		return realVehicleExtDao.pageUsableDriverAndVehicleList(params, pageIndex, pageSize);
+	}
+
+	@Override
+	public DriverInfoVo getDriverInfo(String driverInfoId) {
+		DriverValidate.valid_driver_id(driverInfoId);
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("source", DataSource.VLORRY.getCode());
+		params.put("driverInfoId", driverInfoId);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		
+		List<Map<String, Object>> lists = null;
+		//先查正式表
+		lists = realDriverDao.find(params);
+		if(CollectionUtils.isEmpty(lists)) {
+			//查临时表
+			lists = driverDao.find(params);
+		}
+		
+		//验证司机是否存在
+		DriverValidate.valid_not_exist(CollectionUtils.isEmpty(lists));
+		
+		Map<String, Object> driverMap = lists.get(0);
+		DriverInfoVo driverInfoVo = beanMapper.map(driverMap, DriverInfoVo.class);
+		
+		return driverInfoVo;
+	}
+}

@@ -1,0 +1,102 @@
+package com.gzzhwl.admin.payables.controller;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.text.ParseException;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
+
+import com.gzzhwl.admin.contract.service.ContractService;
+import com.gzzhwl.admin.payables.service.PayablesService;
+import com.gzzhwl.admin.payables.vo.PayContractQueryVo;
+import com.gzzhwl.admin.payables.vo.PayStatementQueryVo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.security.annotation.RequirePerm;
+import com.gzzhwl.rest.security.utils.SecurityUtils;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+import com.gzzhwl.rest.springmvc.utils.WebRequestResolve;
+
+@RestController
+@RequestMapping("/admin/payables")
+public class PayablesController {
+	
+	@Autowired
+	private ContractService contractService;
+	
+	@Autowired
+	private PayablesService payablesService;
+	
+	/**
+	 * 应付查询
+	 * @param vo
+	 * @param page
+	 * @return
+	 */
+	@RequestMapping(value = "/pagePayablesList", method = RequestMethod.GET)
+	public ResponseModel pagePayablesList(PayContractQueryVo vo, @Pagination PageParameter page) {
+		Page<Map<String, Object>> resPage = contractService.pagePayContractList(vo, page.getPageIndex(), page.getPageSize());
+		return new ResponseModel(resPage);
+	}
+	
+	/**
+	 * 应付详情
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/getPayDetail", method = RequestMethod.GET)
+	public ResponseModel getPayDetail(@RequestParam(required=true)String contractId) {
+		Map<String, Object> resMap = payablesService.getPayDetail(contractId);
+		return new ResponseModel(resMap);
+	}
+	
+	/**
+	 * 应付审核
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/verifyPayables", method = RequestMethod.POST)
+	public ResponseModel verifyPayables(@RequestParam(required=true)String contractId) {
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		payablesService.verifyPayables(contractId, staffId);
+		return new ResponseModel(null);
+	}
+	
+	/**
+	 * 导出文件名 @throws IOException @throws
+	 * 
+	 * @throws ParseException
+	 * @throws IOException
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/export", method = RequestMethod.POST)
+	public void exportPayStatement(PayStatementQueryVo vo, WebRequest request, HttpServletResponse response)
+			throws ParseException, IOException {
+		// String staffId = SecurityUtils.getSubject().getStaffId();
+
+		String fileName = payablesService.getFileName(vo) + ".xlsx";
+		// System.out.println(fileName);
+		response.reset();
+		response.setContentType("application/vnd.ms-excel");
+		boolean isIE = WebRequestResolve.isIE(request);
+		String name = StringUtils.replace(fileName, ",", "_");
+		if (isIE) {
+			response.setHeader("Content-Disposition", "filename=\"" + URLEncoder.encode(name, "UTF-8") + "\"");
+		} else {
+			response.setHeader("Content-disposition", "filename=" + new String(name.getBytes("utf-8"), "iso8859-1"));
+		}
+		
+		payablesService.exportPayStatement(payablesService.getPayStatementList(vo), response.getOutputStream());
+	}
+	
+}

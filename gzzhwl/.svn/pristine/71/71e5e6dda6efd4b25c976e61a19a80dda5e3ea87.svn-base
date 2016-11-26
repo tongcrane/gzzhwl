@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.AgreementInfoExtDao">
+
+	<resultMap id="agreementInfoResultMap" type="AgreementInfo">
+		<id property="agreementId" column="agreement_id" />
+		<result property="customerId" column="customer_id" />
+		<result property="startCodeP" column="start_code_p" />
+		<result property="startCodeC" column="start_code_c" />
+		<result property="transferCodeP" column="transfer_code_p" />
+		<result property="transferCodeC" column="transfer_code_c" />
+		<result property="endCodeP" column="end_code_p" />
+		<result property="endCodeC" column="end_code_c" />
+		<result property="carryType" column="carry_type" />
+		<result property="chargeId" column="charge_id" />
+		<result property="unitPrice" column="unit_price" />
+		<result property="lineAttribute" column="line_attribute" />
+		<result property="needType" column="need_type" />
+		<result property="needLength" column="need_length" />
+		<result property="needImportedVehicles" column="need_imported_vehicles" />
+		<result property="needOwnVehicles" column="need_own_vehicles" />
+		<result property="paymentType" column="payment_type" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="executeCycle" column="execute_cycle" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="agreementInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="agreementInfoResultMap"></resultMap>
+
+	<select id="getAgreementsByCustId" parameterType="map" resultMap="findResultMap">
+	   select 
+	     agreement_id,
+	     customer_id,
+	     start_code_p,
+	     start_code_c,
+	     transfer_code_p,
+	     transfer_code_c,
+	     end_code_p,
+	     end_code_c,
+	     carry_type,
+	     charge_id,
+	     unit_price,
+	     line_attribute,
+	     need_type,
+	     need_length,
+	     need_imported_vehicles,
+	     need_own_vehicles,
+	     payment_type,
+	     start_time,
+	     end_time,
+	     execute_cycle,
+	     remark,
+	     status
+	   from zh_agreement_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="custId != null">
+	        and customer_id=#{custId}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

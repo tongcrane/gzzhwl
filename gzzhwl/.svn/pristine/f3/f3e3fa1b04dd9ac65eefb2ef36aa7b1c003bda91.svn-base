@@ -1,0 +1,9 @@
+package com.gzzhwl.api.account.service;
+
+import com.gzzhwl.api.account.vo.AutoRegVO;
+import com.gzzhwl.core.data.model.LoginResultModel;
+import com.gzzhwl.rest.exception.RestException;
+
+public interface AccountService {
+	public LoginResultModel autoRegForYSJ(AutoRegVO autoReg) throws RestException;
+}

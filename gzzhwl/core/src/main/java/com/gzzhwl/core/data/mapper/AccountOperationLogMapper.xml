@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.AccountOperationLogDao">
+
+	<resultMap id="accountOperationLogResultMap" type="AccountOperationLog">
+		<id property="logId" column="log_id" />
+		<result property="accountId" column="account_id" />
+		<result property="srcStatus" column="src_status" />
+		<result property="destStatus" column="dest_status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="accountOperationLogResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="accountOperationLogResultMap"></resultMap>
+
+	<insert id="insert" parameterType="AccountOperationLog">
+	   insert into zh_account_operation_log (
+	     log_id,
+	     account_id,
+	     src_status,
+	     dest_status,
+	     created_by,
+	     created_time
+	   )values (
+	     #{logId},
+	     #{accountId},
+	     #{srcStatus},
+	     #{destStatus},
+	     #{createdBy},
+	     now()
+	   )
+	</insert>
+
+	<update id="update" parameterType="AccountOperationLog">
+	   update zh_account_operation_log set
+	     log_id=#{logId},
+	     account_id=#{accountId},
+	     src_status=#{srcStatus},
+	     dest_status=#{destStatus},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime}
+	   where 
+	    log_id=#{logId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="AccountOperationLog">
+	   update zh_account_operation_log
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="logId != null">
+		       log_id=#{logId},
+		     </if>
+		     <if test="accountId != null">
+		       account_id=#{accountId},
+		     </if>
+		     <if test="srcStatus != null">
+		       src_status=#{srcStatus},
+		     </if>
+		     <if test="destStatus != null">
+		       dest_status=#{destStatus},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime}
+		     </if>
+	   </trim>
+	
+	   where 
+	    log_id=#{logId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_account_operation_log 
+	   where 
+	    log_id=#{logId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="accountOperationLogResultMap">
+	   select 
+	    log_id,
+	    account_id,
+	    src_status,
+	    dest_status,
+	    created_by,
+	    created_time
+	   from zh_account_operation_log
+	   where 
+	    log_id=#{logId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    log_id,
+	    account_id,
+	    src_status,
+	    dest_status,
+	    created_by,
+	    created_time
+	   from zh_account_operation_log
+	   where 
+	    log_id=#{logId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     log_id,
+	     account_id,
+	     src_status,
+	     dest_status,
+	     created_by,
+	     created_time
+	   from zh_account_operation_log
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="logId != null">
+	        log_id=#{logId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="srcStatus != null">
+	        and src_status=#{srcStatus}
+	     </if>
+	     <if test="destStatus != null">
+	        and dest_status=#{destStatus}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     log_id,
+	     account_id,
+	     src_status,
+	     dest_status,
+	     created_by,
+	     created_time
+	   from zh_account_operation_log
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="logId != null">
+	        log_id=#{logId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="srcStatus != null">
+	        and src_status=#{srcStatus}
+	     </if>
+	     <if test="destStatus != null">
+	        and dest_status=#{destStatus}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

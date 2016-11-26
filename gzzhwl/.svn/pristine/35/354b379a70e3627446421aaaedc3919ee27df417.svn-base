@@ -1,0 +1,71 @@
+package com.gzzhwl.core.data.extdao.impl;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.gzzhwl.core.constant.RemarkType;
+import com.gzzhwl.core.data.extdao.RemarkInfoExtDao;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+
+/**
+ * 数据访问接口
+ * @author mew
+ *
+ */
+@Repository
+public class RemarkInfoExtDaoImpl implements RemarkInfoExtDao {
+	@Autowired	
+	private DaoSupport dao;
+
+	@Override
+	public <T, K, V> List<T> getSourceRecordList(String targetId) {
+		
+		Map<String,Object> parameter = new HashMap<>();
+		
+		parameter.put("target_id", targetId);
+		parameter.put("remarkType", RemarkType.SOURCE.getCode());
+		
+		return dao.find(PREFIX + ".getSourceRecordList", parameter);
+	}
+
+
+	@Override
+	public <T, K, V> List<T> getOrderRecordList(String targetId) {
+		
+		Map<String,Object> parameter = new HashMap<>();
+		
+		parameter.put("target_id", targetId);
+		parameter.put("remarkType", RemarkType.ORDER.getCode());
+		
+		return dao.find(PREFIX + ".getOrderRecordList", parameter);
+	}
+
+
+	@Override
+	public <T, K, V> List<T> getLoadRecordList(String targetId) {
+		
+		Map<String,Object> parameter = new HashMap<>();
+		
+		parameter.put("target_id", targetId);
+		
+		return dao.find(PREFIX + ".getLoadRecordList", parameter);
+	}
+
+
+	@Override
+	public <T, K, V> List<T> getLoadRecordList(String targetId, String[] statusArray) {
+		
+		Map<String,Object> parameter = new HashMap<>();
+		parameter.put("target_id", targetId);
+		parameter.put("statusArray", statusArray);
+		
+		return dao.find(PREFIX + ".getLoadRecordList", parameter);
+	}
+}
+
+

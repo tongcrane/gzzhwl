@@ -1,0 +1,153 @@
+package com.gzzhwl.core.data.extdao.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.gzzhwl.core.constant.ConsignType;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.data.extdao.OrderLoadInfoExtDao;
+import com.gzzhwl.core.data.model.LoadDriverInfo;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+import com.gzzhwl.core.page.Page;
+
+@Repository
+public class OrderLoadInfoExtDaoImpl implements OrderLoadInfoExtDao {
+	@Autowired
+	private DaoSupport dao;
+
+	@Override
+	public <E, K, V> Page<E> pageTripList(Map<K, V> params, int currentPage, int pageSizes) {
+		return dao.page(PREFIX + ".pageTripList", params, currentPage, pageSizes);
+	}
+
+	@Override
+	public Map<String, Object> getTripDetail(String loadId, String consignId) {
+
+		Map<String, Object> params = new HashMap<>();
+		params.put("loadId", loadId);
+		params.put("consignId", consignId);
+		return dao.get(PREFIX + ".getTripDetail", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> getTripDrivers(String loadId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("loadId", loadId);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		return dao.find(PREFIX + ".getLoadDrivers", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> getLoadInfoByOrderId(Map<String, Object> params) {
+		return dao.find(PREFIX + ".getLoadInfoByOrderId", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> getFieldControlList(String addrId, String keyWord, String timeStamp) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("addrId", addrId);
+		if (StringUtils.isNotBlank(keyWord)) {
+			params.put("keyWord", keyWord);
+		}
+
+		params.put("consignStatus", ConsignType.CONSIGNNORMAL.getCode());
+		// 待配载，已配载，已取消和已发车的不用查出来
+		params.put("statusArray", new String[] { LoadBillType.NOTVEHICLE.toString(),
+				LoadBillType.VEHICLECHECK.toString(), LoadBillType.CLOSETOSURFACE.toString() });
+		params.put("timeStamp", timeStamp);
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("type", OrderLoadInfo.LOAD_BILL.toString());
+		return dao.find(PREFIX + ".getFieldControlList", params);
+	}
+
+	@Override
+	public <K, V> Map<K, V> getLoadMajorDriver(Map<K, V> params) {
+		return dao.get(PREFIX + ".getMajorDriver", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> getFieldControlHis(Map<K, V> params) {
+		return dao.find(PREFIX + ".getFieldControlHis", params);
+	}
+
+	@Override
+	public <K, V> Map<K, V> getLoadVehicleDetail(Map<K, V> params) {
+		return dao.get(PREFIX + ".getLoadVehicleDetail", params);
+	}
+
+	@Override
+	public <E, K, V> Page<E> pageArriveList(Map<K, V> params, int currentPage, int pageSizes) {
+		return dao.page(PREFIX + ".pageArriveList", params, currentPage, pageSizes);
+	}
+
+	@Override
+	public <E, K, V> Page<E> pageReceiptList(Map<String, Object> params, int currentPage, int pageSize) {
+
+		params.put("agreementType", OrderLoadInfo.DRIVER_CONTRACT_BILL);
+		params.put("dataType", OrderLoadInfo.LOAD_BILL);
+		params.put("checkStatus", Global.STATUS_PASSED.toString());
+		params.put("isDeleted", Global.ISDEL_DELETE.toString());
+		params.put("statusArray", new String[] { LoadBillType.PRINTRECEIPT.getCode(), LoadBillType.CLOSED.getCode() });
+
+		return dao.page(PREFIX + ".pageReceiptList", params, currentPage, pageSize);
+	}
+
+	@Override
+	public Integer getDriverOrderCount(String accountId, String[] statusArray,DataSource source) {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("accountId", accountId);
+		params.put("statusArray", statusArray);
+		params.put("isMajor", LoadDriverInfo.MAJOR_YES);
+		params.put("type", OrderLoadInfo.LOAD_BILL);
+		params.put("source", source.getCode());
+
+		return dao.get(PREFIX + ".getDriverOrderCount", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> getDriverOrderList(String idno, String[] statusArray,DataSource source) {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("idno", idno);
+		params.put("statusArray", statusArray);
+		params.put("isMajor", LoadDriverInfo.MAJOR_YES);
+		params.put("type", OrderLoadInfo.LOAD_BILL.toString());
+		params.put("source", source.getCode());
+
+		return dao.find(PREFIX + ".getDriverOrderList", params);
+	}
+
+	@Override
+	public <K, V> Map<K, V> getDriverOrderDetail(String loadId, String idno) {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("isMajor", LoadDriverInfo.MAJOR_YES);
+		params.put("type", OrderLoadInfo.LOAD_BILL.toString());
+		params.put("loadId", loadId);
+		params.put("idno", idno);
+
+		return dao.get(PREFIX + ".getDriverOrderDetail", params);
+	}
+
+	@Override
+	public OrderLoadInfo getForUpdate(String loadId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("loadId", loadId);
+		return dao.get(PREFIX + ".getForUpdate", params);
+	}
+
+	@Override
+	public long isMajorDriver(Map<String, Object> params) {
+		return dao.get(PREFIX + ".isMajorDriver", params);
+	}
+
+}

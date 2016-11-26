@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.OrderSourceInfoDao">
+
+	<resultMap id="orderSourceInfoResultMap" type="OrderSourceInfo">
+		<id property="sourceId" column="source_id" />
+		<result property="infoId" column="info_id" />
+		<result property="startCodeP" column="start_code_p" />
+		<result property="startCodeC" column="start_code_c" />
+		<result property="endCodeP" column="end_code_p" />
+		<result property="endCodeC" column="end_code_c" />
+		<result property="needType" column="need_type" />
+		<result property="needLength" column="need_length" />
+		<result property="needArriveTime" column="need_arrive_time" />
+		<result property="needDriverNum" column="need_driver_num" />
+		<result property="miles" column="miles" />
+		<result property="level" column="level" />
+		<result property="estimatedPrice" column="estimated_price" />
+		<result property="transitRequire" column="transit_require" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="remark" column="remark" />
+		<result property="rejectReason" column="reject_reason" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="orderSourceInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="orderSourceInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="OrderSourceInfo">
+	   insert into zh_order_source_info (
+	     source_id,
+	     info_id,
+	     start_code_p,
+	     start_code_c,
+	     end_code_p,
+	     end_code_c,
+	     need_type,
+	     need_length,
+	     need_arrive_time,
+	     need_driver_num,
+	     miles,
+	     level,
+	     estimated_price,
+	     transit_require,
+	     start_time,
+	     end_time,
+	     remark,
+	     reject_reason,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   )values (
+	     #{sourceId},
+	     #{infoId},
+	     #{startCodeP},
+	     #{startCodeC},
+	     #{endCodeP},
+	     #{endCodeC},
+	     #{needType},
+	     #{needLength},
+	     #{needArriveTime},
+	     #{needDriverNum},
+	     #{miles},
+	     #{level},
+	     #{estimatedPrice},
+	     #{transitRequire},
+	     #{startTime},
+	     #{endTime},
+	     #{remark},
+	     #{rejectReason},
+	     #{status},
+	     #{createdBy},
+	     now(),
+	     #{updatedBy},
+	     now(),
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="OrderSourceInfo">
+	   update zh_order_source_info set
+	     source_id=#{sourceId},
+	     info_id=#{infoId},
+	     start_code_p=#{startCodeP},
+	     start_code_c=#{startCodeC},
+	     end_code_p=#{endCodeP},
+	     end_code_c=#{endCodeC},
+	     need_type=#{needType},
+	     need_length=#{needLength},
+	     need_arrive_time=#{needArriveTime},
+	     need_driver_num=#{needDriverNum},
+	     miles=#{miles},
+	     level=#{level},
+	     estimated_price=#{estimatedPrice},
+	     transit_require=#{transitRequire},
+	     start_time=#{startTime},
+	     end_time=#{endTime},
+	     remark=#{remark},
+	     reject_reason=#{rejectReason},
+	     status=#{status},
+	     updated_by=#{updatedBy},
+	     updated_time=now(),
+	     is_deleted=#{isDeleted}
+	   where 
+	    source_id=#{sourceId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="OrderSourceInfo">
+	   update zh_order_source_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="sourceId != null">
+		       source_id=#{sourceId},
+		     </if>
+		     <if test="infoId != null">
+		       info_id=#{infoId},
+		     </if>
+		     <if test="startCodeP != null">
+		       start_code_p=#{startCodeP},
+		     </if>
+		     <if test="startCodeC != null">
+		       start_code_c=#{startCodeC},
+		     </if>
+		     <if test="endCodeP != null">
+		       end_code_p=#{endCodeP},
+		     </if>
+		     <if test="endCodeC != null">
+		       end_code_c=#{endCodeC},
+		     </if>
+		     <if test="needType != null">
+		       need_type=#{needType},
+		     </if>
+		     <if test="needLength != null">
+		       need_length=#{needLength},
+		     </if>
+		     <if test="needArriveTime != null">
+		       need_arrive_time=#{needArriveTime},
+		     </if>
+		     <if test="needDriverNum != null">
+		       need_driver_num=#{needDriverNum},
+		     </if>
+		     <if test="miles != null">
+		       miles=#{miles},
+		     </if>
+		     <if test="level != null">
+		       level=#{level},
+		     </if>
+		     <if test="estimatedPrice != null">
+		       estimated_price=#{estimatedPrice},
+		     </if>
+		     <if test="transitRequire != null">
+		       transit_require=#{transitRequire},
+		     </if>
+		     <if test="startTime != null">
+		       start_time=#{startTime},
+		     </if>
+		     <if test="endTime != null">
+		       end_time=#{endTime},
+		     </if>
+		     <if test="remark != null">
+		       remark=#{remark},
+		     </if>
+		     <if test="rejectReason != null">
+		       reject_reason=#{rejectReason},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		       updated_time=now(),
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    source_id=#{sourceId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_order_source_info 
+	   where 
+	    source_id=#{sourceId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="orderSourceInfoResultMap">
+	   select 
+	    source_id,
+	    info_id,
+	    start_code_p,
+	    start_code_c,
+	    end_code_p,
+	    end_code_c,
+	    need_type,
+	    need_length,
+	    need_arrive_time,
+	    need_driver_num,
+	    miles,
+	    level,
+	    estimated_price,
+	    transit_require,
+	    start_time,
+	    end_time,
+	    remark,
+	    reject_reason,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_order_source_info
+	   where 
+	    source_id=#{sourceId} 
+	</select>
+	
+	<select id="hasBidBegin" parameterType="map" resultType="int">
+	   select count(1)
+		 from zh_order_source_info 
+	  where 
+		source_id = #{sourceId}  <![CDATA[and  start_time < now()  and end_time > now()]]>
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    source_id,
+	    info_id,
+	    start_code_p,
+	    start_code_c,
+	    end_code_p,
+	    end_code_c,
+	    need_type,
+	    need_length,
+	    need_arrive_time,
+	    need_driver_num,
+	    miles,
+	    level,
+	    estimated_price,
+	    transit_require,
+	    start_time,
+	    end_time,
+	    remark,
+	    reject_reason,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_order_source_info
+	   where 
+	    source_id=#{sourceId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     source_id,
+	     info_id,
+	     start_code_p,
+	     start_code_c,
+	     end_code_p,
+	     end_code_c,
+	     need_type,
+	     need_length,
+	     need_arrive_time,
+	     need_driver_num,
+	     miles,
+	     level,
+	     estimated_price,
+	     transit_require,
+	     start_time,
+	     end_time,
+	     remark,
+	     reject_reason,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_order_source_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="sourceId != null">
+	        source_id=#{sourceId}
+	     </if>
+	     <if test="infoId != null">
+	        and info_id=#{infoId}
+	     </if>
+	     <if test="startCodeP != null">
+	        and start_code_p=#{startCodeP}
+	     </if>
+	     <if test="startCodeC != null">
+	        and start_code_c=#{startCodeC}
+	     </if>
+	     <if test="endCodeP != null">
+	        and end_code_p=#{endCodeP}
+	     </if>
+	     <if test="endCodeC != null">
+	        and end_code_c=#{endCodeC}
+	     </if>
+	     <if test="needType != null">
+	        and need_type=#{needType}
+	     </if>
+	     <if test="needLength != null">
+	        and need_length=#{needLength}
+	     </if>
+	     <if test="needArriveTime != null">
+	        and need_arrive_time=#{needArriveTime}
+	     </if>
+	     <if test="needDriverNum != null">
+	        and need_driver_num=#{needDriverNum}
+	     </if>
+	     <if test="miles != null">
+	        and miles=#{miles}
+	     </if>
+	     <if test="level != null">
+	        and level=#{level}
+	     </if>
+	     <if test="estimatedPrice != null">
+	        and estimated_price=#{estimatedPrice}
+	     </if>
+	     <if test="transitRequire != null">
+	        and transit_require=#{transitRequire}
+	     </if>
+	     <if test="startTime != null">
+	        and start_time=#{startTime}
+	     </if>
+	     <if test="endTime != null">
+	        and end_time=#{endTime}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="rejectReason != null">
+	        and reject_reason=#{rejectReason}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     source_id,
+	     info_id,
+	     start_code_p,
+	     start_code_c,
+	     end_code_p,
+	     end_code_c,
+	     need_type,
+	     need_length,
+	     need_arrive_time,
+	     need_driver_num,
+	     miles,
+	     level,
+	     estimated_price,
+	     transit_require,
+	     start_time,
+	     end_time,
+	     remark,
+	     reject_reason,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_order_source_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="sourceId != null">
+	        source_id=#{sourceId}
+	     </if>
+	     <if test="infoId != null">
+	        and info_id=#{infoId}
+	     </if>
+	     <if test="startCodeP != null">
+	        and start_code_p=#{startCodeP}
+	     </if>
+	     <if test="startCodeC != null">
+	        and start_code_c=#{startCodeC}
+	     </if>
+	     <if test="endCodeP != null">
+	        and end_code_p=#{endCodeP}
+	     </if>
+	     <if test="endCodeC != null">
+	        and end_code_c=#{endCodeC}
+	     </if>
+	     <if test="needType != null">
+	        and need_type=#{needType}
+	     </if>
+	     <if test="needLength != null">
+	        and need_length=#{needLength}
+	     </if>
+	     <if test="needArriveTime != null">
+	        and need_arrive_time=#{needArriveTime}
+	     </if>
+	     <if test="needDriverNum != null">
+	        and need_driver_num=#{needDriverNum}
+	     </if>
+	     <if test="miles != null">
+	        and miles=#{miles}
+	     </if>
+	     <if test="level != null">
+	        and level=#{level}
+	     </if>
+	     <if test="estimatedPrice != null">
+	        and estimated_price=#{estimatedPrice}
+	     </if>
+	     <if test="transitRequire != null">
+	        and transit_require=#{transitRequire}
+	     </if>
+	     <if test="startTime != null">
+	        and start_time=#{startTime}
+	     </if>
+	     <if test="endTime != null">
+	        and end_time=#{endTime}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="rejectReason != null">
+	        and reject_reason=#{rejectReason}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="pageSource" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     zosi.source_id
+	   from zh_order_source_info zosi
+	   inner join zh_line_info zli
+	   <if test="!returned">
+	   on zosi.start_code_p = zli.departure_code and zosi.end_code_p = zli.destination_code
+	   </if>
+	   <if test="returned">
+	   on zosi.start_code_p = zli.destination_code and zosi.end_code_p = zli.departure_code
+	   </if>
+	   <if test="lineId != null">
+	   and zli.line_info_id = #{lineId}
+	   </if>
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+		   <if test="needTypeList != null">
+		   		AND zosi.need_type in 
+		   	   <foreach collection="needTypeList" index="index" item="needType" open="(" separator="," close=")">  
+		           #{needType}
+		   	   </foreach>
+		   </if>
+		   <if test="needLengthList != null">
+		   		and zosi.need_length in
+		   	   <foreach collection="needLengthList" index="index" item="needLength" open="(" separator="," close=")">  
+		           #{needLength}
+		   	   </foreach>
+		   </if>
+		   <if test="startCodeCList != null">
+		  	 	and zosi.start_code_c in
+		   	   <foreach collection="startCodeCList" index="index" item="startCodeC" open="(" separator="," close=")">  
+		           #{startCodeC}
+		   	   </foreach>
+		   </if>
+		   <if test="endCodeCList != null">
+		   		and zosi.end_code_c in
+		   	   <foreach collection="endCodeCList" index="index" item="endCodeC" open="(" separator="," close=")">  
+		           #{endCodeC}
+		   	   </foreach>
+		   </if>
+		   <if test="statusList != null">
+		  	 	and zosi.status in 
+			   <foreach collection="statusList" index="index" item="status" open="(" separator="," close=")">  
+		           #{status}
+		   	   </foreach>
+		   </if>
+	   </trim>
+	   <if test="sort != null">
+	   order by zosi.need_arrive_time ${sort}
+	   </if>
+	    <if test="sort == null">
+	   order by zosi.updated_time desc
+	   </if>
+	</select>
+	
+	<select id="pageSourceHall" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     zosi.source_id
+	   from zh_order_source_info zosi
+	   inner join zh_line_info zli
+	   on zosi.start_code_p = zli.departure_code and zosi.end_code_p = zli.destination_code
+	   and zli.line_info_id in (select line_info_id from zh_line_info where account_id=#{accountId} and source='02' and is_deleted='00')
+	   inner join zh_source_base_info zsi
+	   on zsi.info_id = zosi.info_id
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+		   <if test="statusList != null">
+		  	 	and zosi.status in 
+			   <foreach collection="statusList" index="index" item="status" open="(" separator="," close=")">  
+		           #{status}
+		   	   </foreach>
+		   </if>
+		   <if test="queryContent != null">
+		  	 	and zsi.source_no like #{queryContent}
+		   </if>
+	   </trim>
+	   <if test="sort != null">
+	   order by zosi.need_arrive_time ${sort}
+	   </if>
+	    <if test="sort == null">
+	   order by zosi.updated_time desc
+	   </if>
+	</select>
+	
+	
+	<select id="getSourceByOrder" parameterType="map" resultType="string">
+		<![CDATA[
+		select zosi.source_id from zh_order_source_info zosi
+		inner join zh_source_base_info zsbi
+		on zosi.info_id = zsbi.info_id
+		inner join (zh_flow_status zfs
+		inner join zh_flows zf on zfs.flow_id = zf.flow_id and zf.name = #{flowName})
+		on zfs.code = zosi.status
+		where zfs.type = #{statusType} and zsbi.order_id = #{orderId}
+		]]>
+	</select>
+	
+	<select id="getOrderBySource" parameterType="map" resultMap="com.gzzhwl.core.data.dao.OrderDetailInfoDao.orderDetailInfoResultMap">
+		<![CDATA[
+		SELECT
+			zodi.order_id,
+			zodi.order_no,
+			zodi.info_id,
+			zodi.goods_weight,
+			zodi.goods_volume,
+			zodi. STATUS,
+			zodi.created_by,
+			zodi.created_time,
+			zodi.updated_by,
+			zodi.updated_time,
+			zodi.is_deleted
+		FROM
+			zh_order_source_info zosi
+		INNER JOIN (
+			zh_source_base_info zsbi
+			INNER JOIN zh_order_detail_info zodi ON zodi.order_id = zsbi.order_id
+		) ON zosi.info_id = zsbi.info_id
+		WHERE
+			source_id = #{sourceId}
+		]]>
+	</select>
+	
+	<select id="findSourceClose" parameterType="map" resultType="string">
+		<![CDATA[
+		select source_id from zh_order_source_info where status = #{status} and end_time <= NOW()
+		]]>
+	</select>
+</mapper> 

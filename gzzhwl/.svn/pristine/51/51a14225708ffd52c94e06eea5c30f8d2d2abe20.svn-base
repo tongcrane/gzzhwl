@@ -1,0 +1,61 @@
+package com.gzzhwl.admin.load.vo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.gzzhwl.core.utils.JacksonJsonMapper;
+
+public class LoadFeedbackListVo {
+	
+	private List<LoadFeedbackVo> LoadFeedbackList;
+
+	public List<LoadFeedbackVo> getLoadFeedbackList() {
+		return LoadFeedbackList;
+	}
+
+	public void setLoadFeedbackList(List<LoadFeedbackVo> loadFeedbackList) {
+		LoadFeedbackList = loadFeedbackList;
+	}
+	
+	public static void main(String[] args) {
+		
+		LoadFeedbackVo loaffeed = new LoadFeedbackVo();
+		loaffeed.setItemDesc("测试一下啦");
+		loaffeed.setItemName("反馈异常");
+		loaffeed.setItemPrice("100.00");
+		loaffeed.setLoadId("132131321321");
+		loaffeed.setType("02");
+		loaffeed.setStatus("01");
+
+		List<String> imageIdList1 = new ArrayList<>();
+		imageIdList1.add("11111");
+		imageIdList1.add("2222");
+		
+		loaffeed.setImageIdList(imageIdList1);
+
+		
+		LoadFeedbackVo loaffeed2 = new LoadFeedbackVo();
+		loaffeed2.setItemDesc("测试一下啦");
+		loaffeed2.setItemName("反馈异常");
+		loaffeed2.setItemPrice("100.00");
+		loaffeed2.setLoadId("132131321321");
+		loaffeed2.setType("02");
+		loaffeed2.setStatus("01");
+		
+		List<String> imageIdList2 = new ArrayList<>();
+		imageIdList2.add("3333");
+		imageIdList2.add("4444");
+		
+		loaffeed2.setImageIdList(imageIdList2);
+		
+		List<LoadFeedbackVo> LoadFeedbackList = new ArrayList<>();
+		
+		LoadFeedbackList.add(loaffeed);
+		LoadFeedbackList.add(loaffeed2);
+		
+		System.out.println(JacksonJsonMapper.objectToJson(LoadFeedbackList));
+	}
+	
+	
+
+}

@@ -1,0 +1,106 @@
+package com.gzzhwl.api.account.validate;
+
+import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import com.gzzhwl.api.account.vo.Line;
+import com.gzzhwl.api.vehicle.vo.VehicleInfoVo;
+import com.gzzhwl.core.constant.AgentType;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.data.model.AccountInfo;
+import com.gzzhwl.core.data.model.InternalDriver;
+import com.gzzhwl.rest.exception.RestException;
+
+public class LoginInfoValidator {
+
+	public static void valid_exists(boolean exists) throws RestException {
+		if (exists) {
+			throw new RestException("11017", "该用户已存在");// 该用户已存在
+		}
+	}
+
+	public static void valid_not_exists(AccountInfo accountInfo) throws RestException {
+		if (accountInfo == null) {
+			throw new RestException("11018", "该用户不存在");
+		}
+	}
+
+	public static void valid_loginInfo(AccountInfo accountInfo, String password, DataSource logSource) {
+		valid_not_exists(accountInfo);
+		String loginPassword = accountInfo.getPassword();
+		if (!StringUtils.equals(password, loginPassword)) {
+			throw new RestException("11023", "密码不正确");
+		}
+
+		String isDel = accountInfo.getIsDeleted();
+		if (StringUtils.equals(isDel, Global.ISDEL_DELETE.toString())) {
+			throw new RestException("11024", "该用户已被删除");
+		}
+		String status = accountInfo.getStatus();
+		if (StringUtils.equals(status, Global.STATUS_FROZEN.toString())) {
+			throw new RestException("11025", "用户状态异常");
+		}
+		String isStaff = accountInfo.getIsStaff();
+		if (logSource == DataSource.VLORRY) {// 运势界司机登录
+			if (StringUtils.equals(isStaff, InternalDriver.YES)) {//
+				throw new RestException("11026", "账户不存在");// 内部司机不能登录运势界
+			}
+		} else {// 内部司机登录
+			if (!StringUtils.equals(isStaff, InternalDriver.YES)) {//
+				throw new RestException("11026", "账户不存在");// 运势界司机不能登录内部司机
+			}
+		}
+	}
+
+	public static void valid_cellphone(boolean cellPhoneExists) throws RestException {
+		if (cellPhoneExists) {
+			throw new RestException("11002", "手机号已存在");// 手机号已存在
+		}
+	}
+
+	public static void valid_password_length(String password) {
+		if (password.length() < 6) {
+			throw new RestException("11031", "您设置的密码过于简单，为了您的账户安全，请重新设置密码");
+		} else if (password.length() > 16) {
+			throw new RestException("11032", "您设置的密码过长，请重新设置密码");
+		}
+	}
+
+	public static void valid_changePassword(String oldPassword, String newPassword, String loginPassword)
+			throws RestException {
+		if (!StringUtils.equals(oldPassword, loginPassword)) {
+			throw new RestException("11023", "原密码错误");// 原密码错误
+		}
+		if (oldPassword.equals(newPassword)) {
+			throw new RestException("11033", "新密码不能和原密码相同");
+		}
+	}
+
+	public static void valid_line(List<Line> lineList) {
+		if (CollectionUtils.isEmpty(lineList)) {
+			throw new RestException("11034", "请添加至少一条常跑线路");
+		}
+		if (CollectionUtils.size(lineList) > 5) {
+			throw new RestException("11035", "常跑线路最多只能保存5条");
+		}
+
+	}
+
+	public static void valid_vehicle(List<VehicleInfoVo> vehicleList, String agentType) {
+
+		if (AgentType.PERSONAL.getCode().equals(agentType)) {
+			if (CollectionUtils.isEmpty(vehicleList)) {
+				throw new RestException("11036", "请添加至少一个车辆信息");
+			}
+		} else {
+			if (CollectionUtils.size(vehicleList) < 2) {
+				throw new RestException("11036", "请添加至少两个车辆信息");
+			}
+		}
+
+	}
+
+}

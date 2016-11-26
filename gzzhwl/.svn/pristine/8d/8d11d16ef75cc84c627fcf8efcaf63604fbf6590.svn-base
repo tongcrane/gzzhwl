@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.LoadFeedbackLogExtDao">
+
+	<resultMap id="loadFeedbackLogResultMap" type="LoadFeedbackLog">
+		<id property="feedbackId" column="feedback_id" />
+		<result property="loadId" column="load_id" />
+		<result property="type" column="type" />
+		<result property="itemName" column="item_name" />
+		<result property="itemPrice" column="item_price" />
+		<result property="itemDesc" column="item_desc" />
+		<result property="feedbackTime" column="feedback_time" />
+		<result property="longitude" column="longitude" />
+		<result property="latitude" column="latitude" />
+		<result property="address" column="address" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="realName" column="real_name" />
+		<result property="position" column="position" />
+		<result property="endTime" column="end_time" />
+		<result property="isEnd" column="is_end" />
+		<result property="isException" column="is_exception" />
+		<result property="speed" column="speed" />
+		<collection notNullColumn="feedback_id" property="atta" ofType="map" javaType="java.util.List"  resultMap="loadFeedbackAttaResultMap" columnPrefix="atta_"/>
+	</resultMap>
+	
+	<resultMap id="loadFeedbackAttaResultMap" type="LoadFeedbackAtta">
+		<id property="attaId" column="atta_id" />
+		<result property="feedbackId" column="feedback_id" />
+		<result property="fileId" column="file_id" />
+	</resultMap>
+	
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="loadFeedbackLogResultMap"></resultMap>
+	
+	<resultMap id="feedbackLogMap"  type="java.util.HashMap">
+		<id property="feedbackId" column="feedback_id" />
+		<result property="loadId" column="load_id" />
+		<result property="type" column="type" />
+		<result property="itemName" column="item_name" />
+		<result property="itemPrice" column="item_price" />
+		<result property="itemDesc" column="item_desc" />
+		<result property="feedbackTime" column="feedback_time" />
+		<result property="longitude" column="longitude" />
+		<result property="latitude" column="latitude" />
+		<result property="address" column="address" />
+		<result property="status" column="status" />
+		<result property="isException" column="is_exception" />
+		<result property="isEnd" column="is_end" />
+		<result property="endTime" column="end_time" />
+		<result property="realName" column="real_name" />
+		<result property="speed" column="speed" />
+	</resultMap>
+
+	<select id="getFeedBackList" parameterType="map" resultMap="findResultMap">
+	   select 
+	   	t1.feedback_id,
+	    t1.load_id,
+	    t1.type,
+	    t1.item_name,
+	    t1.item_price,
+	    t1.item_desc,
+	    date_format(t1.feedback_time,'%Y-%m-%d %H:%I') as feedback_time,
+	    t1.longitude,
+	    t1.latitude,
+	    t1.address,
+	    t1.status,
+	    t1.is_exception,
+	    t1.is_end,
+	    t1.speed,
+	    date_format(t1.end_time,'%Y-%m-%d %H:%I') as end_time,
+	    date_format(t1.created_time,'%Y-%m-%d %H:%I') as created_time,
+	    t2.feedback_id as atta_feedback_id,
+	    t2.file_id as atta_file_id,
+	    case when  t1.source = '01'
+	    then t3.real_name
+	    else t4.real_name
+	    end as real_name,
+	    case when  t1.source = '01'
+	    then t3.position
+	    else  "司机" 
+	    end as position
+	   from zh_load_feedback_log t1 left join zh_load_feedback_atta t2 on t1.feedback_id=t2.feedback_id
+	       left join zh_staff_info t3 on t1.created_by = t3.staff_id
+	       left join zh_agent_info t4 on t1.created_by=t4.account_id
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        and t1.load_id=#{loadId}
+	     </if>
+	     <if test="isException != null">
+	        and t1.is_exception=#{isException}
+	     </if>
+	      <if test="isEnd != null">
+	        and t1.is_end=#{isEnd}
+	     </if>
+	     <if test="isDeleted != null">
+	        and t1.is_deleted=#{isDeleted}
+	     </if>
+	     <if test="source != null">
+	        and t1.source=#{source}
+	     </if>
+	     <if test="types != null">
+	        and t1.type in
+	     <foreach collection="types" index="index" item="type" open="(" separator="," close=")">  
+		       #{type}
+		 </foreach>
+	     </if>
+	     <if test="statusArray != null">
+	  		and t1.status in 
+		  <foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+		       #{status}
+		  </foreach>
+	  	 </if>
+	   </trim>
+	   order by t1.created_time
+	</select>
+	
+	<!-- 获取司机异常反馈列表 -->
+	<select id="getDriverFeedBackList" parameterType="map" resultMap="findResultMap">
+	   select 
+	     t1.feedback_id,
+	     t1.load_id,
+	     t1.type,
+	     t1.item_name,
+	     t1.item_price,
+	     t1.item_desc,
+	     date_format(t1.feedback_time,'%Y-%m-%d %H:%I') as feedback_time,
+	     t1.longitude,
+	     t1.latitude,
+	     t1.speed,
+	     t1.address,
+	     t1.status,
+	     t2.feedback_id as atta_feedback_id,
+	     t2.file_id as atta_file_id,
+	     t3.real_name
+	   from zh_load_feedback_log t1 left join zh_load_feedback_atta t2 on t1.feedback_id=t2.feedback_id
+	   left join zh_agent_info t3 on t1.created_by=t3.account_id
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        and t1.load_id=#{loadId}
+	     </if>
+	     <if test="type != null">
+	        and t1.type=#{type}
+	     </if>
+	     <if test="itemName != null">
+	        and t1.item_name=#{itemName}
+	     </if>
+	     <if test="itemPrice != null">
+	        and t1.item_price=#{itemPrice}
+	     </if>
+	     <if test="itemDesc != null">
+	        and t1.item_desc=#{itemDesc}
+	     </if>
+	     <if test="longitude != null">
+	        and t1.longitude=#{longitude}
+	     </if>
+	     <if test="latitude != null">
+	        and t1.latitude=#{latitude}
+	     </if>
+	     <if test="address != null">
+	        and t1.address=#{address}
+	     </if>
+	     <if test="status != null">
+	        and t1.status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and t1.is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<!-- CBS查看地图模块查询在途反馈 用于打点 -->
+	<select id="findFeedBackOnTrans" parameterType="map" resultMap="feedbackLogMap">
+		SELECT
+			zlfl.feedback_id,
+			zlfl.load_id,
+			zlfl.type,
+			zlfl.item_name,
+			zlfl.item_price,
+			zlfl.item_desc,
+			date_format(zlfl.feedback_time,'%Y-%m-%d %H:%I') as feedback_time,
+			zlfl.longitude,
+			zlfl.latitude,
+			zlfl.address,
+			zlfl.speed,
+			zlfl.status,
+			zlfl.is_exception,
+			zlfl.is_end,
+			date_format(zlfl.end_time,'%Y-%m-%d %H:%I') as end_time,
+			CASE WHEN zlfl.source = #{cbsSource} THEN
+				zsi.real_name
+			ELSE
+				zaia.real_name
+			END AS real_name
+		FROM
+			zh_load_feedback_log zlfl
+		LEFT JOIN zh_staff_info zsi ON zsi.staff_id = zlfl.created_by
+		AND zlfl.source = #{cbsSource}
+		LEFT JOIN (zh_account_info zai inner join zh_agent_info zaia on zai.account_id = zaia.account_id) ON zai.account_id = zlfl.created_by
+		AND zlfl.source = #{ysjSource}
+		WHERE 
+		zlfl.status = #{status} 
+		AND zlfl.load_id = #{loadId} 
+		and zlfl.is_deleted = #{isDeleted}
+		<![CDATA[
+		and zlfl.longitude is not null
+		and zlfl.latitude is not null
+		and zlfl.longitude <> ''
+		and zlfl.latitude <> ''
+		]]>
+		ORDER BY zlfl.feedback_time
+	</select>
+	
+	
+</mapper> 

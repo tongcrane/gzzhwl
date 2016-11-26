@@ -1,0 +1,64 @@
+package com.gzzhwl.core.data.extdao;
+
+
+import java.util.Map;
+import java.util.List;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ *
+ */
+public interface RealVehicleInfoExtDao {    
+    public final static String PREFIX = RealVehicleInfoExtDao.class.getName();
+    
+    /**
+     * 内部系统车辆分页查询
+     * @param params
+     * @param current
+     * @param pagesize
+     * @return
+     */
+	public <E, K, V> Page<E> sysVehicleSelectPage(Map<K, V> params, int current, int pagesize);
+	
+	/**
+     * 内部系统车挂分页查询
+     * @param params
+     * @param current
+     * @param pagesize
+     * @return
+     */
+	public <E, K, V> Page<E> sysHungSelectPage(Map<K, V> params, int current, int pagesize);
+	
+	/**
+	 * 内部系统车辆存在性校验 
+	 * @param params
+	 * @return
+	 */
+	public <T, K, V> Integer vehicleManageExistValidator(Map<K, V> params);
+	
+	
+	public <T, K, V> List<T> getRealVehicleInfoByDriverInfoId(String tmpDriverInfoId,String accountId);
+	
+	public <T, K, V> List<T> getRealVehicleInfoByPlateNumber(String plateNumber);
+	
+	/**
+	 * 获取车辆列表
+	 * @param params
+	 * @param current
+	 * @param pagesize
+	 * @return
+	 */
+	public <E, K, V> Page<E> pageVehicleList(Map<K, V> params, int current, int pagesize);
+	
+	
+	/**
+	 * 获取正式表司机车辆查询明细
+	 * @param params
+	 * @return
+	 */
+	public <T, K, V> List<T> getDriverandVehicleDetail(Map<K, V> params);
+
+}
+
+

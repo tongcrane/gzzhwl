@@ -1,0 +1,128 @@
+package com.gzzhwl.api.common.service.impl;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Transformer;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
+import com.gzzhwl.api.common.service.CommonSourceService;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.QuotedType;
+import com.gzzhwl.core.data.extdao.CommonCardInfoExtDao;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.rest.exception.RestServerException;
+
+@Service("SourceCardService")
+public class CommonSourceServiceImpl implements CommonSourceService {
+	@Autowired
+	private CommonCardInfoExtDao commonCardInfoDao;
+	@Autowired
+	private RegionService regionService;
+
+	@Override
+	public List<Map<String, Object>> getCardInfo(String[] ids, String accountId) throws RestServerException {
+		if (ArrayUtils.isNotEmpty(ids)) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("sourceIds", ids);
+			params.put("flowName", ZHFlow.SOURCE.getName());
+			if (StringUtils.isNotBlank(accountId)) {
+				params.put("accountId", accountId);
+				params.put("status", QuotedType.CLOSED.getCode());
+			}
+
+			List<Map<String, Object>> result = commonCardInfoDao.findSourceCardInfo(params);
+			CollectionUtils.transform(result, new Transformer<Map<String, Object>, Map<String, Object>>() {
+				@Override
+				public Map<String, Object> transform(Map<String, Object> input) {
+					String startCodeP = (String) input.get("startCodeP");
+					input.put("startCodePCn", this.getCodeCn(startCodeP));
+
+					String endCodeP = (String) input.get("endCodeP");
+					input.put("endCodePCn", this.getCodeCn(endCodeP));
+
+					String startCodeC = (String) input.get("startCodeC");
+					input.put("startCodeCCn", this.getCodeCn(startCodeC));
+
+					String endCodeC = (String) input.get("endCodeC");
+					input.put("endCodeCCn", this.getCodeCn(endCodeC));
+
+					String senderCode = (String) input.get("senderAreaCode");
+					if (StringUtils.isNotBlank(endCodeP)) {
+						List<RegionInfo> regionList = regionService.findRootByCode(senderCode);
+						input.put("senderAreaList", regionList);
+
+						String storeAddrName = (String) input.get("storeAddrName");
+						String senderAddress = (String) input.get("senderAddress");
+						if (StringUtils.isBlank(storeAddrName) && regionList.size() == 3) {
+							input.put("storeProvinceCode", regionList.get(2).getRegionCode());
+							input.put("storeCityCode", regionList.get(1).getRegionCode());
+							input.put("storeDistrictCode", regionList.get(0).getRegionCode());
+							input.put("storeAddress", senderAddress);
+							input.put("storeAddrName", senderAddress);
+						}
+
+					} else {
+						input.put("senderAreaList", Lists.newArrayList());
+					}
+
+					String goodsWeight = (String) input.get("goodsWeight");
+					input.put("goodsWeight", getGoodWeight(goodsWeight));
+
+					String storeCityCode = (String) input.get("storeCityCode");
+					input.put("storeCityCodeCn", this.getCodeCn(storeCityCode));
+
+					String storeProvinceCode = (String) input.get("storeProvinceCode");
+					input.put("storeProvinceCodeCn", this.getCodeCn(storeProvinceCode));
+
+					String storeDistrictCode = (String) input.get("storeDistrictCode");
+					input.put("storeDistrictCodeCn", this.getCodeCn(storeDistrictCode));
+
+					return input;
+				}
+
+				private String getCodeCn(String code) {
+					if (StringUtils.isNotBlank(code)) {
+						RegionInfo startCodePCn = regionService.findByCode(code);
+						if (startCodePCn != null) {
+							return startCodePCn.getRegionName();
+						}
+					}
+					return "";
+				}
+			});
+
+			return result;
+		} else {
+			return Lists.newArrayList();
+		}
+	}
+
+	private static String getGoodWeight(String goodsWeight) {
+		if (StringUtils.isNotBlank(goodsWeight)) {
+			BigDecimal gw = new BigDecimal(goodsWeight);
+			BigDecimal result = gw.divide(new BigDecimal(1000)).setScale(1, RoundingMode.HALF_UP);
+			if (result.compareTo(BigDecimal.ZERO) > 0) {
+				if (result.compareTo(new BigDecimal(100)) >= 0) {
+					return "99.9";
+				} else {
+					return result.toString();
+				}
+			} else {
+				return "0";
+			}
+		} else {
+			return "0";
+		}
+	}
+
+}

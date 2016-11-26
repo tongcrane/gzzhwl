@@ -1,0 +1,28 @@
+package com.gzzhwl.api.account.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.api.account.service.AccountService;
+import com.gzzhwl.core.data.dao.AgentInfoDao;
+import com.gzzhwl.core.data.model.LoginResultModel;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class AccountServiceImpl implements AccountService {
+	@Autowired
+	private AgentInfoDao agentInfoDao;
+
+	@Override
+	public LoginResultModel loginByBillForYSJ(String telphone, String idno, String loadNo) throws RestException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LoginResultModel loginByBillForCBS(String idno, String loadNo) throws RestException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

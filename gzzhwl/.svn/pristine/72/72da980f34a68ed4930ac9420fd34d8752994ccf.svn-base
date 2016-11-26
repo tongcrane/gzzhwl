@@ -1,0 +1,10 @@
+package com.gzzhwl.tms.service;
+
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.tms.vo.ApplyReturnVO;
+
+public interface TMSApplyReturnService {
+
+	public boolean applyReturn(ApplyReturnVO applyReturnVo)throws RestException;
+
+}

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.PushInfoDao">
+
+	<resultMap id="pushInfoResultMap" type="PushInfo">
+		<id property="accountId" column="account_id" />
+		<result property="deviceId" column="device_id" />
+		<result property="token" column="token" />
+		<result property="createdTime" column="created_time" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="pushInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="pushInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="PushInfo">
+	   insert into zh_push_info (
+	     account_id,
+	     device_id,
+	     token,
+	     created_time,
+	     status,
+	     is_deleted
+	   )values (
+	     #{accountId},
+	     #{deviceId},
+	     #{token},
+	     now(),
+	     #{status},
+	     #{isDeleted}
+	   )
+	</insert>
+	
+	<update id="updateSelective" parameterType="PushInfo">
+	   update zh_push_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="accountId != null">
+		       account_id=#{accountId},
+		     </if>
+		     <if test="deviceId != null">
+		       device_id=#{deviceId},
+		     </if>
+		     <if test="token != null">
+		       token=#{token},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    account_id=#{accountId} 
+	</update>
+
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     account_id,
+	     device_id,
+	     token,
+	     created_time,
+	     status,
+	     is_deleted
+	   from zh_push_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="accountId != null">
+	        account_id=#{accountId}
+	     </if>
+	     <if test="deviceId != null">
+	        and device_id=#{deviceId}
+	     </if>
+	     <if test="token != null">
+	        and token=#{token}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	
+	<delete id="delInfoByToken" parameterType="map">
+		delete from zh_push_info 
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="token!=null">
+				token=#{token}
+			</if>
+			<if test="accountId">
+				and account_id=#{accountId}
+			</if>
+			<if test="status!=null">
+				and status=#{status}
+			</if>
+			<if test="isDeleted">
+				and is_deleted=#{isDeleted}
+			</if>
+		</trim>
+	</delete>
+	
+</mapper> 

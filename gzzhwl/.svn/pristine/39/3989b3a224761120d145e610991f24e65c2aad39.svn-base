@@ -1,0 +1,88 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_quoted_plus_info表
+ * @author mew
+ *
+ */
+public class QuotedPlusInfo implements Serializable {
+	@Length(max = 36, message = "quotedId超过长度限制")
+	private java.lang.String quotedId; // 报价标识
+	@Length(max = 36, message = "vehicleInfoId超过长度限制")
+	private java.lang.String vehicleInfoId; // 车辆标识
+	@Length(max = 36, message = "driverInfoId超过长度限制")
+	private java.lang.String driverInfoId; // 司机标识
+
+
+	/**
+     * 获取报价标识属性
+     *
+     * @return quotedId
+     */
+	public java.lang.String getQuotedId() {
+		return quotedId;
+	}
+	
+	/**
+	 * 设置报价标识属性
+	 *
+	 * @param quotedId
+	 */
+	public void setQuotedId(java.lang.String quotedId) {
+		this.quotedId = quotedId;
+	}
+	
+	/**
+     * 获取车辆标识属性
+     *
+     * @return vehicleInfoId
+     */
+	public java.lang.String getVehicleInfoId() {
+		return vehicleInfoId;
+	}
+	
+	/**
+	 * 设置车辆标识属性
+	 *
+	 * @param vehicleInfoId
+	 */
+	public void setVehicleInfoId(java.lang.String vehicleInfoId) {
+		this.vehicleInfoId = vehicleInfoId;
+	}
+	
+	/**
+     * 获取司机标识属性
+     *
+     * @return driverInfoId
+     */
+	public java.lang.String getDriverInfoId() {
+		return driverInfoId;
+	}
+	
+	/**
+	 * 设置司机标识属性
+	 *
+	 * @param driverInfoId
+	 */
+	public void setDriverInfoId(java.lang.String driverInfoId) {
+		this.driverInfoId = driverInfoId;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("QuotedPlusInfo");
+        sb.append("{quotedId=").append(quotedId);
+        sb.append(", vehicleInfoId=").append(vehicleInfoId);
+        sb.append(", driverInfoId=").append(driverInfoId);
+		sb.append('}');
+        return sb.toString();
+    }
+}

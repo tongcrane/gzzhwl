@@ -1,0 +1,20 @@
+package com.gzzhwl.admin.lend.service;
+
+import java.util.Map;
+
+import com.gzzhwl.admin.lend.vo.LendQryVo;
+import com.gzzhwl.admin.lend.vo.LendVO;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.exception.RestException;
+
+public interface LendService {
+
+	public String addLend(LendVO lendVo, Integer departId, String staffId) throws RestException;
+
+	public boolean offLend(String lendId, String staffId) throws RestException;
+
+	public Map<String, Object> validInfo(String vehicleInfoId, Integer departId) throws RestException;
+	
+	public  Page<Map<String, Object>> getLendLogPage(LendQryVo lendQryVo, int current, int pagesize);
+
+}

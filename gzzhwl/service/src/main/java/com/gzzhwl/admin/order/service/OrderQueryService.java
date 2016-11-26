@@ -1,0 +1,26 @@
+package com.gzzhwl.admin.order.service;
+
+import java.text.ParseException;
+import java.util.Map;
+
+import com.gzzhwl.admin.order.vo.OrderQueryVo;
+import com.gzzhwl.core.page.Page;
+
+public interface OrderQueryService {
+	public Page<Map<String, Object>> pageOrderList(String keyWord, String sort, int currentPage, int pageSizes);
+
+	public Map<String, Object> getOrderDetail(String orderId);
+
+	public Map<String, Object> getOrderInfo(String orderId);
+
+	public Page<Map<String, Object>> pageOrders(OrderQueryVo queryVo, int pageIndex, int pageSize) throws ParseException;
+
+	public Map<String, Object> getOrderInfoByInfoId(String infoId);
+
+	public Map<String, Object> getLoadOrderInfo(String orderId);
+	
+	/**
+	 * 获取订单概要信息
+	 */
+	public Map<String, Object> getOrderGeneralInfo(String orderId);
+}

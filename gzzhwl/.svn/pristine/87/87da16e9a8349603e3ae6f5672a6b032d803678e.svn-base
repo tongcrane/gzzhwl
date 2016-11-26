@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.RealDriverInfoExtDao">
+
+	<resultMap id="realDriverInfoResultMap" type="RealDriverInfo">
+		<id property="driverInfoId" column="driver_info_id" />
+		<result property="seqNo" column="seq_no" />
+		<result property="realName" column="real_name" />
+		<result property="idno" column="idno" />
+		<result property="sex" column="sex" />
+		<result property="birthday" column="birthday" />
+		<result property="criminalRecord" column="criminal_record" />
+		<result property="telphone" column="telphone" />
+		<result property="attributes" column="attributes" />
+		<result property="areaCode" column="area_code" />
+		<result property="address" column="address" />
+		<result property="dlType" column="dl_type" />
+		<result property="dlIssueDate" column="dl_issue_date" />
+		<result property="dlStartDate" column="dl_start_date" />
+		<result property="dlEndDate" column="dl_end_date" />
+		<result property="qcNo" column="qc_no" />
+		<result property="qcType" column="qc_type" />
+		<result property="qcIssueDate" column="qc_issue_date" />
+		<result property="qcStartDate" column="qc_start_date" />
+		<result property="qcEndDate" column="qc_end_date" />
+		<result property="idFImageRefId" column="id_f_image_ref_id" />
+		<result property="idBImageRefId" column="id_b_image_ref_id" />
+		<result property="photoFImageRefId" column="photo_f_image_ref_id" />
+		<result property="drivingFImageRefId" column="driving_f_image_ref_id" />
+		<result property="drivingBImageRefId" column="driving_b_image_ref_id" />
+		<result property="qualifiImageRefId" column="qualifi_image_ref_id" />
+		<result property="source" column="source" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="belongDepartId" column="belong_depart_id" />
+		<result property="useDepartId" column="use_depart_id" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap" type="java.util.HashMap" extends="realDriverInfoResultMap">
+		<result property="plateNumber" column="plate_number"/>
+		<result property="departureCode" column="departure_code"/>
+		<result property="destinationCode" column="destination_code"/>
+	</resultMap>
+	<resultMap id="findResultMap" type="java.util.HashMap" extends="realDriverInfoResultMap">
+		<result property="loadWeight" column="load_weight"/>
+		<result property="regCertCode" column="reg_cert_code"/>
+		<result property="vehicleImageId" column="vehicle_image_ref_id"/>
+		<result property="regDate" column="reg_date"/>
+		<result property="viEffectDate" column="vi_effect_date"/>
+		<result property="plateNumber" column="plate_number"/>
+		<result property="ocImageRefId" column="oc_image_ref_id"/>
+		<result property="ciEffectDate" column="ci_effect_date"/>
+		<result property="licenseImageRefId" column="license_image_ref_id"/>
+		<result property="operatingCertIssueDate" column="operating_cert_issue_date"/>
+		<result property="licenseValidDate" column="license_valid_date"/>
+		<result property="viName" column="vi_name"/>
+		<result property="ciName" column="ci_name"/>
+	</resultMap>
+		
+	<resultMap id="pageHashtMap" type="java.util.HashMap"></resultMap>
+
+	<!--内部系统司机分页查询  -->
+	<select id="getDriverListByCondition" parameterType="map"
+		resultMap="pageResultMap">
+	select * from(
+		 select
+		    dr.driver_info_id,
+		    dr.created_time,
+		    dr.real_name,
+		    dr.idno,
+		    dr.sex,
+		    dr.telphone,
+		    dr.attributes,
+		    dr.dl_type,
+		    dr.dl_end_date,
+		    dr.qc_type,
+		    dr.qc_no,
+		    dr.qc_end_date,
+		    dr.status,
+		    bank.card_name as cardName,
+		    bank.card_no as cardNo,
+		    bank.deposit_bank as depositBank,		
+			(case when DATEDIFF(dr.dl_end_date,now()) &lt; 0 
+					then '0' 
+				  when DATEDIFF(dr.qc_end_date,now()) &lt; 0 
+				  	then '0'    
+				  else '1'   end )  as 'isred' 
+			from zh_real_driver_info dr
+			left join 
+			zh_driver_bank_info bank
+			on dr.driver_info_id = bank.driver_info_id
+			<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				<if test="realName != null">
+					and dr.real_name=#{realName}
+				</if>
+				<if test="idno != null">
+					and dr.idno=#{idno}
+				</if>
+				<if test="telphone != null">
+					and dr.telphone=#{telphone}
+				</if>
+				<if test="attributes != null">
+					and dr.attributes=#{attributes}
+				</if>
+				<if test="address != null">
+					and dr.address like '%${address}%'
+				</if>
+				<if test="dlType != null">
+					and dr.dl_type=#{dlType}
+				</if>
+				<if test="qcNo != null">
+					and dr.qc_no=#{qcNo}
+				</if>
+				<if test="qcType != null">
+					and dr.qc_type=#{qcType}
+				</if>
+				<if test="status != null">
+					and dr.status=#{status}
+				</if>
+				<if test="source != null">
+					and source=#{source}
+				</if>
+				<if test="isDeleted != null">
+					and dr.is_deleted=#{isDeleted}
+				</if>
+				<if test="dlEndDateStart != null">
+					and dr.dl_end_date >= #{dlEndDateStart}
+				</if>
+				<if test="dlEndDateEnd!= null">
+					<![CDATA[and dr.dl_end_date <= #{dlEndDateEnd}]]>
+				</if>
+				<if test="qcEndDateStart != null">
+					and dr.qc_end_date >= #{qcEndDateStart}
+				</if>
+				<if test="qcEndDateEnd != null">
+					<![CDATA[and dr.qc_end_date <= #{qcEndDateEnd}]]>
+				</if>
+				<if test="createdStartTime != null">
+					and dr.created_time >= #{createdStartTime}
+				</if>
+				<if test="createdEndTime != null">
+					<![CDATA[and dr.created_time <= #{createdEndTime}]]>
+				</if>				
+				<if test="keyWord != null">
+					and (dr.real_name like '%${keyWord}%'
+				</if>
+				<if test="keyWord != null">
+					or dr.attributes like '%${keyWord}%'
+				</if>
+				<if test="keyWord != null">
+					or dr.qc_Type like '%${keyWord}%'
+				</if>
+				<if test="keyWord != null">
+					or dr.dl_type like '%${keyWord}%')
+				</if>
+			</trim>
+		) as a order by a.isred asc,a.created_time desc
+
+	</select>
+	
+	<!-- 判断当前修改的司机是否已存在 -->
+	<select id="getDriverInfoByCondition" parameterType="map" resultMap="findResultMap">
+		select
+		driver_info_id,
+		real_name,
+		idno,
+		sex,
+		telphone,	
+		status
+		from zh_real_driver_info
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="driverInfoId != null">
+				driver_info_id!=#{driverInfoId}
+			</if> 
+			<if test="idno != null">
+				and idno = #{idno} 
+			</if>
+			<if test="qcNo != null">
+				and qc_no=#{qcNo}
+			</if>
+			<if test="isDeleted != null">
+				and is_deleted=#{isDeleted}
+			</if>
+			<if test="source != null">
+				and source=#{source}
+			</if>
+			<if test="name != null">
+				and real_name like '%${name}%'
+			</if>
+		</trim>
+
+		
+	</select>
+	
+
+	<!-- 运势界司机和车辆审核列列表  -->
+	<select id="getDriverAndVehicleCheckList" parameterType="map" resultMap="pageHashtMap">
+	<![CDATA[ 
+		SELECT
+		t4.telphone as accountPhone,
+		t2.type as type,
+		t2.plate_number as plateNumber,
+		t2.length ,
+		t2.license_valid_date as licenseValidDate,
+		t2.operating_cert_valid_date as operatingCertValidDate,
+		t3.ci_effect_date as ciEffectDate,
+		t3.vi_effect_date as viEffectDate,
+		t2.status,
+		t2.updated_time as checkTime,
+		t2.created_time as updateTime,
+		t6.real_name as userName,
+		case when  (date_format(t2.license_valid_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+			 then '00'  
+			when  (date_format(t3.ci_effect_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+				 then '00'
+			when  (date_format(t3.vi_effect_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+				 then '00'
+			when  (date_format(t2.operating_cert_issue_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+			 		then '00'
+		else  '01'
+		end  as 'isOutTime'
+		FROM
+		zh_vehicle_info t2 left join zh_agent_info t6 on t2.account_id = t6.account_id,
+		zh_vehicle_plus_info t3,
+		zh_account_info t4
+		where
+		t2.vehicle_info_id = t3.vehicle_info_id
+		and 
+		t2.account_id = t4.account_id
+		and t2.source='02'
+		and t2.is_deleted='00'
+		and t2.status!='99'
+		]]>
+		
+		<if test="queryType == 0">
+	       <if test="queryContent != null">
+	        and 
+	        (
+	           t4.telphone like '%${queryContent}%' 
+	        or t2.plate_number like '%${queryContent}%' 
+	        or t2.type like '%${queryContent}%'
+	        )
+	       </if>
+	    </if>
+	    <if test="queryType == 1">
+		<if test="telphone != null">
+			and t4.telphone =#{telphone}
+		</if>
+		<if test="plateNumber != null">
+			and t2.plate_number like '%${plateNumber}%'
+		</if>
+		<if test="type != null">
+			and t2.type = #{type}
+		</if>
+		<if test="length != null">
+			and t2.length=  #{length}
+		</if>
+		<if test="status != null">
+			and t2.status= #{status}
+		</if>
+		</if>
+		order by t2.updated_time desc
+	</select>
+	
+
+	<!-- 根据driverInfoId查询司机车辆详细信息 -->	
+	<select id="queryDriverandVehicleDetail" parameterType="map" resultMap="findResultMap">
+		select 
+			dr.real_name,
+			dr.idno,
+			dr.dl_end_date,
+			dr.qc_no,
+			dr.qc_end_date,
+			dr.id_f_image_ref_id,
+			dr.id_b_image_ref_id,
+			dr.photo_f_image_ref_id,
+			dr.driving_f_image_ref_id,
+			dr.qualifi_image_ref_id,
+			ve.plate_number,
+			ve.type,
+			ve.length,
+			ve.brand,
+			ve.reg_date,
+			ve.reg_cert_code ,
+			pl.ci_effect_date,
+			pl.ci_name,
+			pl.vi_effect_date,
+			pl.vi_name,  
+			ve.license_valid_date,
+			ve.load_weight,
+			ve.operating_cert_issue_date,
+			ve.license_image_ref_id,
+			ve.oc_image_ref_id,
+			ve.vehicle_image_ref_id,
+			dr.status
+			from 
+			zh_real_driver_info dr,
+			zh_real_vehicle_info ve,
+			zh_real_vehicle_plus_info pl
+			where dr.driver_info_id = ve.driver_info_id and ve.vehicle_info_id = pl.vehicle_info_id
+			and	dr.driver_info_id=#{driverInfoId}
+	</select>
+	
+	<!-- 运势界司机车辆分页查询 -->
+	<select id="pageDriverAndVehicleList" parameterType="map" resultMap="pageResultMap">
+		SELECT
+			dr.driver_info_id,
+			dr.real_name,
+			ve.plate_number,
+			ve.type,
+			ve.length,
+			dr.status,
+			dr.photo_f_image_ref_id,
+			li.departure_code,
+			li.destination_code
+		FROM
+			zh_real_vehicle_driver_info re
+		INNSER JOIN
+			zh_real_vehicle_info ve
+		INNER JOIN (
+			zh_real_driver_info dr
+			LEFT JOIN (
+				SELECT
+					departure_code,
+					destination_code,
+					driver_info_id
+				FROM
+					zh_line_info
+				WHERE
+					line_info_id IN (
+						SELECT
+							(
+								SELECT
+									line_info_id
+								FROM
+									zh_line_info
+								WHERE
+									driver_info_id = zli.driver_info_id
+								ORDER BY
+									created_time DESC
+								LIMIT 1
+							) AS max_line_id
+						FROM
+							zh_line_info zli
+						WHERE
+							zli.driver_info_id IS NOT NULL
+						GROUP BY
+							zli.driver_info_id
+					)
+			) li ON dr.driver_info_id = li.driver_info_id
+		) ON dr.driver_info_id = ve.driver_info_id and dr.account_id = #{accountId} and dr.driver_info_id = re.driverInfoId
+		<if test="isDeleted != null">
+			and dr.is_deleted=#{isDeleted}
+		</if>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="realName != null">
+				and dr.real_name=#{realName}
+			</if>
+			<if test="status != null">
+				and dr.status=#{status}
+			</if>
+			<if test="plateNumber != null">
+				and ve.plate_number=#{plateNumber}
+			</if>
+			<if test="type != null">
+				and ve.type=#{type}
+			</if>
+			<if test="length != null">
+				and ve.length=#{length}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="getDriverInfo" parameterType="map" resultMap="findResultMap">
+		select
+		driver_info_id,
+		real_name,
+		idno,
+		dl_end_date,
+		qc_no,
+		qc_end_date,
+		id_f_image_ref_id,
+		id_b_image_ref_id,
+		photo_f_image_ref_id,
+		driving_f_image_ref_id,
+		driving_b_image_ref_id,
+		qualifi_image_ref_id,
+		status
+		from zh_real_driver_info
+		where
+		driver_info_id=#{driverInfoId}
+		and is_deleted = '00'
+	</select>
+	
+	<select id="getDriverList" parameterType="map" resultMap="findResultMap">
+		SELECT
+			dr.driver_info_id,
+			dr.real_name,
+			dr.idno,
+			dr.telphone,
+			dr.id_f_image_ref_id,
+			dr.id_b_image_ref_id,
+			dr.driving_f_image_ref_id,
+			dr.qualifi_image_ref_id,
+			dr.status
+		FROM
+			zh_real_driver_info dr
+		INNER JOIN (
+			zh_real_vehicle_driver_info vd
+			INNER JOIN zh_real_vehicle_info zvi ON vd.vehicle_info_id = zvi.vehicle_info_id
+		) ON dr.driver_info_id = vd.driver_info_id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="accountId != null">
+				vd.account_id = #{accountId}
+			</if>	 
+			<if test="vehicleInfoId != null">
+				and vd.vehicle_info_id = #{vehicleInfoId}
+			</if>
+			<if test="realName != null">
+				and dr.real_name = #{realName}
+			</if>
+			<if test="telphone != null">
+				and dr.telphone = #{telphone}
+			</if>
+			<if test="plateNumber != null">
+				and zvi.plate_number = #{plateNumber}
+			</if>
+			<if test="isDeleted != null">
+				and dr.is_deleted=#{isDeleted}
+			</if>
+		</trim>
+	</select>
+	
+	
+	<select id="getDriverInfoByAccountId" parameterType="map" resultMap="realDriverInfoResultMap">
+		select 
+		t1.driver_info_id,
+		t1.seq_no,
+		t1.real_name,
+		t1.idno,
+		t1.sex,
+		t1.birthday,
+		t1.criminal_record,
+		t1.telphone,
+		t1.attributes,
+		t1.area_code,
+		t1.address,
+		t1.dl_type,
+		t1.dl_issue_date,
+		t1.dl_start_date,
+		t1.dl_end_date,
+		t1.qc_no,
+		t1.qc_type,
+		t1.qc_issue_date,
+		t1.qc_start_date,
+		t1.qc_end_date,
+		t1.id_f_image_ref_id,
+		t1.id_b_image_ref_id,
+		t1.photo_f_image_ref_id,
+		t1.driving_f_image_ref_id,
+		t1.driving_b_image_ref_id,
+		t1.qualifi_image_ref_id,
+		t1.source,
+		t1.created_by,
+		t1.created_time,
+		t1.updated_by,
+		t1.updated_time,
+		t1.belong_depart_id,
+		t1.use_depart_id,
+		t1.status,
+		t1.is_deleted
+		from  zh_real_driver_info t1 inner join zh_agent_info t2 on t1.idno = t2.idno 
+		where t2.account_id = #{accountId}; 
+	</select>
+	
+</mapper> 

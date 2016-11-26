@@ -1,0 +1,72 @@
+package com.gzzhwl.admin.demo.controller;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.sql.DataSource;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.core.spring.SpringContext;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.rest.security.annotation.RequirePerm;
+import com.gzzhwl.rest.security.model.AuthType;
+
+@RestController
+@RequestMapping("/admin/demo")
+public class DownLoadController {
+
+	@RequestMapping(value = "/create")
+	@RequirePerm(type = AuthType.ANON)
+	public void create() {
+		DataSource dataSource = (DataSource) SpringContext.getBean("h2DataSource");
+		try {
+			Connection conn = dataSource.getConnection();
+			Statement stmt = conn.createStatement();
+			int row = stmt.executeUpdate("CREATE TABLE TEST_MEM(ID INT PRIMARY KEY,NAME VARCHAR(255));");
+			System.out.println(row);
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@RequestMapping(value = "/insert")
+	@RequirePerm(type = AuthType.ANON)
+	public void insert(@RequestParam int id) {
+		DataSource dataSource = (DataSource) SpringContext.getBean("h2DataSource");
+		try {
+			Connection conn = dataSource.getConnection();
+			Statement stmt = conn.createStatement();
+			int row = stmt.executeUpdate("INSERT INTO TEST_MEM VALUES(" + id + ", '"
+					+ IdentifierUtils.getId().generate().toString() + "');");
+			System.out.println(row);
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@RequestMapping(value = "/select")
+	@RequirePerm(type = AuthType.ANON)
+	public void select() {
+		DataSource dataSource = (DataSource) SpringContext.getBean("h2DataSource");
+		try {
+			Connection conn = dataSource.getConnection();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM TEST_MEM");
+			while (rs.next()) {
+				System.out.println(rs.getInt("ID") + "," + rs.getString("NAME"));
+			}
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+}

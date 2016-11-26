@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.ConsignmentHisDao">
+
+	<resultMap id="consignmentHisResultMap" type="ConsignmentHis">
+		<id property="hisId" column="his_id" />
+		<result property="consignId" column="consign_id" />
+		<result property="srcStatus" column="src_status" />
+		<result property="destStatus" column="dest_status" />
+		<result property="msg" column="msg" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="consignmentHisResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="consignmentHisResultMap"></resultMap>
+
+	<insert id="insert" parameterType="ConsignmentHis">
+	   insert into zh_consignment_his (
+	     his_id,
+	     consign_id,
+	     src_status,
+	     dest_status,
+	     msg,
+	     created_by,
+	     created_time
+	   )values (
+	     #{hisId},
+	     #{consignId},
+	     #{srcStatus},
+	     #{destStatus},
+	     #{msg},
+	     #{createdBy},
+	     #{createdTime}
+	   )
+	</insert>
+
+	<update id="update" parameterType="ConsignmentHis">
+	   update zh_consignment_his set
+	     his_id=#{hisId},
+	     consign_id=#{consignId},
+	     src_status=#{srcStatus},
+	     dest_status=#{destStatus},
+	     msg=#{msg},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime}
+	   where 
+	    his_id=#{hisId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="ConsignmentHis">
+	   update zh_consignment_his
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="hisId != null">
+		       his_id=#{hisId},
+		     </if>
+		     <if test="consignId != null">
+		       consign_id=#{consignId},
+		     </if>
+		     <if test="srcStatus != null">
+		       src_status=#{srcStatus},
+		     </if>
+		     <if test="destStatus != null">
+		       dest_status=#{destStatus},
+		     </if>
+		     <if test="msg != null">
+		       msg=#{msg},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime}
+		     </if>
+	   </trim>
+	
+	   where 
+	    his_id=#{hisId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_consignment_his 
+	   where 
+	    his_id=#{hisId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="consignmentHisResultMap">
+	   select 
+	    his_id,
+	    consign_id,
+	    src_status,
+	    dest_status,
+	    msg,
+	    created_by,
+	    created_time
+	   from zh_consignment_his
+	   where 
+	    his_id=#{hisId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    his_id,
+	    consign_id,
+	    src_status,
+	    dest_status,
+	    msg,
+	    created_by,
+	    created_time
+	   from zh_consignment_his
+	   where 
+	    his_id=#{hisId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     his_id,
+	     consign_id,
+	     src_status,
+	     dest_status,
+	     msg,
+	     created_by,
+	     created_time
+	   from zh_consignment_his
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="hisId != null">
+	        his_id=#{hisId}
+	     </if>
+	     <if test="consignId != null">
+	        and consign_id=#{consignId}
+	     </if>
+	     <if test="srcStatus != null">
+	        and src_status=#{srcStatus}
+	     </if>
+	     <if test="destStatus != null">
+	        and dest_status=#{destStatus}
+	     </if>
+	     <if test="msg != null">
+	        and msg=#{msg}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     his_id,
+	     consign_id,
+	     src_status,
+	     dest_status,
+	     msg,
+	     created_by,
+	     created_time
+	   from zh_consignment_his
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="hisId != null">
+	        his_id=#{hisId}
+	     </if>
+	     <if test="consignId != null">
+	        and consign_id=#{consignId}
+	     </if>
+	     <if test="srcStatus != null">
+	        and src_status=#{srcStatus}
+	     </if>
+	     <if test="destStatus != null">
+	        and dest_status=#{destStatus}
+	     </if>
+	     <if test="msg != null">
+	        and msg=#{msg}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

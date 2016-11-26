@@ -1,0 +1,12 @@
+package com.gzzhwl.admin.load.service;
+
+/**
+ * 车辆司机使用记录表
+ */
+public interface VADUserdService {
+
+	public boolean lockVandD(String loadId);
+
+	public boolean releaseVandD(String loadId);
+
+}

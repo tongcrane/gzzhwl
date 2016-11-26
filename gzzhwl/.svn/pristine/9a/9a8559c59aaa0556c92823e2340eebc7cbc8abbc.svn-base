@@ -1,0 +1,129 @@
+package com.gzzhwl.admin.vehicle.vo;
+
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.rest.exception.RestException;
+
+import lombok.Data;
+import lombok.ToString;
+
+/**
+ * 司机和车辆审核查询
+ * @author jly
+ *
+ */
+@Data
+@ToString
+public class DriverAndVehicleCheckQueryVo {
+	
+	private String telphone;//注册手机号
+	
+	private String userName;//用户姓名
+	
+	private String plateNumber;//车牌号
+	
+	private String type;//车辆类型
+	
+	private String driverName;//司机姓名
+	
+	private String driverNumber;//驾驶证号
+	
+	private String length;//车长
+	
+	private String status;//审核状态
+
+	//ADD BY 20160624
+	
+	private String queryType;//查询类型
+	
+	private String queryContent;//全文搜索内容
+	
+	private String queryContentLike;
+	
+	private static final String QUERYTYPE_NORMAL = "0";// 普通查询
+
+	private static final String QUERYTYPE_SENIOR = "1";// 高级查询
+	
+	public void likeHandle(){
+		
+		if(StringUtils.isNotBlank(queryContent)){
+			queryContentLike = "%"+queryContent+"%";
+		}
+		
+//		if(StringUtils.isNotBlank(plateNumber)){
+//			plateNumber = "%"+plateNumber+"%";
+//		}
+		
+		if(StringUtils.isNotBlank(driverName)){
+			driverName = "%"+driverName+"%";
+		}
+		
+		if(StringUtils.isNotBlank(userName)){
+			userName = "%"+userName+"%";
+		}
+		
+	}
+	
+	
+	public Map<String,Object> getParam() {
+		Map<String, Object> params = Maps.newHashMap();
+		this.likeHandle();
+		
+		if(QUERYTYPE_NORMAL.equals(queryType)) {
+			if(StringUtils.isNotBlank(queryContent)) {
+				params.put("queryContent", queryContent);
+			}
+			
+			if(StringUtils.isNotBlank(queryContentLike)) {
+				params.put("queryContentLike", queryContentLike);
+			}
+		}else if(QUERYTYPE_SENIOR.equals(queryType)) {
+			if(StringUtils.isNotBlank(telphone)) {
+				params.put("telphone", telphone);
+			}
+			
+			if(StringUtils.isNotBlank(userName)) {
+				params.put("userName", userName);
+			}
+			
+			if(StringUtils.isNotBlank(plateNumber)) {
+				params.put("plateNumber", plateNumber);
+			}
+			
+			if(StringUtils.isNotBlank(type)) {
+				params.put("type", type);
+			}
+			
+			if(StringUtils.isNotBlank(driverName)) {
+				params.put("driverName", driverName);
+			}
+			
+			if(StringUtils.isNotBlank(driverNumber)) {
+				params.put("driverNumber", driverNumber);
+			}
+			
+			if(StringUtils.isNotBlank(length)) {
+				params.put("length", length);
+			}
+			
+			if(StringUtils.isNotBlank(status)) {
+				params.put("status", status);
+			}			
+		}else {
+			throw new RestException(ErrorCode.ERROR_900006.getCode(), ErrorCode.ERROR_900006.getDesc());
+		}
+		
+		return params;
+		
+	}
+	
+	
+	
+	
+	
+	
+}

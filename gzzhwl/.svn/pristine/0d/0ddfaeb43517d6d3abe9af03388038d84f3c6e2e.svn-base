@@ -1,0 +1,10 @@
+package com.gzzhwl.admin.store.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.store.service.StoreService;
+
+@Service
+public class StoreServiceImpl implements StoreService {
+
+}

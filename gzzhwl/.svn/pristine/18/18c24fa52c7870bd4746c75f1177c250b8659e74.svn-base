@@ -1,0 +1,54 @@
+package com.gzzhwl.tms.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.core.data.dao.RegionInfoDao;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.tms.service.TMSRegionService;
+
+@Service
+public class TMSRegionServiceImpl implements TMSRegionService {
+	@Autowired
+	private RegionInfoDao regionInfoDao;
+
+	@Override
+	public RegionInfo getRegionInfoParent(String name, Integer parentRegionId, Integer level) {
+		if (StringUtils.isNotBlank(name)) {
+			String value = this.getName(name, level);
+			Map<String, Object> params = Maps.newHashMap();
+			params.put("regionName", "%" + value + "%");
+			params.put("parentRegionId", parentRegionId);
+			params.put("regionLevel", level);
+			List<RegionInfo> result = regionInfoDao.findRegion(params);
+			if (CollectionUtils.isNotEmpty(result)) {
+				if (result.size() > 1) {
+					return null;
+				} else {
+					return result.get(0);
+				}
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	private String getName(String name, Integer level) {
+		if (level == 1) {
+			name = StringUtils.replace(name, "省", "");
+			name = StringUtils.replace(name, "市", "");
+			return name;
+		} else {
+			return name;
+		}
+	}
+
+}

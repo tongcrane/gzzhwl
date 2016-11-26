@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>com.gzzhwl</groupId>
+		<artifactId>gzzhwl-parent</artifactId>
+		<version>1.0.0.RELEASE</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>gzzhwl-push</artifactId>
+	<packaging>jar</packaging>
+	<name>Gzzhwl PNS</name>
+
+	<properties>
+		<support.basedir>${project.parent.parent.basedir}/src/support</support.basedir>
+		<site.basedir>${project.parent.parent.basedir}</site.basedir>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.gexin.platform</groupId>
+			<artifactId>gexin-rp-sdk-http</artifactId>
+			<version>4.0.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.gexin.platform</groupId>
+			<artifactId>gexin-rp-sdk-template</artifactId>
+			<version>4.0.0.5</version>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>getui-nexus</id>
+			<url>http://mvn.gt.igexin.com/nexus/content/repositories/releases/</url>
+		</repository>
+	</repositories>
+
+</project>

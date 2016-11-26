@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.LoadElecreceiptDao">
+
+	<resultMap id="loadElecreceiptResultMap" type="LoadElecreceipt">
+		<id property="pid" column="pid" />
+		<id property="receiptId" column="receipt_id" />
+		<result property="loadId" column="load_id" />
+		<result property="opTime" column="op_time" />
+		<result property="receiptImageRefId" column="receipt_image_ref_id" />
+		<result property="status" column="status" />
+		<result property="source" column="source" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="loadElecreceiptResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="loadElecreceiptResultMap"></resultMap>
+
+	<insert id="insert" parameterType="LoadElecreceipt">
+	   insert into zh_load_elecreceipt (
+	     pid,
+	     receipt_id,
+	     load_id,
+	     op_time,
+	     receipt_image_ref_id,
+	     status,
+	     source,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   )values (
+	     #{pid},
+	     #{receiptId},
+	     #{loadId},
+	     #{opTime},
+	     #{receiptImageRefId},
+	     #{status},
+	     #{source},
+	     #{createdBy},
+	     #now(),
+	     #{updatedBy},
+	     #now(),
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="LoadElecreceipt">
+	   update zh_load_elecreceipt set
+	     pid=#{pid},
+	     receipt_id=#{receiptId},
+	     load_id=#{loadId},
+	     op_time=#{opTime},
+	     receipt_image_ref_id=#{receiptImageRefId},
+	     status=#{status},
+	     source=#{source},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     updated_by=#{updatedBy},
+	     updated_time=now(),
+	     is_deleted=#{isDeleted}
+	   where 
+	    pid=#{pid} 
+	    and receipt_id=#{receiptId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="LoadElecreceipt">
+	   update zh_load_elecreceipt
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="pid != null">
+		       pid=#{pid},
+		     </if>
+		     <if test="receiptId != null">
+		       receipt_id=#{receiptId},
+		     </if>
+		     <if test="loadId != null">
+		       load_id=#{loadId},
+		     </if>
+		     <if test="opTime != null">
+		       op_time=#{opTime},
+		     </if>
+		     <if test="receiptImageRefId != null">
+		       receipt_image_ref_id=#{receiptImageRefId},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="source != null">
+		       source=#{source},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted},
+		     </if>
+		      updated_time=now()
+	   </trim>
+	
+	   where 
+	    pid=#{pid} 
+	    and receipt_id=#{receiptId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_load_elecreceipt 
+	   where 
+	    pid=#{pid} 
+	    and receipt_id=#{receiptId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="loadElecreceiptResultMap">
+	   select 
+	    pid,
+	    receipt_id,
+	    load_id,
+	    op_time,
+	    receipt_image_ref_id,
+	    status,
+	    source,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_load_elecreceipt
+	   where 
+	    pid=#{pid} 
+	    and receipt_id=#{receiptId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    pid,
+	    receipt_id,
+	    load_id,
+	    op_time,
+	    receipt_image_ref_id,
+	    status,
+	    source,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_load_elecreceipt
+	   where 
+	    pid=#{pid} 
+	    and receipt_id=#{receiptId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     pid,
+	     receipt_id,
+	     load_id,
+	     op_time,
+	     receipt_image_ref_id,
+	     status,
+	     source,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_load_elecreceipt
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="pid != null">
+	        pid=#{pid}
+	     </if>
+	     <if test="receiptId != null">
+	        and receipt_id=#{receiptId}
+	     </if>
+	     <if test="loadId != null">
+	        and load_id=#{loadId}
+	     </if>
+	     <if test="opTime != null">
+	        and op_time=#{opTime}
+	     </if>
+	     <if test="receiptImageRefId != null">
+	        and receipt_image_ref_id=#{receiptImageRefId}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     pid,
+	     receipt_id,
+	     load_id,
+	     op_time,
+	     receipt_image_ref_id,
+	     status,
+	     source,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_load_elecreceipt
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="pid != null">
+	        pid=#{pid}
+	     </if>
+	     <if test="receiptId != null">
+	        and receipt_id=#{receiptId}
+	     </if>
+	     <if test="loadId != null">
+	        and load_id=#{loadId}
+	     </if>
+	     <if test="opTime != null">
+	        and op_time=#{opTime}
+	     </if>
+	     <if test="receiptImageRefId != null">
+	        and receipt_image_ref_id=#{receiptImageRefId}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

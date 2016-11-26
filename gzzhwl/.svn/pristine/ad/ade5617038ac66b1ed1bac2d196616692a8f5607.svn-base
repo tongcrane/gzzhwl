@@ -1,0 +1,168 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_region_info表
+ * @author mew
+ *
+ */
+public class RegionInfo implements Serializable {
+	private java.lang.Integer regionId; // 区域标识
+	@Length(max = 100, message = "regionCode超过长度限制")
+	private java.lang.String regionCode; // 区域编码
+	@Length(max = 100, message = "regionName超过长度限制")
+	private java.lang.String regionName; // 区域名称
+	private java.lang.Integer parentRegionId; // 所属区域
+	private java.lang.Integer regionLevel; // 区域级别
+	private java.lang.Double regionOrder; // 区域排序
+	@Length(max = 100, message = "regionNameEn超过长度限制")
+	private java.lang.String regionNameEn; // 区域名称全拼
+
+
+	/**
+     * 获取区域标识属性
+     *
+     * @return regionId
+     */
+	public java.lang.Integer getRegionId() {
+		return regionId;
+	}
+	
+	/**
+	 * 设置区域标识属性
+	 *
+	 * @param regionId
+	 */
+	public void setRegionId(java.lang.Integer regionId) {
+		this.regionId = regionId;
+	}
+	
+	/**
+     * 获取区域编码属性
+     *
+     * @return regionCode
+     */
+	public java.lang.String getRegionCode() {
+		return regionCode;
+	}
+	
+	/**
+	 * 设置区域编码属性
+	 *
+	 * @param regionCode
+	 */
+	public void setRegionCode(java.lang.String regionCode) {
+		this.regionCode = regionCode;
+	}
+	
+	/**
+     * 获取区域名称属性
+     *
+     * @return regionName
+     */
+	public java.lang.String getRegionName() {
+		return regionName;
+	}
+	
+	/**
+	 * 设置区域名称属性
+	 *
+	 * @param regionName
+	 */
+	public void setRegionName(java.lang.String regionName) {
+		this.regionName = regionName;
+	}
+	
+	/**
+     * 获取所属区域属性
+     *
+     * @return parentRegionId
+     */
+	public java.lang.Integer getParentRegionId() {
+		return parentRegionId;
+	}
+	
+	/**
+	 * 设置所属区域属性
+	 *
+	 * @param parentRegionId
+	 */
+	public void setParentRegionId(java.lang.Integer parentRegionId) {
+		this.parentRegionId = parentRegionId;
+	}
+	
+	/**
+     * 获取区域级别属性
+     *
+     * @return regionLevel
+     */
+	public java.lang.Integer getRegionLevel() {
+		return regionLevel;
+	}
+	
+	/**
+	 * 设置区域级别属性
+	 *
+	 * @param regionLevel
+	 */
+	public void setRegionLevel(java.lang.Integer regionLevel) {
+		this.regionLevel = regionLevel;
+	}
+	
+	/**
+     * 获取区域排序属性
+     *
+     * @return regionOrder
+     */
+	public java.lang.Double getRegionOrder() {
+		return regionOrder;
+	}
+	
+	/**
+	 * 设置区域排序属性
+	 *
+	 * @param regionOrder
+	 */
+	public void setRegionOrder(java.lang.Double regionOrder) {
+		this.regionOrder = regionOrder;
+	}
+	
+	/**
+     * 获取区域名称全拼属性
+     *
+     * @return regionNameEn
+     */
+	public java.lang.String getRegionNameEn() {
+		return regionNameEn;
+	}
+	
+	/**
+	 * 设置区域名称全拼属性
+	 *
+	 * @param regionNameEn
+	 */
+	public void setRegionNameEn(java.lang.String regionNameEn) {
+		this.regionNameEn = regionNameEn;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("RegionInfo");
+        sb.append("{regionId=").append(regionId);
+        sb.append(", regionCode=").append(regionCode);
+        sb.append(", regionName=").append(regionName);
+        sb.append(", parentRegionId=").append(parentRegionId);
+        sb.append(", regionLevel=").append(regionLevel);
+        sb.append(", regionOrder=").append(regionOrder);
+        sb.append(", regionNameEn=").append(regionNameEn);
+		sb.append('}');
+        return sb.toString();
+    }
+}

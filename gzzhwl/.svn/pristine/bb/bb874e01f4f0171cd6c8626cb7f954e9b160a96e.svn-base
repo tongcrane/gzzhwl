@@ -1,0 +1,267 @@
+package com.gzzhwl.admin.load.controller;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.admin.load.service.TripManageService;
+import com.gzzhwl.admin.load.validator.LoadValidate;
+import com.gzzhwl.admin.load.vo.LoadFeedbackListVo;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.rest.security.utils.SecurityUtils;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+@RestController
+@RequestMapping("/admin/trip")
+public class TripManageController {
+	@Autowired
+	private TripManageService service;
+
+	@Autowired
+	private LoadFeedbackService loadFeedbackService;
+
+	@RequestMapping(value = "/pageTripList", method = RequestMethod.GET)
+	public ResponseModel pageTripList(@RequestParam(required = false) String keyWord, @Pagination PageParameter page) {
+		Page<Map<String, Object>> data = service.tripPage(keyWord, page.getPageIndex(), page.getPageSize());
+		return new ResponseModel(data);
+
+	}
+
+	/**
+	 * 保存异常反馈
+	 * 
+	 * @param loadFeedbackListVo
+	 * @return
+	 */
+	@RequestMapping(value = "/saveLoadFeedback", method = RequestMethod.POST, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel saveLoadFeedback(@RequestBody LoadFeedbackListVo loadFeedbackListVo) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		loadFeedbackService.saveLoadFeedback(loadFeedbackListVo, staffId);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 删除异常反馈
+	 * 
+	 * @param loadFeedbackListVo
+	 * @return
+	 */
+	@RequestMapping(value = "/removeLoadFeedback", method = RequestMethod.GET)
+	public ResponseModel removeLoadFeedback(@RequestParam(required = true) String feedbackId) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		loadFeedbackService.removeLoadFeedback(feedbackId, staffId);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 获取异常反馈列表
+	 * 
+	 * @param loadId
+	 * @param linkedStatus
+	 * @param type
+	 * @return
+	 */
+	@RequestMapping(value = "/getLoadFeedbackList", method = RequestMethod.GET)
+	public ResponseModel getLoadFeedbackList(@RequestParam(required = true) String loadId, String linkedStatus,
+			String type) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		LoadFeedBackType loadFeedBackType = null;
+		if (type != null) {
+			loadFeedBackType = LoadFeedBackType.getLoadFeedBackType(type);
+		}
+
+		LoadBillType loadBillType = null;
+		if (linkedStatus != null) {
+			loadBillType = LoadBillType.getLoadBillType(linkedStatus);
+		}
+
+		List<Map<String, Object>> list = loadFeedbackService.getLoadFeedbackList(loadId, loadFeedBackType,
+				loadBillType);
+
+		return new ResponseModel(list);
+	}
+
+	/**
+	 * 取消发车
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/cancelTrip", method = RequestMethod.POST)
+	public ResponseModel cancelTrip(@RequestParam(required = true) String loadId) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		service.cancelTrip(loadId, staffId);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 线控靠台
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/closeToSurfaceControl", method = RequestMethod.POST)
+	public ResponseModel closeToSurface(@RequestParam(required = true) String loadId,
+			@RequestParam(required = true) String actionTime) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		service.closeToSurface(loadId, staffId, actionTime);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 靠台
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/closeToSurface", method = RequestMethod.POST)
+	public ResponseModel closeToSurface(@RequestParam(required = true) String loadId) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		service.closeToSurface(loadId, staffId, null);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 线控发车
+	 * 
+	 * @param loadId
+	 * @param customerBillNo
+	 * @param contractImageRefId
+	 * @param tripTime
+	 * @return
+	 */
+	@RequestMapping(value = "/tripTheCarControl", method = RequestMethod.POST)
+	public ResponseModel tripTheCar(@RequestParam(required = true) String loadId,
+			@RequestParam(required = true) String customerBillNo,
+			@RequestParam(required = true) String contractImageRefId, @RequestParam(required = true) String tripTime,
+			@RequestParam(required = true) String actionTime) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		Integer departId = SecurityUtils.getSubject().getDepartId();
+
+		service.tripTheCar(loadId, customerBillNo, contractImageRefId, tripTime, staffId, departId, actionTime);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 发车
+	 * 
+	 * @param loadId
+	 * @param customerBillNo
+	 * @param contractImageRefId
+	 * @param tripTime
+	 * @return
+	 */
+	@RequestMapping(value = "/tripTheCar", method = RequestMethod.POST)
+	public ResponseModel tripTheCar(@RequestParam(required = true) String loadId,
+			@RequestParam(required = true) String customerBillNo,
+			@RequestParam(required = true) String contractImageRefId, @RequestParam(required = true) String tripTime) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		Integer departId = SecurityUtils.getSubject().getDepartId();
+
+		service.tripTheCar(loadId, customerBillNo, contractImageRefId, tripTime, staffId, departId, null);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 车检
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/vehicleCheck", method = RequestMethod.POST)
+	public ResponseModel vehicleCheck(@RequestParam(required = true) String loadId) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		service.vehicleCheck(loadId, staffId, null);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 线控车检
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/vehicleCheckLineControl", method = RequestMethod.POST)
+	public ResponseModel vehicleCheck(@RequestParam(required = true) String loadId,
+			@RequestParam(required = true) String actionTime) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		service.vehicleCheck(loadId, staffId, actionTime);
+
+		return new ResponseModel(null);
+	}
+
+	@RequestMapping(value = "/getTripDetail", method = RequestMethod.GET)
+	public ResponseModel getTripDetail(@RequestParam String loadId) {
+
+		Map<String, Object> tripDetail = service.getTripDetail(loadId);
+
+		return new ResponseModel(tripDetail);
+	}
+
+	/**
+	 * 获取现控待处理订单列表
+	 * 
+	 * @param addrId
+	 * @param keyWord
+	 * @return
+	 * @throws IOException 
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value = "/getFieldControlList", method = RequestMethod.GET, produces = {
+			"application/octet-stream;charset=UTF-8" })
+	public ResponseModel getFieldControlList(@RequestParam(required = false) String addrId,
+			@RequestParam(required = false) String keyWord,@RequestParam(required = true) String timeStamp,HttpServletResponse response) throws IOException, ParseException {
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		LoadValidate.valid_timestamp(timeStamp);
+		String fileName = staffId + DateUtils.parse(timeStamp, "yyyy-MM-dd HH:mm:ss").getTime();
+		response.setHeader("Content-Disposition","attachment;filename="+fileName);
+
+		service.getFieldControlListStream(addrId, keyWord,timeStamp,response.getOutputStream());
+		return new ResponseModel(null);
+	}
+
+}

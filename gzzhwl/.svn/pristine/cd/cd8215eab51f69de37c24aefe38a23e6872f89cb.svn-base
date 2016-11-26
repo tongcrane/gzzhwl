@@ -1,0 +1,73 @@
+package com.gzzhwl.core.data.extdao.impl;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.gzzhwl.core.data.extdao.RealVehicleInfoExtDao;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ * @author mew
+ *
+ */
+@Repository
+public class RealVehicleInfoExtDaoImpl implements RealVehicleInfoExtDao {
+	@Autowired	
+	private DaoSupport dao;
+
+	@Override
+	public <E, K, V> Page<E> sysVehicleSelectPage(Map<K, V> params, int current, int pagesize) {
+		return dao.page(PREFIX + ".sysVehicleSelectPage", params, current, pagesize);
+	}
+
+	@Override
+	public <E, K, V> Page<E> sysHungSelectPage(Map<K, V> params, int current, int pagesize) {
+		
+		return  dao.page(PREFIX + ".sysHungSelectPage", params, current, pagesize);
+	}
+
+	@Override
+	public <T, K, V> Integer vehicleManageExistValidator(Map<K, V> params) {
+		// TODO Auto-generated method stub
+		return dao.get(PREFIX + ".getVehicleManageExist", params);
+	}
+
+	@Override
+	public <T, K, V> List<T> getRealVehicleInfoByDriverInfoId(String tmpDriverInfoId, String accountId) {
+		
+		Map<String,Object> paraMap = new HashMap<>();
+		paraMap.put("driverInfoId", tmpDriverInfoId);
+		paraMap.put("accountId", accountId);
+		
+		return dao.get(PREFIX + ".getRealVehicleByCondition", paraMap);
+	}
+
+	@Override
+	public <T, K, V> List<T> getRealVehicleInfoByPlateNumber(String plateNumber) {
+		
+		Map<String,Object> paraMap = new HashMap<>();
+		paraMap.put("plateNumber", plateNumber);
+		
+		return dao.get(PREFIX + ".getRealVehicleByCondition", paraMap);
+	}
+
+	@Override
+	public <E, K, V> Page<E> pageVehicleList(Map<K, V> params, int current, int pagesize) {
+		return dao.page(PREFIX + ".pageVehicleList", params, current, pagesize);
+	}
+
+	@Override
+	public <T, K, V> List<T> getDriverandVehicleDetail(Map<K, V> params) {
+	
+		return dao.find(PREFIX + ".getDriverandVehicleDetail", params);
+	}
+}
+
+

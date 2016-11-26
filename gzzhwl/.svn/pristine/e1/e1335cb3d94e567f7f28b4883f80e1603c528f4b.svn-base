@@ -1,0 +1,58 @@
+package com.gzzhwl.rest.exception.support;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.servlet.NoHandlerFoundException;
+
+import com.gzzhwl.core.exception.ModelValidException;
+import com.gzzhwl.core.exception.NotFoundEnumException;
+import com.gzzhwl.rest.exception.AsyncException;
+import com.gzzhwl.rest.exception.ExceptionCodeDef;
+import com.gzzhwl.rest.springmvc.exception.ExceptionResolve;
+import com.gzzhwl.rest.springmvc.exception.StatusException;
+import com.gzzhwl.rest.springmvc.model.ResponseStatusModel;
+
+@Service
+public class ErrorCodeResolve implements ExceptionResolve {
+	private static String[] TOKEN_ERROR = { ExceptionCodeDef.SC_LASTEST_FORBIDDEN, ExceptionCodeDef.SC_EMPTY_FORBIDDEN,
+			ExceptionCodeDef.SC_FORMAT_FORBIDDEN, ExceptionCodeDef.SC_ERROR_FORBIDDEN,
+			ExceptionCodeDef.SC_MISSING_FORBIDDEN };
+
+	@Override
+	public ResponseStatusModel resolveException(Exception ex) {
+		String errorCode = ExceptionCodeDef.SC_INTERNAL_SERVER_ERROR;
+		String errorMessage = null;
+		if (ex instanceof StatusException) {// 有错误状态码的异常
+			errorCode = ((StatusException) ex).getStatus();
+			errorMessage = ((StatusException) ex).getErrorMsg();
+			int index = ArrayUtils.indexOf(TOKEN_ERROR, errorCode);
+			if (index >= 0) {
+				errorCode = ExceptionCodeDef.SC_LASTEST_FORBIDDEN;
+			}
+		} else if (ex instanceof NotFoundEnumException) {
+			errorCode = ExceptionCodeDef.SC_BAD_REQUEST;
+			errorMessage = "参数未在枚举中定义";
+		} else if (ex instanceof MissingServletRequestParameterException) {
+			errorCode = ExceptionCodeDef.SC_BAD_REQUEST;
+			errorMessage = "缺少参数：" + ((MissingServletRequestParameterException) ex).getParameterName();
+		} else if (ex instanceof NoHandlerFoundException) {
+			errorCode = ExceptionCodeDef.SC_NOT_FOUND;
+			errorMessage = "无此服务：" + ((NoHandlerFoundException) ex).getRequestURL();
+		} else if (ex instanceof HttpRequestMethodNotSupportedException) {
+			errorCode = ExceptionCodeDef.SC_METHOD_NOT_ALLOWED;
+			errorMessage = "此服务不支持" + ((HttpRequestMethodNotSupportedException) ex).getMethod() + "请求方式";
+		} else if (ex instanceof ModelValidException) {
+			errorCode = ExceptionCodeDef.SC_NOT_FOUND;
+			errorMessage = "数据超过长度限制";
+		} else if (ex instanceof AsyncException) {
+			errorCode = ExceptionCodeDef.SC_REQUEST_TIME_OUT;
+			errorMessage = "请求超时";
+		} else {
+			errorMessage = ex.getMessage();
+		}
+		return new ResponseStatusModel(errorCode, errorMessage);
+	}
+
+}

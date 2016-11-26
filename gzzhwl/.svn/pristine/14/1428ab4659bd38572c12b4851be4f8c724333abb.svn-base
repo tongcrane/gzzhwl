@@ -1,0 +1,67 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_driver_contract_info表
+ * @author mew
+ *
+ */
+public class DriverContractInfo implements Serializable {
+	@Length(max = 36, message = "contractId超过长度限制")
+	private java.lang.String contractId; // 合同标识
+	@Length(max = 36, message = "loadId超过长度限制")
+	private java.lang.String loadId; // 提货单标识
+
+
+	/**
+     * 获取合同标识属性
+     *
+     * @return contractId
+     */
+	public java.lang.String getContractId() {
+		return contractId;
+	}
+	
+	/**
+	 * 设置合同标识属性
+	 *
+	 * @param contractId
+	 */
+	public void setContractId(java.lang.String contractId) {
+		this.contractId = contractId;
+	}
+	
+	/**
+     * 获取提货单标识属性
+     *
+     * @return loadId
+     */
+	public java.lang.String getLoadId() {
+		return loadId;
+	}
+	
+	/**
+	 * 设置提货单标识属性
+	 *
+	 * @param loadId
+	 */
+	public void setLoadId(java.lang.String loadId) {
+		this.loadId = loadId;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("DriverContractInfo");
+        sb.append("{contractId=").append(contractId);
+        sb.append(", loadId=").append(loadId);
+		sb.append('}');
+        return sb.toString();
+    }
+}

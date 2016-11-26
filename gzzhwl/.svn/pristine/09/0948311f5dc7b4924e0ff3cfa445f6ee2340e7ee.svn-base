@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+		
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="false">
+        <property name="locations">
+            <list>
+                <value>classpath:/properties/${spring.profiles.active}/properties-${spring.profiles.active}.properties</value>
+                <value>classpath:/properties/application.properties</value>
+            </list>
+        </property>
+        <property name="fileEncoding" value="utf-8"/>
+        <property name="ignoreResourceNotFound" value="false"/>
+    </bean>
+    
+	
+	<bean id="h2DataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+	    <property name="url" value="jdbc:h2:mem:region;DB_CLOSE_DELAY=-1"/>
+	    <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="5" />
+        <property name="minIdle" value="5" /> 
+        <property name="maxActive" value="20" />
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="validationQuery" value="select 1"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnReturn" value="false" />
+        <!-- 关闭PSCache-->
+        <property name="poolPreparedStatements" value="false" />
+        
+        <property name="filters" value="stat,wall" />
+        <property name="proxyFilters">
+	        <list>
+	            <ref bean="slf4j-filter"/>
+	        </list>
+	    </property>
+	</bean>
+	
+	<jdbc:initialize-database data-source="h2DataSource">
+		<jdbc:script location="classpath:h2sql/schema.sql" encoding="UTF-8"/>
+	</jdbc:initialize-database>
+
+
+    <!-- <bean id="mysqlDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="defaultAutoCommit" value="true"/>
+        <property name="initialSize" value="5"/>
+        <property name="maxTotal" value="100"/>
+        <property name="maxIdle" value="10"/>
+        <property name="minIdle" value="5"/>
+        <property name="validationQuery" value="select 1"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="numTestsPerEvictionRun" value="5"/>
+        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="1200000"/>
+    </bean> -->
+    
+    <bean id="mysqlDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="10" />
+        <property name="minIdle" value="10" /> 
+        <property name="maxActive" value="30" />
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="validationQuery" value="select 1"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnReturn" value="false" />
+        <!-- 关闭PSCache-->
+        <property name="poolPreparedStatements" value="false" />
+        
+        <property name="filters" value="stat,wall" />
+        <property name="proxyFilters">
+	        <list>
+	            <ref bean="slf4j-filter"/>
+	        </list>
+	    </property>
+    </bean>
+    
+    <bean id="slf4j-filter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
+		<property name="dataSourceLogEnabled" value="false" />
+		<property name="connectionLogEnabled" value="false" />
+		<property name="statementLogEnabled" value="false" />
+		<property name="resultSetLogEnabled" value="false" />
+		
+		<property name="connectionConnectBeforeLogEnabled" value="false" />
+		<property name="connectionConnectAfterLogEnabled" value="false" />
+		<property name="connectionCommitAfterLogEnabled" value="false" />
+		<property name="connectionRollbackAfterLogEnabled" value="false" />
+		<property name="connectionCloseAfterLogEnabled" value="false" />
+		
+		<property name="resultSetNextAfterLogEnabled" value="false" />
+		<property name="resultSetOpenAfterLogEnabled" value="false" />
+		<property name="resultSetCloseAfterLogEnabled" value="false" />
+		
+		<property name="statementCreateAfterLogEnabled" value="false" />
+		<property name="statementPrepareAfterLogEnabled" value="false" />
+		<property name="statementPrepareCallAfterLogEnabled" value="false" />
+		<property name="statementExecuteAfterLogEnabled" value="false" />
+		<property name="statementExecuteQueryAfterLogEnabled" value="false" />
+		<property name="statementExecuteUpdateAfterLogEnabled" value="false" />
+		<property name="statementExecuteBatchAfterLogEnabled" value="false" />
+		<property name="statementCloseAfterLogEnabled" value="false" />
+		<property name="statementParameterSetLogEnabled" value="false" />
+		
+		<property name="statementExecutableSqlLogEnable" value="true" />
+	</bean>
+    
+    
+    <context:component-scan base-package="com.gzzhwl">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    
+    <context:spring-configured/>
+
+    <!-- 启动AspectJ支持 -->
+    <aop:aspectj-autoproxy/>
+    
+   <!--  databaseId="mysql" -->
+    
+   <!--  <bean id="vendorProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="properties">
+            <props>
+                <prop key="MySQL">mysql</prop>
+                <prop key="H2">h2</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+        <property name="properties" ref="vendorProperties"/>
+    </bean> -->
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="mysqlDataSource"/>
+        <!-- <property name="databaseIdProvider" ref="databaseIdProvider" /> -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath*:com/gzzhwl/core/data/*mapper/*.xml"/>
+        <property name="typeAliasesPackage" value="com.gzzhwl.core.data.model"/>
+        <property name="typeAliases" value="org.springframework.util.LinkedCaseInsensitiveMap"/>
+        <property name="plugins">
+            <array>
+                <ref bean="paginationInterceptor"/>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="paginationInterceptor" class="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">
+        <property name="properties">
+            <props>
+                <prop key="dialectClass">com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="sqlSessionDaoSupport" class="com.gzzhwl.core.mybatis.support.SqlSessionDaoSupport">
+        <constructor-arg index="0" ref="sqlSessionTemplate"/>
+        <constructor-arg index="1" ref="validator"/>
+    </bean>
+
+
+    <bean name="corsFilter" class="com.gzzhwl.rest.springmvc.filter.CorsFilter"/>
+
+   
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="mysqlDataSource"/>
+    </bean>
+
+    <aop:config>
+        <aop:pointcut id="productServiceMethods"
+                      expression="execution(* com.gzzhwl.*.*.service.*.*(..)) ||execution(* com.gzzhwl.*.service.*.*(..)) || execution(* com.gzzhwl.core.data.*dao.*Dao.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="productServiceMethods"/>
+    </aop:config>
+    
+    <bean class="com.gzzhwl.core.spring.SpringContext"/>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="page*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="info*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600"/>
+        <property name="maxInMemorySize" value="4096"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+    
+	<bean id="mapper" class="org.dozer.spring.DozerBeanMapperFactoryBean">
+		<property name="mappingFiles">
+			<list>
+				<value>classpath:dozerBeanMapping.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="smsConfig" class="com.gzzhwl.api.notice.model.SmsConfig">
+		<property name="url" value="${sms.url}"/>
+		<property name="user" value="${sms.user}"/>
+		<property name="pass" value="${sms.pass}"/>
+		<property name="sign" value="${sms.sign}"/>
+	</bean>
+	
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+	    <property name="basenames">  
+	        <list>  
+	            <value>classpath:validation/message</value>  
+	        </list>  
+	    </property>  
+	    <property name="useCodeAsDefaultMessage" value="false"/>  
+	    <property name="defaultEncoding" value="UTF-8"/>  
+	    <property name="cacheSeconds" value="60"/>  
+	</bean> 
+	
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">  
+	    <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>  
+	    <property name="validationMessageSource" ref="messageSource"/>  
+	</bean>  
+ 	
+    <import resource="applicationContext-cache.xml"/>
+    <import resource="applicationContext-task.xml"/>
+    <import resource="applicationContext-email.xml"/>
+    <import resource="applicationContext-push.xml"/>
+	<import resource="applicationContext-poi.xml"/>
+	<!-- <import resource="applicationContext-redis.xml"/>  -->
+
+	<bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor" />
+
+	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
+		<property name="patterns">
+			<list>
+				<value>com.gzzhwl.*.*.service.*.*</value>
+			</list>
+		</property>
+	</bean>
+
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
+	</aop:config>
+    
+</beans>

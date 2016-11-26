@@ -1,0 +1,40 @@
+package com.gzzhwl.core.data.extdao;
+
+
+import java.util.Map;
+import java.util.List;
+
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ *
+ */
+public interface LoadFeedbackLogExtDao {    
+    public final static String PREFIX = LoadFeedbackLogExtDao.class.getName();
+    
+    /**
+     * 获取异常反馈
+     * @param loadId
+     * @param loadFeedBackType
+     * @param loadBillType
+     * @return
+     */
+    public <T, K, V> List<T> getFeedBackList(String loadId,DataSource source,String[] loadFeedBackTypes,String isException,String isEnd,String[] loadBillTypes);
+    
+//    /**
+//     * 获取司机异常反馈
+//     * @param loadId
+//     * @param loadFeedBackType
+//     * @param loadBillType
+//     * @return
+//     */
+//    public <T, K, V> List<T> getDriverFeedBackList(String loadId,LoadBillType loadBillType);
+
+}
+
+

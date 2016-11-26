@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.ResetPasswordLogDao">
+
+	<resultMap id="resetPasswordLogResultMap" type="ResetPasswordLog">
+		<id property="ticketId" column="ticket_id" />
+		<result property="staffId" column="staff_id" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="expirationTime" column="expiration_time" />
+		<result property="minuteDiff" column="MINUTE_DIFF"/> 
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="resetPasswordLogResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="resetPasswordLogResultMap"></resultMap>
+
+	<insert id="insert" parameterType="ResetPasswordLog">
+	   insert into zh_reset_password_log (
+	     ticket_id,
+	     staff_id,
+	     status,
+	     created_by,
+	     created_time,
+	     expiration_time
+	   )values (
+	     #{ticketId},
+	     #{staffId},
+	     #{status},
+	     #{createdBy},
+	     now(),
+	     #{expirationTime}
+	   )
+	</insert>
+
+	<update id="update" parameterType="ResetPasswordLog">
+	   update zh_reset_password_log set
+	     ticket_id=#{ticketId},
+	     staff_id=#{staffId},
+	     status=#{status},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     expiration_time=#{expirationTime}
+	   where 
+	    ticket_id=#{ticketId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="ResetPasswordLog">
+	   update zh_reset_password_log
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="ticketId != null">
+		       ticket_id=#{ticketId},
+		     </if>
+		     <if test="staffId != null">
+		       staff_id=#{staffId},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="expirationTime != null">
+		       expiration_time=now()
+		     </if>
+	   </trim>
+	
+	   where 
+	    ticket_id=#{ticketId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_reset_password_log 
+	   where 
+	    ticket_id=#{ticketId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="resetPasswordLogResultMap">
+	   select 
+	    ticket_id,
+	    staff_id,
+	    status,
+	    created_by,
+	    created_time,
+	    expiration_time,
+	    TIMESTAMPDIFF(MINUTE,CREATED_TIME, now()) as MINUTE_DIFF
+	   from zh_reset_password_log
+	   where 
+	    ticket_id=#{ticketId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    ticket_id,
+	    staff_id,
+	    status,
+	    created_by,
+	    created_time,
+	    expiration_time
+	   from zh_reset_password_log
+	   where 
+	    ticket_id=#{ticketId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     ticket_id,
+	     staff_id,
+	     status,
+	     created_by,
+	     created_time,
+	     expiration_time
+	   from zh_reset_password_log
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="ticketId != null">
+	        ticket_id=#{ticketId}
+	     </if>
+	     <if test="staffId != null">
+	        and staff_id=#{staffId}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="expirationTime != null">
+	        and expiration_time=#{expirationTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     ticket_id,
+	     staff_id,
+	     status,
+	     created_by,
+	     created_time,
+	     expiration_time
+	   from zh_reset_password_log
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="ticketId != null">
+	        ticket_id=#{ticketId}
+	     </if>
+	     <if test="staffId != null">
+	        and staff_id=#{staffId}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="expirationTime != null">
+	        and expiration_time=#{expirationTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<update id="updateStatus" parameterType="ResetPasswordLog">
+	   update zh_reset_password_log
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="ticketId != null">
+		       TICKET_ID=#{ticketId},
+		     </if>
+		     <if test="staffId != null">
+		       staff_id=#{staffId},
+		     </if>
+		     <if test="status != null">
+		       STATUS=#{status},
+		     </if>
+		     <if test="createdBy != null">
+		       CREATED_BY=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       CREATED_TIME=#{createdTime},
+		     </if>
+		     <if test="expirationTime != null">
+		       EXPIRATION_TIME=#{expirationTime}
+		     </if>
+	   </trim>
+	   where 
+	    staff_id=#{staffId}
+	</update>
+</mapper> 

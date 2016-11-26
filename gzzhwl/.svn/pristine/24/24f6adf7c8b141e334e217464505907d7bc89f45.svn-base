@@ -1,0 +1,1170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.RealVehicleInfoExtDao">
+
+	<resultMap id="realVehicleInfoResultMap" type="RealVehicleInfo">
+		<id property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="seqNo" column="seq_no" />
+		<result property="vehicleType" column="vehicle_type" />
+		<result property="headstockType" column="headstock_type" />
+		<result property="type" column="type" />
+		<result property="plateNumber" column="plate_number" />
+		<result property="models" column="models" />
+		<result property="length" column="length" />
+		<result property="power" column="power" />
+		<result property="brand" column="brand" />
+		<result property="color" column="color" />
+		<result property="vin" column="vin" />
+		<result property="engineNo" column="engine_no" />
+		<result property="ownerName" column="owner_name" />
+		<result property="ownerPhone" column="owner_phone" />
+		<result property="ownerMobile" column="owner_mobile" />
+		<result property="regDate" column="reg_date" />
+		<result property="regCertCode" column="reg_cert_code" />
+		<result property="loadWeight" column="load_weight" />
+		<result property="wheelsNum" column="wheels_num" />
+		<result property="ownerType" column="owner_type" />
+		<result property="attributes" column="attributes" />
+		<result property="maintenanceDate" column="maintenance_date" />
+		<result property="maintenanceBill" column="maintenance_bill" />
+		<result property="licenseNo" column="license_no" />
+		<result property="licenseRegDate" column="license_reg_date" />
+		<result property="licenseIssueDate" column="license_issue_date" />
+		<result property="licenseValidDate" column="license_valid_date" />
+		<result property="operatingCertNo" column="operating_cert_no" />
+		<result property="operatingCertIssueDate" column="operating_cert_issue_date" />
+		<result property="operatingCertValidDate" column="operating_cert_valid_date" />
+		<result property="regImageRefId" column="reg_image_ref_id" />
+		<result property="licenseImageRefId" column="license_image_ref_id" />
+		<result property="licenseImage2RefId" column="license_image_2_ref_id"/>
+		<result property="ocImageRefId" column="oc_image_ref_id" />
+		<result property="ocImage2RefId" column="oc_image_2_ref_id"/>
+		<result property="ocImage3RefId" column="oc_image_3_ref_id"/>
+		<result property="vehicleImageRefId" column="vehicle_image_ref_id" />
+		<result property="source" column="source" />
+		<result property="remark" column="remark" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="ciEffectDate" column="ci_effect_date" />
+		<result property="ciName" column="ci_name" />
+		<result property="ciNo" column="ci_no" />
+		<result property="viEffectDate" column="vi_effect_date" />
+		<result property="viName" column="vi_name" />
+		<result property="viNo" column="vi_no" />
+		<result property="ciImageRefId" column="ci_image_ref_id" />
+		<result property="viImageRefId" column="vi_image_ref_id" />
+	</resultMap>
+	
+	<resultMap id="DriverAndVehicleResultMapNew"  type="java.util.HashMap" >
+		<id property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="seqNo" column="seq_no" />
+		<result property="vehicleType" column="vehicle_type" />
+		<result property="headstockType" column="headstock_type" />
+		<result property="type" column="type" />
+		<result property="plateNumber" column="plate_number" />
+		<result property="models" column="models" />
+		<result property="length" column="length" />
+		<result property="power" column="power" />
+		<result property="brand" column="brand" />
+		<result property="color" column="color" />
+		<result property="vin" column="vin" />
+		<result property="engineNo" column="engine_no" />
+		<result property="ownerName" column="owner_name" />
+		<result property="ownerPhone" column="owner_phone" />
+		<result property="ownerMobile" column="owner_mobile" />
+		<result property="regDate" column="reg_date" />
+		<result property="regCertCode" column="reg_cert_code" />
+		<result property="loadWeight" column="load_weight" />
+		<result property="wheelsNum" column="wheels_num" />
+		<result property="ownerType" column="owner_type" />
+		<result property="attributes" column="attributes" />
+		<result property="maintenanceDate" column="maintenance_date" />
+		<result property="maintenanceBill" column="maintenance_bill" />
+		<result property="licenseNo" column="license_no" />
+		<result property="licenseRegDate" column="license_reg_date" />
+		<result property="licenseIssueDate" column="license_issue_date" />
+		<result property="licenseValidDate" column="license_valid_date" />
+		<result property="operatingCertNo" column="operating_cert_no" />
+		<result property="operatingCertIssueDate" column="operating_cert_issue_date" />
+		<result property="operatingCertValidDate" column="operating_cert_valid_date" />
+		<result property="regImageRefId" column="reg_image_ref_id" />
+		<result property="licenseImageRefId" column="license_image_ref_id" />
+		<result property="licenseImage2RefId" column="license_image_2_ref_id"/>
+		<result property="ocImageRefId" column="oc_image_ref_id" />
+		<result property="ocImage2RefId" column="oc_image_2_ref_id"/>
+		<result property="ocImage3RefId" column="oc_image_3_ref_id"/>
+		<result property="vehicleImageRefId" column="vehicle_image_ref_id" />
+		<result property="source" column="source" />
+		<result property="remark" column="remark" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="ciEffectDate" column="ci_effect_date" />
+		<result property="ciName" column="ci_name" />
+		<result property="ciNo" column="ci_no" />
+		<result property="viEffectDate" column="vi_effect_date" />
+		<result property="viName" column="vi_name" />
+		<result property="viNo" column="vi_no" />
+		<result property="ciImageRefId" column="ci_image_ref_id" />
+		<result property="viImageRefId" column="vi_image_ref_id" />
+		<result property="canEdit" column="canEdit" />
+		<collection notNullColumn="driver_info_id" property="driverList" ofType="map" javaType="java.util.List"  resultMap="DriverResultMap" columnPrefix="driver_"/>
+	</resultMap>
+	<resultMap id="DriverResultMap"  type="java.util.HashMap" >
+		<result property="driverInfoId" column="driver_info_id" />
+		<result property="realName" column="real_name" />
+		<result property="idno" column="idno" />
+		<result property="sex" column="sex" />
+		<result property="birthday" column="birthday" />
+		<result property="criminalRecord" column="criminal_record" />
+		<result property="telphone" column="telphone" />
+		<result property="attributes" column="attributes" />
+		<result property="areaCode" column="area_code" />
+		<result property="address" column="address" />
+		<result property="dlType" column="dl_type" />
+		<result property="dlIssueDate" column="dl_issue_date" />
+		<result property="dlStartDate" column="dl_start_date" />
+		<result property="dlEndDate" column="dl_end_date" />
+		<result property="qcNo" column="qc_no" />
+		<result property="qcType" column="qc_type" />
+		<result property="qcIssueDate" column="qc_issue_date" />
+		<result property="qcStartDate" column="qc_start_date" />
+		<result property="qcEndDate" column="qc_end_date" />
+		<result property="idFImageRefId" column="id_f_image_ref_id" />
+		<result property="idBImageRefId" column="id_b_image_ref_id" />
+		<result property="photoFImageRefId" column="photo_f_image_ref_id" />
+		<result property="drivingFImageRefId" column="driving_f_image_ref_id" />
+		<result property="drivingBImageRefId" column="driving_b_image_ref_id" />
+		<result property="qualifiImageRefId" column="qualifi_image_ref_id" />
+		<result property="qualifiImage2RefId" column="qualifi_image_2_ref_id" />
+		<result property="accountId" column="account_id" />
+		<result property="status" column="status" />
+	</resultMap>
+	
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="realVehicleInfoResultMap">
+		<result property="belongDepartName" column="belong_depart_name"/>
+		<result property="useDepartName" column="use_depart_name"/>
+		<result property="useStatus" column="use_status"/>
+		<result property="departureCode" column="departure_code"/>
+		<result property="destinationCode" column="destination_code"/>
+		<result property="bridgeType" column="bridge_type"/>
+		<result property="headstockType" column="headstock_type" />
+		<result property="belongDepartId" column="belong_depart_id" />
+		<result property="useDepartId" column="use_depart_id" />
+		<result property="belongDepartName" column="belong_depart_name" />
+		<result property="useDepartName" column="use_depart_name" />
+	</resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="realVehicleInfoResultMap"></resultMap>
+	
+	
+	<resultMap id="DriverAndVehicleResultMap"  type="java.util.HashMap" extends="realVehicleInfoResultMap">
+		<result property="accountId" column="account_id" />
+		<result property="seqNo" column="seq_no" />
+		<result property="realName" column="real_name" />
+		<result property="idno" column="idno" />
+		<result property="sex" column="sex" />
+		<result property="birthday" column="birthday" />
+		<result property="criminalRecord" column="criminal_record" />
+		<result property="telphone" column="telphone" />
+		<result property="attributes" column="attributes" />
+		<result property="areaCode" column="area_code" />
+		<result property="address" column="address" />
+		<result property="dlType" column="dl_type" />
+		<result property="dlIssueDate" column="dl_issue_date" />
+		<result property="dlStartDate" column="dl_start_date" />
+		<result property="dlEndDate" column="dl_end_date" />
+		<result property="qcNo" column="qc_no" />
+		<result property="qcType" column="qc_type" />
+		<result property="qcIssueDate" column="qc_issue_date" />
+		<result property="qcStartDate" column="qc_start_date" />
+		<result property="qcEndDate" column="qc_end_date" />
+		<result property="idFImageRefId" column="id_f_image_ref_id" />
+		<result property="idBImageRefId" column="id_b_image_ref_id" />
+		<result property="photoFImageRefId" column="photo_f_image_ref_id" />
+		<result property="drivingFImageRefId" column="driving_f_image_ref_id" />
+		<result property="drivingBImageRefId" column="driving_b_image_ref_id" />
+		<result property="qualifiImageRefId" column="qualifi_image_ref_id" />
+		<result property="qualifiImageRefId" column="qualifi_image_2_ref_id" />
+	</resultMap>
+	
+	<!-- 内部系统车辆查询分页 -->
+	<select id="sysVehicleSelectPage" parameterType="map" resultMap="pageResultMap">
+	<![CDATA[ 
+	   SELECT
+		t1.vehicle_info_id,
+		t1.plate_number,
+		t1.`length`,
+		t1.brand,
+		t1.color,
+		t1.load_weight,
+		t1.wheels_num,
+		t1.owner_type,
+		t1.owner_name,
+		t1.owner_phone,
+		t1.attributes,
+		t1.operating_cert_valid_date,
+		t1.license_valid_date,
+		t2.ci_effect_date,
+		t2.vi_effect_date,
+		t3.use_depart_id,
+		t3.belong_depart_id,
+		t3.departure_code,
+		t3.destination_code,
+		t3.use_status,
+		t1.type,
+		case when  (date_format(t1.license_valid_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+		  		then '00'  
+			when  (date_format(t2.ci_effect_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+		  		then '00'
+			when  (date_format(t2.vi_effect_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+		 		then '00'
+		 	when  (date_format(t1.operating_cert_valid_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+		 		then '00'
+		else  '01'
+		end 
+		as 'isOutTime'
+		FROM
+		zh_real_vehicle_info as t1 
+		inner join 
+		zh_real_vehicle_plus_info as t2 on t1.vehicle_info_id=t2.vehicle_info_id 
+		inner join
+		zh_real_vehicle_used_info as t3 on t1.vehicle_info_id=t3.vehicle_info_id
+		inner join
+		zh_supply_info as t4 on t4.supply_id = t1.owner_name
+		where 
+		t1.source='01'
+		and t1.is_deleted='00'
+		and t1.vehicle_type='01'
+		 ]]>
+		   <if test="queryType == 0">
+		 <if test="queryContent != null">
+	        and 
+	        (
+	           t1.plate_number like #{queryContentLike}
+	        or t4.full_name like #{queryContentLike}
+	        or t3.departure_code like #{queryContentLike} 
+	        or t3.belong_depart_id in (select depart_id from zh_department_info where name like #{queryContentLike}) 
+	        or t3.use_depart_id in (select depart_id from zh_department_info where name like #{queryContentLike}) 
+	        or t2.ci_name like #{queryContentLike}
+	        or t2.vi_name like #{queryContentLike}
+	        )
+	     </if>
+	     </if>
+	     <if test="queryType == 1">
+	     <if test="vehicleInfoId != null">
+	        and t1.vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="seqNo != null">
+	        and t1.seq_no=#{seqNo}
+	     </if>
+	     <if test="driverInfoId != null">
+	        and t1.driver_info_id=#{driverInfoId}
+	     </if>
+	     <if test="vehicleType != null">
+	        and t1.vehicle_type=#{vehicleType}
+	     </if>
+	     <if test="type != null">
+	        and t1.type=#{type}
+	     </if>
+	     <if test="plateNumber != null">
+	        and t1.plate_number=#{plateNumber}
+	     </if>
+	     <if test="models != null">
+	        and t1.models=#{models}
+	     </if>
+	     <if test="length != null">
+	        and t1.length=#{length}
+	     </if>
+	     <if test="power != null">
+	        and t1.power=#{power}
+	     </if>
+	     <if test="brand != null">
+	        and t1.brand=#{brand}
+	     </if>
+	     <if test="vin != null">
+	        and t1.vin=#{vin}
+	     </if>
+	     <if test="engineNo != null">
+	        and t1.engine_no=#{engineNo}
+	     </if>
+	     <if test="ownerName != null">
+	        and t4.full_name like #{ownerName}
+	     </if>
+	     <if test="ownerPhone != null">
+	        and (t1.owner_phone=#{ownerPhone} or t1.owner_mobile=#{ownerMobile})
+	     </if>
+	     <if test="regDate != null">
+	        and t1.reg_date=#{regDate}
+	     </if>
+	     <if test="regCertCode != null">
+	        and t1.reg_cert_code=#{regCertCode}
+	     </if>
+	     <if test="loadWeight != null">
+	        and t1.load_weight=#{loadWeight}
+	     </if>
+	     <if test="wheelsNum != null">
+	        and t1.wheels_num=#{wheelsNum}
+	     </if>
+	     <if test="ownerType != null">
+	        and t1.owner_type=#{ownerType}
+	     </if>
+	     <if test="attributes != null">
+	        and t1.attributes=#{attributes}
+	     </if>
+	     <if test="maintenanceDate != null">
+	        and t1.maintenance_date=#{maintenanceDate}
+	     </if>
+	     <if test="maintenanceBill != null">
+	        and t1.maintenance_bill=#{maintenanceBill}
+	     </if>
+	     <if test="licenseNo != null">
+	        and t1.license_no=#{licenseNo}
+	     </if>
+	     <if test="licenseRegDate != null">
+	        and t1.license_reg_date=#{licenseRegDate}
+	     </if>
+	     <if test="licenseIssueDate != null">
+	        and t1.license_issue_date=#{licenseIssueDate}
+	     </if>
+	     <if test="licenseValidDate != null">
+	        and t1.license_valid_date=#{licenseValidDate}
+	     </if>
+	     <if test="operatingCertNo != null">
+	        and t1.operating_cert_no=#{operatingCertNo}
+	     </if>
+	     <if test="operatingCertIssueDate != null">
+	        and t1.operating_cert_issue_date=#{operatingCertIssueDate}
+	     </if>
+	     <if test="operatingCertValidDate != null">
+	        and t1.operating_cert_valid_date=#{operatingCertValidDate}
+	     </if>
+	     <if test="licenseImageRefId != null">
+	        and t1.license_image_ref_id=#{licenseImageRefId}
+	     </if>
+	     <if test="ocImageRefId != null">
+	        and t1.oc_image_ref_id=#{ocImageRefId}
+	     </if>
+	     <if test="vehicleImageRefId != null">
+	        and t1.vehicle_image_ref_id=#{vehicleImageRefId}
+	     </if>
+	     <if test="source != null">
+	        and t1.source=#{source}
+	     </if>
+	     <if test="remark != null">
+	        and t1.remark=#{remark}
+	     </if>
+	     <if test="createdBy != null">
+	        and t1.created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and t1.created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and t1.updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and t1.updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and t1.status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and t1.is_deleted=#{isDeleted}
+	     </if>
+	     <if test="ciEffectDate != null">
+	        and t2.ci_effect_date=#{ciEffectDate}
+	     </if>
+	     <if test="ciName != null">
+	        and t2.ci_name=#{ciName}
+	     </if>
+	     <if test="ciNo != null">
+	        and t2.ci_no=#{ciNo}
+	     </if>
+	     <if test="viEffectDate != null">
+	        and t2.vi_effect_date=#{viEffectDate}
+	     </if>
+	     <if test="viName != null">
+	        and t2.vi_name=#{viName}
+	     </if>
+	     <if test="viNo != null">
+	        and t2.vi_no=#{viNo}
+	     </if>
+	     <if test="ciImageRefId != null">
+	        and t2.ci_image_ref_id=#{ciImageRefId}
+	     </if>
+	     <if test="viImageRefId != null">
+	        and t2.vi_image_ref_id=#{viImageRefId}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and t3.belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="belongDepartName != null">
+	        and  t3.belong_depart_id in (select depart_id from zh_department_info where name like #{belongDepartName}) 
+	     </if>
+	     <if test="useDepartId != null">
+	        and t3.use_depart_id=#{useDepartId}
+	     </if>
+	     <if test="useDepartName != null">
+	     	and  t3.use_depart_id in (select depart_id from zh_department_info where name like #{useDepartName}) 
+	     </if>
+	     <if test="departureCode != null">
+	        and t3.departure_code=#{departureCode}
+	     </if>
+	     <if test="destinationCode != null">
+	        and t3.destination_code=#{destinationCode}
+	     </if>
+	     <if test="useStatus != null">
+	        and t3.use_status=#{useStatus}
+	     </if>
+	     <if test="ciEffectDateStrat != null">
+	       <![CDATA[ and t2.ci_effect_date>=#{ciEffectDateStrat}]]>
+	     </if>
+	     <if test="ciEffectDateEnd != null">
+	      <![CDATA[  and t2.ci_effect_date<=#{ciEffectDateEnd} ]]>
+	     </if>
+	     <if test="ciEffectDateStrat != null">
+	       <![CDATA[ and t2.ci_effect_date>=#{ciEffectDateStrat}]]>
+	     </if>
+	     <if test="viEffectDateStrat != null">
+	      <![CDATA[  and t2.vi_effect_date>=#{viEffectDateStrat} ]]>
+	     </if>
+	     <if test="viEffectDateEnd != null">
+	      <![CDATA[  and t2.vi_effect_date<=#{viEffectDateEnd} ]]>
+	     </if>
+	     <if test="createdTimeStart != null">
+	       <![CDATA[ and t1.created_time>=#{createdTimeStart} ]]>
+	     </if>
+	     <if test="createdTimeEnd != null">
+	       <![CDATA[ and t1.created_time<=#{createdTimeEnd} ]]>
+	     </if>
+	     <if test="loadWeightStart != null">
+	       <![CDATA[ and t1.load_weight>=#{loadWeightStart} ]]>
+	     </if>
+	     <if test="loadWeightEnd != null">
+	       <![CDATA[ and t1.load_weight<=#{loadWeightEnd} ]]>
+	     </if>
+	     <if test="lengthStart != null">
+	       <![CDATA[ and t1.length>=#{lengthStart} ]]>
+	     </if>
+	     <if test="lengthEnd != null">
+	       <![CDATA[ and t1.length<=#{lengthEnd} ]]>
+	     </if>
+	     <if test="licenseValidDateStart != null">
+	       <![CDATA[ and t1.license_valid_date>=#{licenseValidDateStart} ]]>
+	     </if>
+	     <if test="licenseValidDateEnd != null">
+	       <![CDATA[ and t1.license_valid_date<=#{licenseValidDateEnd} ]]>
+	     </if>
+	     </if>
+	     <![CDATA[   
+	     order by 
+		 ((date_format(t1.license_valid_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<0) desc,
+		 (date_format(t2.ci_effect_date,'%Y%c%d')-date_format(now(),'%Y%c%d')<0) desc,
+		 (date_format(t2.vi_effect_date,'%Y%c%d')-date_format(now(),'%Y%c%d')<0) desc,
+		 t1.created_time desc
+		 ]]>
+	</select>
+	
+	
+	<!-- 内部系统车挂查询分页 -->
+	<select id="sysHungSelectPage" parameterType="map" resultMap="pageResultMap">
+	<![CDATA[ 
+	   SELECT
+		t1.vehicle_info_id,
+		t1.plate_number,
+		t1.`length`,
+		t1.brand,
+		t1.color,
+		t1.load_weight,
+		t1.wheels_num,
+		t1.owner_type,
+		t1.attributes,
+		t1.owner_name,
+		t1.owner_phone,
+		t1.operating_cert_valid_date,
+		t1.license_valid_date,
+		t2.ci_effect_date,
+		t2.vi_effect_date,
+		t3.use_depart_id,
+		t3.belong_depart_id,
+		t3.departure_code,
+		t3.destination_code,
+		t3.use_status,
+		t1.type,
+		case when  (date_format(t1.license_valid_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+		  		then '00'  
+			when  (date_format(t2.ci_effect_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+		  		then '00'
+			when  (date_format(t2.vi_effect_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+		 		then '00'
+		 	when  (date_format(t1.operating_cert_valid_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<15
+		 		then '00'
+		else  '01'
+		end 
+		as 'isOutTime'
+		FROM
+		zh_real_vehicle_info as t1 
+		inner join 
+		zh_real_vehicle_plus_info as t2 on t1.vehicle_info_id=t2.vehicle_info_id 
+		inner join
+		zh_real_vehicle_used_info as t3 on t1.vehicle_info_id=t3.vehicle_info_id
+		where 
+		t1.source='01'
+		and t1.is_deleted='00'
+		and t1.vehicle_type='03'
+		 ]]>
+	  	 <if test="queryType == 0">
+	       <if test="queryContent != null">
+	        and 
+	        (
+	           t1.plate_number like #{queryContentLike} 
+	        or t1.owner_name like #{queryContentLike} 
+	        or t1.attributes like #{queryContentLike}
+	        or t3.departure_code like #{queryContentLike}
+	        or t3.belong_depart_id in (select depart_id from zh_department_info where name like #{queryContentLike}) 
+	        )
+	       </if>
+	     </if>
+	     <if test="queryType == 1">
+	     <if test="vehicleInfoId != null">
+	        and t1.vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="seqNo != null">
+	        and t1.seq_no=#{seqNo}
+	     </if>
+	     <if test="driverInfoId != null">
+	        and t1.driver_info_id=#{driverInfoId}
+	     </if>
+	     <if test="vehicleType != null">
+	        and t1.vehicle_type=#{vehicleType}
+	     </if>
+	     <if test="type != null">
+	        and t1.type=#{type}
+	     </if>
+	     <if test="plateNumber != null">
+	        and t1.plate_number=#{plateNumber}
+	     </if>
+	     <if test="models != null">
+	        and t1.models=#{models}
+	     </if>
+	     <if test="length != null">
+	        and t1.length=#{length}
+	     </if>
+	     <if test="power != null">
+	        and t1.power=#{power}
+	     </if>
+	     <if test="brand != null">
+	        and t1.brand=#{brand}
+	     </if>
+	     <if test="vin != null">
+	        and t1.vin=#{vin}
+	     </if>
+	     <if test="engineNo != null">
+	        and t1.engine_no=#{engineNo}
+	     </if>
+	     <if test="ownerName != null">
+	        and t1.owner_name like #{ownerName}
+	     </if>
+	     <if test="ownerPhone != null">
+	        and (t1.owner_phone=#{ownerPhone} or t1.owner_mobile=#{ownerMobile})
+	     </if>
+	     <if test="regDate != null">
+	        and t1.reg_date=#{regDate}
+	     </if>
+	     <if test="regCertCode != null">
+	        and t1.reg_cert_code=#{regCertCode}
+	     </if>
+	     <if test="loadWeight != null">
+	        and t1.load_weight=#{loadWeight}
+	     </if>
+	     <if test="wheelsNum != null">
+	        and t1.wheels_num=#{wheelsNum}
+	     </if>
+	     <if test="ownerType != null">
+	        and t1.owner_type=#{ownerType}
+	     </if>
+	     <if test="attributes != null">
+	        and t1.attributes=#{attributes}
+	     </if>
+	     <if test="maintenanceDate != null">
+	        and t1.maintenance_date=#{maintenanceDate}
+	     </if>
+	     <if test="maintenanceBill != null">
+	        and t1.maintenance_bill=#{maintenanceBill}
+	     </if>
+	     <if test="licenseNo != null">
+	        and t1.license_no=#{licenseNo}
+	     </if>
+	     <if test="licenseRegDate != null">
+	        and t1.license_reg_date=#{licenseRegDate}
+	     </if>
+	     <if test="licenseIssueDate != null">
+	        and t1.license_issue_date=#{licenseIssueDate}
+	     </if>
+	     <if test="licenseValidDate != null">
+	        and t1.license_valid_date=#{licenseValidDate}
+	     </if>
+	     <if test="operatingCertNo != null">
+	        and t1.operating_cert_no=#{operatingCertNo}
+	     </if>
+	     <if test="operatingCertIssueDate != null">
+	        and t1.operating_cert_issue_date=#{operatingCertIssueDate}
+	     </if>
+	     <if test="operatingCertValidDate != null">
+	        and t1.operating_cert_valid_date=#{operatingCertValidDate}
+	     </if>
+	     <if test="licenseImageRefId != null">
+	        and t1.license_image_ref_id=#{licenseImageRefId}
+	     </if>
+	     <if test="ocImageRefId != null">
+	        and t1.oc_image_ref_id=#{ocImageRefId}
+	     </if>
+	     <if test="vehicleImageRefId != null">
+	        and t1.vehicle_image_ref_id=#{vehicleImageRefId}
+	     </if>
+	     <if test="source != null">
+	        and t1.source=#{source}
+	     </if>
+	     <if test="remark != null">
+	        and t1.remark=#{remark}
+	     </if>
+	     <if test="createdBy != null">
+	        and t1.created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and t1.created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and t1.updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and t1.updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and t1.status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and t1.is_deleted=#{isDeleted}
+	     </if>
+	     <if test="ciEffectDate != null">
+	        and t2.ci_effect_date=#{ciEffectDate}
+	     </if>
+	     <if test="ciName != null">
+	        and t2.ci_name=#{ciName}
+	     </if>
+	     <if test="ciNo != null">
+	        and t2.ci_no=#{ciNo}
+	     </if>
+	     <if test="viEffectDate != null">
+	        and t2.vi_effect_date=#{viEffectDate}
+	     </if>
+	     <if test="viName != null">
+	        and t2.vi_name=#{viName}
+	     </if>
+	     <if test="viNo != null">
+	        and t2.vi_no=#{viNo}
+	     </if>
+	     <if test="ciImageRefId != null">
+	        and t2.ci_image_ref_id=#{ciImageRefId}
+	     </if>
+	     <if test="viImageRefId != null">
+	        and t2.vi_image_ref_id=#{viImageRefId}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and t3.belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="belongDepartName != null">
+	        and  t3.belong_depart_id in (select depart_id from zh_department_info where name like #{belongDepartName}) 
+	     </if>
+	     <if test="useDepartId != null">
+	        and t3.use_depart_id=#{useDepartId}
+	     </if>
+	     <if test="useDepartName != null">
+	     	and  t3.use_depart_id in (select depart_id from zh_department_info where name like #{useDepartName}) 
+	     </if>
+	     <if test="departureCode != null">
+	        and t3.departure_code=#{departureCode}
+	     </if>
+	     <if test="destinationCode != null">
+	        and t3.destination_code=#{destinationCode}
+	     </if>
+	     <if test="useStatus != null">
+	        and t3.use_status=#{useStatus}
+	     </if>
+	     <if test="ciEffectDateStrat != null">
+	       <![CDATA[ and t2.ci_effect_date>=#{ciEffectDateStrat}]]>
+	     </if>
+	     <if test="ciEffectDateEnd != null">
+	      <![CDATA[  and t2.ci_effect_date<=#{ciEffectDateEnd} ]]>
+	     </if>
+	     <if test="viEffectDateStrat != null">
+	      <![CDATA[  and t2.vi_effect_date>=#{viEffectDateStrat} ]]>
+	     </if>
+	     <if test="viEffectDateEnd != null">
+	      <![CDATA[  and t2.vi_effect_date<=#{viEffectDateEnd} ]]>
+	     </if>
+	     <if test="createdTimeStart != null">
+	       <![CDATA[ and t1.created_time>=#{createdTimeStart} ]]>
+	     </if>
+	     <if test="createdTimeEnd != null">
+	       <![CDATA[ and t1.created_time<=#{createdTimeEnd} ]]>
+	     </if>
+	     <if test="loadWeightStart != null">
+	       <![CDATA[ and t1.load_weight>=#{loadWeightStart} ]]>
+	     </if>
+	     <if test="loadWeightEnd != null">
+	       <![CDATA[ and t1.load_weight<=#{loadWeightEnd} ]]>
+	     </if>
+	     <if test="lengthStart != null">
+	       <![CDATA[ and t1.length>=#{lengthStart} ]]>
+	     </if>
+	     <if test="lengthEnd != null">
+	       <![CDATA[ and t1.length<=#{lengthEnd} ]]>
+	     </if>
+	     <if test="licenseValidDateStart != null">
+	       <![CDATA[ and t1.license_valid_date>=#{licenseValidDateStart} ]]>
+	     </if>
+	     <if test="licenseValidDateEnd != null">
+	       <![CDATA[ and t1.license_valid_date<=#{licenseValidDateEnd} ]]>
+	     </if>
+	  </if>
+	  <![CDATA[   
+	  	 order by 
+		 ((date_format(t1.license_valid_date,'%Y%c%d')-date_format(now(),'%Y%c%d'))<0) desc,
+		 (date_format(t2.ci_effect_date,'%Y%c%d')-date_format(now(),'%Y%c%d')<0) desc,
+		 (date_format(t2.vi_effect_date,'%Y%c%d')-date_format(now(),'%Y%c%d')<0) desc,
+		 t1.created_time desc
+	  ]]>
+	</select>
+	
+		<!-- 内部系统车辆唯一性校验  -->
+	<select id="getVehicleManageExist" parameterType="map" resultType="java.lang.Integer">
+		
+		select count(1) from zh_real_vehicle_info  
+		where
+		vehicle_type = #{vehicleType} and source='01' and is_deleted='00'
+		<if test="currentVehicleInfoId != null">
+	       <![CDATA[ and vehicle_info_id!=#{currentVehicleInfoId} ]]>
+	    </if>
+	    
+	    <if test="plateNumber != null || licenseNo != null || engineNo !=null || vin !=null || regCertCode!=null || operatingCertNo !=null">
+	    and
+		<trim prefix="(" prefixOverrides="AND |OR ">
+		<if test="plateNumber != null">
+	       <![CDATA[ or plate_number=#{plateNumber} ]]>
+	    </if>
+	    <if test="licenseNo != null">
+	       <![CDATA[ or license_no=#{licenseNo} ]]>
+	    </if>
+	    <if test="engineNo != null">
+	       <![CDATA[ or engine_no=#{engineNo} ]]>
+	    </if>
+	    <if test="vin != null">
+	       <![CDATA[ or vin=#{vin} ]]>
+	    </if>
+	    <if test="regCertCode != null">
+	       <![CDATA[ or reg_cert_code=#{regCertCode} ]]>
+	    </if>
+	    <if test="operatingCertNo != null">
+	       <![CDATA[ or operating_cert_no=#{operatingCertNo} ]]>
+	    </if>
+		</trim>
+		)
+		</if>
+	</select>
+	
+	<!--根据临时驾驶员ID获取临时车辆ID -->
+	<select id="getRealVehicleByCondition" parameterType="map" resultMap="findResultMap">
+	
+		SELECT
+		t2.vehicle_info_id,
+		t2.vehicle_type,
+		t2.headstock_type,
+		t2.type,
+		t2.plate_number,
+		t2.models,
+		t2.length,
+		t2.power,
+		t2.brand,
+		t2.color,
+		t2.vin,
+		t2.engine_no,
+		t2.owner_name,
+		t2.owner_phone,
+		t2.owner_mobile,
+		t2.reg_date,
+		t2.reg_cert_code,
+		t2.load_weight,
+		t2.wheels_num,
+		t2.owner_type,
+		t2.attributes,
+		t2.maintenance_date,
+		t2.maintenance_bill,
+		t2.license_no,
+		t2.license_reg_date,
+		t2.license_issue_date,
+		t2.license_valid_date,
+		t2.operating_cert_no,
+		t2.operating_cert_issue_date,
+		t2.operating_cert_valid_date,
+		t2.reg_image_ref_id,
+		t2.license_image_ref_id,
+		t2.license_image_2_ref_id,
+		t2.oc_image_ref_id,
+		t2.oc_image_2_ref_id,
+		t2.oc_image_3_ref_id,
+		t2.vehicle_image_ref_id,
+		t2.source,
+		t2.remark,
+		t2.created_by,
+		t2.created_time,
+		t2.updated_by,
+		t2.updated_time,
+		t2.status,
+		t2.is_deleted,
+		t3.ci_effect_date,
+		t3.ci_name,
+		t3.ci_no,
+		t3.vi_effect_date,
+		t3.vi_name,
+		t3.vi_no,
+		t3.ci_image_ref_id,
+		t3.vi_image_ref_id
+			
+		FROM
+		zh_real_vehicle_driver_info t1,
+		zh_real_vehicle_info t2,
+		zh_real_vehicle_plus_info t3
+		where
+		t1.vehicle_Info_Id = t2.vehicle_Info_Id
+		and
+		t2.vehicle_Info_Id = t3.vehicle_Info_Id
+		and
+		t2.source = '02'
+		and
+		t2.is_deleted = '00'
+		<if test="driverInfoId != null">
+	       <![CDATA[ and t2.driver_info_Id=#{driverInfoId} ]]>
+	    </if>
+	    <if test="accountId != null">
+	       <![CDATA[ and t1.account_Id=#{accountId} ]]>
+	    </if>
+		<if test="plateNumber != null">
+	       <![CDATA[ and t2.plate_number=#{plateNumber} ]]>
+	    </if>
+	
+	</select>
+	
+	<!-- 获取司机与车辆正式表信息 -->
+	<select id="getRealDriverAndVehicleByCondition" parameterType="map" resultMap="DriverAndVehicleResultMap">
+		SELECT
+		t1.vehicle_info_id,
+		t1.seq_no,
+		t1.vehicle_type,
+		t1.headstock_type,
+		t1.type,
+		t1.plate_number,
+		t1.models,
+		t1.`length`,
+		t1.`power`,
+		t1.brand,
+		t1.color,
+		t1.vin,
+		t1.engine_no,
+		t1.owner_name,
+		t1.owner_phone,
+		t1.owner_mobile,
+		t1.reg_date,
+		t1.reg_cert_code,
+		t1.load_weight,
+		t1.wheels_num,
+		t1.owner_type,
+		t1.attributes,
+		t1.maintenance_date,
+		t1.maintenance_bill,
+		t1.license_no,
+		t1.license_reg_date,
+		t1.license_issue_date,
+		t1.license_valid_date,
+		t1.operating_cert_no,
+		t1.operating_cert_issue_date,
+		t1.operating_cert_valid_date,
+		t1.reg_image_ref_id,
+		t1.license_image_ref_id,
+		t2.license_image_2_ref_id,
+		t1.oc_image_ref_id,
+		t1.oc_image_2_ref_id,
+		t1.oc_image_3_ref_id,
+		t1.vehicle_image_ref_id,
+		t1.source,
+		t1.remark,
+		t1.created_by,
+		t1.created_time,
+		t1.updated_by,
+		t1.updated_time,
+		t1.status,
+		t1.is_deleted,
+		t2.driver_Info_id,
+		t2.seq_no,
+		t2.real_name,
+		t2.idno,
+		t2.sex,
+		t2.birthday,
+		t2.criminal_record,
+		t2.telphone,
+		t2.attributes,
+		t2.area_code,
+		t2.address,
+		t2.dl_type,
+		t2.dl_issue_date,
+		t2.dl_start_date,
+		t2.dl_end_date,
+		t2.qc_no,
+		t2.qc_type,
+		t2.qc_issue_date,
+		t2.qc_start_date,
+		t2.qc_end_date,
+		t2.id_f_image_ref_id,
+		t2.id_b_image_ref_id,
+		t2.photo_f_image_ref_id,
+		t2.driving_f_image_ref_id,
+		t2.driving_b_image_ref_id,
+		t2.qualifi_image_ref_id,
+		t2.qualifi_image_2_ref_id,
+		t2.source,
+		t2.created_by,
+		t2.created_time,
+		t2.updated_by,
+		t2.updated_time,
+		t2.belong_depart_id,
+		t2.use_depart_id,
+		t2.status,
+		t2.is_deleted,
+		t3.account_id,
+		t4.vehicle_info_id,
+		t4.ci_effect_date,
+		t4.ci_valid_date,
+		t4.ci_name,
+		t4.ci_no,
+		t4.vi_effect_date,
+		t4.vi_valid_date,
+		t4.vi_name,
+		t4.vi_no,
+		t4.ci_image_ref_id,
+		t4.vi_image_ref_id
+		FROM
+		zh_real_vehicle_info t1 ,
+		zh_real_driver_info t2 ,
+		zh_real_vehicle_driver_info t3 ,
+		zh_real_vehicle_plus_info t4 
+		where
+		t1.vehicle_info_id = t3.vehicle_info_id
+		and
+		t1.vehicle_info_id = t4.vehicle_info_id
+		and 
+		t1.vehicle_info_id = t5.vehicle_info_id
+		and
+		t2.driver_Info_id = t3.driver_Info_id
+		and
+		t3.account_id = #{accountId}
+		and 
+		t1.status='00'
+		and
+		t2.is_deleted = '00'
+		and
+		t2.source = '02'
+		<if test="vehicleInfoId != null">
+			and t1.vehicle_info_id=#{vehicleInfoId}
+		</if>
+		<if test="driverInfoId != null">
+			and t1.driver_Info_id=#{driverInfoId}
+		</if>
+	</select>
+	
+	<select id="pageVehicleList" parameterType="map" resultMap="pageResultMap">
+	SELECT 
+		ve.vehicle_info_id,
+		ve.plate_number,
+		ve.license_image_ref_id,
+		ve.license_image_2_ref_id,
+		ve.oc_image_ref_id,
+		ve.oc_image_2_ref_id,
+		ve.oc_image_3_ref_id,
+		pl.ci_image_ref_id,
+		pl.vi_image_ref_id
+	FROM(
+		select * from zh_real_vehicle_info where  vehicle_info_id in(
+			SELECT
+				t1.vehicle_info_id
+			FROM
+				zh_real_vehicle_info t1
+			INNER JOIN (
+				zh_real_vehicle_driver_info t2
+				INNER JOIN (
+					SELECT
+						driver_info_id,
+						real_name,
+						telphone
+					FROM
+						zh_real_driver_info
+					WHERE
+					<if test="isDeleted != null">
+						is_deleted=#{isDeleted}
+					</if>
+				) t3 ON t3.driver_info_id = t2.driver_info_id
+			) ON t1.vehicle_info_id = t2.vehicle_info_id
+			<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				<if test="accountId != null">
+					t2.account_id = #{accountId}
+				</if>	 
+				<if test="vehicleInfoId != null">
+					and t1.vehicle_info_id = #{vehicleInfoId}
+				</if>
+				<if test="realName != null">
+					and t3.real_name = #{realName}
+				</if>
+				<if test="telphone != null">
+					and t3.telphone = #{telphone}
+				</if>
+				<if test="plateNumber != null">
+					and t1.plate_number = #{plateNumber}
+				</if>
+				<if test="status != null">
+					and t1.status=#{status}
+				</if>
+				<if test="source != null">
+					and t1.source=#{source}
+				</if>
+				<if test="isDeleted != null">
+					and t1.is_deleted=#{isDeleted}
+				</if>
+				group by t1.vehicle_info_id
+			</trim>
+			)) ve
+			INNER JOIN 
+			zh_real_vehicle_plus_info pl
+			on ve.vehicle_info_id = pl.vehicle_info_id 
+	</select>	
+	
+	<!-- 获取司机与车辆临时表信息 -->
+	<select id="getDriverandVehicleDetail" parameterType="map" resultMap="DriverAndVehicleResultMapNew">
+		SELECT
+		t1.driver_info_id as driver_driver_info_id,
+		t1.real_name as driver_real_name,
+		t1.idno as driver_idno,
+		t1.telphone as driver_telphone,
+		t1.id_f_image_ref_id as driver_id_f_image_ref_id,
+		t1.id_b_image_ref_id as driver_id_b_image_ref_id,
+		t1.driving_f_image_ref_id as driver_driving_f_image_ref_id,
+		t1.qualifi_image_ref_id as driver_qualifi_image_ref_id,
+		t1.qualifi_image_2_ref_id as driver_qualifi_image_2_ref_id,
+		t1.status as driver_status,
+		t3.account_id as driver_account_id,
+		t2.vehicle_info_id,
+		t2.plate_number,
+		t2.license_image_ref_id,
+		t2.license_image_2_ref_id,
+		t2.oc_image_ref_id,
+		t2.oc_image_2_ref_id,
+		t2.oc_image_3_ref_id,
+		t2.status,
+		t3.account_id,
+		t4.ci_image_ref_id,
+		t4.vi_image_ref_id,
+		"false" canEdit
+		FROM
+		zh_real_driver_info  t1,
+		zh_real_vehicle_info t2,
+		zh_real_vehicle_driver_info t3,
+		zh_real_vehicle_plus_info t4
+		where
+		t2.vehicle_Info_Id = t3.vehicle_Info_Id
+		and
+		t1.driver_info_id = t3.driver_info_id
+		and
+		t2.vehicle_Info_Id = t4.vehicle_Info_Id
+		and
+		t2.vehicle_Info_Id = #{vehicleInfoId}
+		and
+		t2.is_deleted = '00'
+		and
+		t3.account_id = #{accountId}
+		and
+		t2.source = '02'
+	  <if test="driverList != null">
+	  		and t1.driver_info_id in 
+		  <foreach collection="driverList" index="index" item="driverId" open="(" separator="," close=")">  
+		       #{driverId}
+		  </foreach>
+	  </if>
+		
+	</select>
+	
+	
+	<!-- 内部可使用车辆查询  -->
+	<select id="getSysCanUserVehicleList" parameterType="map" resultMap="pageResultMap">
+	   SELECT
+		t1.vehicle_info_id,
+		t1.plate_number,
+		t1.`length`,
+		t1.type,
+		t1.brand,
+		t1.color,
+		t1.load_weight,
+		t1.attributes,
+		t3.departure_code,
+		t3.destination_code,
+		t1.bridge_type,
+		t1.owner_name,
+		t1.headstock_type,
+		t3.belong_depart_id,
+		t3.use_depart_id,
+		zdib.name as belong_depart_name,
+		zdiu.name as use_depart_name
+		FROM
+			zh_real_vehicle_info t1
+		inner join zh_real_vehicle_plus_info t2
+		on t1.vehicle_info_id = t2.vehicle_info_id
+		inner join (zh_real_vehicle_used_info t3
+			inner join zh_department_info zdib on zdib.depart_id = t3.belong_depart_id
+			inner join zh_department_info zdiu on zdiu.depart_id = t3.use_depart_id
+		)
+		on t1.vehicle_info_id = t3.vehicle_info_id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="source != null">
+				and t1.source=#{source}
+			</if>
+			<if test="departId != null">
+				and t3.use_depart_id = #{departId}
+			</if>
+			<if test="isDeleted != null">
+				and t1.is_deleted=#{isDeleted}
+			</if>
+			<if test="vehicleType != null">
+				and t1.vehicle_type = #{vehicleType}
+			</if>
+			<if test="notVehicleType != null">
+				and t1.vehicle_type != #{notVehicleType}
+			</if>
+			<if test="useStatus != null">
+				and	t3.use_status = #{useStatus}
+			</if>
+			<if test="arrVehicleIds != null">
+				or t1.vehicle_info_id in 
+				<foreach collection="arrVehicleIds" index="index" item="vehicleId" open="(" separator="," close=")">  
+			           #{vehicleId}
+			   	</foreach>
+			</if>
+		</trim>
+	    order by t1.updated_time desc
+	</select>
+	
+</mapper> 

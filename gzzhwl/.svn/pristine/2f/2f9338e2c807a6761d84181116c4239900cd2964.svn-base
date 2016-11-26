@@ -1,0 +1,117 @@
+package com.gzzhwl.admin.payables.vo;
+
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.rest.exception.RestException;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class PayContractQueryVo {
+	private String queryType;//查询类型 0-快捷搜索 1-高级搜索
+	private String keyWord;//关键字
+	private String status;//司机合同状态/单据状态
+	private String supplyId;//结款对象
+	private String startCodeP;//出发地-省
+	private String startCodeC;//出发地市
+	private String endCodeP; // 终点区域(省)
+	private String endCodeC; // 终点区域(市)
+	private String realName;//司机姓名
+	private String telphone;//司机手机号
+	private String conStartTime;//司机合同创建时间-起
+	private String conEndTime;//司机合同创建时间-止
+	private String sort;//排序   00-按司机合同生成时间升序 01-按司机合同生成时间降序
+	private String isPredict;//是否预估
+	private String oilCardNo;//油卡卡号
+	private String printStartTime;//纸质回单开始时间
+	private String printEndTime;//纸质回单结束时间
+	
+	private static final String QUERYTYPE_NORMAL = "0";//快捷搜索
+	
+	private static final String QUERYTYPE_SENIOR = "1";//高级搜索
+	
+	public Map<String,Object> getParam() {
+		Map<String,Object> params = Maps.newHashMap();
+		if(QUERYTYPE_NORMAL.equals(this.getQueryType())) {
+			if(StringUtils.isNotBlank(this.getKeyWord())) {
+				params.put("keyWord", keyWord);
+			}
+		}else if(QUERYTYPE_SENIOR.equals(this.getQueryType())) {
+			if(StringUtils.isNotBlank(this.getStatus())) {
+				params.put("status", status);
+			}
+			
+			if(StringUtils.isNotBlank(this.getSupplyId())) {
+				params.put("supplyId", supplyId);
+			}
+			
+			if(StringUtils.isNotBlank(this.getStartCodeP())) {
+				params.put("startCodeP", startCodeP);
+			}
+			
+			if(StringUtils.isNotBlank(this.getStartCodeC())) {
+				params.put("startCodeC", startCodeC);
+			}
+			
+			if(StringUtils.isNotBlank(this.getEndCodeP())) {
+				params.put("endCodeP", endCodeP);
+			}
+			
+			if(StringUtils.isNotBlank(this.getEndCodeC())) {
+				params.put("endCodeC", endCodeC);
+			}
+			
+			if(StringUtils.isNotBlank(this.getRealName())) {
+				params.put("realName", realName);
+			}
+			
+			if(StringUtils.isNotBlank(this.getTelphone())) {
+				params.put("telphone", telphone);
+			}
+			
+			if(StringUtils.isNotBlank(this.getConStartTime())) {
+				params.put("conStartTime", conStartTime);
+			}
+			
+			if(StringUtils.isNotBlank(this.getConEndTime())) {
+				params.put("conEndTime", conEndTime);
+			}
+			
+			if(StringUtils.isNotBlank(this.getIsPredict())) {
+				params.put("isPredict", isPredict);
+			}
+			
+			if(StringUtils.isNotBlank(this.getOilCardNo())) {
+				params.put("oilCardNo", oilCardNo);
+			}
+			
+			if(StringUtils.isNotBlank(this.getPrintStartTime())) {
+				params.put("printStartTime", printStartTime);
+			}
+			
+			if(StringUtils.isNotBlank(this.getPrintEndTime())) {
+				params.put("printEndTime", printEndTime);
+			}
+			
+		}else {
+			throw new RestException(ErrorCode.ERROR_900006);
+		}
+		
+		if (StringUtils.isNotBlank(this.getSort())) {
+			params.put("sort", this.getSort());
+		} else {
+			params.put("sort", "01");
+		}
+		
+		return params;
+		
+	}
+	
+	
+}

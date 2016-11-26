@@ -1,0 +1,169 @@
+package com.gzzhwl.admin.load.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.admin.load.service.LoadHistoryService;
+import com.gzzhwl.admin.load.vo.LoadFeedbackListVo;
+import com.gzzhwl.admin.load.vo.LoadFeedbackVo;
+import com.gzzhwl.api.image.model.ImageCategory;
+import com.gzzhwl.api.image.model.ImageItem;
+import com.gzzhwl.api.image.service.ImageServiceFactory;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.dao.LoadFeedbackAttaDao;
+import com.gzzhwl.core.data.dao.LoadFeedbackLogDao;
+import com.gzzhwl.core.data.extdao.LoadFeedbackLogExtDao;
+import com.gzzhwl.core.data.model.LoadFeedbackAtta;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.core.data.model.LoadHis;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class LoadFeedbackServiceImpl implements LoadFeedbackService {
+	
+	@Autowired
+	private Mapper beanMapper;
+	@Autowired
+	private LoadFeedbackLogDao loadFeedbackLogDao;
+	@Autowired
+	private LoadHistoryService loadHistoryService;
+	@Autowired
+	private ImageServiceFactory imageServiceFactory;
+	@Autowired
+	private LoadFeedbackAttaDao loadFeedbackAttaDao;
+	@Autowired
+	private LoadFeedbackLogExtDao loadFeedbackLogExtDao;
+	
+
+	@Override
+	public void saveLoadFeedback(LoadFeedbackListVo LoadFeedbackList, String staffId) {
+		
+		if(LoadFeedbackList!=null){
+			
+			List<LoadFeedbackVo> list = LoadFeedbackList.getLoadFeedbackList();
+			
+			if(list!=null){
+				for (int i = 0; i < list.size(); i++) {
+					
+					LoadFeedbackVo loadFeedbackVo = list.get(i);
+					LoadFeedbackLog loadFeedbackLog = loadFeedbackVo.getLoadFeedbackLog();
+					//异常反馈验证
+					if(!ValidateUtils.isMoney(loadFeedbackLog.getItemPrice())){
+						throw new RestException(ErrorCode.ERROR_900005.getCode() ,"itemPrice"+ErrorCode.ERROR_900005.getDesc());
+					}
+					
+					loadFeedbackLog.setCreatedBy(staffId);
+					loadFeedbackLog.setFeedbackId(IdentifierUtils.getId().generate().toString());
+					loadFeedbackLog.setUpdatedBy(staffId);
+					loadFeedbackLog.setIsDeleted(Global.ISDEL_NORMAL.toString());
+					loadFeedbackLogDao.insert(loadFeedbackLog);
+					
+					List<LoadFeedbackAtta> loadFeedbackAttaList = loadFeedbackVo.getLoadFeedbackAttaList();
+					for (int j = 0; j < loadFeedbackAttaList.size(); j++) {
+						LoadFeedbackAtta loadFeedbackAtta = loadFeedbackAttaList.get(j);
+						loadFeedbackAtta.setFeedbackId(loadFeedbackLog.getFeedbackId());
+						loadFeedbackAtta.setAttaId(IdentifierUtils.getId().generate().toString());
+						loadFeedbackAttaDao.insert(loadFeedbackAtta);
+					}
+					
+				}
+			}
+		}
+		
+	}
+
+	@Override
+	public List<Map<String, Object>> getLoadFeedbackList(String loadId, LoadFeedBackType loadFeedBackType,
+			LoadBillType loadBillType) {
+		
+		if(ValidateUtils.isEmpty(loadId)){
+			throw new RestException(ErrorCode.ERROR_900003.getCode() ,"loadId"+ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(loadBillType)){
+			throw new RestException(ErrorCode.ERROR_900003.getCode() ,"loadBillType"+ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		LoadBillType queryBillType = null;
+		
+		if(loadBillType.equals(LoadBillType.VEHICLECHECK)){
+			queryBillType = LoadBillType.NOTVEHICLE;
+		}else if(loadBillType.equals(LoadBillType.CLOSETOSURFACE)){
+			queryBillType = LoadBillType.VEHICLECHECK;
+		}
+		
+		if(loadFeedBackType.equals(LoadFeedBackType.DRIVER)){
+			return loadFeedbackLogExtDao.getDriverFeedBackList(loadId, queryBillType);
+		}else{
+			return loadFeedbackLogExtDao.getVAndCFeedBackList(loadId, loadFeedBackType, queryBillType);
+		}
+		
+	}
+
+	@Override
+	public void removeLoadFeedback(String feedbackId, String staffId) {
+		
+		LoadFeedbackLog loadFeedbackLog = new LoadFeedbackLog();
+		
+		if(ValidateUtils.isEmpty(feedbackId)){
+			throw new RestException(ErrorCode.ERROR_900003.getCode() ,"loadFeedbackId"+ErrorCode.ERROR_900003.getDesc());
+		}
+		loadFeedbackLog.setFeedbackId(feedbackId);
+		loadFeedbackLog.setIsDeleted(Global.ISDEL_DELETE.toString());
+		loadFeedbackLog.setUpdatedBy(staffId);
+		
+		loadFeedbackLogDao.updateSelective(loadFeedbackLog);
+	}
+
+	@Override
+	public Map<String, Object> getLoadFeedbackList(String loadId,LoadBillType loadBillType) {
+		
+		Map<String,Object> parm = new HashMap<>();
+		
+		if(!(loadBillType.equals(loadBillType.CLOSETOSURFACE)||loadBillType.equals(loadBillType.VEHICLECHECK))){
+			throw new RestException(ErrorCode.ERROR_900014.getCode() ,ErrorCode.ERROR_900014.getDesc());
+		}
+		
+		LoadHis loadHis = loadHistoryService.getLoadHistory(loadId, loadBillType);
+		String actionTime = "";
+		if(loadHis!=null){
+			actionTime = loadHis.getActionTime();
+		}
+		parm.put("actionTime", actionTime);
+		
+		List<Map<String,Object>> sourceManagerList = getLoadFeedbackList(loadId, LoadFeedBackType.SOURCEADMIN, loadBillType);
+		List<Map<String,Object>> vehicleManagerList = getLoadFeedbackList(loadId, LoadFeedBackType.VEHICLE, loadBillType);
+		List<Map<String,Object>> driverManagerList = getLoadFeedbackList(loadId, LoadFeedBackType.DRIVER, loadBillType);													
+
+		parm.put("sourceManagerList", sourceManagerList);
+		parm.put("vehicleManagerList", vehicleManagerList);
+		parm.put("driverManagerList", driverManagerList);
+		
+		return parm;
+	}
+
+	@Override
+	public String updateImage(MultipartFile file, String staffId) {
+
+		if (file == null) {
+			throw new RestException(ErrorCode.ERROR_900001.getCode(), ErrorCode.ERROR_900001.getDesc());
+		}
+
+		ImageItem imageItem = imageServiceFactory.saveImage(ImageCategory.FEEDBACK, file, staffId);
+
+		return imageItem.getFileId();
+	}
+
+}

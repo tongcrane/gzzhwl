@@ -1,0 +1,116 @@
+package com.gzzhwl.admin.vehicle.vo;
+
+/**
+ * 司机和车辆审核查询
+ * @author jly
+ *
+ */
+public class DriverAndVehicleCheckQueryVo {
+	
+	private String telphone;//注册手机号
+	
+	private String userName;//用户姓名
+	
+	private String plateNumber;//车牌号
+	
+	private String type;//车辆类型
+	
+	private String driverName;//司机姓名
+	
+	private String driverNumber;//驾驶证号
+	
+	private String length;//车长
+	
+	private String status;//审核状态
+
+	//ADD BY 20160624
+	
+	private String queryType;//查询类型
+	
+	private String queryContent;//全文搜索内容
+	
+	
+	public String getQueryType() {
+		return queryType;
+	}
+
+	public void setQueryType(String queryType) {
+		this.queryType = queryType;
+	}
+
+	public String getQueryContent() {
+		return queryContent;
+	}
+
+	public void setQueryContent(String queryContent) {
+		this.queryContent = queryContent;
+	}
+
+	public String getTelphone() {
+		return telphone;
+	}
+
+	public void setTelphone(String telphone) {
+		this.telphone = telphone;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPlateNumber() {
+		return plateNumber;
+	}
+
+	public void setPlateNumber(String plateNumber) {
+		this.plateNumber = plateNumber;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getDriverName() {
+		return driverName;
+	}
+
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
+	}
+
+	public String getDriverNumber() {
+		return driverNumber;
+	}
+
+	public void setDriverNumber(String driverNumber) {
+		this.driverNumber = driverNumber;
+	}
+
+	public String getLength() {
+		return length;
+	}
+
+	public void setLength(String length) {
+		this.length = length;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
+	
+	
+}

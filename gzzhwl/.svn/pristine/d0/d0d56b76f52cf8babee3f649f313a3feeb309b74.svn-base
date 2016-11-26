@@ -1,0 +1,173 @@
+package com.gzzhwl.admin.driver.validate;
+
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.data.model.RealDriverInfo;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.core.utils.IdCardUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+public class DriverManageValidate {
+	public static void valid_exist(boolean exists) {
+		if(exists) {
+			throw new RestException(ErrorCode.ERROR_800010.getCode(), ErrorCode.ERROR_800010.getDesc());
+		}
+	}
+	
+	public static void valid_idno_exist(boolean exists) {
+		if(exists) {
+			throw new RestException(ErrorCode.ERROR_800018.getCode(), ErrorCode.ERROR_800018.getDesc());
+		}
+	}
+	
+	public static void valid_qcno_exist(boolean exists) {
+		if(exists) {
+			throw new RestException(ErrorCode.ERROR_800019.getCode(), ErrorCode.ERROR_800019.getDesc());
+		}
+	}
+	
+	//司机信息录入校验-内部系统
+	public static void valid_manage_save(RealDriverInfo driverInfo) {
+		if(ValidateUtils.isEmpty(driverInfo.getRealName())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "驾驶员姓名不能为空!");
+		}
+		
+		if(!ValidateUtils.validateChinese(driverInfo.getRealName(), 2, 15)) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "驾驶员姓名为2-15个汉字!");	
+		}
+		
+		if(ValidateUtils.isEmpty(driverInfo.getIdno())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "驾驶员身份证号码不能为空!");
+		}
+		
+		//身份证号码为18位
+		boolean idno= IdCardUtils.validateIdCard18(driverInfo.getIdno());
+		if(!idno) {
+			throw new RestException(ErrorCode.ERROR_800015.getCode(), ErrorCode.ERROR_800015.getDesc());
+		}
+		
+		//性别
+		if(ValidateUtils.isEmpty(driverInfo.getSex())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "性别不能为空!");
+		}
+		
+		if(!"男".equals(driverInfo.getSex()) && !"女".equals(driverInfo.getSex())) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "性别选择有误!");
+		}
+		
+		if(ValidateUtils.isEmpty(driverInfo.getBirthday())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "出生日期不能为空!");
+		}
+		
+		if(!DateUtils.isDefaultValidDate(driverInfo.getBirthday())) {
+			throw new RestException(ErrorCode.ERROR_900005.getCode(), "出生日期格式有误!");	
+		}
+		
+		//驾驶证初次领证日期格式校验
+		if(StringUtils.isNotBlank(driverInfo.getDlIssueDate())) {
+			if(!DateUtils.isDefaultValidDate(driverInfo.getDlIssueDate())) {
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "驾驶证初次领证日期格式有误!");	
+			}
+		}
+		
+		//驾驶证有效期(起)日期格式校验
+		if(StringUtils.isNotBlank(driverInfo.getDlStartDate())) {
+			if(!DateUtils.isDefaultValidDate(driverInfo.getDlStartDate())) {
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "驾驶证有效期(起)日格式有误!");	
+			}
+		}
+		
+		//驾驶证有效期(止)日期格式校验
+		if(StringUtils.isNotBlank(driverInfo.getDlEndDate())) {
+			if(!DateUtils.isDefaultValidDate(driverInfo.getDlEndDate())) {
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "驾驶证有效期(止)日格式有误!");	
+			}
+		}
+		
+		//从业资格证号格式校验
+		if(StringUtils.isNotEmpty(driverInfo.getQcNo())) {
+			String qcNo =driverInfo.getQcNo();
+			boolean bc=ValidateUtils.validateNumber(qcNo, 19);
+			if(false==bc) {
+				throw new RestException(ErrorCode.ERROR_800016.getCode(), ErrorCode.ERROR_800016.getDesc());
+			}
+		}
+		
+		//从业资格证初次领证日期格式校验
+		if(StringUtils.isNotBlank(driverInfo.getQcIssueDate())) {
+			if(!DateUtils.isDefaultValidDate(driverInfo.getQcIssueDate())) {
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "从业资格证初次领证日期格式有误!");	
+			}
+		}
+		
+		//从业资格证有效期(起)日期格式校验
+		if(StringUtils.isNotBlank(driverInfo.getQcStartDate())) {
+			if(!DateUtils.isDefaultValidDate(driverInfo.getQcStartDate())) {
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "从业资格证有效期(起)日格式有误!");	
+			}
+		}
+		
+		//从业资格证有效期(止)日期格式校验
+		if(StringUtils.isNotBlank(driverInfo.getQcEndDate())) {
+			if(!DateUtils.isDefaultValidDate(driverInfo.getQcEndDate())) {
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "从业资格证有效期(止)日格式有误!");	
+			}
+		}
+		
+		//犯罪记录长度控制
+		if(StringUtils.isNotBlank(driverInfo.getCriminalRecord())) {
+			if(ValidateUtils.length(driverInfo.getCriminalRecord()) > 400) {
+				throw new RestException(ErrorCode.ERROR_900009.getCode(), "是否有不良记录输入长度超长!");	
+			}
+		}
+		
+		if(StringUtils.isBlank(driverInfo.getTelphone())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "司机手机不能为空!");
+		}
+		if(!ValidateUtils.isMobileNo(driverInfo.getTelphone())) {
+			throw new RestException(ErrorCode.ERROR_900005.getCode(), "司机手机号录入有误!");	
+		}
+		
+		if(StringUtils.isBlank(driverInfo.getAttributes())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "驾驶员属性不能为空!");
+		}
+		
+		if(StringUtils.isBlank(driverInfo.getBelongDepartId())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "所属部门不能为空!");
+		}
+		
+		if(StringUtils.isBlank(driverInfo.getUseDepartId())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "使用部门不能为空!");
+		}
+		
+	}	
+	
+	public static void valid_not_exist(RealDriverInfo driverInfo) {
+		if(ValidateUtils.isEmpty(driverInfo)) {
+			throw new RestException(ErrorCode.ERROR_800009.getCode(), ErrorCode.ERROR_800009.getDesc());
+		}
+	}
+	
+	public static void valid_not_exist(Map<String,Object> driverMap) {
+		if(ValidateUtils.isEmpty(driverMap)) {
+			throw new RestException(ErrorCode.ERROR_800009.getCode(), ErrorCode.ERROR_800009.getDesc());
+		}
+	}
+	
+	public static void valid_not_exist(boolean notExist) {
+		if(notExist) {
+			throw new RestException(ErrorCode.ERROR_800009.getCode(), ErrorCode.ERROR_800009.getDesc());
+		}
+	}
+	
+	public static void valid_bank_exist(boolean exist) {
+		if(!exist) {
+			throw new RestException(ErrorCode.ERROR_800025.getCode(), ErrorCode.ERROR_800025.getDesc());
+		}
+	}
+	
+}

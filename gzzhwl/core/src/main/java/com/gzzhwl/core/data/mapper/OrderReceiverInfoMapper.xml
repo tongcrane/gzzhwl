@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.OrderReceiverInfoDao">
+
+	<resultMap id="orderReceiverInfoResultMap" type="OrderReceiverInfo">
+		<id property="infoId" column="info_id" />
+		<result property="customerName" column="customer_name" />
+		<result property="contactName" column="contact_name" />
+		<result property="telphone" column="telphone" />
+		<result property="mobile" column="mobile" />
+		<result property="areaCode" column="area_code" />
+		<result property="address" column="address" />
+		<result property="longitude" column="longitude" />
+		<result property="latitude" column="latitude" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="orderReceiverInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="orderReceiverInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="OrderReceiverInfo">
+	   insert into zh_order_receiver_info (
+	     info_id,
+	     customer_name,
+	     contact_name,
+	     telphone,
+	     mobile,
+	     area_code,
+	     address,
+	     longitude,
+	     latitude
+	   )values (
+	     #{infoId},
+	     #{customerName},
+	     #{contactName},
+	     #{telphone},
+	     #{mobile},
+	     #{areaCode},
+	     #{address},
+	     #{longitude},
+	     #{latitude}
+	   )
+	</insert>
+
+	<update id="update" parameterType="OrderReceiverInfo">
+	   update zh_order_receiver_info set
+	     info_id=#{infoId},
+	     customer_name=#{customerName},
+	     contact_name=#{contactName},
+	     telphone=#{telphone},
+	     mobile=#{mobile},
+	     area_code=#{areaCode},
+	     address=#{address},
+	     longitude=#{longitude},
+	     latitude=#{latitude}
+	   where 
+	    info_id=#{infoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="OrderReceiverInfo">
+	   update zh_order_receiver_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="infoId != null">
+		       info_id=#{infoId},
+		     </if>
+		     <if test="customerName != null">
+		       customer_name=#{customerName},
+		     </if>
+		     <if test="contactName != null">
+		       contact_name=#{contactName},
+		     </if>
+		     <if test="telphone != null">
+		       telphone=#{telphone},
+		     </if>
+		     <if test="mobile != null">
+		       mobile=#{mobile},
+		     </if>
+		     <if test="areaCode != null">
+		       area_code=#{areaCode},
+		     </if>
+		     <if test="address != null">
+		       address=#{address},
+		     </if>
+		     <if test="longitude != null">
+		       longitude=#{longitude},
+		     </if>
+		     <if test="latitude != null">
+		       latitude=#{latitude}
+		     </if>
+	   </trim>
+	
+	   where 
+	    info_id=#{infoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_order_receiver_info 
+	   where 
+	    info_id=#{infoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="orderReceiverInfoResultMap">
+	   select 
+	    info_id,
+	    customer_name,
+	    contact_name,
+	    telphone,
+	    mobile,
+	    area_code,
+	    address,
+	    longitude,
+	    latitude
+	   from zh_order_receiver_info
+	   where 
+	    info_id=#{infoId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    info_id,
+	    customer_name,
+	    contact_name,
+	    telphone,
+	    mobile,
+	    area_code,
+	    address,
+	    longitude,
+	    latitude
+	   from zh_order_receiver_info
+	   where 
+	    info_id=#{infoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     info_id,
+	     customer_name,
+	     contact_name,
+	     telphone,
+	     mobile,
+	     area_code,
+	     address,
+	     longitude,
+	     latitude
+	   from zh_order_receiver_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="customerName != null">
+	        and customer_name=#{customerName}
+	     </if>
+	     <if test="contactName != null">
+	        and contact_name=#{contactName}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="mobile != null">
+	        and mobile=#{mobile}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	     <if test="longitude != null">
+	        and longitude=#{longitude}
+	     </if>
+	     <if test="latitude != null">
+	        and latitude=#{latitude}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     info_id,
+	     customer_name,
+	     contact_name,
+	     telphone,
+	     mobile,
+	     area_code,
+	     address,
+	     longitude,
+	     latitude
+	   from zh_order_receiver_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="customerName != null">
+	        and customer_name=#{customerName}
+	     </if>
+	     <if test="contactName != null">
+	        and contact_name=#{contactName}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="mobile != null">
+	        and mobile=#{mobile}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	     <if test="longitude != null">
+	        and longitude=#{longitude}
+	     </if>
+	     <if test="latitude != null">
+	        and latitude=#{latitude}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

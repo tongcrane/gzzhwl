@@ -1,0 +1,193 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_load_trip_info表
+ * @author mew
+ *
+ */
+public class LoadTripInfo implements Serializable {
+	@Length(max = 36, message = "loadId超过长度限制")
+	private java.lang.String loadId; // 提货单标识
+	@Length(max = 20, message = "tripTime超过长度限制")
+	private java.lang.String tripTime; // 发车时间
+	@Length(max = 10, message = "goodsWeight超过长度限制")
+	private java.lang.String goodsWeight; // 货物重量
+	@Length(max = 10, message = "goodsVolume超过长度限制")
+	private java.lang.String goodsVolume; // 货物体积
+	@Length(max = 50, message = "customerBillNo超过长度限制")
+	private java.lang.String customerBillNo; // 客户单号
+	@Length(max = 36, message = "contractImageRefId超过长度限制")
+	private java.lang.String contractImageRefId; // 货主托运合同照片
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+
+
+	/**
+     * 获取提货单标识属性
+     *
+     * @return loadId
+     */
+	public java.lang.String getLoadId() {
+		return loadId;
+	}
+	
+	/**
+	 * 设置提货单标识属性
+	 *
+	 * @param loadId
+	 */
+	public void setLoadId(java.lang.String loadId) {
+		this.loadId = loadId;
+	}
+	
+	/**
+     * 获取发车时间属性
+     *
+     * @return tripTime
+     */
+	public java.lang.String getTripTime() {
+		return tripTime;
+	}
+	
+	/**
+	 * 设置发车时间属性
+	 *
+	 * @param tripTime
+	 */
+	public void setTripTime(java.lang.String tripTime) {
+		this.tripTime = tripTime;
+	}
+	
+	/**
+     * 获取货物重量属性
+     *
+     * @return goodsWeight
+     */
+	public java.lang.String getGoodsWeight() {
+		return goodsWeight;
+	}
+	
+	/**
+	 * 设置货物重量属性
+	 *
+	 * @param goodsWeight
+	 */
+	public void setGoodsWeight(java.lang.String goodsWeight) {
+		this.goodsWeight = goodsWeight;
+	}
+	
+	/**
+     * 获取货物体积属性
+     *
+     * @return goodsVolume
+     */
+	public java.lang.String getGoodsVolume() {
+		return goodsVolume;
+	}
+	
+	/**
+	 * 设置货物体积属性
+	 *
+	 * @param goodsVolume
+	 */
+	public void setGoodsVolume(java.lang.String goodsVolume) {
+		this.goodsVolume = goodsVolume;
+	}
+	
+	/**
+     * 获取客户单号属性
+     *
+     * @return customerBillNo
+     */
+	public java.lang.String getCustomerBillNo() {
+		return customerBillNo;
+	}
+	
+	/**
+	 * 设置客户单号属性
+	 *
+	 * @param customerBillNo
+	 */
+	public void setCustomerBillNo(java.lang.String customerBillNo) {
+		this.customerBillNo = customerBillNo;
+	}
+	
+	/**
+     * 获取货主托运合同照片属性
+     *
+     * @return contractImageRefId
+     */
+	public java.lang.String getContractImageRefId() {
+		return contractImageRefId;
+	}
+	
+	/**
+	 * 设置货主托运合同照片属性
+	 *
+	 * @param contractImageRefId
+	 */
+	public void setContractImageRefId(java.lang.String contractImageRefId) {
+		this.contractImageRefId = contractImageRefId;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("LoadTripInfo");
+        sb.append("{loadId=").append(loadId);
+        sb.append(", tripTime=").append(tripTime);
+        sb.append(", goodsWeight=").append(goodsWeight);
+        sb.append(", goodsVolume=").append(goodsVolume);
+        sb.append(", customerBillNo=").append(customerBillNo);
+        sb.append(", contractImageRefId=").append(contractImageRefId);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+		sb.append('}');
+        return sb.toString();
+    }
+}

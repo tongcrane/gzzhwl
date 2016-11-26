@@ -1,0 +1,96 @@
+package com.gzzhwl.admin.contract.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.contract.service.ContractService;
+import com.gzzhwl.admin.load.service.LoadHistoryService;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.FlowsService;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.SeqNoKey;
+import com.gzzhwl.core.data.dao.DriverContractInfoDao;
+import com.gzzhwl.core.data.dao.LoadDriverInfoDao;
+import com.gzzhwl.core.data.dao.OrderLoadInfoDao;
+import com.gzzhwl.core.data.model.DriverContractInfo;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.FlowStatus;
+import com.gzzhwl.core.data.model.LoadDriverInfo;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class ContractServiceImpl implements ContractService {
+	@Autowired
+	private LoadHistoryService loadHistoryService;
+	@Autowired
+	private FlowsService flowService;
+	@Autowired
+	private OrderLoadInfoDao orderLoadInfoDao;
+	@Autowired
+	private LoadDriverInfoDao loadDriverInfoDao;
+	@Autowired
+	private DriverContractInfoDao driverContractInfoDao;
+
+	@Override
+	public String createContract(String loadId, Integer departId, String staffId) throws RestException {
+		OrderLoadInfo orderLoadInfo = orderLoadInfoDao.get(loadId);
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("loadId", loadId);
+		List<Map<String, Object>> driverList = loadDriverInfoDao.find(params);
+		String contractId = IdentifierUtils.getId().generate().toString();
+		FlowDef flowDef = flowService.startFlow(ZHFlow.DRIVER_CONTRACT_BILL, FlowActionCategory.CBS);
+		String loadNo = IdentifierUtils.getSequence(SeqNoKey.CONTRACT).generate().toString();
+		DriverContractInfo driverContractInfo = new DriverContractInfo();
+		driverContractInfo.setContractId(contractId);
+		driverContractInfo.setLoadId(loadId);
+
+		orderLoadInfo.setLoadId(contractId);
+		orderLoadInfo.setLoadNo(loadNo);
+		orderLoadInfo.setStatus(flowDef.getTransitionStatus());
+		orderLoadInfo.setCreatedBy(staffId);
+		orderLoadInfo.setUpdatedBy(staffId);
+		orderLoadInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		orderLoadInfo.setType(OrderLoadInfo.DRIVER_CONTRACT_BILL);
+
+		driverContractInfoDao.insert(driverContractInfo);
+		orderLoadInfoDao.insert(orderLoadInfo);
+
+		List<LoadDriverInfo> loadDriverList = Lists.newArrayList();
+		for (Map<String, Object> driver : driverList) {
+			LoadDriverInfo driverInfo = new LoadDriverInfo();
+			String driverId = (String) driver.get("driverInfoId");
+			driverInfo.setDriverInfoId(driverId);
+			driverInfo.setLoadId(contractId);
+			loadDriverList.add(driverInfo);
+		}
+
+		if (CollectionUtils.isNotEmpty(loadDriverList)) {
+			for (LoadDriverInfo loadDriverInfo : loadDriverList) {
+				loadDriverInfoDao.insert(loadDriverInfo);
+			}
+		}
+
+		loadHistoryService.saveLoadHistory(contractId, flowDef.getLinkedStatus(), null, flowDef, staffId);
+		return contractId;
+	}
+
+	@Override
+	public String getCurrentContract(String loadId) throws RestException {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("flowName", ZHFlow.DRIVER_CONTRACT_BILL.getName());
+		params.put("loadId", loadId);
+		params.put("statusType", FlowStatus.NORMAL_TYPE);
+		params.put("dataType", OrderLoadInfo.DRIVER_CONTRACT_BILL);
+		return driverContractInfoDao.getContractByLoad(params);
+	}
+
+}

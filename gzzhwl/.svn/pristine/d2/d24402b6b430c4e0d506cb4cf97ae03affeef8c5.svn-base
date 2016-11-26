@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.RealDriverInfoDao">
+
+	<resultMap id="realDriverInfoResultMap" type="RealDriverInfo">
+		<id property="driverInfoId" column="driver_info_id" />
+		<result property="seqNo" column="seq_no" />
+		<result property="realName" column="real_name" />
+		<result property="idno" column="idno" />
+		<result property="sex" column="sex" />
+		<result property="birthday" column="birthday" />
+		<result property="criminalRecord" column="criminal_record" />
+		<result property="telphone" column="telphone" />
+		<result property="attributes" column="attributes" />
+		<result property="areaCode" column="area_code" />
+		<result property="address" column="address" />
+		<result property="dlType" column="dl_type" />
+		<result property="dlIssueDate" column="dl_issue_date" />
+		<result property="dlStartDate" column="dl_start_date" />
+		<result property="dlEndDate" column="dl_end_date" />
+		<result property="qcNo" column="qc_no" />
+		<result property="qcType" column="qc_type" />
+		<result property="qcIssueDate" column="qc_issue_date" />
+		<result property="qcStartDate" column="qc_start_date" />
+		<result property="qcEndDate" column="qc_end_date" />
+		<result property="idFImageRefId" column="id_f_image_ref_id" />
+		<result property="idBImageRefId" column="id_b_image_ref_id" />
+		<result property="photoFImageRefId" column="photo_f_image_ref_id" />
+		<result property="drivingFImageRefId" column="driving_f_image_ref_id" />
+		<result property="drivingBImageRefId" column="driving_b_image_ref_id" />
+		<result property="qualifiImageRefId" column="qualifi_image_ref_id" />
+		<result property="source" column="source" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="belongDepartId" column="belong_depart_id" />
+		<result property="useDepartId" column="use_depart_id" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="qualifiImage2RefId" column="qualifi_image_2_ref_id" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="realDriverInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="realDriverInfoResultMap">
+		<result property="belongDepartName" column="belong_depart_name"/>
+		<result property="useDepartName" column="use_depart_name"/>
+	</resultMap>
+
+	<insert id="insert" parameterType="RealDriverInfo">
+	   insert into zh_real_driver_info (
+	     driver_info_id,
+	     seq_no,
+	     real_name,
+	     idno,
+	     sex,
+	     birthday,
+	     criminal_record,
+	     telphone,
+	     attributes,
+	     area_code,
+	     address,
+	     dl_type,
+	     dl_issue_date,
+	     dl_start_date,
+	     dl_end_date,
+	     qc_no,
+	     qc_type,
+	     qc_issue_date,
+	     qc_start_date,
+	     qc_end_date,
+	     id_f_image_ref_id,
+	     id_b_image_ref_id,
+	     photo_f_image_ref_id,
+	     driving_f_image_ref_id,
+	     driving_b_image_ref_id,
+	     qualifi_image_ref_id,
+	     source,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     belong_depart_id,
+	     use_depart_id,
+	     status,
+	     is_deleted,
+	     qualifi_image_2_ref_id
+	   )values (
+	     #{driverInfoId},
+	     #{seqNo},
+	     #{realName},
+	     #{idno},
+	     #{sex},
+	     #{birthday},
+	     #{criminalRecord},
+	     #{telphone},
+	     #{attributes},
+	     #{areaCode},
+	     #{address},
+	     #{dlType},
+	     #{dlIssueDate},
+	     #{dlStartDate},
+	     #{dlEndDate},
+	     #{qcNo},
+	     #{qcType},
+	     #{qcIssueDate},
+	     #{qcStartDate},
+	     #{qcEndDate},
+	     #{idFImageRefId},
+	     #{idBImageRefId},
+	     #{photoFImageRefId},
+	     #{drivingFImageRefId},
+	     #{drivingBImageRefId},
+	     #{qualifiImageRefId},
+	     #{source},
+	     #{createdBy},
+	     now(),
+	     #{updatedBy},
+	     now(),
+	     #{belongDepartId},
+	     #{useDepartId},
+	     #{status},
+	     #{isDeleted},
+	     #{qualifiImage2RefId}
+	   )
+	</insert>
+
+	<update id="update" parameterType="RealDriverInfo">
+	   update zh_real_driver_info set
+	     driver_info_id=#{driverInfoId},
+	     seq_no=#{seqNo},
+	     real_name=#{realName},
+	     idno=#{idno},
+	     sex=#{sex},
+	     birthday=#{birthday},
+	     criminal_record=#{criminalRecord},
+	     telphone=#{telphone},
+	     attributes=#{attributes},
+	     area_code=#{areaCode},
+	     address=#{address},
+	     dl_type=#{dlType},
+	     dl_issue_date=#{dlIssueDate},
+	     dl_start_date=#{dlStartDate},
+	     dl_end_date=#{dlEndDate},
+	     qc_no=#{qcNo},
+	     qc_type=#{qcType},
+	     qc_issue_date=#{qcIssueDate},
+	     qc_start_date=#{qcStartDate},
+	     qc_end_date=#{qcEndDate},
+	     id_f_image_ref_id=#{idFImageRefId},
+	     id_b_image_ref_id=#{idBImageRefId},
+	     photo_f_image_ref_id=#{photoFImageRefId},
+	     driving_f_image_ref_id=#{drivingFImageRefId},
+	     driving_b_image_ref_id=#{drivingBImageRefId},
+	     qualifi_image_ref_id=#{qualifiImageRefId},
+	     source=#{source},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     updated_by=#{updatedBy},
+	     belong_depart_id=#{belongDepartId},
+	     use_depart_id=#{useDepartId},
+	     status=#{status},
+	     is_deleted=#{isDeleted},
+	     qualifi_image_2_ref_id=#{qualifiImage2RefId},
+	     updated_time=now()
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="RealDriverInfo">
+	   update zh_real_driver_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="driverInfoId != null">
+		       driver_info_id=#{driverInfoId},
+		     </if>
+		     <if test="seqNo != null">
+		       seq_no=#{seqNo},
+		     </if>
+		     <if test="realName != null">
+		       real_name=#{realName},
+		     </if>
+		     <if test="idno != null">
+		       idno=#{idno},
+		     </if>
+		     <if test="sex != null">
+		       sex=#{sex},
+		     </if>
+		     <if test="birthday != null">
+		       birthday=#{birthday},
+		     </if>
+		     <if test="criminalRecord != null">
+		       criminal_record=#{criminalRecord},
+		     </if>
+		     <if test="telphone != null">
+		       telphone=#{telphone},
+		     </if>
+		     <if test="attributes != null">
+		       attributes=#{attributes},
+		     </if>
+		     <if test="areaCode != null">
+		       area_code=#{areaCode},
+		     </if>
+		     <if test="address != null">
+		       address=#{address},
+		     </if>
+		     <if test="dlType != null">
+		       dl_type=#{dlType},
+		     </if>
+		     <if test="dlIssueDate != null">
+		       dl_issue_date=#{dlIssueDate},
+		     </if>
+		     <if test="dlStartDate != null">
+		       dl_start_date=#{dlStartDate},
+		     </if>
+		     <if test="dlEndDate != null">
+		       dl_end_date=#{dlEndDate},
+		     </if>
+		     <if test="qcNo != null">
+		       qc_no=#{qcNo},
+		     </if>
+		     <if test="qcType != null">
+		       qc_type=#{qcType},
+		     </if>
+		     <if test="qcIssueDate != null">
+		       qc_issue_date=#{qcIssueDate},
+		     </if>
+		     <if test="qcStartDate != null">
+		       qc_start_date=#{qcStartDate},
+		     </if>
+		     <if test="qcEndDate != null">
+		       qc_end_date=#{qcEndDate},
+		     </if>
+		     <if test="idFImageRefId != null">
+		       id_f_image_ref_id=#{idFImageRefId},
+		     </if>
+		     <if test="idBImageRefId != null">
+		       id_b_image_ref_id=#{idBImageRefId},
+		     </if>
+		     <if test="photoFImageRefId != null">
+		       photo_f_image_ref_id=#{photoFImageRefId},
+		     </if>
+		     <if test="drivingFImageRefId != null">
+		       driving_f_image_ref_id=#{drivingFImageRefId},
+		     </if>
+		     <if test="drivingBImageRefId != null">
+		       driving_b_image_ref_id=#{drivingBImageRefId},
+		     </if>
+		     <if test="qualifiImageRefId != null">
+		       qualifi_image_ref_id=#{qualifiImageRefId},
+		     </if>
+		     <if test="source != null">
+		       source=#{source},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		     <if test="belongDepartId != null">
+		       belong_depart_id=#{belongDepartId},
+		     </if>
+		     <if test="useDepartId != null">
+		       use_depart_id=#{useDepartId},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted},
+		     </if>
+		     <if test="qualifiImage2RefId != null">
+		       qualifi_image_2_ref_id=#{qualifiImage2RefId},
+		     </if>
+		     updated_time=now()
+	   </trim>
+	
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_real_driver_info 
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="realDriverInfoResultMap">
+	   select 
+	    driver_info_id,
+	    seq_no,
+	    real_name,
+	    idno,
+	    sex,
+	    birthday,
+	    criminal_record,
+	    telphone,
+	    attributes,
+	    area_code,
+	    address,
+	    dl_type,
+	    dl_issue_date,
+	    dl_start_date,
+	    dl_end_date,
+	    qc_no,
+	    qc_type,
+	    qc_issue_date,
+	    qc_start_date,
+	    qc_end_date,
+	    id_f_image_ref_id,
+	    id_b_image_ref_id,
+	    photo_f_image_ref_id,
+	    driving_f_image_ref_id,
+	    driving_b_image_ref_id,
+	    qualifi_image_ref_id,
+	    source,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    belong_depart_id,
+	    use_depart_id,
+	    status,
+	    is_deleted,
+	    qualifi_image_2_ref_id
+	   from zh_real_driver_info
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	    and is_deleted ='00'
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    zrdi.driver_info_id,
+	    zrdi.seq_no,
+	    zrdi.real_name,
+	    zrdi.idno,
+	    zrdi.sex,
+	    zrdi.birthday,
+	    zrdi.criminal_record,
+	    zrdi.telphone,
+	    zrdi.attributes,
+	    zrdi.area_code,
+	    zrdi.address,
+	    zrdi.dl_type,
+	    zrdi.dl_issue_date,
+	    zrdi.dl_start_date,
+	    zrdi.dl_end_date,
+	    zrdi.qc_no,
+	    zrdi.qc_type,
+	    zrdi.qc_issue_date,
+	    zrdi.qc_start_date,
+	    zrdi.qc_end_date,
+	    zrdi.id_f_image_ref_id,
+	    zrdi.id_b_image_ref_id,
+	    zrdi.photo_f_image_ref_id,
+	    zrdi.driving_f_image_ref_id,
+	    zrdi.driving_b_image_ref_id,
+	    zrdi.qualifi_image_ref_id,
+	    zrdi.source,
+	    zrdi.created_by,
+	    zrdi.created_time,
+	    zrdi.updated_by,
+	    zrdi.updated_time,
+	    zrdi.belong_depart_id,
+	    zrdi.use_depart_id,
+	    zrdi.status,
+	    zrdi.is_deleted,
+	    zdi.name as belong_depart_name,
+	    zdin.name as use_depart_name,
+	    zrdi.qualifi_image_2_ref_id
+	   from zh_real_driver_info zrdi left join zh_department_info zdi on zrdi.belong_depart_id=zdi.depart_id
+	   left join zh_department_info zdin on zrdi.use_depart_id=zdin.depart_id
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     driver_info_id,
+	     seq_no,
+	     real_name,
+	     idno,
+	     sex,
+	     birthday,
+	     criminal_record,
+	     telphone,
+	     attributes,
+	     area_code,
+	     address,
+	     dl_type,
+	     dl_issue_date,
+	     dl_start_date,
+	     dl_end_date,
+	     qc_no,
+	     qc_type,
+	     qc_issue_date,
+	     qc_start_date,
+	     qc_end_date,
+	     id_f_image_ref_id,
+	     id_b_image_ref_id,
+	     photo_f_image_ref_id,
+	     driving_f_image_ref_id,
+	     driving_b_image_ref_id,
+	     qualifi_image_ref_id,
+	     source,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     belong_depart_id,
+	     use_depart_id,
+	     status,
+	     is_deleted,
+	     qualifi_image_2_ref_id
+	   from zh_real_driver_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="driverInfoId != null">
+	        driver_info_id=#{driverInfoId}
+	     </if>
+	     <if test="seqNo != null">
+	        and seq_no=#{seqNo}
+	     </if>
+	     <if test="realName != null">
+	        and real_name=#{realName}
+	     </if>
+	     <if test="idno != null">
+	        and idno=#{idno}
+	     </if>
+	     <if test="sex != null">
+	        and sex=#{sex}
+	     </if>
+	     <if test="birthday != null">
+	        and birthday=#{birthday}
+	     </if>
+	     <if test="criminalRecord != null">
+	        and criminal_record=#{criminalRecord}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="attributes != null">
+	        and attributes=#{attributes}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	     <if test="dlType != null">
+	        and dl_type=#{dlType}
+	     </if>
+	     <if test="dlIssueDate != null">
+	        and dl_issue_date=#{dlIssueDate}
+	     </if>
+	     <if test="dlStartDate != null">
+	        and dl_start_date=#{dlStartDate}
+	     </if>
+	     <if test="dlEndDate != null">
+	        and dl_end_date=#{dlEndDate}
+	     </if>
+	     <if test="qcNo != null">
+	        and qc_no=#{qcNo}
+	     </if>
+	     <if test="qcType != null">
+	        and qc_type=#{qcType}
+	     </if>
+	     <if test="qcIssueDate != null">
+	        and qc_issue_date=#{qcIssueDate}
+	     </if>
+	     <if test="qcStartDate != null">
+	        and qc_start_date=#{qcStartDate}
+	     </if>
+	     <if test="qcEndDate != null">
+	        and qc_end_date=#{qcEndDate}
+	     </if>
+	     <if test="idFImageRefId != null">
+	        and id_f_image_ref_id=#{idFImageRefId}
+	     </if>
+	     <if test="idBImageRefId != null">
+	        and id_b_image_ref_id=#{idBImageRefId}
+	     </if>
+	     <if test="photoFImageRefId != null">
+	        and photo_f_image_ref_id=#{photoFImageRefId}
+	     </if>
+	     <if test="drivingFImageRefId != null">
+	        and driving_f_image_ref_id=#{drivingFImageRefId}
+	     </if>
+	     <if test="drivingBImageRefId != null">
+	        and driving_b_image_ref_id=#{drivingBImageRefId}
+	     </if>
+	     <if test="qualifiImageRefId != null">
+	        and qualifi_image_ref_id=#{qualifiImageRefId}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="useDepartId != null">
+	        and use_depart_id=#{useDepartId}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	     <if test="qualifiImage2RefId != null">
+	        and qualifi_image_2_ref_id=#{qualifiImage2RefId}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     driver_info_id,
+	     seq_no,
+	     real_name,
+	     idno,
+	     sex,
+	     birthday,
+	     criminal_record,
+	     telphone,
+	     attributes,
+	     area_code,
+	     address,
+	     dl_type,
+	     dl_issue_date,
+	     dl_start_date,
+	     dl_end_date,
+	     qc_no,
+	     qc_type,
+	     qc_issue_date,
+	     qc_start_date,
+	     qc_end_date,
+	     id_f_image_ref_id,
+	     id_b_image_ref_id,
+	     photo_f_image_ref_id,
+	     driving_f_image_ref_id,
+	     driving_b_image_ref_id,
+	     qualifi_image_ref_id,
+	     source,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     belong_depart_id,
+	     use_depart_id,
+	     status,
+	     is_deleted,
+	     qualifi_image_2_ref_id
+	   from zh_real_driver_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="driverInfoId != null">
+	        driver_info_id=#{driverInfoId}
+	     </if>
+	     <if test="seqNo != null">
+	        and seq_no=#{seqNo}
+	     </if>
+	     <if test="realName != null">
+	        and real_name=#{realName}
+	     </if>
+	     <if test="idno != null">
+	        and idno=#{idno}
+	     </if>
+	     <if test="sex != null">
+	        and sex=#{sex}
+	     </if>
+	     <if test="birthday != null">
+	        and birthday=#{birthday}
+	     </if>
+	     <if test="criminalRecord != null">
+	        and criminal_record=#{criminalRecord}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="attributes != null">
+	        and attributes=#{attributes}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	     <if test="dlType != null">
+	        and dl_type=#{dlType}
+	     </if>
+	     <if test="dlIssueDate != null">
+	        and dl_issue_date=#{dlIssueDate}
+	     </if>
+	     <if test="dlStartDate != null">
+	        and dl_start_date=#{dlStartDate}
+	     </if>
+	     <if test="dlEndDate != null">
+	        and dl_end_date=#{dlEndDate}
+	     </if>
+	     <if test="qcNo != null">
+	        and qc_no=#{qcNo}
+	     </if>
+	     <if test="qcType != null">
+	        and qc_type=#{qcType}
+	     </if>
+	     <if test="qcIssueDate != null">
+	        and qc_issue_date=#{qcIssueDate}
+	     </if>
+	     <if test="qcStartDate != null">
+	        and qc_start_date=#{qcStartDate}
+	     </if>
+	     <if test="qcEndDate != null">
+	        and qc_end_date=#{qcEndDate}
+	     </if>
+	     <if test="idFImageRefId != null">
+	        and id_f_image_ref_id=#{idFImageRefId}
+	     </if>
+	     <if test="idBImageRefId != null">
+	        and id_b_image_ref_id=#{idBImageRefId}
+	     </if>
+	     <if test="photoFImageRefId != null">
+	        and photo_f_image_ref_id=#{photoFImageRefId}
+	     </if>
+	     <if test="drivingFImageRefId != null">
+	        and driving_f_image_ref_id=#{drivingFImageRefId}
+	     </if>
+	     <if test="drivingBImageRefId != null">
+	        and driving_b_image_ref_id=#{drivingBImageRefId}
+	     </if>
+	     <if test="qualifiImageRefId != null">
+	        and qualifi_image_ref_id=#{qualifiImageRefId}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="useDepartId != null">
+	        and use_depart_id=#{useDepartId}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	     <if test="qualifiImage2RefId != null">
+	        and qualifi_image_2_ref_id=#{qualifiImage2RefId}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

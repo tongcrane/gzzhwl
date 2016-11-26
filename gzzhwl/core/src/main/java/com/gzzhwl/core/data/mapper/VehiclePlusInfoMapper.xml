@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.VehiclePlusInfoDao">
+
+	<resultMap id="vehiclePlusInfoResultMap" type="VehiclePlusInfo">
+		<id property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="ciEffectDate" column="ci_effect_date" />
+		<result property="ciName" column="ci_name" />
+		<result property="ciNo" column="ci_no" />
+		<result property="viEffectDate" column="vi_effect_date" />
+		<result property="viName" column="vi_name" />
+		<result property="viNo" column="vi_no" />
+		<result property="ciImageRefId" column="ci_image_ref_id" />
+		<result property="viImageRefId" column="vi_image_ref_id" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="vehiclePlusInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="vehiclePlusInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="VehiclePlusInfo">
+	   insert into zh_vehicle_plus_info (
+	     vehicle_info_id,
+	     ci_effect_date,
+	     ci_name,
+	     ci_no,
+	     vi_effect_date,
+	     vi_name,
+	     vi_no,
+	     ci_image_ref_id,
+	     vi_image_ref_id
+	   )values (
+	     #{vehicleInfoId},
+	     #{ciEffectDate},
+	     #{ciName},
+	     #{ciNo},
+	     #{viEffectDate},
+	     #{viName},
+	     #{viNo},
+	     #{ciImageRefId},
+	     #{viImageRefId}
+	   )
+	</insert>
+
+	<update id="update" parameterType="VehiclePlusInfo">
+	   update zh_vehicle_plus_info set
+	     vehicle_info_id=#{vehicleInfoId},
+	     ci_effect_date=#{ciEffectDate},
+	     ci_name=#{ciName},
+	     ci_no=#{ciNo},
+	     vi_effect_date=#{viEffectDate},
+	     vi_name=#{viName},
+	     vi_no=#{viNo},
+	     ci_image_ref_id=#{ciImageRefId},
+	     vi_image_ref_id=#{viImageRefId}
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="VehiclePlusInfo">
+	   update zh_vehicle_plus_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="vehicleInfoId != null">
+		       vehicle_info_id=#{vehicleInfoId},
+		     </if>
+		     <if test="ciEffectDate != null">
+		       ci_effect_date=#{ciEffectDate},
+		     </if>
+		     <if test="ciName != null">
+		       ci_name=#{ciName},
+		     </if>
+		     <if test="ciNo != null">
+		       ci_no=#{ciNo},
+		     </if>
+		     <if test="viEffectDate != null">
+		       vi_effect_date=#{viEffectDate},
+		     </if>
+		     <if test="viName != null">
+		       vi_name=#{viName},
+		     </if>
+		     <if test="viNo != null">
+		       vi_no=#{viNo},
+		     </if>
+		     <if test="ciImageRefId != null">
+		       ci_image_ref_id=#{ciImageRefId},
+		     </if>
+		     <if test="viImageRefId != null">
+		       vi_image_ref_id=#{viImageRefId}
+		     </if>
+	   </trim>
+	
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_vehicle_plus_info 
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="vehiclePlusInfoResultMap">
+	   select 
+	    vehicle_info_id,
+	    ci_effect_date,
+	    ci_name,
+	    ci_no,
+	    vi_effect_date,
+	    vi_name,
+	    vi_no,
+	    ci_image_ref_id,
+	    vi_image_ref_id
+	   from zh_vehicle_plus_info
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    vehicle_info_id,
+	    ci_effect_date,
+	    ci_name,
+	    ci_no,
+	    vi_effect_date,
+	    vi_name,
+	    vi_no,
+	    ci_image_ref_id,
+	    vi_image_ref_id
+	   from zh_vehicle_plus_info
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     vehicle_info_id,
+	     ci_effect_date,
+	     ci_name,
+	     ci_no,
+	     vi_effect_date,
+	     vi_name,
+	     vi_no,
+	     ci_image_ref_id,
+	     vi_image_ref_id
+	   from zh_vehicle_plus_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="vehicleInfoId != null">
+	        vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="ciEffectDate != null">
+	        and ci_effect_date=#{ciEffectDate}
+	     </if>
+	     <if test="ciName != null">
+	        and ci_name=#{ciName}
+	     </if>
+	     <if test="ciNo != null">
+	        and ci_no=#{ciNo}
+	     </if>
+	     <if test="viEffectDate != null">
+	        and vi_effect_date=#{viEffectDate}
+	     </if>
+	     <if test="viName != null">
+	        and vi_name=#{viName}
+	     </if>
+	     <if test="viNo != null">
+	        and vi_no=#{viNo}
+	     </if>
+	     <if test="ciImageRefId != null">
+	        and ci_image_ref_id=#{ciImageRefId}
+	     </if>
+	     <if test="viImageRefId != null">
+	        and vi_image_ref_id=#{viImageRefId}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     vehicle_info_id,
+	     ci_effect_date,
+	     ci_name,
+	     ci_no,
+	     vi_effect_date,
+	     vi_name,
+	     vi_no,
+	     ci_image_ref_id,
+	     vi_image_ref_id
+	   from zh_vehicle_plus_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="vehicleInfoId != null">
+	        vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="ciEffectDate != null">
+	        and ci_effect_date=#{ciEffectDate}
+	     </if>
+	     <if test="ciName != null">
+	        and ci_name=#{ciName}
+	     </if>
+	     <if test="ciNo != null">
+	        and ci_no=#{ciNo}
+	     </if>
+	     <if test="viEffectDate != null">
+	        and vi_effect_date=#{viEffectDate}
+	     </if>
+	     <if test="viName != null">
+	        and vi_name=#{viName}
+	     </if>
+	     <if test="viNo != null">
+	        and vi_no=#{viNo}
+	     </if>
+	     <if test="ciImageRefId != null">
+	        and ci_image_ref_id=#{ciImageRefId}
+	     </if>
+	     <if test="viImageRefId != null">
+	        and vi_image_ref_id=#{viImageRefId}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

@@ -1,0 +1,7 @@
+package com.gzzhwl.push.strategy;
+
+import com.gzzhwl.push.model.PushItem;
+
+public interface PushServiceStrategyFactory {
+	public boolean pushToSingleUser(PushItem item, String accountId);
+}

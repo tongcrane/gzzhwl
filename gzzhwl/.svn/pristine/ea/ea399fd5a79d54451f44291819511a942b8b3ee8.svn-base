@@ -1,0 +1,634 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_agent_info表
+ * @author mew
+ *
+ */
+public class AgentInfo implements Serializable {
+	@Length(max = 36, message = "agentInfoId超过长度限制")
+	private java.lang.String agentInfoId; // 经纪人信息标识
+	@Length(max = 36, message = "accountId超过长度限制")
+	private java.lang.String accountId; // 账户标识
+	@Length(max = 2, message = "agentType超过长度限制")
+	private java.lang.String agentType; // 类型
+	@Length(max = 50, message = "realName超过长度限制")
+	private java.lang.String realName; // 真实姓名
+	@Length(max = 50, message = "idno超过长度限制")
+	private java.lang.String idno; // 身份证号
+	@Length(max = 2, message = "sex超过长度限制")
+	private java.lang.String sex; // 性别
+	@Length(max = 10, message = "telphone超过长度限制")
+	private java.lang.String telphone; // 联系电话
+	@Length(max = 20, message = "mobile超过长度限制")
+	private java.lang.String mobile; // 手机
+	@Length(max = 100, message = "companyFullName超过长度限制")
+	private java.lang.String companyFullName; // 公司全称
+	@Length(max = 20, message = "companyPhone超过长度限制")
+	private java.lang.String companyPhone; // 公司电话
+	@Length(max = 10, message = "areaCode超过长度限制")
+	private java.lang.String areaCode; // 所在区域
+	@Length(max = 100, message = "address超过长度限制")
+	private java.lang.String address; // 详细地址
+	@Length(max = 2, message = "certType超过长度限制")
+	private java.lang.String certType; // 证件类型
+	@Length(max = 20, message = "uscCode超过长度限制")
+	private java.lang.String uscCode; // 统一社会信用代码
+	@Length(max = 20, message = "busCode超过长度限制")
+	private java.lang.String busCode; // 营业执照代码
+	@Length(max = 20, message = "orgCode超过长度限制")
+	private java.lang.String orgCode; // 组织机构证代码
+	@Length(max = 20, message = "taxRegCode超过长度限制")
+	private java.lang.String taxRegCode; // 税务登记证代码
+	@Length(max = 36, message = "idFImageRefId超过长度限制")
+	private java.lang.String idFImageRefId; // 身份照片(正)
+	@Length(max = 36, message = "idBImageRefId超过长度限制")
+	private java.lang.String idBImageRefId; // 身份照片(反)
+	@Length(max = 36, message = "photoImageRefId超过长度限制")
+	private java.lang.String photoImageRefId; // 个人照片
+	@Length(max = 36, message = "busImageRefId超过长度限制")
+	private java.lang.String busImageRefId; // 营业执照照片
+	@Length(max = 36, message = "orgImageRefId超过长度限制")
+	private java.lang.String orgImageRefId; // 组织机构证照片
+	@Length(max = 36, message = "taxImageRefId超过长度限制")
+	private java.lang.String taxImageRefId; // 税务登记证照片
+	@Length(max = 2, message = "source超过长度限制")
+	private java.lang.String source; // 数据来源
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取经纪人信息标识属性
+     *
+     * @return agentInfoId
+     */
+	public java.lang.String getAgentInfoId() {
+		return agentInfoId;
+	}
+	
+	/**
+	 * 设置经纪人信息标识属性
+	 *
+	 * @param agentInfoId
+	 */
+	public void setAgentInfoId(java.lang.String agentInfoId) {
+		this.agentInfoId = agentInfoId;
+	}
+	
+	/**
+     * 获取账户标识属性
+     *
+     * @return accountId
+     */
+	public java.lang.String getAccountId() {
+		return accountId;
+	}
+	
+	/**
+	 * 设置账户标识属性
+	 *
+	 * @param accountId
+	 */
+	public void setAccountId(java.lang.String accountId) {
+		this.accountId = accountId;
+	}
+	
+	/**
+     * 获取类型属性
+     *
+     * @return agentType
+     */
+	public java.lang.String getAgentType() {
+		return agentType;
+	}
+	
+	/**
+	 * 设置类型属性
+	 *
+	 * @param agentType
+	 */
+	public void setAgentType(java.lang.String agentType) {
+		this.agentType = agentType;
+	}
+	
+	/**
+     * 获取真实姓名属性
+     *
+     * @return realName
+     */
+	public java.lang.String getRealName() {
+		return realName;
+	}
+	
+	/**
+	 * 设置真实姓名属性
+	 *
+	 * @param realName
+	 */
+	public void setRealName(java.lang.String realName) {
+		this.realName = realName;
+	}
+	
+	/**
+     * 获取身份证号属性
+     *
+     * @return idno
+     */
+	public java.lang.String getIdno() {
+		return idno;
+	}
+	
+	/**
+	 * 设置身份证号属性
+	 *
+	 * @param idno
+	 */
+	public void setIdno(java.lang.String idno) {
+		this.idno = idno;
+	}
+	
+	/**
+     * 获取性别属性
+     *
+     * @return sex
+     */
+	public java.lang.String getSex() {
+		return sex;
+	}
+	
+	/**
+	 * 设置性别属性
+	 *
+	 * @param sex
+	 */
+	public void setSex(java.lang.String sex) {
+		this.sex = sex;
+	}
+	
+	/**
+     * 获取联系电话属性
+     *
+     * @return telphone
+     */
+	public java.lang.String getTelphone() {
+		return telphone;
+	}
+	
+	/**
+	 * 设置联系电话属性
+	 *
+	 * @param telphone
+	 */
+	public void setTelphone(java.lang.String telphone) {
+		this.telphone = telphone;
+	}
+	
+	/**
+     * 获取手机属性
+     *
+     * @return mobile
+     */
+	public java.lang.String getMobile() {
+		return mobile;
+	}
+	
+	/**
+	 * 设置手机属性
+	 *
+	 * @param mobile
+	 */
+	public void setMobile(java.lang.String mobile) {
+		this.mobile = mobile;
+	}
+	
+	/**
+     * 获取公司全称属性
+     *
+     * @return companyFullName
+     */
+	public java.lang.String getCompanyFullName() {
+		return companyFullName;
+	}
+	
+	/**
+	 * 设置公司全称属性
+	 *
+	 * @param companyFullName
+	 */
+	public void setCompanyFullName(java.lang.String companyFullName) {
+		this.companyFullName = companyFullName;
+	}
+	
+	/**
+     * 获取公司电话属性
+     *
+     * @return companyPhone
+     */
+	public java.lang.String getCompanyPhone() {
+		return companyPhone;
+	}
+	
+	/**
+	 * 设置公司电话属性
+	 *
+	 * @param companyPhone
+	 */
+	public void setCompanyPhone(java.lang.String companyPhone) {
+		this.companyPhone = companyPhone;
+	}
+	
+	/**
+     * 获取所在区域属性
+     *
+     * @return areaCode
+     */
+	public java.lang.String getAreaCode() {
+		return areaCode;
+	}
+	
+	/**
+	 * 设置所在区域属性
+	 *
+	 * @param areaCode
+	 */
+	public void setAreaCode(java.lang.String areaCode) {
+		this.areaCode = areaCode;
+	}
+	
+	/**
+     * 获取详细地址属性
+     *
+     * @return address
+     */
+	public java.lang.String getAddress() {
+		return address;
+	}
+	
+	/**
+	 * 设置详细地址属性
+	 *
+	 * @param address
+	 */
+	public void setAddress(java.lang.String address) {
+		this.address = address;
+	}
+	
+	/**
+     * 获取证件类型属性
+     *
+     * @return certType
+     */
+	public java.lang.String getCertType() {
+		return certType;
+	}
+	
+	/**
+	 * 设置证件类型属性
+	 *
+	 * @param certType
+	 */
+	public void setCertType(java.lang.String certType) {
+		this.certType = certType;
+	}
+	
+	/**
+     * 获取统一社会信用代码属性
+     *
+     * @return uscCode
+     */
+	public java.lang.String getUscCode() {
+		return uscCode;
+	}
+	
+	/**
+	 * 设置统一社会信用代码属性
+	 *
+	 * @param uscCode
+	 */
+	public void setUscCode(java.lang.String uscCode) {
+		this.uscCode = uscCode;
+	}
+	
+	/**
+     * 获取营业执照代码属性
+     *
+     * @return busCode
+     */
+	public java.lang.String getBusCode() {
+		return busCode;
+	}
+	
+	/**
+	 * 设置营业执照代码属性
+	 *
+	 * @param busCode
+	 */
+	public void setBusCode(java.lang.String busCode) {
+		this.busCode = busCode;
+	}
+	
+	/**
+     * 获取组织机构证代码属性
+     *
+     * @return orgCode
+     */
+	public java.lang.String getOrgCode() {
+		return orgCode;
+	}
+	
+	/**
+	 * 设置组织机构证代码属性
+	 *
+	 * @param orgCode
+	 */
+	public void setOrgCode(java.lang.String orgCode) {
+		this.orgCode = orgCode;
+	}
+	
+	/**
+     * 获取税务登记证代码属性
+     *
+     * @return taxRegCode
+     */
+	public java.lang.String getTaxRegCode() {
+		return taxRegCode;
+	}
+	
+	/**
+	 * 设置税务登记证代码属性
+	 *
+	 * @param taxRegCode
+	 */
+	public void setTaxRegCode(java.lang.String taxRegCode) {
+		this.taxRegCode = taxRegCode;
+	}
+	
+	/**
+     * 获取身份照片(正)属性
+     *
+     * @return idFImageRefId
+     */
+	public java.lang.String getIdFImageRefId() {
+		return idFImageRefId;
+	}
+	
+	/**
+	 * 设置身份照片(正)属性
+	 *
+	 * @param idFImageRefId
+	 */
+	public void setIdFImageRefId(java.lang.String idFImageRefId) {
+		this.idFImageRefId = idFImageRefId;
+	}
+	
+	/**
+     * 获取身份照片(反)属性
+     *
+     * @return idBImageRefId
+     */
+	public java.lang.String getIdBImageRefId() {
+		return idBImageRefId;
+	}
+	
+	/**
+	 * 设置身份照片(反)属性
+	 *
+	 * @param idBImageRefId
+	 */
+	public void setIdBImageRefId(java.lang.String idBImageRefId) {
+		this.idBImageRefId = idBImageRefId;
+	}
+	
+	/**
+     * 获取个人照片属性
+     *
+     * @return photoImageRefId
+     */
+	public java.lang.String getPhotoImageRefId() {
+		return photoImageRefId;
+	}
+	
+	/**
+	 * 设置个人照片属性
+	 *
+	 * @param photoImageRefId
+	 */
+	public void setPhotoImageRefId(java.lang.String photoImageRefId) {
+		this.photoImageRefId = photoImageRefId;
+	}
+	
+	/**
+     * 获取营业执照照片属性
+     *
+     * @return busImageRefId
+     */
+	public java.lang.String getBusImageRefId() {
+		return busImageRefId;
+	}
+	
+	/**
+	 * 设置营业执照照片属性
+	 *
+	 * @param busImageRefId
+	 */
+	public void setBusImageRefId(java.lang.String busImageRefId) {
+		this.busImageRefId = busImageRefId;
+	}
+	
+	/**
+     * 获取组织机构证照片属性
+     *
+     * @return orgImageRefId
+     */
+	public java.lang.String getOrgImageRefId() {
+		return orgImageRefId;
+	}
+	
+	/**
+	 * 设置组织机构证照片属性
+	 *
+	 * @param orgImageRefId
+	 */
+	public void setOrgImageRefId(java.lang.String orgImageRefId) {
+		this.orgImageRefId = orgImageRefId;
+	}
+	
+	/**
+     * 获取税务登记证照片属性
+     *
+     * @return taxImageRefId
+     */
+	public java.lang.String getTaxImageRefId() {
+		return taxImageRefId;
+	}
+	
+	/**
+	 * 设置税务登记证照片属性
+	 *
+	 * @param taxImageRefId
+	 */
+	public void setTaxImageRefId(java.lang.String taxImageRefId) {
+		this.taxImageRefId = taxImageRefId;
+	}
+	
+	/**
+     * 获取数据来源属性
+     *
+     * @return source
+     */
+	public java.lang.String getSource() {
+		return source;
+	}
+	
+	/**
+	 * 设置数据来源属性
+	 *
+	 * @param source
+	 */
+	public void setSource(java.lang.String source) {
+		this.source = source;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("AgentInfo");
+        sb.append("{agentInfoId=").append(agentInfoId);
+        sb.append(", accountId=").append(accountId);
+        sb.append(", agentType=").append(agentType);
+        sb.append(", realName=").append(realName);
+        sb.append(", idno=").append(idno);
+        sb.append(", sex=").append(sex);
+        sb.append(", telphone=").append(telphone);
+        sb.append(", mobile=").append(mobile);
+        sb.append(", companyFullName=").append(companyFullName);
+        sb.append(", companyPhone=").append(companyPhone);
+        sb.append(", areaCode=").append(areaCode);
+        sb.append(", address=").append(address);
+        sb.append(", certType=").append(certType);
+        sb.append(", uscCode=").append(uscCode);
+        sb.append(", busCode=").append(busCode);
+        sb.append(", orgCode=").append(orgCode);
+        sb.append(", taxRegCode=").append(taxRegCode);
+        sb.append(", idFImageRefId=").append(idFImageRefId);
+        sb.append(", idBImageRefId=").append(idBImageRefId);
+        sb.append(", photoImageRefId=").append(photoImageRefId);
+        sb.append(", busImageRefId=").append(busImageRefId);
+        sb.append(", orgImageRefId=").append(orgImageRefId);
+        sb.append(", taxImageRefId=").append(taxImageRefId);
+        sb.append(", source=").append(source);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", status=").append(status);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

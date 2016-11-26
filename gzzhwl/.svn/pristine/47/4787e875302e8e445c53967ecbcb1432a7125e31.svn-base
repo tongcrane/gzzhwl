@@ -1,0 +1,171 @@
+package com.gzzhwl.tms.vo;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.joda.time.DateTime;
+
+import com.gzzhwl.core.utils.JodaDateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class OrderBaseInfoVO {
+	private String orderId; // 订单ID
+	private String chargeType; // 计价方式 (01整车 02公里数 03重量 04体积)
+	private String customerBillNo; // 客户单号
+	private String goodsName; // 货物名称
+	private String goodsVolume; // 货物体积(m³)
+	private String goodsWeight; // 货物重量(kg)
+	private String isPredict; // 单价是否预估(0否 1是)
+	private String lineAttribute; // 订单的线路属性 (单边 往返 闭合)
+	private String miles; // 公里数(km)
+	private String needArriveTime; // 预计到达时间（yyyy-MM-dd HH:mm）
+	private String needImportedVehicles; // 是否进口车(0否 1是)
+	private String needOwnVehicles; // 是否允许外请车(0否 1是)
+	private String needStartTime; // 计划发车时间（yyyy-MM-dd HH:mm）
+	private String needLength; // 车长要求 (4.2 5 6.2 6.8 7.2 7.6 8.5 9.6 12.5 13 13.5 15 16 17.5 18.5 21 22)
+	private String needType; // 车型要求 (低栏车 中栏车 高栏车 封闭式货车 厢式货车 单桥拖头 双桥拖头 集装箱 冷藏车 高低板车 栏板车 平板车 自卸车 危险品车 其他车)
+	private String orderAdvice; // 回单要求(客户专签 公章 身份证 收条)
+	private String orderType; // 订单类型(整车 零担)
+	private String paymentType; // 结算方式(月结 回单 现付 提付 临欠)
+	private String pickUpTime; // 提货时间（yyyy-MM-dd HH:mm）
+	private String unitPrice; // 单价
+	private String remark; // 备注
+
+	public void valid() {
+		validEmpty();
+		validData();
+		validFormat();
+		validBusEmpty();
+	}
+
+	private void validEmpty() {
+		if (StringUtils.isAnyEmpty(orderId, chargeType, goodsName, goodsVolume, goodsWeight, isPredict, lineAttribute,
+				needArriveTime, needImportedVehicles, needOwnVehicles, needStartTime, needLength, needType, orderAdvice,
+				orderType, paymentType, pickUpTime, unitPrice)) {
+			throw new RestException("90001", "参数不能为空");
+		}
+	}
+
+	private void validData() {
+		String[] cta = { "01", "02", "03", "04" };
+		String[] bl = { "0", "1" };
+		String[] laa = { "单边", "往返", "闭合" };
+		String[] nla = { "4.2", "5", "6.2", "6.8", "7.2", "7.6", "8.5", "9.6", "12.5", "13", "13.5", "15", "16", "17.5",
+				"18.5", "21", "22" };
+		String[] nta = { "低栏车", "中栏车", "高栏车", "封闭式货车", "厢式货车", "单桥拖头", "双桥拖头", "集装箱", "冷藏车", "高低板车", "栏板车", "平板车",
+				"自卸车", "危险品车", "其他车" };
+		String[] oaa = { "客户专签", "公章", "身份证", "收条" };
+		String[] ota = { "整车", "零担" };
+		String[] pta = { "月结", "回单", "现付", "提付", "临欠" };
+		if (!ArrayUtils.contains(cta, chargeType)) {
+			throw new RestException("90001", "计价方式的值不合法");
+		}
+		if (!ArrayUtils.contains(laa, lineAttribute)) {
+			throw new RestException("90001", "线路属性的值不合法");
+		}
+		if (!ArrayUtils.contains(nla, needLength)) {
+			throw new RestException("90001", "车长要求的值不合法");
+		}
+		if (!ArrayUtils.contains(nta, needType)) {
+			throw new RestException("90001", "车型要求的值不合法");
+		}
+		if (!ArrayUtils.contains(oaa, orderAdvice)) {
+			throw new RestException("90001", "回单要求的值不合法");
+		}
+		if (!ArrayUtils.contains(ota, orderAdvice)) {
+			throw new RestException("90001", "订单类型的值不合法");
+		}
+		if (!ArrayUtils.contains(pta, paymentType)) {
+			throw new RestException("90001", "结算方式的值不合法");
+		}
+		if (!ArrayUtils.contains(bl, isPredict)) {
+			throw new RestException("90001", "单价是否预估的值不合法");
+		}
+		if (!ArrayUtils.contains(bl, needImportedVehicles)) {
+			throw new RestException("90001", "是否要求进口车的值不合法");
+		}
+		if (!ArrayUtils.contains(bl, needOwnVehicles)) {
+			throw new RestException("90001", "是否允许外请车的值不合法");
+		}
+	}
+
+	private void validFormat() {
+		final String fmt = "yyyy-MM-dd HH:mm";
+		boolean isValid = JodaDateUtils.isValidDate(needArriveTime, fmt);
+		if (!isValid) {
+			throw new RestException("90001", "预计到达时间格式不正确");
+		}
+		isValid = JodaDateUtils.isValidDate(needStartTime, fmt);
+		if (!isValid) {
+			throw new RestException("90001", "计划发车时间格式不正确");
+		}
+		isValid = JodaDateUtils.isValidDate(pickUpTime, fmt);
+		if (!isValid) {
+			throw new RestException("90001", "提货时间格式不正确");
+		}
+		if (StringUtils.isNotBlank(miles)) {
+			if (!NumberUtils.isNumber(miles)) {
+				throw new RestException("90001", "公里数格式不正确");
+			}
+		}
+		if (!NumberUtils.isNumber(goodsVolume)) {
+			throw new RestException("90001", "货物体积格式不正确");
+		}
+		if (!NumberUtils.isNumber(goodsWeight)) {
+			throw new RestException("90001", "货物重量格式不正确");
+		}
+	}
+
+	private void validBusEmpty() {
+		final String fmt = "yyyy-MM-dd HH:mm";
+		if (StringUtils.equals(chargeType, "02")) {// 按公里数计费方式
+			if (StringUtils.isAnyEmpty(miles)) {
+				throw new RestException("90001", "公里数计费方式公里数不能为空");
+			}
+		}
+		DateTime d_a = JodaDateUtils.parse(needArriveTime, fmt);// 到达时限
+		DateTime d_s = JodaDateUtils.parse(needStartTime, fmt);// 计划发车
+		DateTime d_p = JodaDateUtils.parse(pickUpTime, fmt);// 提货时间
+		if (!d_p.isBefore(d_s)) {
+			throw new RestException("90001", "提货时间要早于计划发车时间");
+		}
+		if (!d_s.isBefore(d_a)) {
+			throw new RestException("90001", "计划发车时间要早于到达时间");
+		}
+		if (StringUtils.isNotBlank(miles)) {
+			double num = NumberUtils.toDouble(miles);
+			boolean isIn = isIn(num, 0, 100000);
+			if (!isIn) {
+				throw new RestException("90001", "公里数不在有效值范围内");
+			}
+		}
+		double num = NumberUtils.toDouble(goodsVolume);
+		boolean isIn = isIn(num, 0, 1000);
+		if (!isIn) {
+			throw new RestException("90001", "货物体积不在有效值范围内");
+		}
+		num = NumberUtils.toDouble(goodsWeight);
+		isIn = isIn(num, 0, 100000);
+		if (!isIn) {
+			throw new RestException("90001", "货物重量不在有效值范围内");
+		}
+		// 0<miles<=100000
+		// 0<goodsVolume<=1000
+		// 0<goodsWeight<=100000
+	}
+
+	private static boolean isIn(double num, double min, double max) {
+		if (num <= min)
+			return false;
+		else if (num > max)
+			return false;
+		else
+			return true;
+	}
+
+}

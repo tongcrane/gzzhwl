@@ -1,0 +1,48 @@
+package com.gzzhwl.admin.load.vo;
+
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.utils.ValidateUtils;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class TripQueryVo {
+	private String keyWord;//关键字
+	private String status;//状态
+	private String sort;//排序方式    //00-按要求到达场地时间升序   01-按要求到达场地时间降序
+	
+	public Map<String,Object> getParam() {
+		Map<String, Object> params = Maps.newHashMap();
+		if (StringUtils.isNotBlank(keyWord)) {
+			params.put("keyWord", keyWord);
+			params.put("keyWordLike", "%" + keyWord + "%");
+		}
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		if(ValidateUtils.isEmpty(this.getStatus())){
+			// 待配载，已配载，已取消和已发车的不用查出来
+			params.put("statusArray", new String[] { LoadBillType.NOTVEHICLE.toString(),
+					LoadBillType.VEHICLECHECK.toString(), LoadBillType.CLOSETOSURFACE.toString(),LoadBillType.HAS_INVALID.toString(), });
+		}else{
+			params.put("statusArray", new String[] { LoadBillType.getLoadBillType(this.getStatus()).toString() });
+		}
+		
+		if (StringUtils.isNotBlank(this.getSort())) {
+			params.put("sort", this.getSort());
+		}
+
+		params.put("vehicleType", "03");
+		params.put("type", OrderLoadInfo.LOAD_BILL.toString());		
+		
+		return params;
+	}
+ 	
+}

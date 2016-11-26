@@ -1,0 +1,11 @@
+package com.gzzhwl.admin.load.service;
+
+import com.gzzhwl.rest.exception.RestException;
+
+public interface LoadLinkStatusService {
+	/**
+	 * 创建提货单
+	 */
+	public String createLoad(String orderId, Integer departId, String staffId) throws RestException;
+
+}

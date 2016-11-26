@@ -1,0 +1,157 @@
+package com.gzzhwl.admin.load.validator;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+
+import com.gzzhwl.admin.load.vo.LoadDriverVO;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.data.model.LoadDriverInfo;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+public class LoadValidate {
+	public static void valid_load_id(String loadId) {
+		if (StringUtils.isBlank(loadId)) {
+			throw new RestException(ErrorCode.ERROR_110001);
+		}
+	}
+
+	public static void valid_not_exist(boolean exist) {
+		if (!exist) {
+			throw new RestException(ErrorCode.ERROR_110002);
+		}
+	}
+
+	public static void valid_timestamp(String timeStamp) {
+		if (ValidateUtils.isEmpty(timeStamp)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "timeStamp " + ErrorCode.ERROR_900003.getDesc());
+		}
+		if (!DateUtils.isDefaultValidTime(timeStamp)) {
+			throw new RestException(ErrorCode.ERROR_900005);
+		}
+	}
+
+	public static void valid_driver_list(List<LoadDriverVO> driverList) {
+		if (CollectionUtils.isEmpty(driverList)) {
+			throw new RestException("110003", "请选择司机");
+		}
+		Set<String> set = new HashSet<String>();
+		int majorCount = 0;
+		for (LoadDriverVO loadDriver : driverList) {
+			set.add(loadDriver.getDriverInfoId());
+			String isMajor = loadDriver.getIsMajor();
+			if (StringUtils.equals(isMajor, LoadDriverInfo.MAJOR_YES)) {
+				majorCount++;
+			}
+		}
+		if (majorCount != 1) {
+			throw new RestException("110003", "只能有一个主驾驶");
+		}
+		if (set.size() != driverList.size()) {
+			throw new RestException("110003", "不能添加相同的司机");
+		}
+	}
+	
+	public static void valid_freightPrice(String freightPrice) {
+		if (new BigDecimal(freightPrice).compareTo(new BigDecimal("40000"))  == 1) {
+			throw new RestException(ErrorCode.ERROR_900010.getCode(), "纯运费不能超过40000!");
+		}
+	}
+
+	public static void valid_driver_not_exist(boolean exist) {
+		if (!exist) {
+			throw new RestException(ErrorCode.ERROR_800009.getCode(), "主司机信息不存在。");
+		}
+	}
+
+	public static void valid_trip_save(String customerBillNo, String goodsVolume, String goodsWeight,
+			String contractImageRefId, String tripTime, String feedTime) {
+
+		if (ValidateUtils.isEmpty(customerBillNo)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "客户单号 " + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (ValidateUtils.isEmpty(goodsVolume)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "货物体积 " + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (ValidateUtils.isEmpty(goodsWeight)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "货物重量 " + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (ValidateUtils.isEmpty(contractImageRefId)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "货主合同图片" + ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if (feedTime != null) {
+			if (ValidateUtils.isEmpty(tripTime)) {
+				throw new RestException(ErrorCode.ERROR_900003.getCode(), "发车时间" + ErrorCode.ERROR_900003.getDesc());
+			}
+		}
+
+		if (!ValidateUtils.isEmpty(tripTime)) {
+			if (!DateUtils.isValidDate(tripTime, "yyyy-MM-dd HH:mm")) {
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "发车时间" + ErrorCode.ERROR_900005.getDesc());
+			}
+			try {
+				Date date = DateUtils.parse(tripTime, "yyyy-MM-dd HH:mm");
+				tripTime = DateUtils.toString(date, "yyyy-MM-dd HH:mm:ss");
+			} catch (ParseException e) {
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "发车时间" + ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		if (StringUtils.isNotEmpty(feedTime)) {
+			if (!DateUtils.isValidDate(feedTime, "yyyy-MM-dd HH:mm:ss")) {
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "反馈时间" + ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+
+		if (!ValidateUtils.validVolumn(goodsVolume)) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "货物体积" + ErrorCode.ERROR_900004.getDesc());
+		}
+
+		if (!ValidateUtils.validCode(goodsWeight)) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "货物重量" + ErrorCode.ERROR_900004.getDesc());
+		}
+
+		if (ValidateUtils.length(customerBillNo) > 20) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "客户单号长度不得超过20位。");
+		}
+
+	}
+
+	public static void valid_loadFeedback_save(LoadFeedbackLog loadFeedbackLog) {
+		if (ValidateUtils.isEmpty(loadFeedbackLog.getItemName())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "费用名称" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (loadFeedbackLog.getItemName().length() > 10) {
+			throw new RestException(ErrorCode.ERROR_900005.getCode(), "费用名称" + ErrorCode.ERROR_900005.getDesc());
+		}
+
+		if (ValidateUtils.isEmpty(loadFeedbackLog.getItemDesc())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "费用描述" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (loadFeedbackLog.getItemDesc().length() > 50) {
+			throw new RestException(ErrorCode.ERROR_900005.getCode(), "费用描述" + ErrorCode.ERROR_900005.getDesc());
+		}
+		if (!ValidateUtils.isEmpty(loadFeedbackLog.getItemPrice())) {
+			// 异常反馈验证
+			if (!ValidateUtils.isMoney(loadFeedbackLog.getItemPrice())) {
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "费用金额 " + ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+
+	}
+
+}

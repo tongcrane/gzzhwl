@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.QuotedInfoExtDao">
+
+	<resultMap id="quotedInfoResultMap" type="QuotedInfo">
+		<id property="quotedId" column="quoted_id" />
+		<result property="accountId" column="account_id" />
+		<result property="sourceId" column="source_id" />
+		<result property="price" column="price" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="quotedManagerResultMap"  type="java.util.HashMap" extends="quotedInfoResultMap">
+		<result property="invalid" column="invalid" />
+		<result property="completed" column="completed" />
+		<result property="realName" column="real_name" />
+		<result property="idno" column="idno" />
+		<result property="telphone" column="userNane" />
+	</resultMap>
+	
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="quotedInfoResultMap"></resultMap>
+	
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="quotedInfoResultMap"></resultMap>
+	
+	<resultMap id="bidVehicleInfoResultMap"  type="java.util.HashMap" extends="quotedInfoResultMap">
+		<result property="quotedId" column="quoted_id" />
+		<result property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="driverInfoId" column="driver_info_id" />
+		<result property="realName" column="real_name" />
+		<result property="status" column="status" />
+		<result property="plateNumber" column="plate_number" />
+		<result property="accountId" column="account_id" />
+	</resultMap>
+	
+	
+	<resultMap type="java.util.HashMap" id="loadInfoWithVADResultMap">
+		<id property="loadId" column="load_id" />
+		<result property="orderId" column="order_id" />
+		<result property="price" column="price" />
+		<association property="accountInfo" columnPrefix="account_" resultMap="accountResultMap" />
+		<association property="vehicleInfo" columnPrefix="vehicle_" resultMap="vehicleResultMap" />
+		<collection property="driverList" ofType="map" javaType="java.util.List"  resultMap="driverResultMap" columnPrefix="driver_"/>
+	</resultMap>
+	
+	<resultMap type="java.util.HashMap" id="accountResultMap">
+		<id property="accountId" column="account_id" />
+		<result property="telphone" column="telphone" />
+		<result property="idno" column="idno" />
+		<result property="realName" column="real_name" />
+		<result property="idFImageRefId" column="id_f_image_ref_id" />
+		<result property="idBImageRefId" column="id_b_image_ref_id" />
+		<result property="busImageRefId" column="bus_image_ref_id" />
+	</resultMap>
+	
+	<resultMap type="java.util.HashMap" id="vehicleResultMap">
+		<id property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="plateNumber" column="plate_number" />
+		<result property="licenseImageRefId" column="license_image_ref_id" />
+		<result property="licenseImage2RefId" column="license_image_2_ref_id" />
+		<result property="ocImageRefId" column="oc_image_ref_id" />
+		<result property="ocImage2RefId" column="oc_image_2_ref_id" />
+		<result property="ocImage3RefId" column="oc_image_3_ref_id" />
+		<result property="viImageRefId" column="vi_image_ref_id" />
+		<result property="ciImageRefId" column="ci_image_ref_id" />
+	</resultMap>
+	
+	<resultMap type="java.util.HashMap" id="driverResultMap">
+		<id property="driverInfoId" column="driver_info_id" />
+		<result property="isMajor" column="is_major" />
+		<result property="realName" column="real_name" />
+		<result property="telphone" column="telphone" />
+		<result property="idno" column="idno" />
+		<result property="idFImageRefId" column="id_f_image_ref_id" />
+		<result property="idBImageRefId" column="id_b_image_ref_id" />
+		<result property="drivingFImageRefId" column="driving_f_image_ref_id" />
+		<result property="qualifiImageRefId" column="qualifi_image_ref_id" />
+		<result property="qualifiImage2RefId" column="qualifi_image_2_ref_id" />
+	</resultMap>
+	
+	<select id="queryQuotedManagerList" parameterType="map" resultMap="quotedManagerResultMap">
+	  select 
+	  t1.quoted_id,
+	  t1.account_id,
+	  t1.source_id,
+	  t1.price,
+	  t1.remark,
+	  t1.status,
+	  t1.created_by,
+	  t1.created_time,
+	  t1.updated_by,
+	  t1.updated_time,
+	  t2.completed,
+	  t3.invalid,
+	  t5.real_name,
+	  t5.idno,
+	  t6.telphone,
+	  t7.hisRemark
+	   from zh_quoted_info t1
+	   left join 
+	   (select count(1) completed,account_id from zh_quoted_info q1,zh_quoted_his q2
+	   where 
+	   	q2.dest_status = '05'
+	   	and
+	   	q1.quoted_id = q2.quoted_id
+	   	group by q1.account_id 
+	   ) t2 on t2.account_id=t1.account_id
+	   left join 
+	   (select count(1) invalid,q1.account_id from zh_quoted_info q1,zh_quoted_his q2
+	   where 
+	   	q2.dest_status = '04' 
+	   	and
+	   	q1.quoted_id = q2.quoted_id
+	   	and
+	   	q2.user_type= '03'
+	   	group by q1.account_id 
+	   ) t3 on t3.account_id=t1.account_id
+	  left join
+ 	  zh_agent_info t5
+ 	  on t5.account_id = t1.account_id
+ 	  left join 
+ 	  (select r1.content as hisRemark,r1.target_id from zh_remark_info r1
+		where r1.pid in 
+		(
+		select max(r2.pid) from zh_remark_info r2
+		where
+		type = '01'
+		group by r2.target_id
+		 )
+ 	  ) t7 on t7.target_id = t1.quoted_id
+	  inner join
+	  zh_account_info t6
+	  on t6. account_id = t1.account_id
+	  where 
+	  t1.is_deleted = '00'
+	  and 
+	  t1.source_id=#{sourceId}
+	  
+	  <if test="quotedStatusList != null">
+	  		and t1.status in 
+		  <foreach collection="quotedStatusList" index="index" item="quotedStatus" open="(" separator="," close=")">  
+		       #{quotedStatus}
+		  </foreach>
+	  </if>
+	  
+	  order by FIELD(t1.status,'03','01'),t1.created_time desc
+	</select>
+	
+	
+	<select id="getBidVehicleInfo" parameterType="map" resultMap="bidVehicleInfoResultMap">
+	SELECT
+	 t1.quoted_id,
+	 t1.vehicle_info_id,
+	 t1.driver_info_id,
+	 t2.real_name,
+	 t2.status,
+	 t3.plate_number,
+	 t4.account_id
+	 FROM
+	 zh_quoted_plus_info t1,
+	 zh_real_driver_info t2,
+	 zh_real_vehicle_info t3,
+	zh_quoted_info t4
+	 where
+	 t1.vehicle_info_id = t3.vehicle_info_id
+	 and
+	 t1.driver_info_id = t2.driver_info_id
+	 and
+	 t4.quoted_id = t1.quoted_id
+	and
+	t4.source_id = #{sourceId}
+	and
+	t4.status in ('03','05'); 
+	</select>
+	
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     quoted_id,
+	     account_id,
+	     source_id,
+	     price,
+	     remark,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_quoted_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="quotedId != null">
+	        quoted_id=#{quotedId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="sourceId != null">
+	        and source_id=#{sourceId}
+	     </if>
+	     <if test="price != null">
+	        and price=#{price}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	     <if test="invalidStatus != null">
+	        and status!=#{invalidStatus}
+	     </if>
+	     <if test="bidQuotedId != null">
+	        and quoted_id!=#{bidQuotedId}
+	     </if>
+	     <if test="quotedStatusList != null">
+	  		and status in 
+		  <foreach collection="quotedStatusList" index="index" item="quotedStatus" open="(" separator="," close=")">  
+		      #{quotedStatus}
+		   </foreach>
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     quoted_id,
+	     account_id,
+	     source_id,
+	     price,
+	     remark,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_quoted_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="quotedId != null">
+	        quoted_id=#{quotedId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="sourceId != null">
+	        and source_id=#{sourceId}
+	     </if>
+	     <if test="price != null">
+	        and price=#{price}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	    <if test="quotedStatusList != null">
+	  		and status in 
+		  <foreach collection="quotedStatusList" index="index" item="quotedStatus" open="(" separator="," close=")">  
+		      #{quotedStatus}
+		   </foreach>
+	     </if>
+	   </trim>
+	</select>
+	
+	
+	<select id="getQuotedList" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     t1.quoted_id,
+	     t1.account_id,
+	     t1.source_id,
+	     t1.price,
+	     t1.remark,
+	     t1.status,
+	     t1.created_by,
+	     t1.created_time,
+	     t1.updated_by,
+	     t1.updated_time,
+	     t1.is_deleted
+	   from zh_quoted_info t1,zh_order_source_info t2
+	   where
+	   t1.source_id = t2.source_id
+	     <if test="accountId != null">
+	        and t1.account_id=#{accountId}
+	     </if>
+	     <if test="sourceId != null">
+	        and t1.source_id=#{sourceId}
+	     </if>
+	     <if test="price != null">
+	        and t1.price=#{price}
+	     </if>
+	     <if test="remark != null">
+	        and t1.remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and t1.status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and t1.is_deleted=#{isDeleted}
+	     </if>
+	     <if test="startTime != null">
+	     <![CDATA[ and t2.start_time <= now() ]]>
+	     </if>
+	    <if test="quotedStatusList != null">
+	  		and t1.status in 
+		  <foreach collection="quotedStatusList" index="index" item="quotedStatus" open="(" separator="," close=")">  
+		      #{quotedStatus}
+		   </foreach>
+	     </if>
+	     order by t1.updated_time desc
+	</select>
+	
+	
+	<select id="getOrderCount" parameterType="map" resultType="java.lang.Integer">
+	   select  count(1) as count
+		FROM
+		zh_quoted_info 
+		where
+		account_id = #{accountId}
+		<if test="statusArray != null">
+		 and status in
+		  <foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+		        	#{status}
+		   </foreach>
+	    </if>
+	</select>
+	
+	<select id="getLoadVADInfo" parameterType="map" resultMap="loadInfoWithVADResultMap">
+	   SELECT
+			zoli.load_id,
+			zoli.order_id,
+			zqi.price,
+			zai.account_id AS account_account_id,
+			zai.telphone AS account_telphone,
+			zaia.idno AS account_idno,
+			zaia.real_name AS account_real_name,
+			zaia.id_f_image_ref_id AS account_id_f_image_ref_id,
+			zaia.id_b_image_ref_id AS account_id_b_image_ref_id,
+			zaia.bus_image_ref_id AS account_bus_image_ref_id,
+			zrvi.vehicle_info_id AS vehicle_vehicle_info_id,
+			zrvi.plate_number AS vehicle_plate_number,
+			zrvi.license_image_ref_id AS vehicle_license_image_ref_id,
+			zrvi.license_image_2_ref_id AS vehicle_license_image_2_ref_id,
+			zrvi.oc_image_ref_id AS vehicle_oc_image_ref_id,
+			zrvi.oc_image_2_ref_id AS vehicle_oc_image_2_ref_id,
+			zrvi.oc_image_3_ref_id AS vehicle_oc_image_3_ref_id,
+			zrvpi.vi_image_ref_id AS vehicle_vi_image_ref_id,
+			zrvpi.ci_image_ref_id AS vehicle_ci_image_ref_id,
+			zldi.driver_info_id AS driver_driver_info_id,
+			zldi.is_major AS driver_is_major,
+			zrdi.real_name AS driver_real_name,
+			zrdi.telphone AS driver_telphone,
+			zrdi.idno AS driver_idno,
+			zrdi.id_f_image_ref_id AS driver_id_f_image_ref_id,
+			zrdi.id_b_image_ref_id AS driver_id_b_image_ref_id,
+			zrdi.driving_f_image_ref_id AS driver_driving_f_image_ref_id,
+			zrdi.qualifi_image_ref_id as driver_qualifi_image_ref_id,
+			zrdi.qualifi_image_2_ref_id as driver_qualifi_image_2_ref_id
+		FROM
+			zh_order_load_info zoli
+		INNER JOIN (
+			zh_load_driver_info zldi
+			INNER JOIN zh_real_driver_info zrdi ON zrdi.driver_info_id = zldi.driver_info_id
+		) ON zoli.load_id = zldi.load_id
+		INNER JOIN (
+			zh_quoted_info zqi
+			INNER JOIN (
+				zh_account_info zai
+				INNER JOIN zh_agent_info zaia ON zaia.account_id = zai.account_id
+			) ON zai.account_id = zqi.account_id
+		) ON zqi.quoted_id = zoli.quoted_id
+		INNER JOIN (
+			zh_real_vehicle_info zrvi
+			INNER JOIN zh_real_vehicle_plus_info zrvpi ON zrvi.vehicle_info_id = zrvpi.vehicle_info_id
+		) ON zrvi.vehicle_info_id = zoli.vehicle_info_id
+		WHERE
+			zoli.load_id = #{loadId}
+	</select>
+	
+</mapper> 

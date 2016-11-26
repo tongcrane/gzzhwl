@@ -1,0 +1,25 @@
+package com.getui.java.advancedpushmessage;
+
+import java.util.ArrayList;
+import java.util.List;
+import com.gexin.rp.sdk.base.IPushResult;
+import com.gexin.rp.sdk.http.IGtPush;
+
+public class AddBlackCidListDemo {
+	static String appId = "TxzlIyCcfS9KuENjjP4ux1";
+	static String appKey = "rAnoicfrNX7915IxPocAL2";
+	static String masterSecret = "KFDNBNKAVj9bgykwvqgeA5";
+	static String CID = "e605a0db5ce3cca9b76b012978064940";
+
+	public static void testBlackCidList() {
+		List<String> cidList = new ArrayList<String>();
+		cidList.add(CID);
+		IGtPush push = new IGtPush(appKey, masterSecret);
+		IPushResult pushResult1 = push.addCidListToBlk(appId, cidList);
+		System.out.println("黑名单增加结果：" + pushResult1.getResultCode());
+	}
+
+	public static void main(String[] args) {
+		testBlackCidList();
+	}
+}

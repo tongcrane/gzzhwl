@@ -1,0 +1,18 @@
+package com.gzzhwl.admin.order.service;
+
+import java.util.Map;
+
+import com.gzzhwl.admin.order.vo.OrderQueryVo;
+import com.gzzhwl.core.page.Page;
+
+public interface OrderQueryService {
+	public Page<Map<String, Object>> pageOrderList(String keyWord, String sort, int currentPage, int pageSizes);
+
+	public Map<String, Object> getOrderConsignDetail(String orderId);
+
+	public Map<String, Object> getOrderInfo(String orderId);
+
+	public Page<Map<String, Object>> pageOrders(OrderQueryVo queryVo, int pageIndex, int pageSize);
+
+	public Map<String, Object> getOrderInfoByInfoId(String infoId);
+}

@@ -1,0 +1,47 @@
+package com.gzzhwl.tms.controller;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+import com.gzzhwl.tms.service.TMSApplyReturnService;
+import com.gzzhwl.tms.service.TMSOrderService;
+import com.gzzhwl.tms.vo.OrderVO;
+import com.gzzhwl.tms.vo.SourceVO;
+
+@RestController
+@RequestMapping("/tms/order")
+public class TMSController {
+	@Autowired
+	private TMSOrderService orderService;
+	@Autowired
+	private TMSApplyReturnService applyReturnService;
+
+	@RequestMapping(value = "/push", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseModel pushOrder(@RequestBody OrderVO orderVo) {
+		String sourceId = orderService.pushOrder(orderVo);
+		Map<String, Object> result = Maps.newHashMap();
+		result.put("sourceId", sourceId);
+		return new ResponseModel(result);
+	}
+
+	@RequestMapping(value = "/applyReturn", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseModel applyReturn(@RequestBody SourceVO sourceVo) {
+		boolean success = applyReturnService.applyReturn(sourceVo);
+		return new ResponseModel(success);
+	}
+
+	@RequestMapping(value = "/invalid", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseModel invalid(@RequestBody SourceVO sourceVo) {
+		boolean success = orderService.cancelTrip(sourceVo);
+		return new ResponseModel(success);
+	}
+
+}

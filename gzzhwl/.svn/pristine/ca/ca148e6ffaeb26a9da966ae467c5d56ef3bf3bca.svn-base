@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.ConsignmentInfoExtDao">
+
+	<resultMap id="consignmentInfoResultMap" type="ConsignmentInfo">
+		<id property="consignId" column="consign_id" />
+		<result property="orderId" column="order_id" />
+		<result property="consignNo" column="consign_no" />
+		<result property="freightPrice" column="freight_price" />
+		<result property="loadPrice" column="load_price" />
+		<result property="otherPrice" column="other_price" />
+		<result property="otherExplain" column="other_explain" />
+		<result property="total" column="total" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="consignmentInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="consignmentInfoResultMap"></resultMap>
+		<resultMap id="findOrderGeneralResultMap" type="java.util.HashMap">
+		<id property="consignId" column="consign_id"/>
+		<result property="orderId" column="order_id"/>
+		<result property="orderNo" column="order_no"/>
+		<result property="consignNo" column="consign_no"/>
+		<result property="loadId" column="load_id"/>
+		<result property="startCodeP" column="start_code_p"/>
+		<result property="startCodeC" column="start_code_c"/>
+		<result property="transferCodeP" column="transfer_code_p"/>
+		<result property="transferCodeC" column="transfer_code_c"/>
+		<result property="endCodeP" column="end_code_p"/>
+		<result property="endCodeC" column="end_code_c"/>
+		<result property="customerBillNo" column="customer_bill_no"/>
+		<result property="paymentType" column="payment_type"/>
+		<result property="status" column="status"/>
+		<result property="customerName" column="customer_name"/>
+		<result property="tripTime" column="trip_time"/>
+		<result property="elecReceiptTime" column="elec_receipt_time"/>
+		<result property="printReceiptTime" column="print_receipt_time"/>
+		<result property="freightPrice" column="freight_price"/>
+		<result property="consignCreatedTime" column="consign_created_time"/>
+	</resultMap> 
+	
+	<select id="getConsignList" parameterType="map" resultMap="pageResultMap">
+		SELECT
+			consign.consign_id,
+			consign.consign_no,
+			cust.full_name customerName,
+			de.order_id AS orderId,
+			de.order_no as orderNo,
+			line.start_code_p AS startCodeP,
+			line.start_code_c AS startCodeC,
+			line.end_code_p AS endCodeP,
+			line.end_code_c AS endCodeC,
+			consign.total,
+			consign.status,
+			base.customer_bill_no as customerBillNo,
+			consign.created_time
+		FROM
+			zh_consignment_info consign
+		LEFT JOIN zh_order_detail_info de ON consign.order_id = de.order_id
+		LEFT JOIN (
+			zh_order_base_info base
+			LEFT JOIN (
+				zh_order_sender_info se
+				LEFT JOIN zh_customer_info cust ON cust.customer_id = se.customer_id
+			) ON base.info_id = se.info_id
+			LEFT JOIN zh_order_line_info line ON base.info_id = line.info_id
+			LEFT JOIN zh_order_receiver_info re on base.info_id = re.info_id
+			LEFT JOIN zh_department_info depart on base.belong_depart_id = depart.depart_id
+		) ON base.info_id = consign.consign_id
+		 <trim prefix="WHERE" prefixOverrides="AND |OR ">
+			 <if test="keyWord != null">
+		         (de.order_no=#{keyWord} or consign.consign_no=#{keyWord} or base.customer_bill_no=#{keyWord} or se.mobile =#{keyWord}
+		        or se.telphone like #{keyWordLike} or se.contact_name like #{keyWordLike})
+		     </if>
+		     <if test="orderNo != null">
+		        and de.order_no = #{orderNo}
+		     </if>  
+		     <if test="consignNo != null">
+		        and consign.consign_no = #{consignNo}
+		     </if>  
+		     <if test="customerId != null">
+		        and se.customer_id = #{customerId}
+		     </if>
+		     <if test="customerName != null">
+		        and cust.full_name like #{customerName}
+		     </if>  
+		     <if test="createdTimeS != null">
+		        and de.created_time >= #{createdTimeS}
+		     </if>  
+		     <if test="createdTimeE != null">
+		        <![CDATA[and de.created_time <= #{createdTimeE}]]>
+		     </if>
+		     <if test="consignCreatedTimeS != null">
+		        and consign.created_time >= #{consignCreatedTimeS}
+		     </if>  
+		     <if test="consignCreatedTimeE != null">
+		        <![CDATA[and consign.created_time <= #{consignCreatedTimeE}]]>
+		     </if>    
+		     <if test="agreementId != null">
+		        and base.agreement_id = #{agreementId}
+		     </if>  
+		     <if test="lineStartP != null">
+		        and line.start_code_p=#{lineStartP}
+		     </if>  
+		     <if test="lineStartC != null">
+		        and line.start_code_c=#{lineStartC}
+		     </if>    
+		 	 <if test="lineEndP != null">
+		        and line.end_code_p=#{lineEndP}
+		     </if>
+		 	 <if test="lineEndC != null">
+		        and line.end_code_c=#{lineEndC}
+		     </if>
+		     <if test="createDepartName != null">
+		        and depart.name like #{createDepartName}
+		     </if> 
+		 	 <if test="seContractName != null">
+		        and se.contact_name like #{seContractName}
+		     </if>	
+		 	 <if test="reContractName != null">
+		        and re.contact_name like #{reContractName}
+		     </if>	 
+		     <if test="isDeleted != null">
+		        and de.is_deleted=#{isDeleted}
+		     </if>    		  	 
+		  	 <if test="sort != null and  sort == 00" >
+		       	 order by consign.created_time asc
+		     </if>
+		      <if test="sort != null and sort == 01">
+		       	 order by consign.created_time desc
+		     </if>
+	   </trim>
+	</select>
+	
+	<!-- 获取应收列表 -->
+	<select id="getRecieveList" parameterType="map" resultMap="findOrderGeneralResultMap">
+		SELECT
+			zodi.order_id,
+			zodi.order_no,
+			zoli.load_id,
+			zci.consign_no,
+			zci.consign_id,
+			zosi.customer_name,
+			line.start_code_p,
+			line.start_code_c,
+			line.end_code_p,
+			line.end_code_c,
+			zci.freight_price,
+			zci.created_time as consign_created_time,
+			zci.status
+		FROM
+		(
+				SELECT
+					consign_id,
+					consign_no,
+					order_id,
+					freight_price,
+					load_price,
+					other_price,
+					created_time,
+					updated_time,
+					status
+				FROM
+					zh_consignment_info
+				WHERE
+					status IN 
+				  	<foreach collection="consignStatusArray" index="index" item="consignStatus" open="(" separator="," close=")">  
+			       		#{consignStatus}
+				   	</foreach>
+			) zci
+		INNER JOIN
+			zh_order_detail_info zodi on zci.order_id = zodi.order_id
+		INNER JOIN (
+			zh_order_base_info zobi
+			LEFT JOIN zh_order_line_info line ON zobi.info_id = line.info_id
+			LEFT JOIN zh_order_sender_info zosi ON zobi.info_id = zosi.info_id
+		) ON zci.consign_id = zobi.info_id and  zobi.type = #{type}
+		INNER JOIN (
+			(
+				SELECT
+					load_id,
+					order_id
+				FROM
+					zh_order_load_info
+				WHERE
+					status IN
+					<foreach collection="loadStatusArray" index="index" item="loadStatus" open="(" separator="," close=")">  
+			       		#{loadStatus}
+				   	</foreach>
+			) zoli
+			INNER JOIN (
+				SELECT
+					load_id,
+					(
+						CASE
+						WHEN source = '01' THEN
+							op_time
+						ELSE
+							updated_time
+						END
+					) AS elec_receipt_time,
+					created_time,
+					updated_time
+				from  zh_load_elecreceipt  where status = #{status}
+			) zle ON zoli.load_id = zle.load_id
+		) ON zci.order_id = zoli.order_id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="keyWord!=null">
+				(zodi.order_no = #{keyWord} or zci.consign_no = #{keyWord})
+			</if>
+			<if test="customerId!=null">
+				and zosi.customer_id = #{customerId}
+			</if>
+			<if test="startCodeP!=null">
+				and line.start_code_p = #{startCodeP}
+			</if>
+			<if test="startCodeC!=null">
+				and line.start_code_c = #{startCodeC}
+			</if>	
+			<if test="endCodeP!=null">
+				and line.end_code_p = #{endCodeP}
+			</if>
+			<if test="endCodeC!=null">
+				and line.end_code_c = #{endCodeC}
+			</if>
+			<if test="customerBillNo!=null">
+				and zobi.customer_bill_no = #{customerBillNo}
+			</if>
+			<if test="isPredict!=null">
+				and zobi.is_predict = #{isPredict}
+			</if>	
+			<if test="verifyStatus!=null">
+				and zci.status = #{verifyStatus}
+			</if>		
+			
+			<if test="consignStartTime!=null">
+				and zci.created_time >= #{consignStartTime}
+			</if>	
+			<if test="consignEndTime!=null">
+				<![CDATA[
+				and zci.created_time <= #{consignEndTime}
+				]]>
+			</if>	
+			<if test="elecReceiptStartTime!=null">
+				and zle.elec_receipt_time >= #{elecReceiptStartTime}
+			</if>	
+			<if test="elecReceiptEndTime!=null">
+				<![CDATA[
+				and zle.elec_receipt_time <= #{elecReceiptEndTime}
+				]]>
+			</if>															
+		</trim>
+		<if test="sort ==null">
+			order by zci.updated_time desc
+		</if>
+		<if test="sort !=null and sort == 00">
+			order by zci.created_time asc
+		</if>
+		<if test="sort !=null and sort == 01">
+			order by zci.created_time desc
+		</if>	
+	</select>
+	
+	
+	<!-- 获取订单概要信息 -->
+	<select id="getOrderGeneralInfo" parameterType="map" resultMap="findOrderGeneralResultMap">
+		SELECT
+			zodi.order_id,
+			zodi.order_no,
+			zoli.load_id,
+			zci.status,
+			zci.consign_id,
+			zci.consign_no,
+			zci.freight_price,
+			zobi.customer_bill_no,
+			zobi.payment_type,
+			zosi.customer_name,
+			line.start_code_p,
+			line.start_code_c,
+			line.end_code_p,
+			line.end_code_c,
+			zlti.trip_time,
+		    (case when zle.source ='01' then zle.op_time else zle.updated_time END ) as elec_receipt_time,
+			(case when zlp.type = '01' then zlp.sign_time else zlp.updated_time END) as print_receipt_time
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					zh_consignment_info
+				WHERE
+					status IN 
+			  	<foreach collection="statusArray" index="index" item="consignStatus" open="(" separator="," close=")">  
+		       		#{consignStatus}
+			   	</foreach>
+			) zci
+		INNER JOIN zh_order_detail_info zodi ON zci.order_id = zodi.order_id
+		INNER JOIN (
+			zh_order_base_info zobi
+			LEFT JOIN zh_order_line_info line ON zobi.info_id = line.info_id
+			LEFT JOIN zh_order_sender_info zosi ON zosi.info_id = zobi.info_id
+		) ON zci.consign_id = zobi.info_id
+		INNER JOIN (
+			zh_order_load_info zoli
+			INNER JOIN zh_load_trip_info zlti ON zoli.load_id = zlti.load_id
+			INNER JOIN (
+				SELECT
+					*
+				FROM
+					zh_load_elecreceipt
+				WHERE
+					status = '00'
+			) zle ON zoli.load_id = zle.load_id
+			LEFT JOIN (
+				SELECT
+					*
+				FROM
+					zh_load_printreceipt
+				WHERE
+					status = '00'
+			) zlp ON zoli.load_id = zlp.load_id
+		) ON zci.order_id = zoli.order_id
+		where zci.consign_Id = #{consignId}		
+	</select>
+</mapper> 

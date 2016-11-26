@@ -1,0 +1,276 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_line_info表
+ * @author mew
+ *
+ */
+public class LineInfo implements Serializable {
+	private java.lang.Long pid; // 
+	@Length(max = 36, message = "lineInfoId超过长度限制")
+	private java.lang.String lineInfoId; // 线路标识
+	@Length(max = 36, message = "accountId超过长度限制")
+	private java.lang.String accountId; // 账户标识
+	@Length(max = 36, message = "driverInfoId超过长度限制")
+	private java.lang.String driverInfoId; // 驾驶员信息标识
+	@Length(max = 10, message = "departureCode超过长度限制")
+	private java.lang.String departureCode; // 出发地所在区域
+	@Length(max = 10, message = "destinationCode超过长度限制")
+	private java.lang.String destinationCode; // 目的地所在区域
+	@Length(max = 2, message = "source超过长度限制")
+	private java.lang.String source; // 数据来源
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取属性
+     *
+     * @return pid
+     */
+	public java.lang.Long getPid() {
+		return pid;
+	}
+	
+	/**
+	 * 设置属性
+	 *
+	 * @param pid
+	 */
+	public void setPid(java.lang.Long pid) {
+		this.pid = pid;
+	}
+	
+	/**
+     * 获取线路标识属性
+     *
+     * @return lineInfoId
+     */
+	public java.lang.String getLineInfoId() {
+		return lineInfoId;
+	}
+	
+	/**
+	 * 设置线路标识属性
+	 *
+	 * @param lineInfoId
+	 */
+	public void setLineInfoId(java.lang.String lineInfoId) {
+		this.lineInfoId = lineInfoId;
+	}
+	
+	/**
+     * 获取账户标识属性
+     *
+     * @return accountId
+     */
+	public java.lang.String getAccountId() {
+		return accountId;
+	}
+	
+	/**
+	 * 设置账户标识属性
+	 *
+	 * @param accountId
+	 */
+	public void setAccountId(java.lang.String accountId) {
+		this.accountId = accountId;
+	}
+	
+	/**
+     * 获取驾驶员信息标识属性
+     *
+     * @return driverInfoId
+     */
+	public java.lang.String getDriverInfoId() {
+		return driverInfoId;
+	}
+	
+	/**
+	 * 设置驾驶员信息标识属性
+	 *
+	 * @param driverInfoId
+	 */
+	public void setDriverInfoId(java.lang.String driverInfoId) {
+		this.driverInfoId = driverInfoId;
+	}
+	
+	/**
+     * 获取出发地所在区域属性
+     *
+     * @return departureCode
+     */
+	public java.lang.String getDepartureCode() {
+		return departureCode;
+	}
+	
+	/**
+	 * 设置出发地所在区域属性
+	 *
+	 * @param departureCode
+	 */
+	public void setDepartureCode(java.lang.String departureCode) {
+		this.departureCode = departureCode;
+	}
+	
+	/**
+     * 获取目的地所在区域属性
+     *
+     * @return destinationCode
+     */
+	public java.lang.String getDestinationCode() {
+		return destinationCode;
+	}
+	
+	/**
+	 * 设置目的地所在区域属性
+	 *
+	 * @param destinationCode
+	 */
+	public void setDestinationCode(java.lang.String destinationCode) {
+		this.destinationCode = destinationCode;
+	}
+	
+	/**
+     * 获取数据来源属性
+     *
+     * @return source
+     */
+	public java.lang.String getSource() {
+		return source;
+	}
+	
+	/**
+	 * 设置数据来源属性
+	 *
+	 * @param source
+	 */
+	public void setSource(java.lang.String source) {
+		this.source = source;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("LineInfo");
+        sb.append("{pid=").append(pid);
+        sb.append(", lineInfoId=").append(lineInfoId);
+        sb.append(", accountId=").append(accountId);
+        sb.append(", driverInfoId=").append(driverInfoId);
+        sb.append(", departureCode=").append(departureCode);
+        sb.append(", destinationCode=").append(destinationCode);
+        sb.append(", source=").append(source);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", status=").append(status);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

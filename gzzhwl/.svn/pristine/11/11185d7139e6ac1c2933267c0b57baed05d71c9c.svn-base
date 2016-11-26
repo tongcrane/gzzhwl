@@ -1,0 +1,139 @@
+package com.gzzhwl.admin.recieve.service.impl;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.admin.order.service.OrderQueryService;
+import com.gzzhwl.admin.recieve.service.RecieveService;
+import com.gzzhwl.admin.recieve.vo.RecieveQueryVo;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.ConsignType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.extdao.OrderInfoExtDao;
+import com.gzzhwl.core.data.model.LoadFeedbackLog;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.page.Page;
+
+@Service
+public class RecieveServiceImpl implements RecieveService {
+	@Autowired
+	private OrderQueryService orderQueryService;
+	@Autowired
+	private LoadFeedbackService feedBackService;
+	@Autowired
+	private OrderInfoExtDao orderExtDao;
+	@Autowired
+	private RegionService regionService;
+
+	@Override
+	public Page<Map<String, Object>> pageRecieveList(RecieveQueryVo vo, int currentPage, int pageSize)
+			throws ParseException {
+		Map<String, Object> params = vo.getParam();
+		Page<Map<String, Object>> recievePage = orderExtDao.pageRecieveList(params, currentPage, pageSize);
+
+		List<Map<String, Object>> recieves = recievePage.getRows();
+
+		if (CollectionUtils.isNotEmpty(recieves)) {
+			for (Map<String, Object> recieveMap : recieves) {
+				String startCodeP = (String) recieveMap.get("startCodeP");
+				String startCodePCn = this.getCodeCn(startCodeP);
+				recieveMap.put("startCodePCn", startCodePCn);
+
+				String startCodeC = (String) recieveMap.get("startCodeC");
+				String startCodeCCn = this.getCodeCn(startCodeC);
+				recieveMap.put("startCodeCCn", startCodeCCn);
+
+				String endCodeP = (String) recieveMap.get("endCodeP");
+				String endCodePCn = this.getCodeCn(endCodeP);
+				recieveMap.put("endCodePCn", endCodePCn);
+
+				String endCodeC = (String) recieveMap.get("endCodeC");
+				String endCodeCCn = this.getCodeCn(endCodeC);
+				recieveMap.put("endCodeCCn", endCodeCCn);
+
+				String loadId = (String) recieveMap.get("loadId");
+
+				String status = (String) recieveMap.get("status");
+				String statusCn = "";
+				if (ConsignType.CONSIGN_VERIFIED.getCode().equals(status)) {
+					statusCn = "已审核";
+				} else {
+					statusCn = "未审核";
+				}
+				recieveMap.put("statusCn", statusCn);
+
+				// 计算其他费用
+				String feedBackPrice = feedBackService.getPayFeedbackCharges(loadId);
+				recieveMap.put("feedBackPrice", feedBackPrice);
+			}
+		}
+
+		return recievePage;
+	}
+
+	public String getCodeCn(String code) {
+		if (StringUtils.isNotBlank(code)) {
+			RegionInfo startCodePCn = regionService.findByCode(code);
+			if (startCodePCn != null) {
+				return startCodePCn.getRegionName();
+			}
+		}
+		return "";
+	}
+
+	@Override
+	public Map<String, Object> getRecieveDetail(String orderId) {
+		Map<String, Object> payInfo = Maps.newHashMap();
+
+		// 获取订单信息
+		Map<String, Object> orderInfo = orderQueryService.getOrderGeneralInfo(orderId);
+
+		// 获取费用信息
+		String loadId = (String) orderInfo.get("loadId");
+		String freightPrice = (String) orderInfo.get("freightPrice");
+		Map<String, Object> chargeInfo = getChargeInfo(loadId, freightPrice);
+
+		// 获取异常信息
+		List<Map<String, Object>> feedBackList = feedBackService.getLoadFeedbackList(loadId, null,
+				new String[] { LoadFeedBackType.SOURCEADMIN.getCode() }, LoadFeedbackLog.ISEXCEPTION_YES,
+				LoadFeedbackLog.ISEND_YES, null);
+
+		payInfo.put("orderInfo", orderInfo);
+		payInfo.put("chargeInfo", chargeInfo);
+		payInfo.put("feedBackList", feedBackList);
+
+		return payInfo;
+	}
+
+	private Map<String, Object> getChargeInfo(String loadId, String freightPrice) {
+		Map<String, Object> chargeInfo = Maps.newHashMap();
+		// 获取异常费用信息
+		String feedBackPrice = feedBackService.getRevFeedbackCharges(loadId);
+
+		if (StringUtils.isEmpty(freightPrice)) {
+			freightPrice = "0";
+		}
+
+		if (StringUtils.isEmpty(feedBackPrice)) {
+			feedBackPrice = "0";
+		}
+
+		// 计算总费用
+		String totPrice = new BigDecimal(freightPrice).add(new BigDecimal(feedBackPrice)).toString();
+
+		chargeInfo.put("freightPrice", freightPrice);
+		chargeInfo.put("feedBackPrice", feedBackPrice);
+		chargeInfo.put("totPrice", totPrice);
+		return chargeInfo;
+	}
+
+}

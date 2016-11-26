@@ -1,0 +1,24 @@
+package com.gzzhwl.core.data.extdao;
+
+import java.util.List;
+import java.util.Map;
+
+import com.gzzhwl.core.page.Page;
+
+public interface OrderLoadInfoExtDao {
+	public static final String PREFIX = OrderLoadInfoExtDao.class.getName();
+	
+	public <E, K, V> Page<E> pageTripList(Map<K, V> params, int currentPage, int pageSizes);
+	
+	/**
+	 * 获取发车反馈信息
+	 * @param loadId
+	 * @return
+	 */
+	public Map<String,Object> getTripDetail(String loadId);
+
+	public <T, K, V> List<T> getTripDrivers(String loadId);
+	
+	public<T, K, V> List<T> getLoadInfoByOrderId(String orderId);
+
+}

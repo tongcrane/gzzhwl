@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.ConsignmentInfoExtDao">
+
+	<resultMap id="consignmentInfoResultMap" type="ConsignmentInfo">
+		<id property="consignId" column="consign_id" />
+		<result property="orderId" column="order_id" />
+		<result property="consignNo" column="consign_no" />
+		<result property="freightPrice" column="freight_price" />
+		<result property="loadPrice" column="load_price" />
+		<result property="otherPrice" column="other_price" />
+		<result property="otherExplain" column="other_explain" />
+		<result property="total" column="total" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="consignmentInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="consignmentInfoResultMap"></resultMap>
+	
+	<select id="getConsignList" parameterType="map" resultMap="pageResultMap">
+		SELECT
+			consign.consign_id,
+			consign.consign_no,
+			cust.full_name customerName,
+			de.order_id AS orderId,
+			de.order_no as orderNo,
+			line.start_code_p AS startCodeP,
+			line.start_code_c AS startCodeC,
+			line.end_code_p AS endCodeP,
+			line.end_code_c AS endCodeC,
+			consign.total,
+			consign.status,
+			base.customer_bill_no as customerBillNo,
+			consign.created_time
+		FROM
+			zh_consignment_info consign
+		LEFT JOIN zh_order_detail_info de ON consign.order_id = de.order_id
+		LEFT JOIN (
+			zh_order_base_info base
+			LEFT JOIN (
+				zh_order_sender_info se
+				LEFT JOIN zh_customer_info cust ON cust.customer_id = se.customer_id
+			) ON base.info_id = se.info_id
+			LEFT JOIN zh_order_line_info line ON base.info_id = line.info_id
+			LEFT JOIN zh_order_receiver_info re on base.info_id = re.info_id
+			LEFT JOIN zh_department_info depart on base.belong_depart_id = depart.depart_id
+		) ON base.info_id = consign.consign_id
+		 <trim prefix="WHERE" prefixOverrides="AND |OR ">
+			 <if test="keyWord != null">
+		         (de.order_no=#{keyWord} or consign.consign_no=#{keyWord} or base.customer_bill_no=#{keyWord} or se.mobile =#{keyWord}
+		        or se.telphone like #{keyWordLike} or se.contact_name like #{keyWordLike})
+		     </if>
+		     <if test="orderNo != null">
+		        and de.order_no = #{orderNo}
+		     </if>  
+		     <if test="consignNo != null">
+		        and consign.consign_no = #{consignNo}
+		     </if>  
+		     <if test="customerId != null">
+		        and se.customer_id = #{customerId}
+		     </if>
+		     <if test="customerName != null">
+		        and cust.full_name like #{customerName}
+		     </if>  
+		     <if test="createdTimeS != null">
+		        and de.created_time >= #{createdTimeS}
+		     </if>  
+		     <if test="createdTimeE != null">
+		        <![CDATA[and de.created_time <= #{createdTimeE}]]>
+		     </if>
+		     <if test="consignCreatedTimeS != null">
+		        and consign.created_time >= #{consignCreatedTimeS}
+		     </if>  
+		     <if test="consignCreatedTimeE != null">
+		        <![CDATA[and consign.created_time <= #{consignCreatedTimeE}]]>
+		     </if>    
+		     <if test="agreementId != null">
+		        and base.agreement_id = #{agreementId}
+		     </if>  
+		     <if test="lineStartP != null">
+		        and line.start_code_p=#{lineStartP}
+		     </if>  
+		     <if test="lineStartC != null">
+		        and line.start_code_c=#{lineStartC}
+		     </if>    
+		 	 <if test="lineEndP != null">
+		        and line.end_code_p=#{lineEndP}
+		     </if>
+		 	 <if test="lineEndC != null">
+		        and line.end_code_c=#{lineEndC}
+		     </if>
+		     <if test="createDepartName != null">
+		        and depart.name like #{createDepartName}
+		     </if> 
+		 	 <if test="seContractName != null">
+		        and se.contact_name like #{seContractName}
+		     </if>	
+		 	 <if test="reContractName != null">
+		        and re.contact_name like #{reContractName}
+		     </if>	 
+		     <if test="isDeleted != null">
+		        and de.is_deleted=#{isDeleted}
+		     </if>    		  	 
+		  	 <if test="sort != null and  sort == 00" >
+		       	 order by consign.created_time asc
+		     </if>
+		      <if test="sort != null and sort == 01">
+		       	 order by consign.created_time desc
+		     </if>
+	   </trim>
+	</select>
+</mapper> 

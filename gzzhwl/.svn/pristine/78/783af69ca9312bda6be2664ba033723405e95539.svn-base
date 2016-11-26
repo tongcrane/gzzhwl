@@ -1,0 +1,319 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_staff_info表
+ * @author mew
+ *
+ */
+public class StaffInfo implements Serializable {
+	@Length(max = 36, message = "staffId超过长度限制")
+	private java.lang.String staffId; // 员工标识
+	@Length(max = 20, message = "number超过长度限制")
+	private java.lang.String number; // 工号
+	@Length(max = 32, message = "password超过长度限制")
+	private java.lang.String password; // 密码
+	@Length(max = 40, message = "realName超过长度限制")
+	private java.lang.String realName; // 姓名
+	@Length(max = 50, message = "position超过长度限制")
+	private java.lang.String position; // 职位
+	@Length(max = 20, message = "telphone超过长度限制")
+	private java.lang.String telphone; // 手机号
+	@Length(max = 50, message = "email超过长度限制")
+	private java.lang.String email; // 电子邮箱
+	private java.lang.Integer departId; // 所属部门
+	@Length(max = 2, message = "type超过长度限制")
+	private java.lang.String type; // 员工类型
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+	public static final String STAFF_TYPE="02";  //员工
+
+	/**
+     * 获取员工标识属性
+     *
+     * @return staffId
+     */
+	public java.lang.String getStaffId() {
+		return staffId;
+	}
+	
+	/**
+	 * 设置员工标识属性
+	 *
+	 * @param staffId
+	 */
+	public void setStaffId(java.lang.String staffId) {
+		this.staffId = staffId;
+	}
+	
+	/**
+     * 获取工号属性
+     *
+     * @return number
+     */
+	public java.lang.String getNumber() {
+		return number;
+	}
+	
+	/**
+	 * 设置工号属性
+	 *
+	 * @param number
+	 */
+	public void setNumber(java.lang.String number) {
+		this.number = number;
+	}
+	
+	/**
+     * 获取密码属性
+     *
+     * @return password
+     */
+	public java.lang.String getPassword() {
+		return password;
+	}
+	
+	/**
+	 * 设置密码属性
+	 *
+	 * @param password
+	 */
+	public void setPassword(java.lang.String password) {
+		this.password = password;
+	}
+	
+	/**
+     * 获取姓名属性
+     *
+     * @return realName
+     */
+	public java.lang.String getRealName() {
+		return realName;
+	}
+	
+	/**
+	 * 设置姓名属性
+	 *
+	 * @param realName
+	 */
+	public void setRealName(java.lang.String realName) {
+		this.realName = realName;
+	}
+	
+	/**
+     * 获取职位属性
+     *
+     * @return position
+     */
+	public java.lang.String getPosition() {
+		return position;
+	}
+	
+	/**
+	 * 设置职位属性
+	 *
+	 * @param position
+	 */
+	public void setPosition(java.lang.String position) {
+		this.position = position;
+	}
+	
+	/**
+     * 获取手机号属性
+     *
+     * @return telphone
+     */
+	public java.lang.String getTelphone() {
+		return telphone;
+	}
+	
+	/**
+	 * 设置手机号属性
+	 *
+	 * @param telphone
+	 */
+	public void setTelphone(java.lang.String telphone) {
+		this.telphone = telphone;
+	}
+	
+	/**
+     * 获取电子邮箱属性
+     *
+     * @return email
+     */
+	public java.lang.String getEmail() {
+		return email;
+	}
+	
+	/**
+	 * 设置电子邮箱属性
+	 *
+	 * @param email
+	 */
+	public void setEmail(java.lang.String email) {
+		this.email = email;
+	}
+	
+	/**
+     * 获取所属部门属性
+     *
+     * @return departId
+     */
+	public java.lang.Integer getDepartId() {
+		return departId;
+	}
+	
+	/**
+	 * 设置所属部门属性
+	 *
+	 * @param departId
+	 */
+	public void setDepartId(java.lang.Integer departId) {
+		this.departId = departId;
+	}
+	
+	/**
+     * 获取员工类型属性
+     *
+     * @return type
+     */
+	public java.lang.String getType() {
+		return type;
+	}
+	
+	/**
+	 * 设置员工类型属性
+	 *
+	 * @param type
+	 */
+	public void setType(java.lang.String type) {
+		this.type = type;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("StaffInfo");
+        sb.append("{staffId=").append(staffId);
+        sb.append(", number=").append(number);
+        sb.append(", password=").append(password);
+        sb.append(", realName=").append(realName);
+        sb.append(", position=").append(position);
+        sb.append(", telphone=").append(telphone);
+        sb.append(", email=").append(email);
+        sb.append(", departId=").append(departId);
+        sb.append(", type=").append(type);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", status=").append(status);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

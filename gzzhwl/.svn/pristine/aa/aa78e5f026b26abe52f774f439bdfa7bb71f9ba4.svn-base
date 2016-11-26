@@ -1,0 +1,88 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_charge_info表
+ * @author mew
+ *
+ */
+public class ChargeInfo implements Serializable {
+	@Length(max = 36, message = "chargeId超过长度限制")
+	private java.lang.String chargeId; // 计费标识
+	@Length(max = 10, message = "name超过长度限制")
+	private java.lang.String name; // 名称
+	@Length(max = 10, message = "unit超过长度限制")
+	private java.lang.String unit; // 单位
+
+
+	/**
+     * 获取计费标识属性
+     *
+     * @return chargeId
+     */
+	public java.lang.String getChargeId() {
+		return chargeId;
+	}
+	
+	/**
+	 * 设置计费标识属性
+	 *
+	 * @param chargeId
+	 */
+	public void setChargeId(java.lang.String chargeId) {
+		this.chargeId = chargeId;
+	}
+	
+	/**
+     * 获取名称属性
+     *
+     * @return name
+     */
+	public java.lang.String getName() {
+		return name;
+	}
+	
+	/**
+	 * 设置名称属性
+	 *
+	 * @param name
+	 */
+	public void setName(java.lang.String name) {
+		this.name = name;
+	}
+	
+	/**
+     * 获取单位属性
+     *
+     * @return unit
+     */
+	public java.lang.String getUnit() {
+		return unit;
+	}
+	
+	/**
+	 * 设置单位属性
+	 *
+	 * @param unit
+	 */
+	public void setUnit(java.lang.String unit) {
+		this.unit = unit;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("ChargeInfo");
+        sb.append("{chargeId=").append(chargeId);
+        sb.append(", name=").append(name);
+        sb.append(", unit=").append(unit);
+		sb.append('}');
+        return sb.toString();
+    }
+}

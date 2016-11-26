@@ -1,0 +1,89 @@
+package com.gzzhwl.admin.load.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.load.service.TripManageService;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.data.extdao.OrderLoadInfoExtDao;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.ValidateUtils;
+
+@Service
+public class TripManageServiceImpl implements TripManageService {
+	@Autowired
+	private OrderLoadInfoExtDao loadDao;
+	@Autowired
+	private RegionService regionService;
+
+	@Override
+	public void vehicleCheck(String loadId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void closeToSurface(String loadId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void tripTheCar(String loadId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void tripFeedback(String loadId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Page<Map<String, Object>> tripPage(String keyWord, int pageIndex, int pageSize) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		if(StringUtils.isNotBlank(keyWord)) {
+			params.put("keyWord", keyWord);
+		}
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		//已取消和已发车的不用查出来
+		params.put("status", "('01','02','03','04','07')");
+		Page<Map<String,Object>> tripPage = loadDao.pageTripList(params, pageIndex, pageSize);
+		List<Map<String,Object>> trips = tripPage.getRows();
+		if(!ValidateUtils.isEmpty(trips)) {
+			for(Map<String,Object> map : trips) {
+				String startCodeP = (String) map.get("startCodeP");
+				map.put("startCodePCn", this.getCodeCn(startCodeP));
+				
+				String startCodeC = (String) map.get("startCodeC");
+				map.put("startCodeCCn", this.getCodeCn(startCodeC));
+				
+				String endCodeP = (String) map.get("endCodeP");
+				map.put("endCodePCn", this.getCodeCn(endCodeP));
+				
+				String endCodeC = (String) map.get("endCodeC");
+				map.put("endCodeCCn", this.getCodeCn(endCodeC));
+			}
+		}
+		return tripPage;
+	}
+	
+	public String getCodeCn(String code) {
+		if (StringUtils.isNotBlank(code)) {
+			RegionInfo startCodePCn = regionService.findByCode(code);
+			if (startCodePCn != null) {
+				return startCodePCn.getRegionName();
+			}
+		}
+		return "";
+	}
+
+}

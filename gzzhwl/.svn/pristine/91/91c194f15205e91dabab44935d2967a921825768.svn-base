@@ -1,0 +1,91 @@
+package com.gzzhwl.common.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.gzzhwl.common.exception.FlowException;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.FlowStatus;
+import com.gzzhwl.rest.exception.RestException;
+
+/**
+ * 
+ * 流程表业务逻辑层
+ * 
+ */
+public interface FlowsService {
+
+	/**
+	 * 根据流程类型开始一个流程
+	 * 
+	 * @param flowType
+	 * @return
+	 */
+	public FlowDef startFlow(ZHFlow flowType, FlowActionCategory category) throws FlowException;
+
+	/**
+	 * 根据步骤ID、获得 下一个流程节点状态
+	 * 
+	 * @param flowDefId
+	 * @param currentStatus
+	 * @return
+	 * @throws Exception
+	 */
+
+	public FlowDef executeFlow(ZHFlow flowType, String actionCode, String currentStatus, FlowActionCategory category)
+			throws FlowException;
+
+	/**
+	 * 判断当前状态是否适合此流程
+	 * 
+	 * @param flowDefId
+	 * @param currentStatus
+	 * @return
+	 */
+	public Boolean isBillRight(ZHFlow flowType, String actionCode, String currentStatus, FlowActionCategory category)
+			throws FlowException;
+
+	/**
+	 * 根据登陆人类型及流程类型、当前状态、 获得可操作步骤
+	 * 
+	 * @param currentStatus
+	 * @param flowType
+	 * @return
+	 */
+	public List<FlowDef> getAllAction(ZHFlow flowType, String currentStatus, FlowActionCategory category)
+			throws FlowException;
+
+	/**
+	 * 获取当前状态的中文名
+	 * 
+	 * @param flowType
+	 * @param currentStatus
+	 * @return
+	 */
+	public FlowStatus getStatus(ZHFlow flowType, String currentStatus) throws FlowException;
+
+	/**
+	 * 获取状态
+	 * 
+	 * @param flowType
+	 * @param currentStatus
+	 * @return
+	 */
+	public List<FlowStatus> getStatus(ZHFlow flowType) throws FlowException;
+
+	/**
+	 * 返回当前状态可操作功能
+	 * 
+	 * @param zhflow
+	 * @param currentStatus
+	 * @param flowActionCategory
+	 * @return
+	 * @throws RestException
+	 */
+	public List<Map<String, Object>> whatToDo(ZHFlow zhflow, String currentStatus,
+			FlowActionCategory flowActionCategory) throws RestException;
+
+	public FlowDef getFlowByActionCode(ZHFlow flowType, String actionCode) throws FlowException;
+}

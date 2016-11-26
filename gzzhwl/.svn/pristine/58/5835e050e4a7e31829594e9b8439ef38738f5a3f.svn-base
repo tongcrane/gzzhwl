@@ -1,0 +1,9 @@
+package com.gzzhwl.tms.service;
+
+import com.gzzhwl.core.data.model.OrderSenderInfo;
+
+public interface TMSCustomerService {
+
+	public String saveOrUpdate(final OrderSenderInfo sender);
+
+}

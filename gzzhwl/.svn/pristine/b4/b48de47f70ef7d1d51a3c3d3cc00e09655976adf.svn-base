@@ -1,0 +1,42 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+import lombok.Data;
+import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_store_info表
+ * @author mew
+ *
+ */
+@Data
+@ToString
+public class StoreInfo implements Serializable {
+
+	@Length(max = 36, message = "storeId超过长度限制")
+	private java.lang.String storeId; // 货场标识
+
+	@Length(max = 50, message = "storeName超过长度限制")
+	private java.lang.String storeName; // 货场名字
+
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+}

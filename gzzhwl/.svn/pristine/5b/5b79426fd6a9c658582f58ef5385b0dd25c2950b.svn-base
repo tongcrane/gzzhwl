@@ -1,0 +1,151 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_account_operation_log表
+ * @author mew
+ *
+ */
+public class AccountOperationLog implements Serializable {
+	@Length(max = 36, message = "logId超过长度限制")
+	private java.lang.String logId; // 记录标识
+	@Length(max = 36, message = "accountId超过长度限制")
+	private java.lang.String accountId; // 账户标识
+	@Length(max = 2, message = "srcStatus超过长度限制")
+	private java.lang.String srcStatus; // 原始状态
+	@Length(max = 2, message = "destStatus超过长度限制")
+	private java.lang.String destStatus; // 目标状态
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+
+
+	/**
+     * 获取记录标识属性
+     *
+     * @return logId
+     */
+	public java.lang.String getLogId() {
+		return logId;
+	}
+	
+	/**
+	 * 设置记录标识属性
+	 *
+	 * @param logId
+	 */
+	public void setLogId(java.lang.String logId) {
+		this.logId = logId;
+	}
+	
+	/**
+     * 获取账户标识属性
+     *
+     * @return accountId
+     */
+	public java.lang.String getAccountId() {
+		return accountId;
+	}
+	
+	/**
+	 * 设置账户标识属性
+	 *
+	 * @param accountId
+	 */
+	public void setAccountId(java.lang.String accountId) {
+		this.accountId = accountId;
+	}
+	
+	/**
+     * 获取原始状态属性
+     *
+     * @return srcStatus
+     */
+	public java.lang.String getSrcStatus() {
+		return srcStatus;
+	}
+	
+	/**
+	 * 设置原始状态属性
+	 *
+	 * @param srcStatus
+	 */
+	public void setSrcStatus(java.lang.String srcStatus) {
+		this.srcStatus = srcStatus;
+	}
+	
+	/**
+     * 获取目标状态属性
+     *
+     * @return destStatus
+     */
+	public java.lang.String getDestStatus() {
+		return destStatus;
+	}
+	
+	/**
+	 * 设置目标状态属性
+	 *
+	 * @param destStatus
+	 */
+	public void setDestStatus(java.lang.String destStatus) {
+		this.destStatus = destStatus;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("AccountOperationLog");
+        sb.append("{logId=").append(logId);
+        sb.append(", accountId=").append(accountId);
+        sb.append(", srcStatus=").append(srcStatus);
+        sb.append(", destStatus=").append(destStatus);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+		sb.append('}');
+        return sb.toString();
+    }
+}

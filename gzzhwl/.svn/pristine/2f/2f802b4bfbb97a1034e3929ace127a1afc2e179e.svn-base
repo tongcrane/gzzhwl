@@ -1,0 +1,49 @@
+package com.gzzhwl.core.data.extdao.impl;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.gzzhwl.core.constant.RemarkType;
+import com.gzzhwl.core.data.extdao.RemarkInfoExtDao;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+
+/**
+ * 数据访问接口
+ * @author mew
+ *
+ */
+@Repository
+public class RemarkInfoExtDaoImpl implements RemarkInfoExtDao {
+	@Autowired	
+	private DaoSupport dao;
+
+	@Override
+	public <T, K, V> List<T> getSourceRecordList(String target_id) {
+		
+		Map<String,Object> parameter = new HashMap<>();
+		
+		parameter.put("target_id", target_id);
+		parameter.put("remarkType", RemarkType.SOURCE.getCode());
+		
+		return dao.find(PREFIX + ".getSourceRecordList", parameter);
+	}
+
+
+	@Override
+	public <T, K, V> List<T> getOrderRecordList(String target_id) {
+		
+		Map<String,Object> parameter = new HashMap<>();
+		
+		parameter.put("target_id", target_id);
+		parameter.put("remarkType", RemarkType.ORDER.getCode());
+		
+		return dao.find(PREFIX + ".getOrderRecordList", parameter);
+	}
+}
+
+

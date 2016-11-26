@@ -1,0 +1,104 @@
+package com.gzzhwl.api.load.service.impl;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.admin.load.service.LoadBillService;
+import com.gzzhwl.admin.load.service.LoadHistoryService;
+import com.gzzhwl.api.load.service.ArrivedService;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.FlowsService;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.data.dao.LoadArriveInfoDao;
+import com.gzzhwl.core.data.dao.LoadPrintreceiptDao;
+import com.gzzhwl.core.data.dao.OrderLoadInfoDao;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class ArrivedServiceImpl implements ArrivedService {
+	
+	@Autowired
+	private LoadArriveInfoDao loadArriveInfoDao;
+	
+	@Autowired
+	private LoadPrintreceiptDao loadPrintreceiptDao;
+	
+	@Autowired
+	private OrderLoadInfoDao orderLoadInfoDao;
+	
+	@Autowired
+	private FlowsService flowsService;
+	
+	@Autowired
+	private LoadHistoryService loadHistoryService;
+	
+	@Autowired
+	private LoadBillService loadBillService;
+	
+	private OrderLoadInfo getLoadInfo(String loadId, String loadNo){
+		if(StringUtils.isNotBlank(loadNo)){
+			return loadBillService.getLoadInfoByLoadNo(loadNo);
+		}else{
+			return orderLoadInfoDao.get(loadId);
+		}
+	};
+
+	@Override
+	public void doArrived(String loadId, String loadNo, String actionTime,String accountId) throws RestException {
+		
+		OrderLoadInfo orderLoadInfo =getLoadInfo(loadId, loadNo);
+
+		if (orderLoadInfo == null) {
+			throw new RestException(ErrorCode.ERROR_900013.getCode(), ErrorCode.ERROR_900013.getDesc());
+		}
+		
+		FlowDef flowdef = null;
+		
+		try {
+			flowdef = flowsService.executeFlow(ZHFlow.LOAD_BILL, "21", orderLoadInfo.getStatus(), FlowActionCategory.YSJ);
+			loadHistoryService.saveLoadHistory(orderLoadInfo.getLoadId(), orderLoadInfo.getStatus(), actionTime,
+					flowdef, accountId);
+			orderLoadInfo.setStatus(flowdef.getTransitionStatus());
+			orderLoadInfoDao.updateSelective(orderLoadInfo);
+		} catch (Exception e) {
+			flowdef = flowsService.getFlowByActionCode(ZHFlow.LOAD_BILL, "21");
+			loadHistoryService.saveErrorLoadHistory(orderLoadInfo.getLoadId(), orderLoadInfo.getStatus(),
+					actionTime, flowdef, accountId);
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public void addElecReceipt(String loadId, String loadNo, String billImageId, String actionTime)
+			throws RestException {
+		
+		
+	}
+
+	@Override
+	public void addPrintReceipt(String loadId, String loadNo, String expressDelivery, String billNo)
+			throws RestException {
+		
+		
+	}
+
+	@Override
+	public void updateElecmage(MultipartFile file, String accountId) {
+		
+		
+	}
+
+	@Override
+	public void uploadExpressBillImage(MultipartFile file, String accountId) {
+		
+		
+	}
+
+}

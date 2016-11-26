@@ -1,0 +1,31 @@
+package e.g;
+
+import org.roundface.generator.MybatisGenerator;
+
+public class Main {
+
+	/**
+	 * @param args
+	 * @throws Exception
+	 */
+	public static void main(String[] args) throws Exception {
+		MybatisGenerator mg = new MybatisGenerator();
+		String[] table = new String[] { "zh_account_info", "zh_account_operation_log", "zh_account_verify_log",
+				"zh_agent_info", "zh_agreement_info", "zh_charge_info", "zh_consignment_his", "zh_consignment_info",
+				"zh_customer_bank_info", "zh_customer_info", "zh_department_info", "zh_driver_bank_info",
+				"zh_driver_contract_info", "zh_driver_info", "zh_flow_def", "zh_flow_status", "zh_flows",
+				"zh_image_info", "zh_line_info", "zh_load_driver_info", "zh_load_feedback_log", "zh_load_his",
+				"zh_load_trip_info", "zh_login_history", "zh_menu_info", "zh_order_base_info", "zh_order_detail_info",
+				"zh_order_his", "zh_order_line_info", "zh_order_load_info", "zh_order_receiver_info",
+				"zh_order_return_log", "zh_order_sender_info", "zh_order_source_info", "zh_quoted_his",
+				"zh_quoted_info", "zh_quoted_plus_info", "zh_real_driver_info", "zh_real_vehicle_driver_info",
+				"zh_real_vehicle_info", "zh_real_vehicle_plus_info", "zh_real_vehicle_used_info", "zh_region",
+				"zh_region_info", "zh_remark_info", "zh_reset_password_log", "zh_sms_captcha", "zh_source_base_info",
+				"zh_source_his", "zh_staff_info", "zh_staff_login_history", "zh_staff_menu_info", "zh_staff_org_rela",
+				"zh_supply_bank_info", "zh_supply_info", "zh_unique_key", "zh_vehicle_driver_info", "zh_vehicle_info",
+				"zh_vehicle_plus_info" };
+		mg.gener(table);
+		// mg.generExt(table);
+	}
+
+}

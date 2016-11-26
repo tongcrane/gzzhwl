@@ -1,0 +1,94 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_unique_key表
+ * @author mew
+ *
+ */
+public class UniqueKey implements Serializable {
+	@Length(max = 100, message = "seqName超过长度限制")
+	private java.lang.String seqName; // 表名
+	private java.lang.Integer nextHi; // 序列值
+	@Length(max = 8, message = "dateHi超过长度限制")
+	private java.lang.String dateHi; // 日期
+	private java.lang.String currentDate;// 日期
+
+
+	/**
+     * 获取表名属性
+     *
+     * @return seqName
+     */
+	public java.lang.String getSeqName() {
+		return seqName;
+	}
+	
+	/**
+	 * 设置表名属性
+	 *
+	 * @param seqName
+	 */
+	public void setSeqName(java.lang.String seqName) {
+		this.seqName = seqName;
+	}
+	
+	/**
+     * 获取序列值属性
+     *
+     * @return nextHi
+     */
+	public java.lang.Integer getNextHi() {
+		return nextHi;
+	}
+	
+	/**
+	 * 设置序列值属性
+	 *
+	 * @param nextHi
+	 */
+	public void setNextHi(java.lang.Integer nextHi) {
+		this.nextHi = nextHi;
+	}
+	
+	/**
+     * 获取日期属性
+     *
+     * @return dateHi
+     */
+	public java.lang.String getDateHi() {
+		return dateHi;
+	}
+	
+	/**
+	 * 设置日期属性
+	 *
+	 * @param dateHi
+	 */
+	public void setDateHi(java.lang.String dateHi) {
+		this.dateHi = dateHi;
+	}
+	
+	public java.lang.String getCurrentDate() {
+		return currentDate;
+	}
+
+	public void setCurrentDate(java.lang.String currentDate) {
+		this.currentDate = currentDate;
+	}
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("UniqueKey");
+        sb.append("{seqName=").append(seqName);
+        sb.append(", nextHi=").append(nextHi);
+        sb.append(", dateHi=").append(dateHi);
+		sb.append('}');
+        return sb.toString();
+    }
+}

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.LendLogDao">
+
+	<resultMap id="lendLogResultMap" type="LendLog">
+		<id property="lendId" column="lend_id" />
+		<result property="lendNo" column="lend_no" />
+		<result property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="driver1InfoId" column="driver1_info_id" />
+		<result property="driver2InfoId" column="driver2_info_id" />
+		<result property="fromDepartId" column="from_depart_id" />
+		<result property="toDepartId" column="to_depart_id" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="realReturnedTime" column="real_returned_time" />
+		<result property="departureCode" column="departure_code" />
+		<result property="destinationCode" column="destination_code" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="lendLogResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="lendLogResultMap"></resultMap>
+
+	<insert id="insert" parameterType="LendLog">
+	   insert into zh_lend_log (
+	     lend_id,
+	     lend_no,
+	     vehicle_info_id,
+	     driver1_info_id,
+	     driver2_info_id,
+	     from_depart_id,
+	     to_depart_id,
+	     start_time,
+	     end_time,
+	     real_returned_time,
+	     departure_code,
+	     destination_code,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   )values (
+	     #{lendId},
+	     #{lendNo},
+	     #{vehicleInfoId},
+	     #{driver1InfoId},
+	     #{driver2InfoId},
+	     #{fromDepartId},
+	     #{toDepartId},
+	     current_date(),
+	     #{endTime},
+	     #{realReturnedTime},
+	     #{departureCode},
+	     #{destinationCode},
+	     #{status},
+	     #{createdBy},
+	     now(),
+	     #{updatedBy},
+	     now(),
+	     #{isDeleted}
+	   )
+	</insert>
+	
+	<select id="getLendLog" parameterType="map" resultMap="lendLogResultMap">
+		select
+			lend_id,
+			lend_no,
+			vehicle_info_id,
+			driver1_info_id,
+			driver2_info_id,
+			from_depart_id,
+			to_depart_id,
+			start_time,
+			end_time,
+			real_returned_time,
+			departure_code,
+	        destination_code,
+			status,
+			created_by,
+			created_time,
+			updated_by,
+			updated_time,
+			is_deleted
+		from
+			zh_lend_log
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="lendId != null">
+		        lend_id = #{lendId} 
+		    </if>
+			<if test="vehicleInfoId != null">
+		        and vehicle_info_id = #{vehicleInfoId} 
+		    </if>
+		    <if test="fromDepartId != null">
+		        and from_depart_id = #{fromDepartId}
+		    </if>
+		    <if test="todepartid != null">
+		        and to_depart_id = #{todepartid}
+		    </if>
+			<if test="status != null">
+		        and status=#{status}
+		    </if>
+		    <if test="isDeleted != null">
+		        and is_deleted=#{isDeleted}
+		    </if>
+		</trim>
+	</select>
+
+	<update id="updateSelective" parameterType="LendLog">
+	   update zh_lend_log
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		       real_returned_time=now(),
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		       updated_time=now(),
+	   </trim>
+	   where 
+	    lend_id=#{lendId} 
+	</update>
+</mapper> 

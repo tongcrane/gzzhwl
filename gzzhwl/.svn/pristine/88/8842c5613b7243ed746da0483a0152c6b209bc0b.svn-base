@@ -1,0 +1,36 @@
+package com.gzzhwl.api.driver.vo;
+
+import java.io.Serializable;
+
+public class DriverInfoQueryVo implements Serializable{
+	private String plateNumber; // 车牌号  
+	private String realName; // 司机姓名
+	private String telphone; // 联系电话
+	private String status; // 状态
+	public String getPlateNumber() {
+		return plateNumber;
+	}
+	public void setPlateNumber(String plateNumber) {
+		this.plateNumber = plateNumber;
+	}
+	public String getRealName() {
+		return realName;
+	}
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+	public String getTelphone() {
+		return telphone;
+	}
+	public void setTelphone(String telphone) {
+		this.telphone = telphone;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+
+}

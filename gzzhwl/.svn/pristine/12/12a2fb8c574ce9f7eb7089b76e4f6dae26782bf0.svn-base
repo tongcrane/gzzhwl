@@ -1,0 +1,41 @@
+package com.gzzhwl.core.utils;
+
+import java.security.MessageDigest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class MD5 {
+	private static final Logger logger = LoggerFactory.getLogger(MD5.class);
+
+	public static String md5(String source) {
+		StringBuffer sb = new StringBuffer(32);
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] array = md.digest(source.getBytes("utf-8"));
+
+			for (int i = 0; i < array.length; i++) {
+				sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+			}
+		} catch (Exception e) {
+			logger.error("Can not encode the string '" + source + "' to MD5!", e);
+			return null;
+		}
+		return sb.toString();
+	}
+
+	public static String md5_short(String source) {
+		String md5 = md5(source);
+		if (md5 != null)
+			return md5.substring(8, 24);
+		else
+			return null;
+	}
+
+	public static void main(String[] args) {
+		String loadId = "";
+		String accountId = "";
+		String tokenId = MD5.md5_short(loadId + accountId);
+		System.out.println(tokenId);
+	}
+}

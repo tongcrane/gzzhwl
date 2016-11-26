@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.RealVehicleUsedInfoDao">
+
+	<resultMap id="realVehicleUsedInfoResultMap" type="RealVehicleUsedInfo">
+		<id property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="belongDepartId" column="belong_depart_id" />
+		<result property="belongDepartName" column="belong_depart_name" />
+		<result property="useDepartId" column="use_depart_id" />
+		<result property="useDepartName" column="use_depart_name" />
+		<result property="departureCode" column="departure_code" />
+		<result property="destinationCode" column="destination_code" />
+		<result property="useStatus" column="use_status" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="realVehicleUsedInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="realVehicleUsedInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="RealVehicleUsedInfo">
+	   insert into zh_real_vehicle_used_info (
+	     vehicle_info_id,
+	     belong_depart_id,
+	     belong_depart_name,
+	     use_depart_id,
+	     use_depart_name,
+	     departure_code,
+	     destination_code,
+	     use_status
+	   )values (
+	     #{vehicleInfoId},
+	     #{belongDepartId},
+	     #{belongDepartName},
+	     #{useDepartId},
+	     #{useDepartName},
+	     #{departureCode},
+	     #{destinationCode},
+	     #{useStatus}
+	   )
+	</insert>
+
+	<update id="update" parameterType="RealVehicleUsedInfo">
+	   update zh_real_vehicle_used_info set
+	     vehicle_info_id=#{vehicleInfoId},
+	     belong_depart_id=#{belongDepartId},
+	     belong_depart_name=#{belongDepartName},
+	     use_depart_id=#{useDepartId},
+	     use_depart_name=#{useDepartName},
+	     departure_code=#{departureCode},
+	     destination_code=#{destinationCode},
+	     use_status=#{useStatus}
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="RealVehicleUsedInfo">
+	   update zh_real_vehicle_used_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="vehicleInfoId != null">
+		       vehicle_info_id=#{vehicleInfoId},
+		     </if>
+		     <if test="belongDepartId != null">
+		       belong_depart_id=#{belongDepartId},
+		     </if>
+		     <if test="belongDepartName != null">
+		       belong_depart_name=#{belongDepartName},
+		     </if>
+		     <if test="useDepartId != null">
+		       use_depart_id=#{useDepartId},
+		     </if>
+		     <if test="useDepartName != null">
+		       use_depart_name=#{useDepartName},
+		     </if>
+		     <if test="departureCode != null">
+		       departure_code=#{departureCode},
+		     </if>
+		     <if test="destinationCode != null">
+		       destination_code=#{destinationCode},
+		     </if>
+		     <if test="useStatus != null">
+		       use_status=#{useStatus}
+		     </if>
+	   </trim>
+	
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_real_vehicle_used_info 
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="realVehicleUsedInfoResultMap">
+	   select 
+	    vehicle_info_id,
+	    belong_depart_id,
+	    belong_depart_name,
+	    use_depart_id,
+	    use_depart_name,
+	    departure_code,
+	    destination_code,
+	    use_status
+	   from zh_real_vehicle_used_info
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</select>
+	
+	<select id="getWithDepart" parameterType="map" resultMap="realVehicleUsedInfoResultMap">
+	   select 
+	    zrvui.vehicle_info_id,
+	    zrvui.belong_depart_id,
+	    zdib.name as belong_depart_name,
+	    zrvui.use_depart_id,
+	    zdiu.name as use_depart_name,
+	    zrvui.departure_code,
+	    zrvui.destination_code,
+	    zrvui.use_status
+	   from zh_real_vehicle_used_info zrvui
+		inner join zh_department_info zdib
+		on zdib.depart_id = zrvui.belong_depart_id
+		inner join zh_department_info zdiu
+		on zdiu.depart_id = zrvui.belong_depart_id
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</select>
+	
+	<select id="getIsStatus" parameterType="map" resultType="long">
+	   select 
+	    count(1)
+	   from zh_real_vehicle_used_info
+	   where 
+	    vehicle_info_id = #{vehicleInfoId} and use_status = #{useStatus}
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    vehicle_info_id,
+	    belong_depart_id,
+	    belong_depart_name,
+	    use_depart_id,
+	    use_depart_name,
+	    departure_code,
+	    destination_code,
+	    use_status
+	   from zh_real_vehicle_used_info
+	   where 
+	    vehicle_info_id=#{vehicleInfoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     vehicle_info_id,
+	     belong_depart_id,
+	     belong_depart_name,
+	     use_depart_id,
+	     use_depart_name,
+	     departure_code,
+	     destination_code,
+	     use_status
+	   from zh_real_vehicle_used_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="vehicleInfoId != null">
+	        vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="belongDepartName != null">
+	        and belong_depart_name=#{belongDepartName}
+	     </if>
+	     <if test="useDepartId != null">
+	        and use_depart_id=#{useDepartId}
+	     </if>
+	     <if test="useDepartName != null">
+	        and use_depart_name=#{useDepartName}
+	     </if>
+	     <if test="departureCode != null">
+	        and departure_code=#{departureCode}
+	     </if>
+	     <if test="destinationCode != null">
+	        and destination_code=#{destinationCode}
+	     </if>
+	     <if test="useStatus != null">
+	        and use_status=#{useStatus}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     vehicle_info_id,
+	     belong_depart_id,
+	     belong_depart_name,
+	     use_depart_id,
+	     use_depart_name,
+	     departure_code,
+	     destination_code,
+	     use_status
+	   from zh_real_vehicle_used_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="vehicleInfoId != null">
+	        vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="belongDepartName != null">
+	        and belong_depart_name=#{belongDepartName}
+	     </if>
+	     <if test="useDepartId != null">
+	        and use_depart_id=#{useDepartId}
+	     </if>
+	     <if test="useDepartName != null">
+	        and use_depart_name=#{useDepartName}
+	     </if>
+	     <if test="departureCode != null">
+	        and departure_code=#{departureCode}
+	     </if>
+	     <if test="destinationCode != null">
+	        and destination_code=#{destinationCode}
+	     </if>
+	     <if test="useStatus != null">
+	        and use_status=#{useStatus}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

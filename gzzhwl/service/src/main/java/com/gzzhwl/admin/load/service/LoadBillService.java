@@ -1,0 +1,99 @@
+package com.gzzhwl.admin.load.service;
+
+import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
+
+import com.gzzhwl.admin.load.vo.LoadInfoVO;
+import com.gzzhwl.admin.load.vo.LoadQueryVo;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.exception.RestException;
+
+public interface LoadBillService {
+	/**
+	 * 创建提货单
+	 */
+	public String createLoad(LoadInfoVO loadInfoVO, String staffId) throws RestException;
+
+	/**
+	 * 取消提货单
+	 */
+	public boolean cancelLoad(String loadId, String staffId) throws RestException;
+
+	public boolean cancelLoadBatch(String[] loadArr, String staffId);
+
+	/**
+	 * 修改提货单
+	 */
+	public String modifyLoad(LoadInfoVO loadInfo, String staffId) throws RestException;
+
+	/**
+	 * 根据订单ID获取当前的提货单
+	 */
+	public String getCurrentLoadBill(String orderId) throws RestException;
+
+	/**
+	 * 根据订单ID获取当前的提货单
+	 */
+	public String getCurrentLoadBillByOrderNo(String orderNo) throws RestException;
+
+	/**
+	 * 提货单分页
+	 */
+	public Page<Map<String, Object>> pageLoads(LoadQueryVo queryVo, int pageIndex, int pageSize)
+			throws RestException, ParseException;
+
+	/**
+	 * 提货单详情
+	 */
+	public Map<String, Object> getLoadDetail(String loadId) throws RestException;
+
+	/**
+	 * 发车
+	 */
+	public boolean doTrip(String loadId, String staffId) throws RestException;
+
+	public boolean tripBatch(String[] loadArr, String staffId) throws RestException;
+
+	/**
+	 * 根据订单ID获取提货单详情
+	 */
+	public Map<String, Object> getLoadInfoByOrdrId(String orderId) throws RestException;
+
+	/**
+	 * 根据提货单编号获取主司机信息 根据订单ID获取提货单详情
+	 */
+	public List<Map<String, Object>> getLoadDriverList(String loadId) throws RestException;
+
+	/**
+	 * 获取提货单的主司机信息
+	 */
+	public Map<String, Object> getMajorDriverByLoadNo(String loadNo);
+	
+	/**
+	 * 获取提货单的主司机信息
+	 */
+	public Map<String, Object> getMajorDriverByLoadId(String loadId);
+
+	/**
+	 * 获取提货单的主司机信息
+	 */
+	public OrderLoadInfo getLoadInfoByLoadNo(String loadNo);
+
+	/**
+	 * 根据车牌号获取提货单
+	 */
+	public String getLoadBillByVehicle(String plateNumber);
+	
+	/**
+	 * 获取在途/到达的提货单的车辆详情
+	 */
+	public Map<String, Object> getLoadVehcleDetail(String loadId);
+	
+	/**
+	 * 获取当前提货单ID(除去取消或者关闭的)
+	 */
+	public String getCurrentNoCanceledLoadBill(String orderId) throws RestException;
+
+}

@@ -1,0 +1,18 @@
+package com.gzzhwl.api.account.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.api.account.service.AccountService;
+import com.gzzhwl.api.account.vo.AutoRegVO;
+import com.gzzhwl.core.data.model.LoginResultModel;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class AccountServiceImpl implements AccountService {
+
+	@Override
+	public LoginResultModel autoRegForYSJ(AutoRegVO autoReg) throws RestException {
+		return null;
+	}
+
+}

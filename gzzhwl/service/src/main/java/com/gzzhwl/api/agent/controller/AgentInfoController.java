@@ -1,0 +1,110 @@
+package com.gzzhwl.api.agent.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.api.agent.service.AgentInfoService;
+import com.gzzhwl.api.agent.vo.AgentInfoV2VO;
+import com.gzzhwl.api.agent.vo.AgentInfoVo;
+import com.gzzhwl.core.data.model.AccountInfo;
+import com.gzzhwl.core.data.model.AgentInfo;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.springmvc.annotation.Authorization;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+/**
+ * 经纪人controller
+ *
+ */
+
+@RestController
+@RequestMapping("/api/agent")
+public class AgentInfoController {
+	@Autowired
+	private AgentInfoService service;
+	@Autowired
+	private Mapper beanMapper;
+
+	/**
+	 * 添加/修改经纪人信息
+	 * 
+	 * @param agentInfoVo
+	 * @param accountInfo
+	 * @return
+	 * @throws RestException
+	 */
+	@RequestMapping(value = "/addOrUpdateAgent", method = RequestMethod.POST)
+	public ResponseModel addOrUpdateAgent(AgentInfoVo agentInfoVo, @Authorization AccountInfo accountInfo)
+			throws RestException {
+		String accountId = accountInfo.getAccountId();
+		AgentInfo agentInfo = beanMapper.map(agentInfoVo, AgentInfo.class);
+		service.saveOrUpdateAgentInfo(agentInfo, accountId);
+		return new ResponseModel(true);
+	}
+
+	/**
+	 * 添加/修改经纪人信息
+	 * 
+	 * @param agentInfoVo
+	 * @param accountInfo
+	 * @return
+	 * @throws RestException
+	 */
+	@RequestMapping(value = "/addOrUpdateAgentV2", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseModel addOrUpdateAgentV2(@RequestBody AgentInfoV2VO agentInfoVo,
+			@Authorization AccountInfo accountInfo) throws RestException {
+		String accountId = accountInfo.getAccountId();
+		// AgentInfo agentInfo = beanMapper.map(agentInfoVo, AgentInfo.class);
+		service.saveOrUpdateAgentInfoV2(agentInfoVo, accountId);
+		return new ResponseModel(true);
+	}
+
+	/**
+	 * 查询经纪人信息
+	 * 
+	 * @param agentInfoId
+	 * @param accountInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/query", method = RequestMethod.GET)
+	public ResponseModel queryAgentInfo(@Authorization AccountInfo accountInfo) {
+		String accountId = accountInfo.getAccountId();
+		Map<String, Object> agentMap = service.getAgentInfoByCondition(accountId);
+		return new ResponseModel(agentMap);
+
+	}
+
+	/**
+	 * 图片上传或修改
+	 * 
+	 * @param file
+	 * @param accountId
+	 * @param agentId
+	 * @param imageType
+	 * @param accountInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/uploadAgentImage", method = RequestMethod.POST)
+	public ResponseModel imageUpload(@RequestParam MultipartFile image,
+			@Authorization(required = false) AccountInfo accountInfo) {
+		String accountId = null;
+		if (accountInfo != null) {
+			accountId = accountInfo.getAccountId();
+		}
+		String imageId = service.updateImageInfo(image, accountId);
+		Map<String, String> result = new HashMap<String, String>();
+		result.put("imageId", imageId);
+		return new ResponseModel(result);
+	}
+
+}

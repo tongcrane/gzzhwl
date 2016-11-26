@@ -1,0 +1,67 @@
+package com.gzzhwl.admin.transit.service.impl;
+
+import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.transit.service.TransitService;
+import com.gzzhwl.admin.transit.vo.TransitQueryVo;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.data.extdao.OrderLoadInfoExtDao;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.page.Page;
+
+@Service
+public class TransitServiceImpl implements TransitService{
+	@Autowired
+	private OrderLoadInfoExtDao loadExtDao;
+	@Autowired
+	private RegionService regionService;
+
+	@Override
+	public Page<Map<String, Object>> pageTransitList(TransitQueryVo vo, int currentPage, int pageSize) throws ParseException {
+		Map<String, Object> params = vo.getParam();
+		Page<Map<String, Object>> data = loadExtDao.pageTransitList(params, currentPage, pageSize);
+		
+		List<Map<String, Object>> list = data.getRows();
+		if(CollectionUtils.isNotEmpty(list)) {
+			for(Map<String, Object> map : list) {
+				String startCodeP = (String) map.get("startCodeP");
+				map.put("startCodePCn", this.getCodeCn(startCodeP));
+
+				String startCodeC = (String) map.get("startCodeC");
+				map.put("startCodeCCn", this.getCodeCn(startCodeC));
+
+				String endCodeP = (String) map.get("endCodeP");
+				map.put("endCodePCn", this.getCodeCn(endCodeP));
+
+				String endCodeC = (String) map.get("endCodeC");
+				map.put("endCodeCCn", this.getCodeCn(endCodeC));
+				
+				// 获取发车司机信息
+				String loadId = (String) map.get("loadId");
+				List<Map<String, Object>> drivers = loadExtDao.getTripDrivers(loadId);
+
+				map.put("driverList", drivers);
+			}
+		}
+		
+		return data;
+	}
+	
+	public String getCodeCn(String code) {
+		if (StringUtils.isNotBlank(code)) {
+			RegionInfo startCodePCn = regionService.findByCode(code);
+			if (startCodePCn != null) {
+				return startCodePCn.getRegionName();
+			}
+		}
+		return "";
+	}
+
+}

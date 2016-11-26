@@ -1,0 +1,65 @@
+package com.gzzhwl.admin.contract.service;
+
+import java.util.Map;
+
+import com.gzzhwl.admin.contract.vo.ContractQueryVo;
+import com.gzzhwl.admin.payables.vo.PayContractQueryVo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.exception.RestException;
+
+public interface ContractService {
+	/**
+	 * 创建司机合同
+	 */
+	public String createContract(String loadId, Integer departId, String staffId) throws RestException;
+
+	public String autoCreateContract(String loadId, Integer departId, String staffId) throws RestException;
+
+	/**
+	 * 根据提货单ID获取当前的司机合同
+	 */
+	public String getCurrentContract(String loadId) throws RestException;
+
+	/**
+	 * 是否允许创建司机合同
+	 */
+	public boolean allowCreate(String loadId) throws RestException;
+
+	/**
+	 * 作废司机合同
+	 */
+	public boolean cancelContract(String contractId, String staffId) throws RestException;
+
+	/**
+	 * 自动创建合同
+	 */
+	public String autoCreateContract(String loadId, String staffId) throws RestException;
+
+	public Page<Map<String, Object>> pageContractList(ContractQueryVo vo, int currentPage, int pageSize);
+
+	/**
+	 * 查询司机合同详情
+	 */
+	public Map<String, Object> queryContractDetail(String contractId);
+
+	
+	/**
+	 * 应付查询
+	 * @param vo
+	 * @param currentPage
+	 * @param pageSize
+	 * @return
+	 */
+	public Page<Map<String, Object>> pagePayContractList(PayContractQueryVo vo, int currentPage, int pageSize);
+	
+	/**
+	 * 司机合同待审核
+	 */
+	public boolean waitVerify(String contractId, String staffId);
+	
+	/**
+	 * 司机合同已审核
+	 */
+	public boolean doVerified(String contractId, String staffId);
+
+}

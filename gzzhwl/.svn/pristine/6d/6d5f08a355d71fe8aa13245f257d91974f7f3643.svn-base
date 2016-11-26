@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.LendLogDao">
+
+	<resultMap id="lendLogResultMap" type="LendLog">
+		<id property="lendId" column="lend_id" />
+		<result property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="driver1InfoId" column="driver1_info_id" />
+		<result property="driver2InfoId" column="driver2_info_id" />
+		<result property="fromDepartId" column="from_depart_id" />
+		<result property="toDepartId" column="to_depart_id" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="lendLogResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="lendLogResultMap"></resultMap>
+
+	<insert id="insert" parameterType="LendLog">
+	   insert into zh_lend_log (
+	     lend_id,
+	     vehicle_info_id,
+	     driver1_info_id,
+	     driver2_info_id,
+	     from_depart_id,
+	     to_depart_id,
+	     start_time,
+	     end_time,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   )values (
+	     #{lendId},
+	     #{vehicleInfoId},
+	     #{driver1InfoId},
+	     #{driver2InfoId},
+	     #{fromDepartId},
+	     #{toDepartId},
+	     #{startTime},
+	     #{endTime},
+	     #{status},
+	     #{createdBy},
+	     now(),
+	     #{updatedBy},
+	     now(),
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="LendLog">
+	   update zh_lend_log set
+	     lend_id=#{lendId},
+	     vehicle_info_id=#{vehicleInfoId},
+	     driver1_info_id=#{driver1InfoId},
+	     driver2_info_id=#{driver2InfoId},
+	     from_depart_id=#{fromDepartId},
+	     to_depart_id=#{toDepartId},
+	     start_time=#{startTime},
+	     end_time=#{endTime},
+	     status=#{status},
+	     updated_by=#{updatedBy},
+	     updated_time=now(),
+	     is_deleted=#{isDeleted}
+	   where 
+	    lend_id=#{lendId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="LendLog">
+	   update zh_lend_log
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="lendId != null">
+		       lend_id=#{lendId},
+		     </if>
+		     <if test="vehicleInfoId != null">
+		       vehicle_info_id=#{vehicleInfoId},
+		     </if>
+		     <if test="driver1InfoId != null">
+		       driver1_info_id=#{driver1InfoId},
+		     </if>
+		     <if test="driver2InfoId != null">
+		       driver2_info_id=#{driver2InfoId},
+		     </if>
+		     <if test="fromDepartId != null">
+		       from_depart_id=#{fromDepartId},
+		     </if>
+		     <if test="toDepartId != null">
+		       to_depart_id=#{toDepartId},
+		     </if>
+		     <if test="startTime != null">
+		       start_time=#{startTime},
+		     </if>
+		     <if test="endTime != null">
+		       end_time=#{endTime},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		       updated_time=now(),
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    lend_id=#{lendId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_lend_log 
+	   where 
+	    lend_id=#{lendId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="lendLogResultMap">
+	   select 
+	    lend_id,
+	    vehicle_info_id,
+	    driver1_info_id,
+	    driver2_info_id,
+	    from_depart_id,
+	    to_depart_id,
+	    start_time,
+	    end_time,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_lend_log
+	   where 
+	    lend_id=#{lendId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    lend_id,
+	    vehicle_info_id,
+	    driver1_info_id,
+	    driver2_info_id,
+	    from_depart_id,
+	    to_depart_id,
+	    start_time,
+	    end_time,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_lend_log
+	   where 
+	    lend_id=#{lendId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     lend_id,
+	     vehicle_info_id,
+	     driver1_info_id,
+	     driver2_info_id,
+	     from_depart_id,
+	     to_depart_id,
+	     start_time,
+	     end_time,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_lend_log
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="lendId != null">
+	        lend_id=#{lendId}
+	     </if>
+	     <if test="vehicleInfoId != null">
+	        and vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="driver1InfoId != null">
+	        and driver1_info_id=#{driver1InfoId}
+	     </if>
+	     <if test="driver2InfoId != null">
+	        and driver2_info_id=#{driver2InfoId}
+	     </if>
+	     <if test="fromDepartId != null">
+	        and from_depart_id=#{fromDepartId}
+	     </if>
+	     <if test="toDepartId != null">
+	        and to_depart_id=#{toDepartId}
+	     </if>
+	     <if test="startTime != null">
+	        and start_time=#{startTime}
+	     </if>
+	     <if test="endTime != null">
+	        and end_time=#{endTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     lend_id,
+	     vehicle_info_id,
+	     driver1_info_id,
+	     driver2_info_id,
+	     from_depart_id,
+	     to_depart_id,
+	     start_time,
+	     end_time,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_lend_log
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="lendId != null">
+	        lend_id=#{lendId}
+	     </if>
+	     <if test="vehicleInfoId != null">
+	        and vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="driver1InfoId != null">
+	        and driver1_info_id=#{driver1InfoId}
+	     </if>
+	     <if test="driver2InfoId != null">
+	        and driver2_info_id=#{driver2InfoId}
+	     </if>
+	     <if test="fromDepartId != null">
+	        and from_depart_id=#{fromDepartId}
+	     </if>
+	     <if test="toDepartId != null">
+	        and to_depart_id=#{toDepartId}
+	     </if>
+	     <if test="startTime != null">
+	        and start_time=#{startTime}
+	     </if>
+	     <if test="endTime != null">
+	        and end_time=#{endTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

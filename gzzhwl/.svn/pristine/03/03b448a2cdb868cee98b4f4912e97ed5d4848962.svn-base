@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.StaffInfoDao">
+
+	<resultMap id="staffInfoResultMap" type="StaffInfo">
+		<id property="staffId" column="staff_id" />
+		<result property="number" column="number" />
+		<result property="password" column="password" />
+		<result property="realName" column="real_name" />
+		<result property="position" column="position" />
+		<result property="telphone" column="telphone" />
+		<result property="email" column="email" />
+		<result property="departId" column="depart_id" />
+		<result property="type" column="type" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="staffInfoResultMap">
+		<result property="departName" column="depart_name"/>
+	</resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="staffInfoResultMap">
+		<result property="departName" column="depart_name"/>
+	</resultMap>
+	
+	<!-- <resultMap id="pageStaffResultMap"  type="map">
+		<id property="staffId" column="staff_id" />
+		<result property="number" column="number" />
+		<result property="password" column="password" />
+		<result property="realName" column="real_name" />
+		<result property="position" column="position" />
+		<result property="telphone" column="telphone" />
+		<result property="email" column="email" />
+		<result property="departId" column="depart_id" />
+		<result property="type" column="type" />
+		<result property="departName" column="depart_name"/>
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="status" column="status" />
+		<collection notNullColumn="DEPART_ID" property="departInfo" ofType="map" javaType="java.util.List"  resultMap="departResultMap" columnPrefix="DEPART_"/>
+		<collection notNullColumn="MENU_ID" property="menuInfo" ofType="map" javaType="java.util.List"  resultMap="menuResultMap" columnPrefix="MENU_"/>
+	</resultMap>
+	
+	<resultMap id="departResultMap" type="map">
+		<id property="departId" column="DEPART_ID" />
+		<result property="dataDepartName" column="DATA_DEPART_NAME" />
+		<result property="departStatus" column="DEPART_STATUS"/>
+	</resultMap>
+	
+	<resultMap id="menuResultMap" type="map">
+		<id property="menuId" column="MENU_ID" />
+		<result property="menuName" column="MENU_NAME" />
+		<result property="menuStatus" column="MENU_STATUS"/>
+	</resultMap> -->
+
+	<insert id="insert" parameterType="StaffInfo">
+	   insert into zh_staff_info (
+	     staff_id,
+	     number,
+	     password,
+	     real_name,
+	     position,
+	     telphone,
+	     email,
+	     depart_id,
+	     type,
+	     created_by,
+	     created_time,
+	     updated_time,
+	     status,
+	     is_deleted
+	   )values (
+	     #{staffId},
+	     #{number},
+	     #{password},
+	     #{realName},
+	     #{position},
+	     #{telphone},
+	     #{email},
+	     #{departId},
+	     #{type},
+	     #{createdBy},
+	     now(),
+	     now(),
+	     #{status},
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="StaffInfo">
+	   update zh_staff_info set
+	     staff_id=#{staffId},
+	     number=#{number},
+	     password=#{password},
+	     real_name=#{realName},
+	     position=#{position},
+	     telphone=#{telphone},
+	     email=#{email},
+	     depart_id=#{departId},
+	     type=#{type},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     updated_time=#{updatedTime},
+	     status=#{status},
+	     is_deleted=#{isDeleted}
+	   where 
+	    staff_id=#{staffId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="StaffInfo">
+	   update zh_staff_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="staffId != null">
+		       staff_id=#{staffId},
+		     </if>
+		     <if test="number != null">
+		       number=#{number},
+		     </if>
+		     <if test="password != null">
+		       password=#{password},
+		     </if>
+		     <if test="realName != null">
+		       real_name=#{realName},
+		     </if>
+		     <if test="position != null">
+		       position=#{position},
+		     </if>
+		     <if test="telphone != null">
+		       telphone=#{telphone},
+		     </if>
+		     <if test="email != null">
+		       email=#{email},
+		     </if>
+		     <if test="departId != null">
+		       depart_id=#{departId},
+		     </if>
+		     <if test="type != null">
+		       type=#{type},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="updatedTime != null">
+		       updated_time=now(),
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    staff_id=#{staffId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_staff_info 
+	   where 
+	    staff_id=#{staffId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="staffInfoResultMap">
+	   select 
+	    staff_id,
+	    number,
+	    password,
+	    real_name,
+	    position,
+	    telphone,
+	    email,
+	    depart_id,
+	    type,
+	    created_by,
+	    created_time,
+	    updated_time,
+	    status,
+	    is_deleted
+	   from zh_staff_info
+	   where 
+	    staff_id=#{staffId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    zsi.staff_id,
+	    zsi.number,
+	    zsi.password,
+	    zsi.real_name,
+	    zsi.position,
+	    zsi.telphone,
+	    zsi.email,
+	    zsi.depart_id,
+	    zsi.type,
+	    zsi.created_by,
+	    zsi.created_time,
+	    zsi.updated_time,
+	    zsi.status,
+	    zsi.is_deleted,
+	    zdi.name as depart_name
+	   from zh_staff_info zsi left join zh_department_info zdi on zsi.depart_id=zdi.depart_id
+	   where 
+	    zsi.staff_id=#{staffId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     staff_id,
+	     number,
+	     password,
+	     real_name,
+	     position,
+	     telphone,
+	     email,
+	     depart_id,
+	     type,
+	     created_by,
+	     created_time,
+	     updated_time,
+	     status,
+	     is_deleted
+	   from zh_staff_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="staffId != null">
+	        staff_id=#{staffId}
+	     </if>
+	     <if test="number != null">
+	        and number=#{number}
+	     </if>
+	     <if test="password != null">
+	        and password=#{password}
+	     </if>
+	     <if test="realName != null">
+	        and real_name=#{realName}
+	     </if>
+	     <if test="position != null">
+	        and position=#{position}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="email != null">
+	        and email=#{email}
+	     </if>
+	     <if test="departId != null">
+	        and depart_id=#{departId}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     zsi.staff_id,
+	     zsi.number,
+	     zsi.password,
+	     zsi.real_name,
+	     zsi.position,
+	     zsi.telphone,
+	     zsi.email,
+	     zsi.depart_id,
+	     zsi.type,
+	     zsi.created_by,
+	     zsi.created_time,
+	     zsi.updated_time,
+	     zsi.status,
+	     zsi.is_deleted,
+	     zdi.name as depart_name
+	   from zh_staff_info zsi left join zh_department_info zdi on zsi.depart_id=zdi.depart_id
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="staffId != null">
+	        zsi.staff_id=#{staffId}
+	     </if>
+	     <if test="number != null">
+	        and zsi.number=#{number}
+	     </if>
+	     <if test="password != null">
+	        and zsi.password=#{password}
+	     </if>
+	     <if test="realName != null">
+	        and zsi.real_name=#{realName}
+	     </if>
+	     <if test="position != null">
+	        and zsi.position=#{position}
+	     </if>
+	     <if test="telphone != null">
+	        and zsi.telphone=#{telphone}
+	     </if>
+	     <if test="email != null">
+	        and zsi.email=#{email}
+	     </if>
+	     <if test="departId != null">
+	        and zsi.depart_id=#{departId}
+	     </if>
+	     <if test="type != null">
+	        and zsi.type=#{type}
+	     </if>
+	     <if test="createdBy != null">
+	        and zsi.created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and zsi.created_time=#{createdTime}
+	     </if>
+	     <if test="updatedTime != null">
+	        and zsi.updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and zsi.status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and zsi.is_deleted=#{isDeleted}
+	     </if>
+	     <if test="keyword!=null">
+	     	and (zsi.real_name like #{keyword} or zsi.number like #{keyword} or zsi.telphone like #{keyword} or zdi.name like #{keyword})
+	     </if>
+	   </trim>
+	   order by zsi.created_time desc
+	</select>
+	
+	<select id="findByNumber" parameterType="map" resultMap="staffInfoResultMap">
+	   select 
+	    staff_id,
+	    number,
+	    password,
+	    real_name,
+	    position,
+	    telphone,
+	    email,
+	    depart_id,
+	    type,
+	    created_by,
+	    created_time,
+	    updated_time,
+	    status,
+	    is_deleted
+	   from zh_staff_info
+	   where 
+	    number = #{number} and is_deleted=#{isDeleted}
+	</select>
+	
+	<select id="pageStaff" parameterType="map" resultMap="pageResultMap">
+		select 
+			distinct zsi.staff_id,
+			zsi.number,
+			zsi.password,
+			zsi.real_name,
+			zsi.position,
+			zsi.telphone,
+			zsi.email,
+			zsi.depart_id,
+			zsi.type,
+			zsi.created_time,
+			zsi.updated_time,
+			zsi.status,
+			zdi.name as depart_name
+			<!-- zdin.depart_id as DEPART_DEPART_ID,
+			zdin.name as DEPART_DATA_DEPART_NAME,
+			zdin.status as DEPART_DEPART_STATUS,
+			zmi.menu_id as MENU_MENU_ID,
+			zmi.menu_name as MENU_MENU_NAME,
+			zmi.status as MENU_MENU_STATUS -->
+		from zh_staff_info zsi
+			left join zh_department_info zdi on zsi.depart_id=zdi.depart_id and zdi.status=#{status}
+			left join(zh_staff_org_rela zsor left join zh_department_info zdin on zsor.depart_id=zdin.depart_id and zdin.status=#{status}) on zsi.staff_id=zsor.staff_id
+			left join(zh_staff_menu_info zsmi left join zh_menu_info zmi on zsmi.menu_id=zmi.menu_id and zmi.status=#{status}) on zsi.staff_id=zsmi.staff_id
+			<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				<if test="type!=null">
+					zsi.type=#{type}
+				</if>
+				<if test="departName!=null">
+					and zdi.name like #{departName}
+				</if>
+				<if test="number!=null">
+					and zsi.number like #{number}
+				</if>
+				<if test="realName!=null">
+					and zsi.real_name like #{realName}
+				</if>
+				<if test="dataDepart!=null">
+					and zdin.name like #{dataDepart}
+				</if>
+				<if test="keyword!=null">
+					and (zsi.number like #{keyword} or zsi.real_name like #{keyword} or zdi.name like #{keyword})
+				</if>
+				<if test="isDeleted!=null">
+					and zsi.is_deleted=#{isDeleted}
+				</if>
+			</trim>
+			order by zsi.created_time desc
+	</select>
+	
+</mapper> 

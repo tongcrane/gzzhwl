@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.SourceBaseInfoDao">
+
+	<resultMap id="sourceBaseInfoResultMap" type="SourceBaseInfo">
+		<id property="infoId" column="info_id" />
+		<result property="sourceNo" column="source_no" />
+		<result property="orderId" column="order_id" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="sourceBaseInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="sourceBaseInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="SourceBaseInfo">
+	   insert into zh_source_base_info (
+	     info_id,
+	     source_no,
+	     order_id
+	   )values (
+	     #{infoId},
+	     #{sourceNo},
+	     #{orderId}
+	   )
+	</insert>
+
+	<update id="update" parameterType="SourceBaseInfo">
+	   update zh_source_base_info set
+	     info_id=#{infoId},
+	     source_no=#{sourceNo},
+	     order_id=#{orderId}
+	   where 
+	    info_id=#{infoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="SourceBaseInfo">
+	   update zh_source_base_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="infoId != null">
+		       info_id=#{infoId},
+		     </if>
+		     <if test="sourceNo != null">
+		       source_no=#{sourceNo},
+		     </if>
+		     <if test="orderId != null">
+		       order_id=#{orderId}
+		     </if>
+	   </trim>
+	
+	   where 
+	    info_id=#{infoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_source_base_info 
+	   where 
+	    info_id=#{infoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="sourceBaseInfoResultMap">
+	   select 
+	    info_id,
+	    source_no,
+	    order_id
+	   from zh_source_base_info
+	   where 
+	    info_id=#{infoId} 
+	</select>
+	
+	<select id="getByOrderId" parameterType="map" resultMap="sourceBaseInfoResultMap">
+	   select 
+	    info_id,
+	    source_no,
+	    order_id
+	   from zh_source_base_info
+	   where 
+	    order_id=#{orderId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    info_id,
+	    source_no,
+	    order_id
+	   from zh_source_base_info
+	   where 
+	    info_id=#{infoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     info_id,
+	     source_no,
+	     order_id
+	   from zh_source_base_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="sourceNo != null">
+	        and source_no=#{sourceNo}
+	     </if>
+	     <if test="orderId != null">
+	        and order_id=#{orderId}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     info_id,
+	     source_no,
+	     order_id
+	   from zh_source_base_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="sourceNo != null">
+	        and source_no=#{sourceNo}
+	     </if>
+	     <if test="orderId != null">
+	        and order_id=#{orderId}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.DepartmentInfoDao">
+
+	<resultMap id="departmentInfoResultMap" type="DepartmentInfo">
+		<id property="departId" column="depart_id" />
+		<result property="name" column="name" />
+		<result property="status" column="status" />
+		<result property="lo" column="lo" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="departmentInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="departmentInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="DepartmentInfo">
+	   insert into zh_department_info (
+	     depart_id,
+	     name,
+	     status,
+	     lo
+	   )values (
+	     #{departId},
+	     #{name},
+	     #{status},
+	     #{lo}
+	   )
+	</insert>
+
+	<update id="update" parameterType="DepartmentInfo">
+	   update zh_department_info set
+	     depart_id=#{departId},
+	     name=#{name},
+	     status=#{status},
+	     lo=#{lo}
+	   where 
+	    depart_id=#{departId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="DepartmentInfo">
+	   update zh_department_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="departId != null">
+		       depart_id=#{departId},
+		     </if>
+		     <if test="name != null">
+		       name=#{name},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="lo != null">
+		       lo=#{lo}
+		     </if>
+	   </trim>
+	
+	   where 
+	    depart_id=#{departId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_department_info 
+	   where 
+	    depart_id=#{departId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="departmentInfoResultMap">
+	   select 
+	    depart_id,
+	    name,
+	    status,
+	    lo
+	   from zh_department_info
+	   where 
+	    depart_id=#{departId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    depart_id,
+	    name,
+	    status,
+	    lo
+	   from zh_department_info
+	   where 
+	    depart_id=#{departId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     depart_id,
+	     name,
+	     status,
+	     lo
+	   from zh_department_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="departId != null">
+	        depart_id=#{departId}
+	     </if>
+	     <if test="name != null">
+	        and name like #{name}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="lo != null">
+	        and lo=#{lo}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     depart_id,
+	     name,
+	     status,
+	     lo
+	   from zh_department_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="departId != null">
+	        depart_id=#{departId}
+	     </if>
+	     <if test="name != null">
+	        and name=#{name}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="lo != null">
+	        and lo=#{lo}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

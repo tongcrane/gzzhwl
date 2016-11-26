@@ -1,0 +1,149 @@
+package com.gzzhwl.common.service.impl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
+import com.gzzhwl.common.service.H2DbService;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.data.dao.RegionInfoDao;
+import com.gzzhwl.core.data.model.Region;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class RegionServiceImpl implements RegionService, InitializingBean {
+	@Autowired
+	private RegionInfoDao regionDao;
+	@Autowired
+	private H2DbService h2DbService;
+
+	private List<RegionInfo> findAllRegion() throws RestException {
+		return regionDao.find();
+	}
+
+	@Override
+	public Region findRegion() throws RestException {
+		List<RegionInfo> all = this.findAllRegion();
+		RegionInfo root = all.get(0);
+		Region region = new Region();
+		region.setRegionId(root.getRegionId());
+		region.setParentRegionId(root.getParentRegionId());
+		region.setRegionCode(root.getRegionCode());
+		region.setRegionLevel(root.getRegionLevel());
+		region.setRegionName(root.getRegionName());
+		region.setSubRegion(convert(root, all));
+		return region;
+	}
+
+	private List<Region> convert(RegionInfo parent, List<RegionInfo> all) {
+		if (parent.getRegionLevel() < 3) {
+			List<Region> result = new ArrayList<Region>();
+			for (RegionInfo region : all) {
+				if (region.getParentRegionId().compareTo(parent.getRegionId()) == 0) {
+					Region info = new Region();
+					info.setRegionId(region.getRegionId());
+					info.setParentRegionId(region.getParentRegionId());
+					info.setRegionCode(region.getRegionCode());
+					info.setRegionLevel(region.getRegionLevel());
+					info.setRegionName(region.getRegionName());
+					info.setSubRegion(convert(region, all));
+					result.add(info);
+				}
+			}
+			return result;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public Region findRegion(Integer parentId) throws RestException {
+		List<RegionInfo> all = this.findAllRegion();
+		List<Region> result = new ArrayList<Region>();
+		Region root = null;
+		for (RegionInfo region : all) {
+			if (region.getRegionId().compareTo(parentId) == 0) {
+				root = new Region();
+				root.setRegionId(region.getRegionId());
+				root.setParentRegionId(region.getParentRegionId());
+				root.setRegionCode(region.getRegionCode());
+				root.setRegionLevel(region.getRegionLevel());
+				root.setRegionName(region.getRegionName());
+			}
+			if (region.getParentRegionId().compareTo(parentId) == 0) {
+				Region info = new Region();
+				info.setRegionId(region.getRegionId());
+				info.setParentRegionId(region.getParentRegionId());
+				info.setRegionCode(region.getRegionCode());
+				info.setRegionLevel(region.getRegionLevel());
+				info.setRegionName(region.getRegionName());
+				result.add(info);
+			}
+		}
+		if (root != null) {
+			root.setSubRegion(result);
+		}
+		return root;
+	}
+
+	@Override
+	public List<RegionInfo> findRootByCode(String regionCode) throws RestException {
+		if (StringUtils.isNoneBlank(regionCode)) {
+			List<RegionInfo> result = new ArrayList<>();
+			RegionInfo region = this.findByCode(regionCode);
+			if (region != null) {
+				int regionId = region.getRegionId();
+				result = findParent(result, regionId);
+			}
+			return result;
+		} else {
+			return Lists.newArrayList();
+		}
+	}
+
+	private List<RegionInfo> findParent(List<RegionInfo> result, int regionId) {
+		RegionInfo region = this.findById(regionId);
+		if (region != null && region.getParentRegionId() > 0) {
+			result.add(region);
+			findParent(result, region.getParentRegionId());
+		}
+		return result;
+	}
+
+	@Override
+	public RegionInfo findByCode(String regionCode) throws RestException {
+		if (StringUtils.isNotBlank(regionCode)) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("regionCode", regionCode);
+			return regionDao.findByParam(params);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public RegionInfo findById(Integer regionId) throws RestException {
+		if (regionId != null) {
+			Map<String, Object> params = new HashMap<>();
+			params.put("regionId", regionId);
+			return regionDao.findByParam(params);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		this.findAllRegion();
+//		List<RegionInfo> alldata = this.findAllRegion();
+//		h2DbService.saveRegionToMem(alldata);
+	}
+}

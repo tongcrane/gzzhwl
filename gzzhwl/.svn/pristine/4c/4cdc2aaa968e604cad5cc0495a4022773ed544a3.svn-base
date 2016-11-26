@@ -1,0 +1,10 @@
+package com.gzzhwl.push.service;
+
+import com.gzzhwl.push.model.PushItem;
+
+public interface PushService {
+	/**
+	 * 根据alias发透传消息
+	 */
+	boolean pushTransmissionToUserByAlias(PushItem item, String alias);
+}

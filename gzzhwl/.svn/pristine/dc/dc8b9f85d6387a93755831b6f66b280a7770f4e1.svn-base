@@ -1,0 +1,25 @@
+#\u9a8c\u8bc1\u7801\u6709\u6548\u65f6\u95f4\uff08\u5206\u949f\uff09
+captcha.valid.minute = 30
+#\u9a8c\u8bc1\u7801\u4e00\u5929\u5185\u83b7\u53d6\u6b21\u6570\u4e0a\u9650
+captcha.valid.count = 6
+#\u9a8c\u8bc1\u7801\u83b7\u53d6\u9891\u7387\uff08\u79d2\u6570\uff09
+captcha.valid.second = 60
+
+sms.url = http://wt.3tong.net/json/sms/Submit
+sms.user = dh34161
+sms.pass = O8k78ka8
+sms.sign = \u3010\u5fd7\u9e3f\u7269\u6d41\u3011
+
+
+email.host = smtp.263.net
+email.port = 25
+email.username = maew@gzzhwl.com
+email.password = a38850205
+
+ticket.minute.diff = 4320
+
+#\u4E34\u65F6\u70ED\u95E8\u7EBF\u8DEF
+hotline.tmp = [{"startCodeC":"440100"},{"startCodeC":"330300"},{"startCodeC":"330700"}]
+
+#\u5185\u7F6E\u8D85\u7EA7\u7BA1\u7406\u5458
+superadmin.staffid = 1c4b00ff-e194-4fbe-8931-7d9188ed8031

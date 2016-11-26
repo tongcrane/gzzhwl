@@ -1,0 +1,16 @@
+package com.gzzhwl.api.message.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.api.message.service.MessageTipsService;
+
+@RestController
+@RequestMapping("/api/message")
+public class MessageTipsController {
+	
+	@Autowired
+	private MessageTipsService messageTipsService;
+
+}

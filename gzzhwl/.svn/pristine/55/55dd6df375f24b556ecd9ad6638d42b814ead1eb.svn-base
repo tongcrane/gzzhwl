@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<bean id="redisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<!--最大连接数 -->
+		<property name="maxTotal" value="30" />
+		<!--最大空闲数 -->
+		<property name="maxIdle" value="5" />
+		<!--最小空闲数 -->
+		<property name="minIdle" value="0" />
+		<!--达到最大连接数是否阻塞 -->
+		<property name="blockWhenExhausted" value="true" />
+		<!--最大连接数后最长阻塞时间 -->
+		<property name="maxWaitMillis" value="15000" />
+		<!--连接空闲的最小时间，可能被移除 -->
+		<property name="minEvictableIdleTimeMillis" value="60000" />
+		<!--连接空闲的最小时间，多余最小空闲连接的将被移除 -->
+		<property name="softMinEvictableIdleTimeMillis" value="30000" />
+		<!--对于“空闲链接”检测线程而言，每次检测的链接资源的个数。默认为3. -->
+		<property name="numTestsPerEvictionRun" value="3" />
+		<!--空闲连接的检测周期 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!--当连接给调用者使用时，是否检测空间超时 -->
+		<property name="testWhileIdle" value="false" />
+		<!--当连接给调用者使用时，是否检测其有效性 -->
+		<property name="testOnBorrow" value="false" />
+		<!--归还连接时，是否检测其有效性 -->
+		<property name="testOnReturn" value="false" />
+
+	</bean>
+
+	<bean id="connectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:hostName="${redis.host}" p:port="${redis.port}" p:password="${redis.password}"
+		p:timeout="${redis.timeout}"
+		p:poolConfig-ref="redisPoolConfig" />
+
+	<!--关于class说明 -->
+	<!--RedisTemplate：可操作对象，最终会将对象转化为字节（所以对象需支持序列化和反序列化） -->
+	<!--StringRedisTemplate:操作对象是String类型 -->
+	<!-- 
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		
+		<property name="enableTransactionSupport" value="true" />
+	</bean>
+	 -->
+	 
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<!--是否开启事务，支持@Transactional-->
+		<property name="enableTransactionSupport" value="true" />
+	</bean>
+
+</beans>

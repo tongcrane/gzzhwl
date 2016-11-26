@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.OrderInfoExtDao">
+
+	<resultMap id="quoteOrderInfoMap"  type="QuoteOrderInfo" >
+		<id property="orderId" column="order_id"/>
+		<result property="belongDepartId" column="belong_depart_id"/>
+		<result property="paymentType" column="payment_type"/>
+		<result property="pickUpTime" column="pick_up_time"/>
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" ></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap"></resultMap>
+	<resultMap id="findLoadResultMap" type="java.util.HashMap">
+		<result property="loadNo" column="load_no"/>
+		<result property="orderNo" column="order_no"/>
+		<result property="consignNo" column="consign_no"/>
+		<result property="goodsName" column="goods_name"/>
+		<result property="lineAttribute" column="line_attribute"/>
+		<result property="needType" column="need_type"/>
+		<result property="needLength" column="need_length"/>
+		<result property="needImportedVehicles" column="need_imported_vehicles"/>
+		<result property="needStartTime" column="need_start_time"/>
+		<result property="needArriveTime" column="need_arrive_time"/>
+		<result property="startCodeP" column="start_code_p"/>
+		<result property="startCodeC" column="start_code_c"/>
+		<result property="transferCodeP" column="transfer_code_p"/>
+		<result property="transferCodeC" column="transfer_code_c"/>
+		<result property="endCodeP" column="end_code_p"/>
+		<result property="endCodeC" column="end_code_c"/>
+		<result property="customerName" column="customer_name"/>
+		<result property="contactName" column="contact_name"/>
+		<result property="sendArea" column="send_area"/>
+		<result property="sendAddress" column="send_address"/>
+		<result property="receiveArea" column="receive_area"/>
+		<result property="receiveAddress" column="receive_address"/>
+		<result property="goodsVolume" column="goods_volume"/>
+		<result property="updatedTime" column="updated_time"/>
+		<result property="receiveName" column="receive_name"/>
+		<result property="miles" column="miles"/>
+		<result property="needArriveFieldTime" column="need_arrive_field_time"/>
+		<result property="storeAddrName" column="store_addr_name"/>
+		<result property="storeProvinceCode" column="store_province_code"/>
+		<result property="storeCityCode" column="store_city_code"/>
+		<result property="storeDistrictCode" column="store_district_code"/>
+		<result property="storeAddress" column="store_address"/>
+		<result property="loadId" column="load_id"/>
+	</resultMap> 
+
+	<!--CBS 总览 订单列表查询 -->
+	<select id="getOrderList" parameterType="map" resultMap="pageResultMap">
+		SELECT
+			zodi.order_id AS orderId,
+			zodi.order_no AS orderNo,
+			zosi.customer_id AS customerId,
+			cust.full_name AS customerName,
+			zodi.created_time AS createdTime,
+			zci.consign_id AS consignId,
+			zci.consign_no AS consignNo,
+			zci.created_time AS consignCreatedTime,
+			zodi.status,
+			zoli.load_no as loadNo,
+			zrvi.plate_number as plateNumber
+		FROM
+			zh_order_detail_info zodi
+		INNER JOIN (
+			zh_order_base_info zobi
+			LEFT JOIN (
+				zh_order_sender_info zosi
+				LEFT JOIN zh_customer_info cust ON zosi.customer_id = cust.customer_id
+			) ON zobi.info_id = zosi.info_id
+		) ON zodi.info_id = zobi.info_id
+		 <if test="type != null">
+		       AND zobi.type = #{type}
+		 </if> 	
+		LEFT JOIN zh_consignment_info zci ON zci.order_id = zodi.order_id
+   		 <if test="isDeleted != null">
+      		 and zci.is_deleted=#{isDeleted}
+   		</if> 
+		LEFT JOIN (
+			(
+				SELECT
+					order_id,
+					vehicle_info_id,
+					load_no
+				FROM
+					zh_order_load_info
+		   		<if test="loadStatus != null">
+		      		where status in ${loadStatus}
+		   		</if> 
+			) zoli
+			LEFT JOIN (
+				SELECT
+					vehicle_info_id,
+					plate_number
+				FROM
+					zh_real_vehicle_info
+				<if test="isDeleted != null">
+		        	where is_deleted=#{isDeleted}
+		     	</if>
+			) zrvi ON zoli.vehicle_info_id = zrvi.vehicle_info_id
+		) ON zoli.order_id = zodi.order_id
+		 <trim prefix="WHERE" prefixOverrides="AND |OR ">
+			  <if test="keyWord != null">
+		        (zodi.order_no=#{keyWord}
+		     </if> 
+		     <if test="keyWord != null">
+		        or zci.consign_no=#{keyWord}
+		     </if>
+		     <if test="keyWord != null">
+		        or zobi.customer_bill_no=#{keyWord}
+		     </if>
+		     <if test="keyWord != null">
+		        or cust.full_Name like '%${keyWord}%')
+		     </if>  
+		     <if test="isDeleted != null">
+		        and zodi.is_deleted=#{isDeleted}
+		     </if>
+		     order by  zodi.created_time
+		  	 <if test="sort != null and  sort == 00" >
+		       	 asc
+		     </if>
+		      <if test="sort != null and sort == 01">
+		       	 desc
+		     </if>
+		 </trim>
+	</select>
+	
+	<!--CBS 货源 订单列表查询 -->
+	<select id="getOrders" parameterType="map" resultMap="pageResultMap">
+		SELECT
+			de.order_id AS orderId,
+			de.order_no AS orderNo,
+			cust.full_name AS customerName,
+			line.start_code_p AS startCodeP,
+			line.start_code_c AS startCodeC,
+			line.end_code_p AS endCodeP,
+			line.end_code_c AS endCodeC,
+			base.line_attribute AS lineAttribute,
+			de.status,
+			zorl.status as retStatus,
+			de.created_time AS createdTime
+		FROM
+			zh_order_detail_info de
+		INNER JOIN (
+			zh_order_base_info base
+			LEFT JOIN zh_order_receiver_info re ON base.info_id = re.info_id
+			LEFT JOIN zh_order_line_info line ON base.info_id = line.info_id
+			LEFT JOIN zh_department_info depart ON base.belong_depart_id = depart.depart_id
+			LEFT JOIN (
+				zh_order_sender_info se
+				LEFT JOIN zh_customer_info cust ON se.customer_id = cust.customer_id
+			) ON base.info_id = se.info_id
+		) ON de.info_id = base.info_id
+		LEFT JOIN zh_consignment_info zci ON zci.order_id = de.order_id	
+		 <if test="isDeleted != null">
+		        and zci.is_deleted=#{isDeleted}
+		 </if> 
+		LEFT JOIN (
+			zh_source_base_info zsbi
+			INNER JOIN (
+				(
+					SELECT
+						*
+					FROM
+						zh_order_source_info
+					WHERE
+						created_time IN (
+							SELECT
+								max(created_time)
+							FROM
+								zh_order_source_info
+							GROUP BY
+								info_id
+						)
+				) AS zosi
+				LEFT JOIN (select * from zh_order_return_log where pid in(select max(pid) from zh_order_return_log group by order_id)) as zorl ON zosi.source_id = zorl.source_id
+			) ON zsbi.info_id = zosi.info_id
+		) ON de.order_id = zsbi.order_id
+		 <trim prefix="WHERE" prefixOverrides="AND |OR ">
+			 <if test="keyWord != null">
+		         (de.order_no=#{keyWord}
+		     </if> 
+		     <if test="keyWord != null">
+		        or base.customer_bill_no=#{keyWord}
+		     </if>
+		     <if test="keyWord != null">
+		        or se.telphone like '%${keyWord}%'
+		     </if>
+		     <if test="keyWord != null">
+		        or se.mobile = #{keyWord}
+		     </if>
+		     <if test="keyWord != null">
+		        or cust.full_Name like '%${keyWord}%')
+		     </if> 
+		     <if test="customerId != null">
+		        and se.customer_id = #{customerId}
+		     </if> 
+		     <if test="customerName != null">
+		        and cust.full_name like '%${customerName}%'
+		     </if>   
+		     <if test="agreementId != null">
+		        and base.agreement_Id=#{agreementId}
+		     </if>
+		     <if test="createdTimeS != null">
+		        and de.created_time >= #{createdTimeS}
+		     </if>  
+		     <if test="createdTimeE != null">
+		        <![CDATA[and de.created_time <= #{createdTimeE}]]>
+		     </if>  
+		     <if test="createDepartName != null">
+		        and depart.name like '%${createDepartName}%'
+		     </if> 
+		     <if test="lineStartP != null">
+		        and line.start_code_p=#{lineStartP}
+		     </if>  
+		     <if test="lineStartC != null">
+		        and line.start_code_c=#{lineStartC}
+		     </if>    
+		 	 <if test="lineEndP != null">
+		        and line.end_code_p=#{lineEndP}
+		     </if>
+		 	 <if test="lineEndC != null">
+		        and line.end_code_c=#{lineEndC}
+		     </if>
+		 	 <if test="sendContractName != null">
+		        and se.contact_name like '%${sendContractName}%'
+		     </if>	
+		 	 <if test="sendMobile != null">
+		        and se.mobile=#{sendMobile}
+		     </if>
+		 	 <if test="reciContractName != null">
+		        and re.contact_name like '%${reciContractName}%'
+		     </if>	
+		 	 <if test="reciMobile != null">
+		        and re.mobile=#{reciMobile}
+		     </if>			 
+		     <if test="isDeleted != null">
+		        and de.is_deleted=#{isDeleted}
+		     </if> 
+		     <if test="orderStatus != null">
+		        and de.status in  
+		        <foreach collection="orderStatus" index="index" item="eachStatus" open="(" separator="," close=")"> 
+		 		#{eachStatus}
+		 		</foreach>
+		     </if> 
+		     <if test="retStatus != null">
+		        and zorl.status=#{retStatus}
+		     </if> 
+			 <if test="status != null">
+		        and de.status not in (${status})
+		     </if>   	 
+		  	 
+		  	 order by de.created_time
+		  	 <if test="sort != null and  sort == 00" >
+		       	 asc
+		     </if>
+		      <if test="sort != null and sort == 01">
+		       	 desc
+		     </if>
+		 </trim>
+	</select>
+	
+	<!-- 获取退回申请列表 -->
+	<select id="getOrderReturnList" parameterType="map" resultMap="pageResultMap">
+		SELECT
+			zorl.pid,
+			zorl.order_id as orderId,
+			zodi.order_no as orderNo,
+			zosi.source_id as sourceId,
+			zosi.start_code_p as startCodeP,
+			zosi.start_code_c as startCodeC,
+			zosi.end_code_p as endCodeP,
+			zosi.end_code_c as endCodeC,
+			zobi.need_start_time as needStartTime,
+			zobi.need_arrive_time as needArriveTime,
+			zobi.need_length as needLength,
+			zobi.need_type as needType,
+			zobi.remark as orderRemark,
+			zosi.remark as sourRemark,
+			zodi.status as orderStatus,
+			zorl.status as retStatus,
+			zosi.created_time as createdTime
+		FROM
+			zh_order_return_log zorl
+		INNER JOIN (
+			zh_order_detail_info zodi
+			INNER JOIN zh_order_base_info zobi ON zodi.info_id = zobi.info_id
+		) ON zorl.order_id = zodi.order_id
+		INNER JOIN
+			zh_order_source_info zosi
+			ON zorl.source_id = zosi.source_id
+		 <trim prefix="WHERE" prefixOverrides="AND |OR ">
+		 	  <if test="queryContent != null">
+		        and zodi.order_no=#{queryContent}
+		     </if> 
+		     <if test="status != null">
+		        and zorl.status=#{status}
+		     </if> 
+		     <if test="isDeleted != null">
+		        and zodi.is_deleted=#{isDeleted}
+		     </if> 
+		 </trim>
+	</select>	
+
+	<!-- 提货单详情页面配载单据信息 -->
+	<select id="getLoadOrderInfo" parameterType="map" resultMap="findLoadResultMap">
+		select
+		zodi.order_no,
+		zci.consign_no,
+		zobi.goods_name,
+		zobi.line_attribute,
+		zobi.need_type,
+		zobi.need_length,
+		zobi.need_imported_vehicles,
+		zobi.need_start_time,
+		zobi.need_arrive_time,
+		zoli.start_code_p,
+		zoli.start_code_c,
+		zoli.transfer_code_p,
+		zoli.transfer_code_c,
+		zoli.end_code_p,
+		zoli.end_code_c,
+		zosi.customer_name,
+		zosi.area_code as send_area,
+		zosi.address as send_address,
+		zosi.contact_name,
+		zosi.telphone,
+		zori.area_code as receive_area,
+		zori.address as receive_address
+		from zh_order_detail_info zodi
+		left join zh_consignment_info zci on zodi.order_id=zci.order_id
+		left join (zh_order_base_info zobi 
+			left join zh_order_line_info zoli on zobi.info_id=zoli.info_id
+			left join zh_order_sender_info zosi on zobi.info_id=zosi.info_id
+			left join zh_order_receiver_info zori on zobi.info_id=zori.info_id
+		) on zodi.info_id=zobi.info_id
+		where zodi.order_id=#{orderId}
+	</select>
+
+	
+	<!-- 获取司机APP订单列表 -->
+	<select id="getDriverOrderList" parameterType="map" resultMap="findLoadResultMap">
+		<![CDATA[ 
+		select
+		zoli1.status,
+		zoli1.load_no,
+		zoli1.load_id,
+		zodi.order_no,
+		zci.consign_no,
+		zobi.goods_name,
+		zobi.line_attribute,
+		zobi.need_type,
+		zobi.need_length,
+		zobi.need_imported_vehicles,
+		zobi.need_start_time,
+		zobi.need_arrive_time,
+		zobi.need_length,
+		zobi.goods_weight,
+		zobi.goods_volume,
+		zoli.start_code_p,
+		zoli.start_code_c,
+		zoli.transfer_code_p,
+		zoli.transfer_code_c,
+		zoli.end_code_p,
+		zoli.end_code_c,
+		zosi.customer_name,
+		zosi.area_code as send_area,
+		zosi.address as send_address,
+		zosi.contact_name,
+		zosi.telphone,
+		zori.area_code as receive_area,
+		zori.address as receive_address,
+		zori.contact_name as receive_name,
+		zoli1.updated_time,
+		zobi.miles,
+		zoli1.need_arrive_time as need_arrive_field_time,
+		zsai.addr_name as store_addr_name,
+		zsai.province_code as store_province_code,
+		zsai.city_code as store_city_code,
+		zsai.district_code as store_district_code,
+		zsai.address as store_address
+		from 
+		zh_order_load_info zoli1 inner join zh_load_driver_info zldi on zoli1.load_id = zldi.load_id
+		and zldi.is_major = #{isMajor}
+		inner join ( zh_order_detail_info zodi left join zh_consignment_info zci on zodi.order_id=zci.order_id
+		left join (zh_order_base_info zobi 
+			left join zh_order_line_info zoli on zobi.info_id=zoli.info_id
+			left join zh_order_sender_info zosi on zobi.info_id=zosi.info_id
+			left join zh_order_receiver_info zori on zobi.info_id=zori.info_id
+			left join zh_store_addr_info zsai on  zobi.addr_id = zsai.addr_id
+		) on zodi.info_id=zobi.info_id)
+		on zoli1.order_id = zodi.order_id
+		where 
+		zldi.driver_info_id = #{driverInfoId}
+		]]>
+		
+		<if test="statusArray != null">
+		 and zoli1.status in
+		  <foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+		        	#{status}
+		   </foreach>
+	    </if>
+	    
+	    
+	</select>
+	
+	
+
+	
+	<!-- 根据报价ID获取订单信息用于自动生成提货单 -->
+	<select id="getOrderInfoByQuoted" parameterType="map" resultMap="quoteOrderInfoMap">
+		select
+			zodi.order_id,
+			zobi.belong_depart_id,
+			zobi.payment_type,
+			zobi.pick_up_time
+		from
+			zh_order_detail_info zodi
+		inner join (
+			zh_source_base_info zsbi
+			inner join (
+				zh_order_source_info zosi
+				inner join zh_quoted_info zqi on zqi.source_id = zosi.source_id
+			) on zosi.info_id = zsbi.info_id
+		) on zodi.order_id = zsbi.order_id
+		inner join zh_order_base_info zobi on zobi.info_id = zodi.info_id
+		where
+			zqi.quoted_id = #{quotedId}
+	</select>
+	
+
+</mapper> 

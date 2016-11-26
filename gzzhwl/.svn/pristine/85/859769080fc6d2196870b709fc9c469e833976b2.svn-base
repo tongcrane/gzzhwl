@@ -1,0 +1,170 @@
+package com.gzzhwl.admin.supply.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.supply.service.SupplyService;
+import com.gzzhwl.admin.supply.validate.SupplyValidate;
+import com.gzzhwl.admin.supply.vo.SupplyInfoVo;
+import com.gzzhwl.admin.supply.vo.SupplyQueryVo;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.SeqNoKey;
+import com.gzzhwl.core.data.dao.SupplyBankInfoDao;
+import com.gzzhwl.core.data.dao.SupplyInfoDao;
+import com.gzzhwl.core.data.extdao.SupplyInfoExtDao;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.data.model.SupplyBankInfo;
+import com.gzzhwl.core.data.model.SupplyInfo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+
+@Service
+public class SupplyServiceImpl implements SupplyService {
+	@Autowired
+	private Mapper beanMapper;
+	@Autowired
+	private SupplyInfoDao supplyDao;
+	@Autowired
+	private SupplyBankInfoDao bankDao;
+	@Autowired
+	private SupplyInfoExtDao supplyExtDao;
+	@Autowired
+	private RegionService regionService;
+
+	@Override
+	public String saveSupplyVo(SupplyInfoVo vo, String staffId, Integer departId) {
+		SupplyInfo supplyInfo = beanMapper.map(vo, SupplyInfo.class);
+		String supplyId = this.saveSupplyInfo(supplyInfo, staffId, departId);
+
+		SupplyBankInfo bankInfo = beanMapper.map(vo, SupplyBankInfo.class);
+		bankInfo.setSupplyId(supplyId);
+		bankDao.insert(bankInfo);
+		return supplyId;
+	}
+
+	public String saveSupplyInfo(SupplyInfo supplyInfo, String staffId, Integer departId) {
+		//校验供应商信息
+		validateSupply(supplyInfo);
+		
+		String id = IdentifierUtils.getId().generate().toString();
+		supplyInfo.setSupplyId(id);
+		String supplyNo = IdentifierUtils.getSequence(SeqNoKey.SUPPLY).generate().toString();
+		supplyInfo.setSupplyNo(supplyNo);
+		supplyInfo.setCreatedBy(staffId);
+		supplyInfo.setUpdatedBy(staffId);
+		if (departId != null) {
+			supplyInfo.setBelongDepartId(departId + "");
+		}
+		supplyInfo.setStatus(Global.STATUS_NORMAL.toString());
+		supplyInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		supplyDao.insert(supplyInfo);
+		return id;
+	}
+
+	public void validateSupply(SupplyInfo supplyInfo) {
+		// 供应商必输项和格式校验
+		SupplyValidate.valid_supply(supplyInfo);
+
+		// 供应商唯一性校验
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("taxRegCode", supplyInfo.getTaxRegCode());
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		if (StringUtils.isNotBlank(supplyInfo.getSupplyId())) {
+			params.put("supplyId", supplyInfo.getSupplyId());
+		}
+		List<Map<String, Object>> list = supplyExtDao.find(params);
+		SupplyValidate.valid_exist(!ValidateUtils.isEmpty(list));
+	}
+
+	@Override
+	public String updateSupply(SupplyInfoVo vo, String staffId) {
+		SupplyInfo supplyInfo = beanMapper.map(vo, SupplyInfo.class);
+		String supplyId = this.updateSupplyInfo(supplyInfo, staffId);
+
+		SupplyBankInfo bankInfo = beanMapper.map(vo, SupplyBankInfo.class);
+		bankDao.updateSelective(bankInfo);
+		return supplyId;
+	}
+
+	public String updateSupplyInfo(SupplyInfo supplyInfo, String staffId) {
+		String supplyId = supplyInfo.getSupplyId();
+		// 验证supplyID是否为空
+		SupplyValidate.valid_supplyId(supplyId);
+
+		// 验证供货商是否存在
+		SupplyInfo info = supplyDao.get(supplyId);
+		SupplyValidate.valid_not_exist(!ValidateUtils.isEmpty(info));
+		
+		//验证供应商信息合法性
+		validateSupply(supplyInfo);
+
+		// 更新
+		supplyDao.updateSelective(supplyInfo);
+		return supplyId;
+	}
+
+	@Override
+	public void removeSupply(String supplyId, String staffId) {
+		SupplyValidate.valid_supplyId(supplyId);
+
+		// 验证供货商是否存在
+		SupplyInfo info = supplyDao.get(supplyId);
+		SupplyValidate.valid_not_exist(!ValidateUtils.isEmpty(info));
+
+		// 删除
+		SupplyInfo supplyInfo = new SupplyInfo();
+		supplyInfo.setSupplyId(supplyId);
+		supplyInfo.setUpdatedBy(staffId);
+		supplyInfo.setIsDeleted(Global.ISDEL_DELETE.toString());
+		supplyDao.updateSelective(supplyInfo);
+	}
+
+	@Override
+	public List<Map<String, Object>> getSupplyList(String keyWord) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (StringUtils.isNotBlank(keyWord)) {
+			params.put("keyWord", keyWord);
+		}
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		List<Map<String, Object>> supplyList = supplyExtDao.getSupplyList(params);
+		return supplyList;
+	}
+
+	@Override
+	public Page<Map<String, Object>> pageSupplyList(SupplyQueryVo queryVo, int pageIndex, int pageSize) {
+		Map<String, Object> params = queryVo.getParam();
+		Page<Map<String, Object>> result = supplyExtDao.pageSupplyList(params, pageIndex, pageSize);
+		return result;
+	}
+
+	@Override
+	public Map<String, Object> getSupplyDetail(String supplyId) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		// 验证supplyID是否为空
+		SupplyValidate.valid_supplyId(supplyId);
+
+		SupplyInfo supplyInfo = supplyDao.get(supplyId);
+		// 验证供货商是否存在
+		SupplyValidate.valid_not_exist(!ValidateUtils.isEmpty(supplyInfo));
+		Map<String, Object> supplyMap = new HashMap<String, Object>();
+
+		beanMapper.map(supplyInfo, supplyMap);
+		List<RegionInfo> area = regionService.findRootByCode(supplyInfo.getAreaCode());
+		supplyMap.put("area", area);
+		result.put("supplyInfo", supplyMap);
+
+		SupplyBankInfo bankInfo = bankDao.get(supplyId);
+		result.put("bankInfo", bankInfo);
+
+		return result;
+	}
+
+}

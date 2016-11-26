@@ -1,0 +1,25 @@
+package com.gzzhwl.core.message;
+
+public enum TipsSourceType {
+	
+	/**
+	 * 报价
+	 */
+	TIPS_S01("01"),
+	/**
+	 * 提货单
+	 */
+	TIPS_S02("02");
+	
+	
+	private String code;
+
+	public String getCode() {
+		return code;
+	}
+
+	private TipsSourceType(String code) {
+		this.code = code;
+	}
+
+}

@@ -1,0 +1,5 @@
+package com.gzzhwl.admin.store.service;
+
+public interface StoreService {
+
+}

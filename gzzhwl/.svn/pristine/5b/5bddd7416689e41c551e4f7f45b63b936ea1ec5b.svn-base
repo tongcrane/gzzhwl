@@ -1,0 +1,45 @@
+package com.gzzhwl.api.account.vo;
+
+import java.util.List;
+
+public class RegInfo {
+	
+	private String telphone;
+	private String password;
+	private String barCode;
+	private String deviceType;
+	private List<Line> lineList;
+	
+	public String getTelphone() {
+		return telphone;
+	}
+	public void setTelphone(String telphone) {
+		this.telphone = telphone;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getBarCode() {
+		return barCode;
+	}
+	public void setBarCode(String barCode) {
+		this.barCode = barCode;
+	}
+	public String getDeviceType() {
+		return deviceType;
+	}
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
+	}
+	public List<Line> getLineList() {
+		return lineList;
+	}
+	public void setLineList(List<Line> lineList) {
+		this.lineList = lineList;
+	}
+
+
+}

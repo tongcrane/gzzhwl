@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.OrderBaseInfoDao">
+
+	<resultMap id="orderBaseInfoResultMap" type="OrderBaseInfo">
+		<id property="infoId" column="info_id" />
+		<result property="type" column="type" />
+		<result property="belongDepartId" column="belong_depart_id" />
+		<result property="agreementId" column="agreement_id" />
+		<result property="needType" column="need_type" />
+		<result property="needLength" column="need_length" />
+		<result property="needStartTime" column="need_start_time" />
+		<result property="needArriveTime" column="need_arrive_time" />
+		<result property="orderType" column="order_type" />
+		<result property="lineAttribute" column="line_attribute" />
+		<result property="goodsName" column="goods_name" />
+		<result property="goodsWeight" column="goods_weight" />
+		<result property="goodsVolume" column="goods_volume" />
+		<result property="needImportedVehicles" column="need_imported_vehicles" />
+		<result property="needOwnVehicles" column="need_own_vehicles" />
+		<result property="chargeId" column="charge_id" />
+		<result property="unitPrice" column="unit_price" />
+		<result property="miles" column="miles" />
+		<result property="paymentType" column="payment_type" />
+		<result property="orderAdvice" column="order_advice" />
+		<result property="customerBillNo" column="customer_bill_no" />
+		<result property="remark" column="remark" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="addrId" column="addr_id" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="orderBaseInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="orderBaseInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="OrderBaseInfo">
+	   insert into zh_order_base_info (
+	     info_id,
+	     type,
+	     belong_depart_id,
+	     agreement_id,
+	     need_type,
+	     need_length,
+	     need_start_time,
+	     need_arrive_time,
+	     order_type,
+	     line_attribute,
+	     goods_name,
+	     goods_weight,
+	     goods_volume,
+	     need_imported_vehicles,
+	     need_own_vehicles,
+	     charge_id,
+	     unit_price,
+	     miles,
+	     payment_type,
+	     order_advice,
+	     customer_bill_no,
+	     remark,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted,
+	     addr_id
+	   )values (
+	     #{infoId},
+	     #{type},
+	     #{belongDepartId},
+	     #{agreementId},
+	     #{needType},
+	     #{needLength},
+	     #{needStartTime},
+	     #{needArriveTime},
+	     #{orderType},
+	     #{lineAttribute},
+	     #{goodsName},
+	     #{goodsWeight},
+	     #{goodsVolume},
+	     #{needImportedVehicles},
+	     #{needOwnVehicles},
+	     #{chargeId},
+	     #{unitPrice},
+	     #{miles},
+	     #{paymentType},
+	     #{orderAdvice},
+	     #{customerBillNo},
+	     #{remark},
+	     #{createdBy},
+	     now(),
+	     #{updatedBy},
+	     now(),
+	     #{isDeleted},
+	     #{addrId}
+	   )
+	</insert>
+
+	<update id="update" parameterType="OrderBaseInfo">
+	   update zh_order_base_info set
+	     info_id=#{infoId},
+	     type=#{type},
+	     belong_depart_id=#{belongDepartId},
+	     agreement_id=#{agreementId},
+	     need_type=#{needType},
+	     need_length=#{needLength},
+	     need_start_time=#{needStartTime},
+	     need_arrive_time=#{needArriveTime},
+	     order_type=#{orderType},
+	     line_attribute=#{lineAttribute},
+	     goods_name=#{goodsName},
+	     goods_weight=#{goodsWeight},
+	     goods_volume=#{goodsVolume},
+	     need_imported_vehicles=#{needImportedVehicles},
+	     need_own_vehicles=#{needOwnVehicles},
+	     charge_id=#{chargeId},
+	     unit_price=#{unitPrice},
+	     miles=#{miles},
+	     payment_type=#{paymentType},
+	     order_advice=#{orderAdvice},
+	     customer_bill_no=#{customerBillNo},
+	     remark=#{remark},
+	     updated_by=#{updatedBy},
+	     updated_time=now(),
+	     is_deleted=#{isDeleted},
+	     addr_id=#{addrId}
+	   where 
+	    info_id=#{infoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="OrderBaseInfo">
+	   update zh_order_base_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="infoId != null">
+		       info_id=#{infoId},
+		     </if>
+		     <if test="type != null">
+		       type=#{type},
+		     </if>
+		     <if test="belongDepartId != null">
+		       belong_depart_id=#{belongDepartId},
+		     </if>
+		     <if test="agreementId != null">
+		       agreement_id=#{agreementId},
+		     </if>
+		     <if test="needType != null">
+		       need_type=#{needType},
+		     </if>
+		     <if test="needLength != null">
+		       need_length=#{needLength},
+		     </if>
+		     <if test="needStartTime != null">
+		       need_start_time=#{needStartTime},
+		     </if>
+		     <if test="needArriveTime != null">
+		       need_arrive_time=#{needArriveTime},
+		     </if>
+		     <if test="orderType != null">
+		       order_type=#{orderType},
+		     </if>
+		     <if test="lineAttribute != null">
+		       line_attribute=#{lineAttribute},
+		     </if>
+		     <if test="goodsName != null">
+		       goods_name=#{goodsName},
+		     </if>
+		     <if test="goodsWeight != null">
+		       goods_weight=#{goodsWeight},
+		     </if>
+		     <if test="goodsVolume != null">
+		       goods_volume=#{goodsVolume},
+		     </if>
+		     <if test="needImportedVehicles != null">
+		       need_imported_vehicles=#{needImportedVehicles},
+		     </if>
+		     <if test="needOwnVehicles != null">
+		       need_own_vehicles=#{needOwnVehicles},
+		     </if>
+		     <if test="chargeId != null">
+		       charge_id=#{chargeId},
+		     </if>
+		     <if test="unitPrice != null">
+		       unit_price=#{unitPrice},
+		     </if>
+		     <if test="miles != null">
+		       miles=#{miles},
+		     </if>
+		     <if test="paymentType != null">
+		       payment_type=#{paymentType},
+		     </if>
+		     <if test="orderAdvice != null">
+		       order_advice=#{orderAdvice},
+		     </if>
+		     <if test="customerBillNo != null">
+		       customer_bill_no=#{customerBillNo},
+		     </if>
+		     <if test="remark != null">
+		       remark=#{remark},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		       updated_time=now(),
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted},
+		     </if>
+		     <if test="addrId != null">
+		       addr_id=#{addrId}
+		     </if>
+	   </trim>
+	
+	   where 
+	    info_id=#{infoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_order_base_info 
+	   where 
+	    info_id=#{infoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="orderBaseInfoResultMap">
+	   select 
+	    info_id,
+	    type,
+	    belong_depart_id,
+	    agreement_id,
+	    need_type,
+	    need_length,
+	    need_start_time,
+	    need_arrive_time,
+	    order_type,
+	    line_attribute,
+	    goods_name,
+	    goods_weight,
+	    goods_volume,
+	    need_imported_vehicles,
+	    need_own_vehicles,
+	    charge_id,
+	    unit_price,
+	    miles,
+	    payment_type,
+	    order_advice,
+	    customer_bill_no,
+	    remark,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted,
+	    addr_id
+	   from zh_order_base_info
+	   where 
+	    info_id=#{infoId} and is_deleted ='00'
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    info_id,
+	    type,
+	    belong_depart_id,
+	    agreement_id,
+	    need_type,
+	    need_length,
+	    need_start_time,
+	    need_arrive_time,
+	    order_type,
+	    line_attribute,
+	    goods_name,
+	    goods_weight,
+	    goods_volume,
+	    need_imported_vehicles,
+	    need_own_vehicles,
+	    charge_id,
+	    unit_price,
+	    miles,
+	    payment_type,
+	    order_advice,
+	    customer_bill_no,
+	    remark,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted,
+	    addr_id
+	   from zh_order_base_info
+	   where 
+	    info_id=#{infoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     info_id,
+	     type,
+	     belong_depart_id,
+	     agreement_id,
+	     need_type,
+	     need_length,
+	     need_start_time,
+	     need_arrive_time,
+	     order_type,
+	     line_attribute,
+	     goods_name,
+	     goods_weight,
+	     goods_volume,
+	     need_imported_vehicles,
+	     need_own_vehicles,
+	     charge_id,
+	     unit_price,
+	     miles,
+	     payment_type,
+	     order_advice,
+	     customer_bill_no,
+	     remark,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted,
+	     addr_id
+	   from zh_order_base_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="agreementId != null">
+	        and agreement_id=#{agreementId}
+	     </if>
+	     <if test="needType != null">
+	        and need_type=#{needType}
+	     </if>
+	     <if test="needLength != null">
+	        and need_length=#{needLength}
+	     </if>
+	     <if test="needStartTime != null">
+	        and need_start_time=#{needStartTime}
+	     </if>
+	     <if test="needArriveTime != null">
+	        and need_arrive_time=#{needArriveTime}
+	     </if>
+	     <if test="orderType != null">
+	        and order_type=#{orderType}
+	     </if>
+	     <if test="lineAttribute != null">
+	        and line_attribute=#{lineAttribute}
+	     </if>
+	     <if test="goodsName != null">
+	        and goods_name=#{goodsName}
+	     </if>
+	     <if test="goodsWeight != null">
+	        and goods_weight=#{goodsWeight}
+	     </if>
+	     <if test="goodsVolume != null">
+	        and goods_volume=#{goodsVolume}
+	     </if>
+	     <if test="needImportedVehicles != null">
+	        and need_imported_vehicles=#{needImportedVehicles}
+	     </if>
+	     <if test="needOwnVehicles != null">
+	        and need_own_vehicles=#{needOwnVehicles}
+	     </if>
+	     <if test="chargeId != null">
+	        and charge_id=#{chargeId}
+	     </if>
+	     <if test="unitPrice != null">
+	        and unit_price=#{unitPrice}
+	     </if>
+	     <if test="miles != null">
+	        and miles=#{miles}
+	     </if>
+	     <if test="paymentType != null">
+	        and payment_type=#{paymentType}
+	     </if>
+	     <if test="orderAdvice != null">
+	        and order_advice=#{orderAdvice}
+	     </if>
+	     <if test="customerBillNo != null">
+	        and customer_bill_no=#{customerBillNo}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	     <if test="addrId != null">
+	        and addr_id=#{addrId}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     info_id,
+	     type,
+	     belong_depart_id,
+	     agreement_id,
+	     need_type,
+	     need_length,
+	     need_start_time,
+	     need_arrive_time,
+	     order_type,
+	     line_attribute,
+	     goods_name,
+	     goods_weight,
+	     goods_volume,
+	     need_imported_vehicles,
+	     need_own_vehicles,
+	     charge_id,
+	     unit_price,
+	     miles,
+	     payment_type,
+	     order_advice,
+	     customer_bill_no,
+	     remark,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted,
+	     addr_id
+	   from zh_order_base_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="agreementId != null">
+	        and agreement_id=#{agreementId}
+	     </if>
+	     <if test="needType != null">
+	        and need_type=#{needType}
+	     </if>
+	     <if test="needLength != null">
+	        and need_length=#{needLength}
+	     </if>
+	     <if test="needStartTime != null">
+	        and need_start_time=#{needStartTime}
+	     </if>
+	     <if test="needArriveTime != null">
+	        and need_arrive_time=#{needArriveTime}
+	     </if>
+	     <if test="orderType != null">
+	        and order_type=#{orderType}
+	     </if>
+	     <if test="lineAttribute != null">
+	        and line_attribute=#{lineAttribute}
+	     </if>
+	     <if test="goodsName != null">
+	        and goods_name=#{goodsName}
+	     </if>
+	     <if test="goodsWeight != null">
+	        and goods_weight=#{goodsWeight}
+	     </if>
+	     <if test="goodsVolume != null">
+	        and goods_volume=#{goodsVolume}
+	     </if>
+	     <if test="needImportedVehicles != null">
+	        and need_imported_vehicles=#{needImportedVehicles}
+	     </if>
+	     <if test="needOwnVehicles != null">
+	        and need_own_vehicles=#{needOwnVehicles}
+	     </if>
+	     <if test="chargeId != null">
+	        and charge_id=#{chargeId}
+	     </if>
+	     <if test="unitPrice != null">
+	        and unit_price=#{unitPrice}
+	     </if>
+	     <if test="miles != null">
+	        and miles=#{miles}
+	     </if>
+	     <if test="paymentType != null">
+	        and payment_type=#{paymentType}
+	     </if>
+	     <if test="orderAdvice != null">
+	        and order_advice=#{orderAdvice}
+	     </if>
+	     <if test="customerBillNo != null">
+	        and customer_bill_no=#{customerBillNo}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	     <if test="addrId != null">
+	        and addr_id=#{addrId}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

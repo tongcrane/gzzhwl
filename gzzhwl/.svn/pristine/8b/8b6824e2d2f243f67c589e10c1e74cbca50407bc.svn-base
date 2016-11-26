@@ -1,0 +1,140 @@
+package com.gzzhwl.admin.consignment.validate;
+
+import java.math.BigDecimal;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.gzzhwl.admin.consignment.vo.ConsignmentInfoVo;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.data.model.ChargeInfo;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+public class ConsignmentValidate {
+	public static void valid_orderId_not_exist(boolean notExist) {
+		if (notExist) {
+			throw new RestException(ErrorCode.ERROR_400001);
+		}
+	}
+
+	public static void valid_order_not_exist(boolean notExist) {
+		if (notExist) {
+			throw new RestException(ErrorCode.ERROR_400002);
+		}
+	}
+
+	public static void valid_consignment_not_exist(boolean exist) {
+		if (!exist) {
+			throw new RestException(ErrorCode.ERROR_400004);
+		}
+	}
+
+	public static void valid_status(String status) {
+		// 订单只有是待确认状态才允许生成合同
+		if (!"01".equals(status)) {
+			throw new RestException(ErrorCode.ERROR_400005);
+		}
+	}
+
+	public static void valid_consign_exist(boolean exist) {
+		if (exist) {
+			throw new RestException(ErrorCode.ERROR_400006);
+		}
+	}
+	
+	public static void valid_freght_price(String freightPrice) {
+		if (StringUtils.isBlank(freightPrice)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "运费计算有误！");
+		}
+	}
+
+	public static void valid_cosign(ConsignmentInfoVo vo) {
+		if (StringUtils.isBlank(vo.getGoodsWeight())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "实际重量" + ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(!ValidateUtils.validWeight(vo.getGoodsWeight())) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "实际重量输入有误，5位整数及1位小数。" );
+		}
+		
+		if (StringUtils.isBlank(vo.getGoodsVolume())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "实际体积" + ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(!ValidateUtils.validVolumn(vo.getGoodsVolume())) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "实际体积输入有误，3位整数及1位小数。" );
+		}
+		
+		if (StringUtils.isBlank(vo.getFreightPrice())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "运费" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (!ValidateUtils.isMoney(vo.getFreightPrice())) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "运费" + ErrorCode.ERROR_900004.getDesc());
+		}
+		
+		if (StringUtils.isBlank(vo.getLoadPrice())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "装卸费" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (!ValidateUtils.isMoney(vo.getLoadPrice())) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "装卸费" + ErrorCode.ERROR_900004.getDesc());
+		}
+
+	//	double otherPrice = 0;
+		if (StringUtils.isNotBlank(vo.getOtherPrice())) {
+			if (!ValidateUtils.isMoney(vo.getOtherPrice())) {
+				throw new RestException(ErrorCode.ERROR_900004.getCode(), "其他费用" + ErrorCode.ERROR_900004.getDesc());
+			}
+			//otherPrice = Double.valueOf(vo.getOtherPrice()).doubleValue();
+		}
+
+		// if(StringUtils.isNotBlank(vo.getOtherExplain())){
+		// if(!ValidateUtils.isAllNumber(vo.getOtherExplain())) {
+		// throw new RestException(ErrorCode.ERROR_900004.getCode(), "其他费用说明" +
+		// ErrorCode.ERROR_900004.getDesc());
+		// }
+		// }
+
+		if (StringUtils.isBlank(vo.getTotal())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "总费用" + ErrorCode.ERROR_900003.getDesc());
+		}
+		if (!ValidateUtils.isMoney(vo.getTotal())) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "总费用" + ErrorCode.ERROR_900004.getDesc());
+		}
+
+		if (StringUtils.isBlank(vo.getGoodsWeight())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "货物重量" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (!ValidateUtils.validCode(vo.getGoodsWeight())) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "货物重量" + ErrorCode.ERROR_900004.getDesc());
+		}
+
+		if (StringUtils.isBlank(vo.getGoodsVolume())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "货物体积" + ErrorCode.ERROR_900003.getDesc());
+		}
+		if (!ValidateUtils.validVolumn(vo.getGoodsVolume())) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "货物体积" + ErrorCode.ERROR_900004.getDesc());
+		}
+
+//		double freightPrice = Double.valueOf(vo.getFreightPrice()).doubleValue();
+//		double loadPrice = Double.valueOf(vo.getLoadPrice()).doubleValue();
+//		double total = Double.valueOf(vo.getTotal()).doubleValue();
+//		if (total != (freightPrice + loadPrice + otherPrice)) {
+//			throw new RestException(ErrorCode.ERROR_400007);
+//		}
+	}
+	
+	public static void valid_charge_id(String chargeId) {
+		if (StringUtils.isBlank(chargeId)) {
+			throw new RestException(ErrorCode.ERROR_400008);
+		}
+	}
+	
+	public static void valid_charge_info_exist(ChargeInfo chargeInfo) {
+		if(ValidateUtils.isEmpty(chargeInfo)) {
+			throw new RestException(ErrorCode.ERROR_400009);
+		}
+	}
+}

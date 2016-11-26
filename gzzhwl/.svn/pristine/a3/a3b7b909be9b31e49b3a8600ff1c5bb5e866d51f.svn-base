@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.OrderLoadInfoDao">
+
+	<resultMap id="orderLoadInfoResultMap" type="OrderLoadInfo">
+		<id property="loadId" column="load_id" />
+		<result property="source" column="source" />
+		<result property="type" column="type" />
+		<result property="belongDepartId" column="belong_depart_id" />
+		<result property="loadNo" column="load_no" />
+		<result property="orderId" column="order_id" />
+		<result property="quotedId" column="quoted_id" />
+		<result property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="loadInfoId" column="load_info_id" />
+		<result property="needArriveTime" column="need_arrive_time" />
+		<result property="freightPrice" column="freight_price" />
+		<result property="isPredict" column="is_predict" />
+		<result property="prePay" column="pre_pay" />
+		<result property="oilPay" column="oil_pay" />
+		<result property="oilCardNo" column="oil_card_no" />
+		<result property="paymentType" column="payment_type" />
+		<result property="paymentName" column="payment_name" />
+		<result property="supplyId" column="supply_id" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="orderLoadInfoResultMap">
+		<result property="orderId" column="order_id"/>
+		<result property="orderNo" column="order_no"/>
+		<result property="plateNumber" column="plate_number"/>
+		<result property="startCodeP" column="start_code_p"/>
+		<result property="startCodeC" column="start_code_c"/>
+		<result property="transferCodeP" column="transfer_code_p"/>
+		<result property="transferCodeC" column="transfer_code_c"/>
+		<result property="endCodeP" column="end_code_p"/>
+		<result property="endCodeC" column="end_code_c"/>
+	</resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="orderLoadInfoResultMap">
+		<result property="attributes" column="attributes"/>
+		<result property="plateNumber" column="plate_number"/>
+		<result property="headstockType" column="headstock_type"/>
+		<result property="bridgeType" column="bridge_type"/>
+		<result property="loadPlateNumber" column="load_plate_number"/>
+		<association property="supplyInfo" columnPrefix="supply_" resultMap="supplyResultMap" />
+	</resultMap>
+	
+	<resultMap id="supplyResultMap" type="map">
+		<id property="productId" column="supply_id" />
+		<result property="paymentType" column="payment_type" />
+		<result property="fullName" column="full_name"/>
+		<result property="contactName" column="contact_name"/>
+	</resultMap>
+
+	<insert id="insert" parameterType="OrderLoadInfo">
+	   insert into zh_order_load_info (
+	     load_id,
+	     source,
+	     type,
+	     belong_depart_id,
+	     load_no,
+	     order_id,
+	     quoted_id,
+	     vehicle_info_id,
+	     load_info_id,
+	     need_arrive_time,
+	     freight_price,
+	     is_predict,
+	     pre_pay,
+	     oil_pay,
+	     oil_card_no,
+	     payment_type,
+	     payment_name,
+	     supply_id,
+	     remark,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   )values (
+	     #{loadId},
+	     #{source},
+	     #{type},
+	     #{belongDepartId},
+	     #{loadNo},
+	     #{orderId},
+	     #{quotedId},
+	     #{vehicleInfoId},
+	     #{loadInfoId},
+	     #{needArriveTime},
+	     #{freightPrice},
+	     #{isPredict},
+	     #{prePay},
+	     #{oilPay},
+	     #{oilCardNo},
+	     #{paymentType},
+	     #{paymentName},
+	     #{supplyId},
+	     #{remark},
+	     #{status},
+	     #{createdBy},
+	     now(),
+	     #{updatedBy},
+	     now(),
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="OrderLoadInfo">
+	   update zh_order_load_info set
+	     load_id=#{loadId},
+	     source=#{source},
+	     type=#{type},
+	     belong_depart_id=#{belongDepartId},
+	     load_no=#{loadNo},
+	     order_id=#{orderId},
+	     quoted_id=#{quotedId},
+	     vehicle_info_id=#{vehicleInfoId},
+	     load_info_id=#{loadInfoId},
+	     need_arrive_time=#{needArriveTime},
+	     freight_price=#{freightPrice},
+	     is_predict=#{isPredict},
+	     pre_pay=#{prePay},
+	     oil_pay=#{oilPay},
+	     oil_card_no=#{oilCardNo},
+	     payment_type=#{paymentType},
+	     payment_name=#{paymentName},
+	     supply_id=#{supplyId},
+	     remark=#{remark},
+	     status=#{status},
+	     updated_by=#{updatedBy},
+	     updated_time=now(),
+	     is_deleted=#{isDeleted}
+	   where 
+	    load_id=#{loadId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="OrderLoadInfo">
+	   update zh_order_load_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="loadId != null">
+		       load_id=#{loadId},
+		     </if>
+		     <if test="source != null">
+		       source=#{source},
+		     </if>
+		     <if test="type != null">
+		       type=#{type},
+		     </if>
+		     <if test="belongDepartId != null">
+		       belong_depart_id=#{belongDepartId},
+		     </if>
+		     <if test="loadNo != null">
+		       load_no=#{loadNo},
+		     </if>
+		     <if test="orderId != null">
+		       order_id=#{orderId},
+		     </if>
+		     <if test="quotedId != null">
+		       quoted_id=#{quotedId},
+		     </if>
+		     <if test="vehicleInfoId != null">
+		       vehicle_info_id=#{vehicleInfoId},
+		     </if>
+		     <if test="loadInfoId != null">
+		       load_info_id=#{loadInfoId},
+		     </if>
+		     <if test="needArriveTime != null">
+		       need_arrive_time=#{needArriveTime},
+		     </if>
+		     <if test="freightPrice != null">
+		       freight_price=#{freightPrice},
+		     </if>
+		     <if test="isPredict != null">
+		       is_predict=#{isPredict},
+		     </if>
+		     <if test="prePay != null">
+		       pre_pay=#{prePay},
+		     </if>
+		     <if test="oilPay != null">
+		       oil_pay=#{oilPay},
+		     </if>
+		     <if test="oilCardNo != null">
+		       oil_card_no=#{oilCardNo},
+		     </if>
+		     <if test="paymentType != null">
+		       payment_type=#{paymentType},
+		     </if>
+		     <if test="paymentName != null">
+		       payment_name=#{paymentName},
+		     </if>
+		     <if test="supplyId != null">
+		       supply_id=#{supplyId},
+		     </if>
+		     <if test="remark != null">
+		       remark=#{remark},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+		       updated_time=now(),
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	
+	   where 
+	    load_id=#{loadId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_order_load_info 
+	   where 
+	    load_id=#{loadId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="orderLoadInfoResultMap">
+	   select 
+	    load_id,
+	    source,
+	    type,
+	    belong_depart_id,
+	    load_no,
+	    order_id,
+	    quoted_id,
+	    vehicle_info_id,
+	    load_info_id,
+	    need_arrive_time,
+	    freight_price,
+	    is_predict,
+	    pre_pay,
+	    oil_pay,
+	    oil_card_no,
+	    payment_type,
+	    payment_name,
+	    supply_id,
+	    remark,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_order_load_info
+	   where 
+	    load_id=#{loadId} 
+	    and is_deleted = '00'
+	</select>
+	
+	<select id="getLoadByOrder" parameterType="map" resultType="string">
+	   select zoli.load_id from zh_order_load_info zoli
+		inner join (zh_flow_status zfs
+		inner join zh_flows zf on zfs.flow_id = zf.flow_id and zf.name = #{flowName})
+		on zfs.code = zoli.status
+		inner join zh_order_detail_info zodi on zoli.order_id = zodi.order_id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		<if test="type != null">
+	        zoli.type = #{type} 
+	     </if>
+	     <if test="statusType != null">
+	        and zfs.type = #{statusType} 
+	     </if>
+	     <if test="orderId != null">
+	        and zodi.order_id = #{orderId}
+	     </if>
+	     <if test="orderNo != null">
+	        and zodi.order_no = #{orderNo}
+	     </if>
+	     </trim>
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    load_id,
+	    source,
+	    type,
+	    belong_depart_id,
+	    load_no,
+	    order_id,
+	    quoted_id,
+	    vehicle_info_id,
+	    load_info_id,
+	    need_arrive_time,
+	    freight_price,
+	    is_predict,
+	    pre_pay,
+	    oil_pay,
+	    oil_card_no,
+	    payment_type,
+	    payment_name,
+	    supply_id,
+	    remark,
+	    status,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_order_load_info
+	   where 
+	    load_id=#{loadId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     load_id,
+	     source,
+	     type,
+	     belong_depart_id,
+	     load_no,
+	     order_id,
+	     quoted_id,
+	     vehicle_info_id,
+	     load_info_id,
+	     need_arrive_time,
+	     freight_price,
+	     is_predict,
+	     pre_pay,
+	     oil_pay,
+	     oil_card_no,
+	     payment_type,
+	     payment_name,
+	     supply_id,
+	     remark,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_order_load_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        load_id=#{loadId}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="loadNo != null">
+	        and load_no=#{loadNo}
+	     </if>
+	     <if test="orderId != null">
+	        and order_id=#{orderId}
+	     </if>
+	     <if test="quotedId != null">
+	        and quoted_id=#{quotedId}
+	     </if>
+	     <if test="vehicleInfoId != null">
+	        and vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="loadInfoId != null">
+	        and load_info_id=#{loadInfoId}
+	     </if>
+	     <if test="needArriveTime != null">
+	        and need_arrive_time=#{needArriveTime}
+	     </if>
+	     <if test="freightPrice != null">
+	        and freight_price=#{freightPrice}
+	     </if>
+	     <if test="isPredict != null">
+	        and is_predict=#{isPredict}
+	     </if>
+	     <if test="prePay != null">
+	        and pre_pay=#{prePay}
+	     </if>
+	     <if test="oilPay != null">
+	        and oil_pay=#{oilPay}
+	     </if>
+	     <if test="oilCardNo != null">
+	        and oil_card_no=#{oilCardNo}
+	     </if>
+	     <if test="paymentType != null">
+	        and payment_type=#{paymentType}
+	     </if>
+	     <if test="paymentName != null">
+	        and payment_name=#{paymentName}
+	     </if>
+	     <if test="supplyId != null">
+	        and supply_id=#{supplyId}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     load_id,
+	     source,
+	     type,
+	     belong_depart_id,
+	     load_no,
+	     order_id,
+	     quoted_id,
+	     vehicle_info_id,
+	     load_info_id,
+	     need_arrive_time,
+	     freight_price,
+	     is_predict,
+	     pre_pay,
+	     oil_pay,
+	     oil_card_no,
+	     payment_type,
+	     payment_name,
+	     supply_id,
+	     remark,
+	     status,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_order_load_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        load_id=#{loadId}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="loadNo != null">
+	        and load_no=#{loadNo}
+	     </if>
+	     <if test="orderId != null">
+	        and order_id=#{orderId}
+	     </if>
+	     <if test="quotedId != null">
+	        and quoted_id=#{quotedId}
+	     </if>
+	     <if test="vehicleInfoId != null">
+	        and vehicle_info_id=#{vehicleInfoId}
+	     </if>
+	     <if test="loadInfoId != null">
+	        and load_info_id=#{loadInfoId}
+	     </if>
+	     <if test="needArriveTime != null">
+	        and need_arrive_time=#{needArriveTime}
+	     </if>
+	     <if test="freightPrice != null">
+	        and freight_price=#{freightPrice}
+	     </if>
+	     <if test="isPredict != null">
+	        and is_predict=#{isPredict}
+	     </if>
+	     <if test="prePay != null">
+	        and pre_pay=#{prePay}
+	     </if>
+	     <if test="oilPay != null">
+	        and oil_pay=#{oilPay}
+	     </if>
+	     <if test="oilCardNo != null">
+	        and oil_card_no=#{oilCardNo}
+	     </if>
+	     <if test="paymentType != null">
+	        and payment_type=#{paymentType}
+	     </if>
+	     <if test="paymentName != null">
+	        and payment_name=#{paymentName}
+	     </if>
+	     <if test="supplyId != null">
+	        and supply_id=#{supplyId}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="pageLoads" parameterType="map" resultMap="pageResultMap">
+			select DISTINCT
+				zoli.load_id,
+				zoli.load_no,
+				zoli.freight_price,
+				zoli.created_time,
+				zodi.order_no,
+				zodi.order_id,
+				zoli.status,
+				zrvi.plate_number,
+				zol.start_code_p,
+				zol.start_code_c,
+				zol.transfer_code_p,
+				zol.transfer_code_c,
+				zol.end_code_p,
+				zol.end_code_c
+			from zh_order_load_info zoli
+			INNER JOIN(
+				zh_flow_status zfs
+				INNER JOIN zh_flows zf ON zfs.flow_id = zf.flow_id AND zf.NAME = 'load_flow'
+			)ON zfs.CODE = zoli.STATUS AND zfs.type = '02'
+			INNER JOIN (
+			zh_order_detail_info zodi INNER JOIN (
+			zh_order_base_info zobi inner JOIN zh_order_line_info zol on zobi.info_id=zol.info_id
+			) on zodi.info_id=zobi.info_id and zobi.is_deleted=#{isDeleted}
+			) on zoli.order_id=zodi.order_id and zoli.status in ('07','09') and zodi.is_deleted=#{isDeleted}
+			<![CDATA[
+			LEFT JOIN zh_real_vehicle_info zrvi on zoli.vehicle_info_id=zrvi.vehicle_info_id
+			and zrvi.vehicle_type<>'03' and zrvi.is_deleted=#{isDeleted}
+			]]>
+			left JOIN (
+			zh_load_driver_info zldi
+			inner JOIN zh_real_driver_info zrdi ON zldi.driver_info_id = zrdi.driver_info_id
+			AND zrdi.is_deleted =#{isDeleted}
+			) ON zoli.load_id = zldi.load_id
+			left join(
+			zh_driver_contract_info zdci INNER JOIN zh_order_load_info zolin on zdci.load_id=zolin.load_id
+			and zolin.is_deleted=#{isDeleted} and zolin.type=#{driverContractType}
+			) on zoli.load_id=zdci.load_id
+			<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				zoli.type=#{loadType}
+			<if test="keyWord!=null">
+				and (zoli.load_no=#{keyWord} or zodi.order_no=#{keyWord} or zrvi.plate_number=#{keyWord})
+			</if>
+			<if test="status!=null">
+				and zodi.status=#{status}
+			</if>
+			<if test="attributes!=null">
+				and zrvi.attributes=#{attributes}
+			</if>
+			<if test="realName!=null">
+				and zrdi.real_name like #{realName}
+			</if>
+			<if test="telphone!=null">
+				and zrdi.telphone=#{telphone}
+			</if>
+			<if test="paymentName!=null">
+				and zoli.payment_name like #{paymentName}
+			</if>
+			<if test="loadCreatedStartTime!=null">
+				<![CDATA[
+				and zoli.created_time>=#{loadCreatedStartTime}
+				]]>
+			</if>
+			<if test="loadCreatedEndTime!=null">
+				<![CDATA[
+				and zoli.created_time<=#{loadCreatedEndTime}
+				]]>
+			</if>
+			<if test="driverContractCreatedStartTime!=null">
+				<![CDATA[
+				and zolin.created_time>=#{driverContractCreatedStartTime}
+				]]>
+			</if>
+			<if test="driverContractCreatedEndTime">
+				<![CDATA[
+				and zolin.created_time<=#{driverContractCreatedEndTime}
+				]]>
+			</if>
+		</trim>
+		order by zoli.created_time
+		<if test="sort != null and  sort == 00">
+			asc
+		</if>
+		<if test="sort != null and sort == 01">
+			desc
+		</if>
+	</select>
+	
+	<select id="getLoadInfo" parameterType="map" resultMap="findResultMap">
+		select 
+			zoli.load_id,
+			zoli.load_no,
+			zoli.need_arrive_time,
+			zoli.freight_price,
+			zoli.is_predict,
+			zoli.pre_pay,
+			zoli.oil_pay,
+			zoli.oil_card_no,
+			zoli.payment_type,
+			zoli.payment_name,
+			zoli.remark,
+			zoli.status,
+			zoli.vehicle_info_id,
+			zoli.load_info_id,
+			zoli.supply_id,
+			zrvi.attributes,
+			zrvi.plate_number,
+			zrvi.headstock_type,
+			zrvi.bridge_type,
+			zrvin.plate_number as load_plate_number,
+			zsi.supply_id as supply_supply_id,
+			zsi.payment_type as supply_payment_type,
+			zsi.full_name as supply_full_name,
+			zsi.contact_name as supply_contact_name
+		from zh_order_load_info zoli
+		left join zh_real_vehicle_info zrvi on zoli.vehicle_info_id=zrvi.vehicle_info_id and zrvi.is_deleted=#{isDeleted}
+		left join zh_real_vehicle_info zrvin on zoli.load_info_id=zrvin.vehicle_info_id and zrvin.is_deleted=#{isDeleted}
+		left join zh_supply_info zsi on zsi.supply_id = zoli.supply_id and zsi.is_deleted = #{isDeleted}
+		where zoli.load_id=#{loadId} and zoli.is_deleted=#{isDeleted}
+	</select>
+	
+</mapper> 

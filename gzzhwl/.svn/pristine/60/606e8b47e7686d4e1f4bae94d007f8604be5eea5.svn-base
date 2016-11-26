@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="getuiAuth" class="com.gzzhwl.push.model.GeTuiAuth">
+		<property name="appId" value="${getui.appId}" />
+		<property name="appKey" value="${getui.appKey}" />
+	</bean>
+	
+	<bean id="gtPush" class="com.gexin.rp.sdk.http.IGtPush">
+		<constructor-arg index="0" value="http://sdk.open.api.igexin.com/apiex.htm"/>
+		<constructor-arg index="1" value="${getui.appKey}"/>
+		<constructor-arg index="2" value="${getui.masterSecret}"/>
+	</bean>
+
+</beans>

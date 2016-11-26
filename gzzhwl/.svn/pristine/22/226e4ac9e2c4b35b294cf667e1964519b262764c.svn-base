@@ -1,0 +1,419 @@
+package com.gzzhwl.admin.vehicle.validator;
+
+import java.text.ParseException;
+import java.util.Date;
+
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.data.model.RealVehicleInfo;
+import com.gzzhwl.core.data.model.RealVehiclePlusInfo;
+import com.gzzhwl.core.data.model.RealVehicleUsedInfo;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+public class VehicleManageValidator {
+	
+	/**
+	 * 车辆提交验证
+	 * @param vehicleInfo
+	 * @param vehicleInfoPlusInfo
+	 * @param vehicleUsedInfo
+	 * @throws ParseException 
+	 */
+	public static void vehicle_commit_validator(RealVehicleInfo vehicleInfo,RealVehiclePlusInfo vehicleInfoPlusInfo ,RealVehicleUsedInfo vehicleUsedInfo) throws ParseException{
+		
+		if(ValidateUtils.isEmpty(vehicleInfo)){
+			throw new RestException(ErrorCode.ERROR_900007.getCode(),ErrorCode.ERROR_900007.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getPlateNumber())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"plateNumber"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getType())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"type"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getLicenseNo())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"licenseNo"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		//汉字开头，小写字母自动转化为大写字母
+		if(!ValidateUtils.validateIsAllChinese(vehicleInfo.getPlateNumber(), 0, 1)){
+			throw new RestException(ErrorCode.ERROR_900005.getCode(),"plateNumber"+ ErrorCode.ERROR_900005.getDesc());
+		}
+		vehicleInfo.setPlateNumber(vehicleInfo.getPlateNumber().toUpperCase());
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getOwnerType())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"ownerType"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getVin())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"vin"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getEngineNo())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"engineNo"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getLicenseRegDate())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"licenseRegDate"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getLicenseIssueDate())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"licenseIssueDate"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getLicenseValidDate())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"licenseValidDate"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getLoadWeight())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"loadWeight"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getLoadWeight())){
+			if(!ValidateUtils.isAllNumber(vehicleInfo.getLoadWeight())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(),"loadWeight"+ ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		//车牌号必须为大写
+		vehicleInfo.setPlateNumber(vehicleInfo.getPlateNumber().toUpperCase());
+		
+		if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseRegDate())){
+			throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseRegDate"+ErrorCode.ERROR_900005.getDesc());
+		}
+		
+		if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseIssueDate())){
+			throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseIssueDate"+ErrorCode.ERROR_900005.getDesc());
+		}
+		
+		if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseValidDate())){
+			throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseValidDate"+ErrorCode.ERROR_900005.getDesc());
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getOwnerMobile())){
+			if(!ValidateUtils.isMobileNo(vehicleInfo.getOwnerMobile())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "ownerMobile"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfoPlusInfo)){
+			
+			if(!ValidateUtils.isEmpty(vehicleInfoPlusInfo.getViEffectDate())){
+				
+				if(!DateUtils.isValidDate(vehicleInfoPlusInfo.getViEffectDate(),"yyyy-MM-dd HH:mm")){
+					throw new RestException(ErrorCode.ERROR_900005.getCode(), "viEffectDate"+ErrorCode.ERROR_900005.getDesc());
+				}
+				
+				Date date = DateUtils.parse(vehicleInfoPlusInfo.getViEffectDate(), "yyyy-MM-dd HH:mm");
+				
+				vehicleInfoPlusInfo.setViEffectDate(DateUtils.toString(date,"yyyy-MM-dd HH:mm:ss"));
+			}
+			
+			if(!ValidateUtils.isEmpty(vehicleInfoPlusInfo.getCiEffectDate())){
+				if(!DateUtils.isValidDate(vehicleInfoPlusInfo.getCiEffectDate(),"yyyy-MM-dd HH:mm")){
+					throw new RestException(ErrorCode.ERROR_900005.getCode(), "ciEffectDate"+ErrorCode.ERROR_900005.getDesc());
+				}
+				
+				Date date = DateUtils.parse(vehicleInfoPlusInfo.getCiEffectDate(), "yyyy-MM-dd HH:mm");
+				
+				vehicleInfoPlusInfo.setCiEffectDate(DateUtils.toString(date,"yyyy-MM-dd HH:mm:ss"));
+			}
+			
+			if(!ValidateUtils.isEmpty(vehicleInfoPlusInfo.getCiValidDate())){
+				if(!DateUtils.isValidDate(vehicleInfoPlusInfo.getCiValidDate(),"yyyy-MM-dd HH:mm")){
+					throw new RestException(ErrorCode.ERROR_900005.getCode(), "ciEffectDate"+ErrorCode.ERROR_900005.getDesc());
+				}
+				
+				Date date = DateUtils.parse(vehicleInfoPlusInfo.getCiValidDate(), "yyyy-MM-dd HH:mm");
+				
+				vehicleInfoPlusInfo.setCiValidDate(DateUtils.toString(date,"yyyy-MM-dd HH:mm:ss"));
+			}
+			
+			if(!ValidateUtils.isEmpty(vehicleInfoPlusInfo.getViValidDate())){
+				if(!DateUtils.isValidDate(vehicleInfoPlusInfo.getViValidDate(),"yyyy-MM-dd HH:mm")){
+					throw new RestException(ErrorCode.ERROR_900005.getCode(), "ciEffectDate"+ErrorCode.ERROR_900005.getDesc());
+				}
+				
+				Date date = DateUtils.parse(vehicleInfoPlusInfo.getViValidDate(), "yyyy-MM-dd HH:mm");
+				
+				vehicleInfoPlusInfo.setViValidDate(DateUtils.toString(date,"yyyy-MM-dd HH:mm:ss"));
+			}
+		}
+
+	}
+	
+//	public static void main(String[] args) throws ParseException {
+//		
+//		Date date = DateUtils.parse("1995-11-11 23:14:11", "yyyy-MM-dd HH:mm");
+//		
+//		System.out.println(DateUtils.toString(date,"yyyy-MM-dd HH:mm:ss"));
+//	}
+	
+	/**
+	 * 车辆更新验证
+	 * @param vehicleInfo
+	 * @param vehicleInfoPlusInfo
+	 * @param vehicleUsedInfo
+	 * @throws ParseException 
+	 */
+	public static void vehicle_update_validator(RealVehicleInfo vehicleInfo, RealVehiclePlusInfo vehicleInfoPlusInfo , RealVehicleUsedInfo vehicleUsedInfo) throws ParseException{
+		
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getVehicleInfoId())){
+			throw new RestException(ErrorCode.ERROR_800001.getCode(), ErrorCode.ERROR_800001.getDesc());
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getPlateNumber())){
+			//车牌号必须为大写
+			vehicleInfo.setPlateNumber(vehicleInfo.getPlateNumber().toUpperCase());
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getLicenseRegDate())){
+			if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseRegDate())){
+					throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseRegDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getLicenseIssueDate())){
+			if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseIssueDate())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseIssueDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+			
+		if(!ValidateUtils.isEmpty(vehicleInfo.getLicenseValidDate())){
+			if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseValidDate())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseValidDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getPlateNumber())){
+			//汉字开头，小写字母自动转化为大写字母
+			if(!ValidateUtils.validateIsAllChinese(vehicleInfo.getPlateNumber(), 0, 1)){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(),"plateNumber"+ ErrorCode.ERROR_900005.getDesc());
+			}
+			vehicleInfo.setPlateNumber(vehicleInfo.getPlateNumber().toUpperCase());
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getOwnerMobile())){
+			if(!ValidateUtils.isMobileNo(vehicleInfo.getOwnerMobile())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "ownerMobile"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getLoadWeight())){
+			if(!ValidateUtils.isAllNumber(vehicleInfo.getLoadWeight())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(),"loadWeight"+ ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+	
+	if(!ValidateUtils.isEmpty(vehicleInfoPlusInfo)){
+		
+		if(!ValidateUtils.isEmpty(vehicleInfoPlusInfo.getViEffectDate())){
+			if(!DateUtils.isValidDate(vehicleInfoPlusInfo.getViEffectDate(),"yyyy-MM-dd HH:mm")){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "viEffectDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+			
+			Date date = DateUtils.parse(vehicleInfoPlusInfo.getViEffectDate(), "yyyy-MM-dd HH:mm");
+			
+			vehicleInfoPlusInfo.setViEffectDate(DateUtils.toString(date,"yyyy-MM-dd HH:mm:ss"));
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfoPlusInfo.getCiEffectDate())){
+			if(!DateUtils.isValidDate(vehicleInfoPlusInfo.getCiEffectDate(),"yyyy-MM-dd HH:mm")){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "ciEffectDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+			
+			Date date = DateUtils.parse(vehicleInfoPlusInfo.getCiEffectDate(), "yyyy-MM-dd HH:mm");
+			
+			vehicleInfoPlusInfo.setCiEffectDate(DateUtils.toString(date,"yyyy-MM-dd HH:mm:ss"));
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfoPlusInfo.getCiValidDate())){
+			if(!DateUtils.isValidDate(vehicleInfoPlusInfo.getCiValidDate(),"yyyy-MM-dd HH:mm")){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "ciEffectDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+			
+			Date date = DateUtils.parse(vehicleInfoPlusInfo.getCiValidDate(), "yyyy-MM-dd HH:mm");
+			
+			vehicleInfoPlusInfo.setCiValidDate(DateUtils.toString(date,"yyyy-MM-dd HH:mm:ss"));
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfoPlusInfo.getViValidDate())){
+			if(!DateUtils.isValidDate(vehicleInfoPlusInfo.getViValidDate(),"yyyy-MM-dd HH:mm")){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "ciEffectDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+			
+			Date date = DateUtils.parse(vehicleInfoPlusInfo.getViValidDate(), "yyyy-MM-dd HH:mm");
+			
+			vehicleInfoPlusInfo.setViValidDate(DateUtils.toString(date,"yyyy-MM-dd HH:mm:ss"));
+		}
+	}
+	
+	}
+
+	/**
+	 * 车挂提交验证
+	 * @param vehicleInfo
+	 * @param vehicleInfoPlusInfo
+	 * @param vehicleUsedInfo
+	 */
+	public static void hung_commit_validator(RealVehicleInfo vehicleInfo, RealVehiclePlusInfo vehicleInfoPlusInfo , RealVehicleUsedInfo vehicleUsedInfo){
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getPlateNumber())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"plateNumber"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getType())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"type"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getLicenseNo())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"licenseNo"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		//汉字开头，小写字母自动转化为大写字母
+		if(!ValidateUtils.validateIsAllChinese(vehicleInfo.getPlateNumber(), 0, 1)){
+			throw new RestException(ErrorCode.ERROR_900005.getCode(),"plateNumber"+ ErrorCode.ERROR_900005.getDesc());
+		}
+		vehicleInfo.setPlateNumber(vehicleInfo.getPlateNumber().toUpperCase());
+		
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getLoadWeight())){
+			if(!ValidateUtils.isAllNumber(vehicleInfo.getLoadWeight())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(),"loadWeight"+ ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getOwnerType())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"ownerType"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getVin())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"vin"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getLicenseRegDate())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"licenseRegDate"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getLicenseIssueDate())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"licenseIssueDate"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getLicenseValidDate())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"licenseValidDate"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getLoadWeight())){
+			throw new RestException(ErrorCode.ERROR_900003.getCode(),"loadWeight"+ ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		//车牌号必须为大写
+		vehicleInfo.setPlateNumber(vehicleInfo.getPlateNumber().toUpperCase());
+		
+		if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseRegDate())){
+			throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseRegDate"+ErrorCode.ERROR_900005.getDesc());
+		}
+		
+		if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseIssueDate())){
+			throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseIssueDate"+ErrorCode.ERROR_900005.getDesc());
+		}
+
+		if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseValidDate())){
+			throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseValidDate"+ErrorCode.ERROR_900005.getDesc());
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getOperatingCertIssueDate())){
+			if(!DateUtils.isDefaultValidDate(vehicleInfo.getOperatingCertIssueDate())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "operatingCertIssueDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getOwnerMobile())){
+			if(!ValidateUtils.isMobileNo(vehicleInfo.getOwnerMobile())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "ownerMobile"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getOperatingCertValidDate())){
+			if(!DateUtils.isDefaultValidDate(vehicleInfo.getOperatingCertValidDate())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "operatingCertValidDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+	}
+
+	/**
+	 * 车挂更新验证
+	 * @param vehicleInfo
+	 * @param vehicleInfoPlusInfo
+	 * @param vehicleUsedInfo
+	 */
+	public static void hung_update_validator(RealVehicleInfo vehicleInfo,RealVehiclePlusInfo vehicleInfoPlusInfo ,RealVehicleUsedInfo vehicleUsedInfo){
+		
+		if(ValidateUtils.isEmpty(vehicleInfo.getVehicleInfoId())){
+			throw new RestException(ErrorCode.ERROR_800001.getCode(), ErrorCode.ERROR_800001.getDesc());
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getLicenseRegDate())){
+			if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseRegDate())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseRegDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getLicenseIssueDate())){
+			if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseIssueDate())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseIssueDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getLicenseValidDate())){
+			if(!DateUtils.isDefaultValidDate(vehicleInfo.getLicenseValidDate())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "licenseValidDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getLoadWeight())){
+			if(!ValidateUtils.isAllNumber(vehicleInfo.getLoadWeight())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(),"loadWeight"+ ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getPlateNumber())){
+			//汉字开头，小写字母自动转化为大写字母
+			if(!ValidateUtils.validateIsAllChinese(vehicleInfo.getPlateNumber(), 0, 1)){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(),"plateNumber"+ ErrorCode.ERROR_900005.getDesc());
+			}
+			vehicleInfo.setPlateNumber(vehicleInfo.getPlateNumber().toUpperCase());
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getPlateNumber())){
+			//车牌号必须为大写
+			vehicleInfo.setPlateNumber(vehicleInfo.getPlateNumber().toUpperCase());
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getOperatingCertIssueDate())){
+			if(!DateUtils.isDefaultValidDate(vehicleInfo.getOperatingCertIssueDate())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "operatingCertIssueDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getOwnerMobile())){
+			if(!ValidateUtils.isMobileNo(vehicleInfo.getOwnerMobile())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "ownerMobile"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+		if(!ValidateUtils.isEmpty(vehicleInfo.getOperatingCertValidDate())){
+			if(!DateUtils.isDefaultValidDate(vehicleInfo.getOperatingCertValidDate())){
+				throw new RestException(ErrorCode.ERROR_900005.getCode(), "operatingCertValidDate"+ErrorCode.ERROR_900005.getDesc());
+			}
+		}
+		
+	}
+	
+	
+	
+}

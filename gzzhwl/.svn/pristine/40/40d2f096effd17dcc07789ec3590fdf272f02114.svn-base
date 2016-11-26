@@ -1,0 +1,48 @@
+package com.gzzhwl.admin.load.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.load.service.LoadHistoryService;
+import com.gzzhwl.admin.load.service.LoadLinkStatusService;
+import com.gzzhwl.common.model.FlowActionCategory;
+import com.gzzhwl.common.model.ZHFlow;
+import com.gzzhwl.common.service.FlowsService;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.data.dao.OrderLoadInfoDao;
+import com.gzzhwl.core.data.model.FlowDef;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class LoadLinkStatusServiceImpl implements LoadLinkStatusService {
+	@Autowired
+	private LoadHistoryService loadHistoryService;
+	@Autowired
+	private FlowsService flowService;
+	@Autowired
+	private OrderLoadInfoDao orderLoadInfoDao;
+
+	@Override
+	public String createLoad(String orderId, Integer departId, String staffId) throws RestException {
+		OrderLoadInfo loadInfo = new OrderLoadInfo();
+		FlowDef flowDef = flowService.startFlow(ZHFlow.LOAD_BILL, FlowActionCategory.SYSTEM);
+		String loadId = IdentifierUtils.getId().generate().toString();
+		loadInfo.setOrderId(orderId);
+		loadInfo.setBelongDepartId(departId + "");
+		loadInfo.setCreatedBy(staffId);
+		loadInfo.setUpdatedBy(staffId);
+		loadInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		loadInfo.setLoadId(loadId);
+		loadInfo.setQuotedId(null);
+		loadInfo.setSource(DataSource.PLATFORM.getCode());
+		loadInfo.setStatus(flowDef.getTransitionStatus());
+		loadInfo.setType(OrderLoadInfo.LOAD_BILL);
+		orderLoadInfoDao.insert(loadInfo);
+		loadHistoryService.saveLoadHistory(loadId, flowDef.getLinkedStatus(), null, flowDef, staffId);
+		return loadId;
+	}
+
+}

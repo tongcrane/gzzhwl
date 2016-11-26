@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+		
+		
+    <bean id="xmlParse" class="com.gzzhwl.template.parse.ExcelXmlParse">
+        <constructor-arg index="0" value="poi-export-template.xml"/>
+    </bean>
+    
+    <bean id="rowParse" class="com.gzzhwl.template.callable.impl.RowParseStrategyFactoryImpl"/>
+
+    <bean id="excelService" class="com.gzzhwl.template.support.ExcelService">
+        <property name="xmlParse" ref="xmlParse"/>
+        <property name="rowParse" ref="rowParse"/>
+    </bean>
+    
+    <context:component-scan base-package="com.gzzhwl">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    
+</beans>

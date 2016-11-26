@@ -1,0 +1,36 @@
+package com.gzzhwl.core.data.dao;
+
+
+import java.util.Map;
+import java.util.List;
+import com.gzzhwl.core.data.model.DepartmentInfo;
+import com.gzzhwl.core.page.Page;
+
+/**
+ * 数据访问接口
+ *
+ */
+public interface DepartmentInfoDao {    
+    public final static String PREFIX = DepartmentInfoDao.class.getName();
+    
+	public DepartmentInfo get(java.lang.Integer departId);
+	
+	public <K, V> Map<K, V> findOne(java.lang.Integer departId);
+	
+	public <T, K, V> List<T> find(Map<K, V> params);
+	
+	public int insert(DepartmentInfo departmentInfo);
+	
+	public int update(DepartmentInfo departmentInfo);
+	
+	public int updateSelective(DepartmentInfo departmentInfo);
+	
+	public int delete(java.lang.Integer departId );
+
+	public <E, K, V> Page<E> page(Map<K, V> params, int current, int pagesize);
+	
+	public String getDepartName(String departId);
+
+}
+
+

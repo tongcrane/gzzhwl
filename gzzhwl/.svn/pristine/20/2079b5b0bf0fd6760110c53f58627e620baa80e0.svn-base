@@ -1,0 +1,861 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.OrderLoadInfoExtDao">
+
+	<resultMap id="orderLoadInfoResultMap" type="OrderLoadInfo">
+		<id property="loadId" column="load_id" />
+		<result property="source" column="source" />
+		<result property="type" column="type" />
+		<result property="belongDepartId" column="belong_depart_id" />
+		<result property="loadNo" column="load_no" />
+		<result property="orderId" column="order_id" />
+		<result property="quotedId" column="quoted_id" />
+		<result property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="loadInfoId" column="load_info_id" />
+		<result property="needArriveTime" column="need_arrive_time" />
+		<result property="freightPrice" column="freight_price" />
+		<result property="isPredict" column="is_predict" />
+		<result property="prePay" column="pre_pay" />
+		<result property="oilPay" column="oil_pay" />
+		<result property="oilCardNo" column="oil_card_no" />
+		<result property="paymentType" column="payment_type" />
+		<result property="paymentName" column="payment_name" />
+		<result property="supplyId" column="supply_id" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="orderLoadInfoResultMap">
+		<result property="orderId" column="order_id"/>
+		<result property="orderNo" column="order_no"/>
+		<result property="plateNumber" column="plate_number"/>
+		<result property="realName" column="real_name"/>
+		<result property="telphone" column="telphone"/>
+		<result property="idno" column="idno"/>
+		<result property="isMajor" column="is_major"/>
+		<result property="startCodeP" column="start_code_p"/>
+		<result property="startCodeC" column="start_code_c"/>
+		<result property="endCodeP" column="end_code_p"/>
+		<result property="endCodeC" column="end_code_c"/>
+		<result property="driverInfoId" column="driver_info_id"/>
+		<result property="seqNo" column="seq_no"/>
+		<result property="idFImageRefId" column="id_f_image_ref_id" />
+		<result property="idBImageRefId" column="id_b_image_ref_id" />
+		<result property="pickUpTime" column="pick_up_time" />
+		<result property="tripTime" column="trip_time"/>
+		<result property="needArriveTime" column="need_arrive_time"/>
+		<result property="arriveTime" column="arrive_time"/>
+	</resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="orderLoadInfoResultMap">
+		<result property="attributes" column="attributes"/>
+		<result property="plateNumber" column="plate_number"/>
+		<result property="headstockType" column="headstock_type"/>
+		<result property="bridgeType" column="bridge_type"/>
+		<result property="loadPlateNumber" column="load_plate_number"/>
+		<result property="orderNo" column="order_no"/>
+		<result property="needStartTime" column="need_start_time"/>
+		<result property="needArriveTime" column="need_arrive_time"/>
+		<result property="customerBillNo" column="customer_bill_no"/>
+		<result property="orderCustomerBillNo" column="order_customer_bill_no"/>
+		<result property="consignCustomerBillNo" column="consign_customer_bill_no"/>
+		<result property="consignId" column="consign_id"/>
+		<result property="consignNo" column="consign_no"/>
+		<result property="customerId" column="customer_id"/>
+		<result property="customerName" column="customer_name"/>
+		<result property="startCodeP" column="start_code_p"/>
+		<result property="startCodeC" column="start_code_c"/>
+		<result property="transferCodeP" column="transfer_code_p"/>
+		<result property="transferCodeC" column="transfer_code_c"/>
+		<result property="endCodeP" column="end_code_p"/>
+		<result property="endCodeC" column="end_code_c"/>
+		<result property="sourceNo" column="source_no"/>
+		<result property="tripTime" column="trip_time"/>
+		<result property="goodsWeight" column="goods_weight"/>
+		<result property="goodsVolume" column="goods_volume"/>
+		<result property="orderGoodsWeight" column="order_goods_weight"/>
+		<result property="orderGoodsVolume" column="order_goods_volume"/>
+		<result property="consignGoodsWeight" column="consign_goods_weight"/>
+		<result property="consignGoodsVolume" column="consign_goods_volume"/>
+		<result property="orderStatus" column="order_status"/>
+		<result property="name" column="name"/>
+		<result property="updatedTime" column="updated_time"/>
+		<result property="needArriveFieldTime" column="need_arrive_field_time"/>
+		<collection property="driverInfo" ofType="map" javaType="java.util.List"  resultMap="driverResultMap"/>
+	</resultMap>
+	
+		<resultMap id="FieldConHisResultMap"  type="java.util.HashMap" extends="orderLoadInfoResultMap">
+		<result property="attributes" column="attributes"/>
+		<result property="plateNumber" column="plate_number"/>
+		<result property="headstockType" column="headstock_type"/>
+		<result property="bridgeType" column="bridge_type"/>
+		<result property="loadPlateNumber" column="load_plate_number"/>
+		<result property="orderNo" column="order_no"/>
+		<result property="needStartTime" column="need_start_time"/>
+		<result property="customerBillNo" column="customer_bill_no"/>
+		<result property="consignId" column="consign_id"/>
+		<result property="consignNo" column="consign_no"/>
+		<result property="customerId" column="customer_id"/>
+		<result property="customerName" column="customer_name"/>
+		<result property="startCodeP" column="start_code_p"/>
+		<result property="startCodeC" column="start_code_c"/>
+		<result property="transferCodeP" column="transfer_code_p"/>
+		<result property="transferCodeC" column="transfer_code_c"/>
+		<result property="endCodeP" column="end_code_p"/>
+		<result property="endCodeC" column="end_code_c"/>
+		<result property="sourceNo" column="source_no"/>
+		<result property="tripTime" column="trip_time"/>
+		<result property="goodsWeight" column="goods_weight"/>
+		<result property="goodsVolume" column="goods_volume"/>
+		<result property="orderStatus" column="order_status"/>
+		<result property="name" column="name"/>
+		<result property="updatedTime" column="updated_time"/>
+		<result property="contractImageRefId" column="contract_image_ref_id"/>
+		<collection notNullColumn="driver_Info_Id" property="driverInfo" ofType="map" javaType="java.util.List"  resultMap="driverResultMap"/>
+		<collection notNullColumn="feedback_id" property="loadFeedBackList" ofType="map" javaType="java.util.List"  resultMap="feedBackResultMap"/>
+	</resultMap>
+	
+	<resultMap id="findTransitResultMap" type="java.util.HashMap">
+		<id property="orderId" column="order_id"/>
+		<result property="orderNo" column="order_no"/>
+		<result property="loadId" column="load_id"/>
+		<result property="loadNo" column="load_no"/>
+		<result property="startCodeP" column="start_code_p"/>
+		<result property="startCodeC" column="start_code_c"/>
+		<result property="endCodeP" column="end_code_p"/>
+		<result property="endCodeC" column="end_code_c"/>
+		<result property="needStartTime" column="need_start_time"/>
+		<result property="needArriveTime" column="need_arrive_time"/>	
+		<result property="tripTime" column="trip_time"/>
+		<result property="vehicleInfoId" column="vehicle_info_id"/>		
+		<result property="plateNumber" column="plate_number"/>	
+		<result property="type" column="type"/>		
+		<result property="length" column="length"/>		
+		<result property="customerBillNo" column="customer_bill_no"/>	
+		<result property="customerName" column="customer_name"/>	
+		<result property="status" column="status"/>	
+		<collection notNullColumn="driver_Info_Id" property="driverInfo" ofType="map" javaType="java.util.List"  resultMap="driverResultMap"/>
+	</resultMap> 
+	
+	<resultMap id="driverResultMap" type="java.util.HashMap">
+		<id property="driverInfoId" column="driver_info_id" />
+		<result property="realName" column="real_name" />
+		<result property="idno" column="idno" />
+		<result property="telphone" column="telphone" />
+		<result property="isMajor" column="is_major"/>
+	</resultMap>
+	
+	<resultMap id="feedBackResultMap" type="java.util.HashMap">
+		<result property="type" column="type" />
+		<result property="itemName" column="item_name" />
+		<result property="itemPrice" column="item_price" />
+		<result property="itemDesc" column="item_desc"/>
+	</resultMap>
+	
+	<resultMap id="tripResultMap"  type="java.util.HashMap" ></resultMap>
+	
+	<select id="getFeedBackList" parameterType="map" resultMap="feedBackResultMap">
+		SELECT
+			type,
+			item_name,
+			item_price,
+			item_desc
+		FROM
+			zh_load_feedback_log
+		WHERE load_id = #{loadId}
+		order by created_time
+	</select>
+	
+	<!-- 获取发车列表  -->
+	<select id="pageTripList" parameterType="map" resultMap="pageResultMap">
+		SELECT
+			t.*,
+			line.start_code_p,
+			line.start_code_c,
+			line.end_code_p,
+			line.end_code_c
+		FROM
+			(
+				SELECT
+					zoli.load_id,
+					zoli.load_no,
+					zoli.order_id,
+					zoli.need_arrive_time,
+					zoli.created_time,
+					zoli.updated_time,
+					zrvi.plate_Number,
+					zoli.status
+				FROM
+					zh_order_load_info zoli
+				LEFT JOIN 
+					zh_real_vehicle_info zrvi 
+				ON zoli.vehicle_info_id = zrvi.vehicle_info_id 
+					and zrvi.is_deleted = #{isDeleted} 
+					and <![CDATA[ vehicle_type <> #{vehicleType}]]>
+				LEFT JOIN (
+					zh_load_driver_info zldi
+					LEFT JOIN 
+						zh_real_driver_info zrdi 
+					ON zldi.driver_info_id = zrdi.driver_info_id and zrdi.is_deleted = #{isDeleted}
+				) ON zoli.load_id = zldi.load_id
+				<trim prefix="WHERE" prefixOverrides="AND |OR ">
+					zoli.status IN 
+					 <foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+		        		#{status}
+		   			</foreach>
+		   			and zoli.type = #{type}
+					<if test="keyWord!=null">
+						and (zoli.load_no=#{keyWord} or zrvi.plate_number=#{keyWord} or zrdi.real_name like #{keyWordLike} or zrdi.telphone =#{keyWord})
+					</if>
+				</trim>
+				GROUP BY
+					zoli.load_id,
+					zoli.load_no,
+					zoli.order_id,
+					zoli.need_arrive_time,
+					zoli.created_time,
+					zoli. status
+			) AS t
+		LEFT JOIN (
+			zh_order_detail_info zodi
+			LEFT JOIN zh_order_line_info line ON zodi.info_id = line.info_id
+		) ON t.order_id = zodi.order_id
+		
+		<if test="sort == null ">
+	       	 order by t.updated_time desc
+	     </if>
+	  	 <if test="sort != null and  sort == 00" >
+	       	 order by t.need_arrive_time asc
+	     </if>
+	      <if test="sort != null and sort == 01">
+	       	 order by t.need_arrive_time desc
+	     </if>
+	</select>
+	
+	<!-- 根据提货单ID获取提货单对应的司机列表-->
+	<select id="getLoadDrivers" parameterType="map" resultMap="pageResultMap">
+		SELECT
+			zrdi.real_name,
+			zrdi.telphone,
+			zrdi.idno,
+			zldi.is_major
+		FROM
+			zh_load_driver_info zldi
+		INNER JOIN (
+			SELECT
+				*
+			FROM
+				zh_real_driver_info
+			WHERE
+				is_deleted = #{isDeleted}
+		) AS zrdi ON zldi.driver_info_id = zrdi.driver_info_id
+		WHERE zldi.load_id = #{loadId}
+		order by zldi.is_major asc
+	</select>
+	
+	<select id="getMajorDriver" parameterType="map" resultMap="pageResultMap">
+		SELECT
+			zrdi.driver_info_id,
+			zrdi.seq_no,
+			zrdi.real_name,
+			zrdi.telphone,
+			zrdi.idno,
+			zrdi.id_f_image_ref_id,
+			zrdi.id_b_image_ref_id,
+			zldi.is_major
+		FROM
+			zh_order_load_info zoli
+		INNER JOIN
+			(zh_load_driver_info zldi
+				INNER JOIN (
+				SELECT
+					*
+				FROM
+					zh_real_driver_info
+				WHERE
+					is_deleted = #{isDeleted}
+			) AS zrdi ON zldi.driver_info_id = zrdi.driver_info_id)
+		ON zoli.load_id = zldi.load_id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="loadId!=null">
+				zoli.load_id = #{loadId}
+			</if>
+			<if test="loadNo!=null">
+				and zoli.load_no = #{loadNo}
+			</if>
+			<if test="isMajor!=null">
+				and zldi.is_major = #{isMajor}
+			</if>
+		</trim>
+	</select>
+	
+	
+	<!-- 获取发车反馈详情  -->
+	<select id="getTripDetail" parameterType="map" resultMap="tripResultMap">
+		
+		SELECT  
+		t10.goods_weight as goodsWeight, 
+		t10.goods_volume as goodsVolume, 
+		t10.consign_no as consignNo,
+		t4.name as name, 
+		t5.trip_time as tripTime, 
+		t10.customer_bill_no as customerBillNo, 
+		t5.contract_image_ref_id as contractImageRefId,
+		t2.order_no as orderNo,
+		t7.customer_bill_no as orderCustomerBillNo,
+		t7.goods_weight as orderGoodsWeight, 
+		t7.goods_volume as orderGoodsVolume
+		FROM  
+		zh_order_load_info t1 INNER JOIN (
+		zh_order_detail_info t2  left join
+		(SELECT  
+		t3.order_id,
+		t3.consign_id,
+		t6.info_id,
+		t6.goods_weight, 
+		t6.goods_volume,
+		t6.customer_bill_no,
+		t3.consign_no  
+		FROM
+		zh_order_base_info t6 
+		LEFT JOIN 
+		zh_consignment_info t3  
+		ON t3.consign_id = t6.info_id 
+		) as t10 on t10.order_id = t2.order_id
+		<if test="consignId!=null">
+			and t10.consign_id =#{consignId}
+		</if>
+		inner join zh_order_base_info t7 
+		on t2.info_id = t7.info_id
+		LEFT JOIN zh_charge_info t4  
+		ON t7.charge_id = t4.charge_id
+		) ON t1.order_id = t2.order_id	
+		LEFT JOIN zh_load_trip_info t5 
+		ON t1.load_id = t5.load_id
+		WHERE t1.load_id=#{loadId}	 
+		
+	</select>
+	
+	<select id="getLoadInfoByOrderId" parameterType="map" resultMap="findResultMap">
+		select 
+			zoli.load_id,
+			zoli.load_no,
+			zoli.need_arrive_time,
+			zoli.freight_price,
+			zoli.pre_pay,
+			zoli.oil_pay,
+			zoli.created_time,
+			zrvi.plate_number,
+			zrvin.plate_number as load_plate_number,
+			zrdi.driver_info_id,
+			zrdi.real_name,
+			zrdi.telphone,
+			zdi.name,
+			zldi.is_major
+		from zh_order_load_info zoli
+		left join zh_real_vehicle_info zrvi on zoli.vehicle_info_id=zrvi.vehicle_info_id and zrvi.is_deleted=#{isDeleted}
+		left join zh_real_vehicle_info zrvin on zoli.load_info_id=zrvin.vehicle_info_id and zrvin.is_deleted=#{isDeleted}
+		left join(
+			zh_load_driver_info zldi inner join zh_real_driver_info zrdi on zldi.driver_info_id=zrdi.driver_info_id and zrdi.is_deleted=#{isDeleted}
+		) on zoli.load_id=zldi.load_id
+		left join zh_department_info zdi on zoli.belong_depart_id = zdi.depart_id 
+		where zoli.order_id=#{orderId} and zoli.is_deleted=#{isDeleted}
+		<if test="statusArray != null">
+		 	and zoli.status in
+		  	<foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+		        	#{status}
+		   	</foreach>
+	    </if>
+	    	and zoli.type = #{loadType}
+		order by zldi.is_major asc	
+	</select>
+	
+	<!-- 获取线控待处理订单列表 -->
+	<select id="getFieldControlList" parameterType="map" resultMap="findResultMap">
+		SELECT
+			zoli.load_id,
+			zoli.load_no,
+			zoli.status,
+			zodi.status as order_Status,
+			zrvi.plate_number,
+			zrvin.plate_number AS load_plate_number,
+			zodi.order_id,
+			zodi.order_no,
+			DATE_FORMAT(zobi.need_start_time,'%Y-%m-%d %H:%i') as need_start_time,
+			zobi.customer_bill_no as order_customer_bill_no,
+			zobi.goods_weight as order_goods_weight,
+			zobi.goods_volume as order_goods_volume,
+			zci.consign_id,
+			zci.consign_no,
+			zobin.goods_weight as consign_goods_weight,
+			zobin.goods_volume as consign_goods_volume,
+			zobin.customer_bill_no as consign_customer_bill_no,
+			send.customer_id,
+			send.customer_name,
+			line.start_code_p,
+			line.start_code_c,
+			line.end_code_c,
+			line.end_code_p,
+			zrdi.driver_info_id,
+			zrdi.real_name,
+			zrdi.idno,
+			zrdi.telphone,
+			zldi.is_major,
+			zchi.name,
+			zoli.updated_time,
+			DATE_FORMAT(zoli.need_arrive_time,'%Y-%m-%d %H:%i') as need_arrive_field_time
+		FROM
+			zh_order_load_info zoli
+		LEFT JOIN zh_real_vehicle_info zrvi ON zoli.vehicle_info_id = zrvi.vehicle_info_id AND zrvi.is_deleted = #{isDeleted}
+		LEFT JOIN zh_real_vehicle_info zrvin ON zoli.load_info_id = zrvin.vehicle_info_id AND zrvin.is_deleted = #{isDeleted}
+		LEFT JOIN (
+			zh_load_driver_info zldi
+			INNER JOIN zh_real_driver_info zrdi ON zldi.driver_info_id = zrdi.driver_info_id
+			AND zrdi.is_deleted = #{isDeleted}
+		) ON zoli.load_id = zldi.load_id
+		INNER JOIN (
+			zh_order_detail_info zodi
+			INNER JOIN (
+				zh_order_base_info zobi
+				LEFT JOIN zh_charge_info zchi on zobi.charge_id = zchi.charge_id
+				LEFT JOIN zh_order_line_info line ON zobi.info_id = line.info_id
+				LEFT JOIN zh_order_sender_info send ON zobi.info_id = send.info_id
+			) ON zodi.info_id = zobi.info_id
+			LEFT JOIN (zh_consignment_info zci inner join zh_order_base_info zobin on zci.consign_id = zobin.info_id) ON zodi.order_id = zci.order_id AND zci.status = #{consignStatus}
+		) ON zoli.order_id = zodi.order_id AND zodi.is_deleted = #{isDeleted}
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			zoli.status IN 
+			 <foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+        		#{status}
+   			</foreach>
+   			and zoli.type = #{type}
+			<if test="keyWord!=null">
+				and (zoli.load_no = #{keyWord} or zrvi.plate_number = #{keyWord})
+			</if>
+			<if test="addrId!=null">
+				 and zobi.addr_id = #{addrId}
+			</if>
+			<if test="timeStamp!=null">
+				 and zoli.updated_time > #{timeStamp}
+			</if>
+			order by zldi.is_major asc		
+		</trim> 
+	</select>
+	
+	<!-- 获取线控历史订单列表 -->
+	<select id="getFieldControlHis" parameterType="map" resultMap="FieldConHisResultMap">
+			SELECT
+			zoli.load_id,
+			zoli.load_no,
+			zrvi.plate_number,
+			zrvin.plate_number AS load_plate_number,
+			zodi.order_no,		
+			zobi.customer_bill_no,
+			zci.consign_no,
+			send.customer_name,
+			line.start_code_p,
+			line.start_code_c,
+			line.end_code_c,
+			line.end_code_p,
+			zrdi.driver_info_id,
+			zrdi.real_name,
+			zrdi.idno,
+			zrdi.telphone,
+			zldi.is_major,
+			zchi.name,
+			DATE_FORMAT((case when zlti.trip_time is null then zobi.need_start_time else zlti.trip_time END), '%Y-%m-%d %H:%i') as trip_time,
+			zlti.goods_weight,
+			zlti.goods_volume,
+			zlti.contract_image_ref_id,
+			zlfl.feedback_id,
+			zlfl.type,
+			zlfl.item_name,
+			zlfl.item_price,
+			zlfl.item_desc,
+			DATE_FORMAT(zoli.need_arrive_time,'%Y-%m-%d %H:%i') as need_arrive_field_time
+		FROM
+			zh_order_load_info zoli
+		LEFT JOIN zh_real_vehicle_info zrvi ON zoli.vehicle_info_id = zrvi.vehicle_info_id AND zrvi.is_deleted = #{isDeleted}
+		LEFT JOIN zh_real_vehicle_info zrvin ON zoli.load_info_id = zrvin.vehicle_info_id AND zrvin.is_deleted = #{isDeleted}
+		LEFT JOIN (
+			zh_load_driver_info zldi
+			INNER JOIN zh_real_driver_info zrdi ON zldi.driver_info_id = zrdi.driver_info_id
+			AND zrdi.is_deleted = #{isDeleted}
+		) ON zoli.load_id = zldi.load_id
+		INNER JOIN (
+			zh_order_detail_info zodi
+			INNER JOIN (
+				zh_order_base_info zobi
+				LEFT JOIN zh_charge_info zchi on zobi.charge_id = zchi.charge_id
+				LEFT JOIN zh_order_line_info line ON zobi.info_id = line.info_id
+				LEFT JOIN zh_order_sender_info send ON zobi.info_id = send.info_id
+			) ON zodi.info_id = zobi.info_id
+			LEFT JOIN zh_consignment_info zci ON zodi.order_id = zci.order_id AND zci.status = #{consignStatus}
+		) ON zoli.order_id = zodi.order_id AND zodi.is_deleted = #{isDeleted}
+		INNER JOIN (select distinct(load_id) from zh_load_his where created_by = #{staffId}) zlh ON zoli.load_id = zlh.load_id 
+		LEFT JOIN zh_load_trip_info zlti ON zoli.load_id = zlti.load_id 
+		LEFT JOIN zh_load_feedback_log zlfl on zoli.load_id = zlfl.load_id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			zoli.status IN 
+			 <foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+        		#{status}
+   			</foreach>
+   			and zoli.type = #{type}			
+		</trim> 
+		order by zoli.updated_time desc,zldi.is_major asc
+	</select>
+	
+	
+	<!--获取在途/到达的提货单的车辆详情 -->
+	<select id="getLoadVehicleDetail" parameterType="map" resultMap="findTransitResultMap">
+		SELECT
+			zrvi.vehicle_info_id,
+			zrvi.plate_number,
+			zodi.order_id,
+			zodi.order_no,
+			zoli.load_id,
+			zoli.load_no,
+			zoli.status,
+			zlti.customer_bill_no,
+			zosi.customer_name,
+			line.start_code_p,
+			line.start_code_c,
+			line.end_code_p,
+			line.end_code_c,
+			zrdi.driver_info_id,
+			zrdi.real_name,
+			zrdi.idno,
+			zrdi.telphone,
+			zldi.is_major,
+			zrvi.type,
+			zrvi.length,
+			zobi.need_start_time,
+			zobi.need_arrive_time,
+			zlti.trip_time
+		FROM
+			(SELECT load_id,load_no,order_id,vehicle_info_id,status FROM zh_order_load_info WHERE load_id = #{loadId} and type = #{loadType}
+			<if test="status!=null">
+				  and status = #{status}
+			</if>				
+			) zoli
+		INNER JOIN (
+			(SELECT order_id,order_no,status,info_id FROM zh_order_detail_info) zodi
+			INNER JOIN (
+				zh_order_base_info zobi
+				LEFT JOIN zh_order_sender_info zosi ON zobi.info_id = zosi.info_id
+				LEFT JOIN zh_order_line_info line ON zobi.info_id = line.info_id
+			) ON zodi.info_id = zobi.info_id
+		) ON zodi.order_id = zoli.order_id
+		LEFT JOIN zh_real_vehicle_info zrvi ON zoli.vehicle_info_id = zrvi.vehicle_info_id
+		LEFT JOIN (
+			zh_load_driver_info zldi
+			INNER JOIN zh_real_driver_info zrdi ON zldi.driver_info_id = zrdi.driver_info_id
+		) ON zoli.load_id = zldi.load_id
+		INNER JOIN zh_load_trip_info zlti ON zoli.load_id = zlti.load_id
+		
+	</select>
+	
+	<!-- 获取到达列表  -->
+	<select id="pageArriveList" parameterType="map" resultMap="pageResultMap">
+		SELECT
+			DISTINCT
+			zoli.load_id,
+			zoli.load_no,
+			zrvi.plate_number,
+			zodi.order_no,
+			line.start_code_p,
+			line.start_code_c,
+			line.end_code_p,
+			line.end_code_c,
+			zoli.status,
+			zlai.arrive_time
+		FROM
+			(
+				SELECT
+					load_id,
+					load_no,
+					order_id,
+					vehicle_info_id,
+					status
+				FROM
+					zh_order_load_info
+				<trim prefix="WHERE" prefixOverrides="AND |OR ">
+					status IN 
+					 <foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+		        		#{status}
+		   			</foreach>
+		   			and type = #{type}			
+				</trim> 
+			) zoli
+		INNER JOIN (
+			zh_order_detail_info zodi
+			INNER JOIN zh_order_base_info zobi ON zodi.info_id = zobi.info_id
+			LEFT JOIN zh_order_sender_info zosi ON zodi.info_id = zosi.info_id
+			LEFT JOIN zh_order_line_info line ON zodi.info_id = line.info_id
+		) ON zoli.order_id = zodi.order_id
+		INNER JOIN zh_load_trip_info zlti ON zoli.load_id = zlti.load_id
+		INNER JOIN zh_load_arrive_info zlai ON zoli.load_id = zlai.load_id
+		LEFT JOIN zh_real_vehicle_info zrvi ON zoli.vehicle_info_id = zrvi.vehicle_info_id
+		LEFT JOIN (
+			zh_load_driver_info zldi
+			INNER JOIN zh_real_driver_info zrdi ON zldi.driver_info_id = zrdi.driver_info_id
+		) ON zoli.load_id = zldi.load_id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="keyWord!=null">
+				(zoli.load_no = #{keyWord} or zrvi.plate_number = #{keyWord} or zodi.order_no = #{keyWord})
+			</if>
+			<if test="customerId!=null">
+				 and zosi.customer_id = #{customerId}
+			</if>
+			<if test="customerBillNo!=null">
+				 and zobi.customer_bill_no = #{customerBillNo}
+			</if>	
+			<if test="startCodeP!=null">
+				 and line.start_code_p = #{startCodeP}
+			</if>
+			<if test="startCodeC!=null">
+				 and line.start_code_c = #{startCodeC}
+			</if>
+			<if test="endCodeP!=null">
+				 and line.end_code_p = #{endCodeP}
+			</if>
+			<if test="endCodeC!=null">
+				 and line.end_code_c = #{endCodeC}
+			</if>	
+			
+			<if test="realName!=null">
+				 and zrdi.real_name like #{realNameLike}
+			</if>	
+			<if test="telphone!=null">
+				 and zrdi.telphone = #{telphone}
+			</if>							
+			<if test="tripTimeStart!=null">
+				 and zlti.trip_time > #{tripTimeStart}
+			</if>
+			<if test="tripTimeEnd!=null">
+				<![CDATA[ and zlti.trip_time < #{tripTimeEnd}]]>
+			</if>
+		  
+		</trim> 
+		<if test="sort == null" >
+	       	order by zlai.created_time desc
+	    </if>
+	  	<if test="sort != null and  sort == 00" >
+	       	order by zlai.arrive_time asc
+	    </if>
+	     <if test="sort != null and sort == 01">
+	       	order by zlai.arrive_time desc
+	    </if>	
+	</select>
+	
+	<!--回单列表分页 -->
+	<select id="pageReceiptList" parameterType="map" resultMap="pageResultMap">
+	   SELECT 
+		   zodi.order_id AS orderId,
+	       zodi.order_no AS orderNo,
+	       zosi.customer_id AS customerId,
+	       cust.full_name AS customerName,
+	       zoli_load.load_id AS loadId,
+	       zoli_load.load_no AS loadNo,
+	       zrvi.plate_number AS plateNumber,
+	       line.start_code_p,
+	       line.start_code_c,
+	       line.end_code_p,
+	       line.end_code_c,
+		   case when  zlet.source = '01'
+		   then zlet.updated_time
+	 	   else  zlet.op_time
+	       end as elecTime,
+		   case when zoli_load.status = '14'
+		   then zlen.created_time
+		   else zlpt.updated_time 
+		   end as printTime
+       FROM 
+       	   zh_order_detail_info zodi
+	   INNER JOIN ( zh_order_base_info zobi
+       LEFT JOIN ( zh_order_sender_info zosi
+       LEFT JOIN zh_customer_info cust ON zosi.customer_id = cust.customer_id ) ON zobi.info_id = zosi.info_id ) ON zodi.info_id = zobi.info_id 
+       <if test="dataType">
+			 AND zobi.type = #{dataType}
+	   </if>
+  	   LEFT JOIN zh_order_line_info line ON zobi.info_id = line.info_id
+	   INNER JOIN 
+       ( SELECT 
+         order_id,
+         vehicle_info_id,
+         load_no,
+         load_id,
+         status
+         FROM zh_order_load_info
+         WHERE 
+         <if test="agreementType!=null">
+			 TYPE = #{agreementType}
+		 </if>
+         AND status NOT IN
+         (SELECT zfss.code
+         FROM zh_flows zfs
+         INNER JOIN zh_flow_status zfss ON zfs.flow_id = zfss.flow_id
+         AND zfss.TYPE='03'
+         <if test="flowName!=null">
+				AND  zfs.name= #{flowName}
+		 </if>	
+         ) ) zoli on zoli.order_id=zodi.order_id
+         INNER JOIN
+		zh_driver_contract_info zdci on zdci.contract_id = zoli.load_id
+         INNER JOIN 
+        ( SELECT 
+		  load_id,
+          status,
+          load_no,
+          updated_time
+          FROM zh_order_load_info
+          WHERE 
+          <if test="dataType!=null">
+			 TYPE = #{dataType}
+		 </if>
+          ) zoli_load on zoli_load.load_id = zdci.load_id
+		LEFT JOIN
+		(
+			select 
+			updated_time,
+            load_id,
+			source,
+			op_time
+			from
+			zh_load_elecreceipt 
+			where
+			<if test="checkStatus!=null">
+				status =#{checkStatus}
+		 	</if>
+		) zlet on  zdci.load_id = zlet.load_id
+		LEFT JOIN 
+        ( 
+        	SELECT 
+			load_id,
+			created_time
+            FROM 
+            zh_load_exception
+        ) zlen ON zdci.load_id = zlen.load_id
+		LEFT JOIN
+		(
+			select 
+			updated_time,
+			load_id
+			from
+			zh_load_printreceipt 
+			where
+			<if test="checkStatus!=null">
+				status =#{checkStatus}
+		 	</if>
+		) zlpt on  zdci.load_id = zlpt.load_id
+		LEFT JOIN (
+			zh_load_driver_info zldi 
+			LEFT JOIN zh_real_driver_info zrdi ON zldi.driver_info_id = zrdi.driver_info_id and zrdi.is_deleted = '00'
+		)ON zoli.load_id = zldi.load_id
+         LEFT JOIN
+         ( SELECT vehicle_info_id,
+         plate_number
+         FROM zh_real_vehicle_info
+         ) zrvi ON zoli.vehicle_info_id = zrvi.vehicle_info_id
+     	<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="keyWord!=null">
+				and ( zodi.order_no = #{keyWord} or   zoli_load.load_no = #{keyWord} or  zrvi.plate_number=#{keyWord} )
+			</if>
+			<if test="startCodeP!=null">
+				and line.start_code_p = #{startCodeP}
+			</if>
+			<if test="startCodeC!=null">
+				and line.start_code_c = #{startCodeC}
+			</if>
+			<if test="end_code_p!=null">
+				and line.end_code_p = #{endCodeP}
+			</if>
+			<if test="endCodeC!=null">
+				and line.end_code_c = #{endCodeC}
+			</if>
+			<if test="customerId!=null">
+				zosi.customer_id = #{customerId}
+			</if>
+			<if test="customerBillNo!=null">
+				and zobi.customer_bill_no=#{customerBillNo}
+			</if>
+			<if test="status!=null">
+				and zoli_load.status = #{status}
+			</if>
+			<if test="statusArray!=null">
+				and zoli_load.status in 
+				<foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+        		#{status}
+   				</foreach>
+			</if>
+			<if test="driverTelphone!=null">
+				and zrdi.telphone = #{driverTelphone}
+			</if>
+			<if test="driverName!=null">
+				and zrdi.real_name like #{driverName}
+			</if>
+			<if test="elecStartTime!=null">
+				<![CDATA[ and zlet.updated_time >= #{elecStartTime}]]>
+			</if>
+			<if test="elecEndTime!=null">
+				<![CDATA[ and zlet.updated_time <= #{elecEndTime}]]>
+			</if>
+			<if test="printStartTime!=null">
+				<![CDATA[ and (zlpt.updated_time >= #{printStartTime} or zlen.created_time>= #{printStartTime} )]]>
+			</if>
+			<if test="printEndTime!=null">
+				<![CDATA[ and (zlpt.updated_time <= #{printEndTime} or or zlen.created_time<= #{printEndTime} )]]>
+			</if>	
+		</trim> 
+			<if test="sortField == 'elecTime'">
+				order by zlet.updated_time
+			</if>
+
+			<if test="sortField == 'printTime'">
+				order by zlpt.updated_time
+			</if>
+
+			<if test="sortField == null">
+				order by zoli_load.updated_time
+			</if>
+			
+			<if test="sort == null" >
+	       		desc
+	   	 	</if>
+	  		<if test="sort != null and  sort == 00" >
+	       		 asc
+	   		</if>
+	    	<if test="sort != null and sort == 01">
+	        	desc
+	    	</if>
+	</select>	
+	
+	<select id="getDriverOrderCount" parameterType="map" resultType="java.lang.Integer">
+	    select
+		count(1) as count
+		from 
+		zh_order_load_info t1  inner join zh_load_driver_info t2 on t1.load_id =t2.load_id
+		<if test="isMajor != null" >
+	       		and t2.is_major = '01'
+	   	</if>
+	   	<if test="type != null" >
+	       		and t1.type = '01'
+	   	</if>
+		inner join zh_real_driver_info t3 on  t2.driver_info_id = t3.driver_info_id
+		inner join zh_agent_info t4 on t4.idno = t3.idno
+		where 
+		t4.account_id = #{accountId}
+		<if test="statusArray != null">
+		 and t1.status in
+		  <foreach collection="statusArray" index="index" item="status" open="(" separator="," close=")">  
+		        	#{status}
+		   </foreach>
+	    </if>
+	</select>
+	
+		
+</mapper> 

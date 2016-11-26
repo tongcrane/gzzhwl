@@ -1,0 +1,15 @@
+package com.gzzhwl.admin.payables.service.impl;
+
+import java.util.Map;
+
+import com.gzzhwl.admin.payables.service.PayablesService;
+
+public class PayablesServiceImpl implements PayablesService {
+
+	@Override
+	public Map<String, Object> getPayDetail(String loadId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

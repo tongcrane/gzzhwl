@@ -1,0 +1,217 @@
+package com.gzzhwl.admin.order.controller;
+
+import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gzzhwl.admin.order.service.ChargeService;
+import com.gzzhwl.admin.order.service.OrderQueryService;
+import com.gzzhwl.admin.order.service.OrderService;
+import com.gzzhwl.admin.order.vo.OrderQueryVo;
+import com.gzzhwl.admin.order.vo.OrderVO;
+import com.gzzhwl.admin.order.vo.PushOrderVO;
+import com.gzzhwl.admin.orderReturn.service.OrderReturnService;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.security.annotation.RequirePerm;
+import com.gzzhwl.rest.security.model.Subject;
+import com.gzzhwl.rest.security.utils.SecurityUtils;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+@RestController
+@RequestMapping("/admin/order")
+public class OrderController {
+	@Autowired
+	private OrderService orderService;
+	@Autowired
+	private ChargeService chargeService;
+	@Autowired
+	private OrderReturnService orderReturnService;
+	@Autowired
+	private OrderQueryService orderQueryService;
+
+	/**
+	 * 创建订单
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/create", method = { RequestMethod.POST }, consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel createOrder(@RequestBody OrderVO orderInfo) {
+		Subject subject = SecurityUtils.getSubject();
+		String orderId = orderService.saveOrder(orderInfo, subject.getDepartId(), subject.getStaffId());
+		return new ResponseModel(orderId);
+	}
+
+	/**
+	 * 修改订单
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/modify", method = { RequestMethod.POST }, consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel modifyOrder(@RequestBody OrderVO orderInfo) {
+		Subject subject = SecurityUtils.getSubject();
+		String orderId = orderService.modifyOrder(orderInfo, subject.getDepartId(), subject.getStaffId());
+		return new ResponseModel(orderId);
+	}
+
+	/**
+	 * 取消订单
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/cancel", method = { RequestMethod.POST })
+	public ResponseModel cancelOrder(@RequestParam String orderId) {
+		Subject subject = SecurityUtils.getSubject();
+		boolean success = orderService.cancelOrder(orderId, subject.getStaffId());
+		return new ResponseModel(success);
+	}
+
+	@RequirePerm
+	@RequestMapping(value = "/cancelBatch", method = { RequestMethod.POST })
+	public ResponseModel cancelBatch(@RequestParam String orderIds) {
+		Subject subject = SecurityUtils.getSubject();
+		String[] orderArr = StringUtils.split(orderIds, ",");
+		boolean success = orderService.cancelOrderBatch(orderArr, subject.getStaffId());
+		return new ResponseModel(success);
+	}
+
+	/**
+	 * 订单推送
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/push", method = { RequestMethod.POST }, consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseModel pushOrder(@RequestBody PushOrderVO orderInfo) {
+		Subject subject = SecurityUtils.getSubject();
+		boolean success = orderService.pushOrder(orderInfo, subject.getStaffId());
+		return new ResponseModel(success);
+	}
+
+	/**
+	 * 订单关闭
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/close", method = { RequestMethod.POST })
+	public ResponseModel closeOrder(@RequestParam String orderId) {
+		Subject subject = SecurityUtils.getSubject();
+		boolean success = orderService.closeOrder(orderId, subject.getStaffId());
+		return new ResponseModel(success);
+	}
+
+	/**
+	 * 约车
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/toLoad", method = { RequestMethod.POST })
+	public ResponseModel toLoad(@RequestParam String orderId) {
+		Subject subject = SecurityUtils.getSubject();
+		Integer departId = subject.getDepartId();
+		boolean success = orderService.toLoad(orderId, departId, subject.getStaffId());
+		return new ResponseModel(success);
+	}
+
+	/**
+	 * 约车
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/doLoadBatch", method = { RequestMethod.POST })
+	public ResponseModel doLoadBatch(@RequestParam String orderIds) {
+		Subject subject = SecurityUtils.getSubject();
+		Integer departId = subject.getDepartId();
+		String[] orderArr = StringUtils.split(orderIds, ",");
+		boolean success = orderService.doLoadBatch(orderArr, departId, subject.getStaffId());
+		return new ResponseModel(success);
+	}
+
+	/**
+	 * 计费方式列表接口
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/charge", method = { RequestMethod.GET })
+	public ResponseModel listCharge() {
+		List<Map<String, Object>> data = chargeService.listCharge();
+		return new ResponseModel(data);
+	}
+
+	/**
+	 * 按钮列表
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/wtd", method = { RequestMethod.GET })
+	public ResponseModel whatToDo(@RequestParam String orderId) {
+		List<Map<String, Object>> data = orderService.whatToDo(orderId);
+		return new ResponseModel(data);
+	}
+
+	/**
+	 * 申请退回
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/return", method = { RequestMethod.POST })
+	public ResponseModel applyReturn(@RequestParam String orderId) {
+		Subject subject = SecurityUtils.getSubject();
+		boolean success = orderReturnService.applyReturn(orderId, subject.getStaffId());
+		return new ResponseModel(success);
+	}
+
+	/**
+	 * 是否允许申请退回
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/allowReturn", method = { RequestMethod.POST })
+	public ResponseModel allowReturn(@RequestParam String orderId) {
+		String sourceId = orderReturnService.allowApply(orderId);
+		boolean success = StringUtils.isNotBlank(sourceId);
+		return new ResponseModel(success);
+	}
+
+	/**
+	 * 获取订单分页信息（我的业务-总览）
+	 * 
+	 * @param keyWord
+	 * @param page
+	 * @return
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/pageOrderList", method = { RequestMethod.GET })
+	public ResponseModel pageOrderList(String keyWord, @Pagination PageParameter page, String sort) {
+		Page<Map<String, Object>> data = orderQueryService.pageOrderList(keyWord, sort, page.getPageIndex(),
+				page.getPageSize());
+		return new ResponseModel(data);
+	}
+
+	/**
+	 * 获取订单运单详细信息
+	 * 
+	 * @param orderId
+	 * @return
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/getOrderDetail", method = { RequestMethod.GET })
+	public ResponseModel getOrderDetail(@RequestParam String orderId) {
+		Map<String, Object> data = orderQueryService.getOrderDetail(orderId);
+		return new ResponseModel(data);
+	}
+
+	/**
+	 * 获取订单分页信息(我的业务-货源)
+	 * 
+	 * @param queryVo
+	 * @param page
+	 * @return
+	 * @throws ParseException
+	 */
+	@RequirePerm
+	@RequestMapping(value = "/pageOrders", method = { RequestMethod.GET })
+	public ResponseModel pageOrders(OrderQueryVo queryVo, @Pagination PageParameter page) throws ParseException {
+		Page<Map<String, Object>> data = orderQueryService.pageOrders(queryVo, page.getPageIndex(), page.getPageSize());
+		return new ResponseModel(data);
+	}
+
+}

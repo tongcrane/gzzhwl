@@ -1,0 +1,41 @@
+package com.gzzhwl.admin.load.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.load.service.VADUserdService;
+import com.gzzhwl.core.data.dao.LoadDriverInfoDao;
+import com.gzzhwl.core.data.dao.OrderLoadInfoDao;
+import com.gzzhwl.core.data.model.OrderLoadInfo;
+
+public class VADUserdServiceImpl implements VADUserdService {
+	@Autowired
+	private OrderLoadInfoDao orderLoadInfoDao;
+	@Autowired
+	private LoadDriverInfoDao loadDriverInfoDao;
+
+	@Override
+	public boolean lockVandD(String loadId) {
+		OrderLoadInfo loadInfo = orderLoadInfoDao.get(loadId);
+		String vehicleInfoId = loadInfo.getVehicleInfoId();// 车ID
+		String loadInfoId = loadInfo.getLoadInfoId();// 挂ID
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("loadId", loadId);
+		List<Map<String, String>> driverList = loadDriverInfoDao.find(params);
+		for (Map<String, String> driverInfo : driverList) {
+			String driverId = driverInfo.get("driverInfoId");// 司机ID
+
+		}
+		return false;
+	}
+
+	@Override
+	public boolean releaseVandD(String loadId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

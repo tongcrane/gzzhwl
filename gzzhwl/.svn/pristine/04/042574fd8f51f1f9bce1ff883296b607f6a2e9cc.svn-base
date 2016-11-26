@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.SupplyInfoDao">
+
+	<resultMap id="supplyInfoResultMap" type="SupplyInfo">
+		<id property="supplyId" column="supply_id" />
+		<result property="supplyNo" column="supply_no" />
+		<result property="type" column="type" />
+		<result property="fullName" column="full_name" />
+		<result property="taxRegCode" column="tax_reg_code" />
+		<result property="contactName" column="contact_name" />
+		<result property="mobile" column="mobile" />
+		<result property="areaCode" column="area_code" />
+		<result property="address" column="address" />
+		<result property="paymentType" column="payment_type" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="belongDepartId" column="belong_depart_id" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="supplyInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="supplyInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="SupplyInfo">
+	   insert into zh_supply_info (
+	     supply_id,
+	     supply_no,
+	     type,
+	     full_name,
+	     tax_reg_code,
+	     contact_name,
+	     mobile,
+	     area_code,
+	     address,
+	     payment_type,
+	     remark,
+	     status,
+	     belong_depart_id,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   )values (
+	     #{supplyId},
+	     #{supplyNo},
+	     #{type},
+	     #{fullName},
+	     #{taxRegCode},
+	     #{contactName},
+	     #{mobile},
+	     #{areaCode},
+	     #{address},
+	     #{paymentType},
+	     #{remark},
+	     #{status},
+	     #{belongDepartId},
+	     #{createdBy},
+	     now(),
+	     #{updatedBy},
+	     now(),
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="SupplyInfo">
+	   update zh_supply_info set
+	     supply_id=#{supplyId},
+	     supply_no=#{supplyNo},
+	     type=#{type},
+	     full_name=#{fullName},
+	     tax_reg_code=#{taxRegCode},
+	     contact_name=#{contactName},
+	     mobile=#{mobile},
+	     area_code=#{areaCode},
+	     address=#{address},
+	     payment_type=#{paymentType},
+	     remark=#{remark},
+	     status=#{status},
+	     belong_depart_id=#{belongDepartId},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     updated_by=#{updatedBy},
+	     updated_time=now(),
+	     is_deleted=#{isDeleted}
+	   where 
+	    supply_id=#{supplyId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="SupplyInfo">
+	   update zh_supply_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="supplyId != null">
+		       supply_id=#{supplyId},
+		     </if>
+		     <if test="supplyNo != null">
+		       supply_no=#{supplyNo},
+		     </if>
+		     <if test="type != null">
+		       type=#{type},
+		     </if>
+		     <if test="fullName != null">
+		       full_name=#{fullName},
+		     </if>
+		     <if test="taxRegCode != null">
+		       tax_reg_code=#{taxRegCode},
+		     </if>
+		     <if test="contactName != null">
+		       contact_name=#{contactName},
+		     </if>
+		     <if test="mobile != null">
+		       mobile=#{mobile},
+		     </if>
+		     <if test="areaCode != null">
+		       area_code=#{areaCode},
+		     </if>
+		     <if test="address != null">
+		       address=#{address},
+		     </if>
+		     <if test="paymentType != null">
+		       payment_type=#{paymentType},
+		     </if>
+		     <if test="remark != null">
+		       remark=#{remark},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="belongDepartId != null">
+		       belong_depart_id=#{belongDepartId},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="updatedBy != null">
+		       updated_by=#{updatedBy},
+		     </if>
+
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted},
+		     </if>
+		      	updated_time=now(),
+	   </trim>
+	
+	   where 
+	    supply_id=#{supplyId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_supply_info 
+	   where 
+	    supply_id=#{supplyId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="supplyInfoResultMap">
+	   select 
+	    supply_id,
+	    supply_no,
+	    type,
+	    full_name,
+	    tax_reg_code,
+	    contact_name,
+	    mobile,
+	    area_code,
+	    address,
+	    payment_type,
+	    remark,
+	    status,
+	    belong_depart_id,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_supply_info
+	   where 
+	    supply_id=#{supplyId} 
+	    and is_deleted ='00'
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    supply_id,
+	    supply_no,
+	    type,
+	    full_name,
+	    tax_reg_code,
+	    contact_name,
+	    mobile,
+	    area_code,
+	    address,
+	    payment_type,
+	    remark,
+	    status,
+	    belong_depart_id,
+	    created_by,
+	    created_time,
+	    updated_by,
+	    updated_time,
+	    is_deleted
+	   from zh_supply_info
+	   where 
+	    supply_id=#{supplyId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     supply_id,
+	     supply_no,
+	     type,
+	     full_name,
+	     tax_reg_code,
+	     contact_name,
+	     mobile,
+	     area_code,
+	     address,
+	     payment_type,
+	     remark,
+	     status,
+	     belong_depart_id,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_supply_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="supplyId != null">
+	        supply_id=#{supplyId}
+	     </if>
+	     <if test="supplyNo != null">
+	        and supply_no=#{supplyNo}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="fullName != null">
+	        and full_name=#{fullName}
+	     </if>
+	     <if test="taxRegCode != null">
+	        and tax_reg_code=#{taxRegCode}
+	     </if>
+	     <if test="contactName != null">
+	        and contact_name=#{contactName}
+	     </if>
+	     <if test="mobile != null">
+	        and mobile=#{mobile}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	     <if test="paymentType != null">
+	        and payment_type=#{paymentType}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     supply_id,
+	     supply_no,
+	     type,
+	     full_name,
+	     tax_reg_code,
+	     contact_name,
+	     mobile,
+	     area_code,
+	     address,
+	     payment_type,
+	     remark,
+	     status,
+	     belong_depart_id,
+	     created_by,
+	     created_time,
+	     updated_by,
+	     updated_time,
+	     is_deleted
+	   from zh_supply_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="supplyId != null">
+	        supply_id=#{supplyId}
+	     </if>
+	     <if test="supplyNo != null">
+	        and supply_no=#{supplyNo}
+	     </if>
+	     <if test="type != null">
+	        and type=#{type}
+	     </if>
+	     <if test="fullName != null">
+	        and full_name=#{fullName}
+	     </if>
+	     <if test="taxRegCode != null">
+	        and tax_reg_code=#{taxRegCode}
+	     </if>
+	     <if test="contactName != null">
+	        and contact_name=#{contactName}
+	     </if>
+	     <if test="mobile != null">
+	        and mobile=#{mobile}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	     <if test="paymentType != null">
+	        and payment_type=#{paymentType}
+	     </if>
+	     <if test="remark != null">
+	        and remark=#{remark}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="belongDepartId != null">
+	        and belong_depart_id=#{belongDepartId}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedBy != null">
+	        and updated_by=#{updatedBy}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

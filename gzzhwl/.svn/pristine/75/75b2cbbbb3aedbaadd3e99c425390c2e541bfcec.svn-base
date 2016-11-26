@@ -1,0 +1,340 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_consignment_info表
+ * @author mew
+ *
+ */
+public class ConsignmentInfo implements Serializable {
+	@Length(max = 36, message = "consignId超过长度限制")
+	private java.lang.String consignId; // 合同标识
+	@Length(max = 36, message = "orderId超过长度限制")
+	private java.lang.String orderId; // 订单标识
+	@Length(max = 50, message = "consignNo超过长度限制")
+	private java.lang.String consignNo; // 合同编号
+	@Length(max = 10, message = "freightPrice超过长度限制")
+	private java.lang.String freightPrice; // 运费
+	@Length(max = 10, message = "loadPrice超过长度限制")
+	private java.lang.String loadPrice; // 装卸费
+	@Length(max = 10, message = "otherPrice超过长度限制")
+	private java.lang.String otherPrice; // 其他费用
+	@Length(max = 100, message = "otherExplain超过长度限制")
+	private java.lang.String otherExplain; // 其他费用说明
+	@Length(max = 10, message = "total超过长度限制")
+	private java.lang.String total; // 总费用
+	@Length(max = 400, message = "remark超过长度限制")
+	private java.lang.String remark; // 备注
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 合同状态
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取合同标识属性
+     *
+     * @return consignId
+     */
+	public java.lang.String getConsignId() {
+		return consignId;
+	}
+	
+	/**
+	 * 设置合同标识属性
+	 *
+	 * @param consignId
+	 */
+	public void setConsignId(java.lang.String consignId) {
+		this.consignId = consignId;
+	}
+	
+	/**
+     * 获取订单标识属性
+     *
+     * @return orderId
+     */
+	public java.lang.String getOrderId() {
+		return orderId;
+	}
+	
+	/**
+	 * 设置订单标识属性
+	 *
+	 * @param orderId
+	 */
+	public void setOrderId(java.lang.String orderId) {
+		this.orderId = orderId;
+	}
+	
+	/**
+     * 获取合同编号属性
+     *
+     * @return consignNo
+     */
+	public java.lang.String getConsignNo() {
+		return consignNo;
+	}
+	
+	/**
+	 * 设置合同编号属性
+	 *
+	 * @param consignNo
+	 */
+	public void setConsignNo(java.lang.String consignNo) {
+		this.consignNo = consignNo;
+	}
+	
+	/**
+     * 获取运费属性
+     *
+     * @return freightPrice
+     */
+	public java.lang.String getFreightPrice() {
+		return freightPrice;
+	}
+	
+	/**
+	 * 设置运费属性
+	 *
+	 * @param freightPrice
+	 */
+	public void setFreightPrice(java.lang.String freightPrice) {
+		this.freightPrice = freightPrice;
+	}
+	
+	/**
+     * 获取装卸费属性
+     *
+     * @return loadPrice
+     */
+	public java.lang.String getLoadPrice() {
+		return loadPrice;
+	}
+	
+	/**
+	 * 设置装卸费属性
+	 *
+	 * @param loadPrice
+	 */
+	public void setLoadPrice(java.lang.String loadPrice) {
+		this.loadPrice = loadPrice;
+	}
+	
+	/**
+     * 获取其他费用属性
+     *
+     * @return otherPrice
+     */
+	public java.lang.String getOtherPrice() {
+		return otherPrice;
+	}
+	
+	/**
+	 * 设置其他费用属性
+	 *
+	 * @param otherPrice
+	 */
+	public void setOtherPrice(java.lang.String otherPrice) {
+		this.otherPrice = otherPrice;
+	}
+	
+	/**
+     * 获取其他费用说明属性
+     *
+     * @return otherExplain
+     */
+	public java.lang.String getOtherExplain() {
+		return otherExplain;
+	}
+	
+	/**
+	 * 设置其他费用说明属性
+	 *
+	 * @param otherExplain
+	 */
+	public void setOtherExplain(java.lang.String otherExplain) {
+		this.otherExplain = otherExplain;
+	}
+	
+	/**
+     * 获取总费用属性
+     *
+     * @return total
+     */
+	public java.lang.String getTotal() {
+		return total;
+	}
+	
+	/**
+	 * 设置总费用属性
+	 *
+	 * @param total
+	 */
+	public void setTotal(java.lang.String total) {
+		this.total = total;
+	}
+	
+	/**
+     * 获取备注属性
+     *
+     * @return remark
+     */
+	public java.lang.String getRemark() {
+		return remark;
+	}
+	
+	/**
+	 * 设置备注属性
+	 *
+	 * @param remark
+	 */
+	public void setRemark(java.lang.String remark) {
+		this.remark = remark;
+	}
+	
+	/**
+     * 获取合同状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置合同状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改人属性
+     *
+     * @return updatedBy
+     */
+	public java.lang.String getUpdatedBy() {
+		return updatedBy;
+	}
+	
+	/**
+	 * 设置修改人属性
+	 *
+	 * @param updatedBy
+	 */
+	public void setUpdatedBy(java.lang.String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("ConsignmentInfo");
+        sb.append("{consignId=").append(consignId);
+        sb.append(", orderId=").append(orderId);
+        sb.append(", consignNo=").append(consignNo);
+        sb.append(", freightPrice=").append(freightPrice);
+        sb.append(", loadPrice=").append(loadPrice);
+        sb.append(", otherPrice=").append(otherPrice);
+        sb.append(", otherExplain=").append(otherExplain);
+        sb.append(", total=").append(total);
+        sb.append(", remark=").append(remark);
+        sb.append(", status=").append(status);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedBy=").append(updatedBy);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

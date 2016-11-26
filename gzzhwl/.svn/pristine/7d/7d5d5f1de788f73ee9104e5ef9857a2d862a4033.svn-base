@@ -1,0 +1,201 @@
+package com.gzzhwl.admin.customer.service.impl;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.customer.service.CustomerInfoService;
+import com.gzzhwl.admin.customer.validate.CustomerValidate;
+import com.gzzhwl.admin.customer.vo.CustomerInfoVo;
+import com.gzzhwl.admin.customer.vo.CustomerQueryVo;
+import com.gzzhwl.common.service.RegionService;
+import com.gzzhwl.core.constant.CustType;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.SeqNoKey;
+import com.gzzhwl.core.data.dao.CustomerBankInfoDao;
+import com.gzzhwl.core.data.dao.CustomerInfoDao;
+import com.gzzhwl.core.data.extdao.CustomerInfoExtDao;
+import com.gzzhwl.core.data.model.CustomerBankInfo;
+import com.gzzhwl.core.data.model.CustomerInfo;
+import com.gzzhwl.core.data.model.RegionInfo;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+
+@Service
+public class CustomerInfoServiceImpl implements CustomerInfoService{
+	@Autowired
+	Mapper beanMapper;
+	@Autowired
+	CustomerInfoDao custDao;
+	@Autowired
+	CustomerBankInfoDao bankDao;
+	@Autowired
+	CustomerInfoExtDao custExtDao;
+	@Autowired
+	private RegionService reginService;
+	
+
+	@Override
+	public String saveCust(CustomerInfoVo customerInfoVo,String staffId,String departId) {
+		CustomerInfo customerInfo = beanMapper.map(customerInfoVo, CustomerInfo.class);
+		CustomerBankInfo bankInfo = beanMapper.map(customerInfoVo, CustomerBankInfo.class);
+		
+		String custId = saveCustomerInfo(customerInfo,staffId,departId);
+		bankInfo.setCustomerId(custId);
+		bankDao.insert(bankInfo);
+		
+		return custId;
+	}
+
+	private String saveCustomerInfo(CustomerInfo customerInfo, String staffId,String departId) {
+		//客户信息校验
+		customerValidator(customerInfo);
+		
+		String custId = IdentifierUtils.getId().generate().toString();
+		String custno = IdentifierUtils.getSequence(SeqNoKey.CUST).generate().toString();
+		customerInfo.setCustomerId(custId);
+		customerInfo.setCustomerNo(custno);
+		customerInfo.setCreatedBy(staffId);
+		customerInfo.setUpdatedBy(staffId);
+		customerInfo.setStatus(Global.CUST_NORMAL.toString());
+		customerInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		customerInfo.setBelongDepartId(departId);
+		
+		custDao.insert(customerInfo);
+		return custId;
+	}
+	
+	/**
+	 * 客户信息校验
+	 * @param customerInfo
+	 */
+	public void customerValidator(CustomerInfo customerInfo) {
+		String custId =customerInfo.getCustomerId();
+		//校验必输项及数据格式
+		CustomerValidate.valid_customer(customerInfo);
+		
+		//公司客户，以客户全称做唯一性校验
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("fullName", customerInfo.getFullName());
+		params.put("type", CustType.COMPANY.getCode());
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		if(StringUtils.isNotBlank(custId)) {
+			params.put("customerId", custId);
+		}
+		List<Map<String,Object>> data = custExtDao.find(params);
+		CustomerValidate.valid_fullName_exist(!ValidateUtils.isEmpty(data));
+		
+		//如果填了税务登记号，则做唯一性校验
+		if(StringUtils.isNotBlank(customerInfo.getTaxRegCode())) {
+			params = new HashMap<String,Object>();
+			params.put("taxRegCode", customerInfo.getTaxRegCode());
+			params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+			if(StringUtils.isNotBlank(custId)) {
+				params.put("customerId", custId);
+			}
+			data = custExtDao.find(params);
+			CustomerValidate.valid_taxCode_exist(!ValidateUtils.isEmpty(data));
+		}
+				
+		
+	}
+
+	@Override
+	public boolean removeCustomer(String custId,String staffId) {
+		CustomerInfo customer = custDao.get(custId);
+		//校验客户是否存在
+		CustomerValidate.valid_not_exist(ValidateUtils.isEmpty(customer));
+		
+		customer.setUpdatedBy(staffId);
+		customer.setIsDeleted(Global.ISDEL_DELETE.toString());
+		return custDao.updateSelective(customer) > 0;
+	}
+	
+	@Override
+	public boolean updateCustomer(CustomerInfoVo customerInfoVo, String staffId) {
+		CustomerInfo customerInfo = beanMapper.map(customerInfoVo, CustomerInfo.class);
+		CustomerBankInfo bankInfo = beanMapper.map(customerInfoVo, CustomerBankInfo.class);
+		updateCustomer(customerInfo,staffId);
+		
+		bankDao.updateSelective(bankInfo);
+		return true;
+	}
+
+	private boolean updateCustomer(CustomerInfo customerInfo, String staffId) {
+		
+		String custId = customerInfo.getCustomerId();
+		//验证客户ID是否为空
+		CustomerValidate.valid_custId(custId);
+		
+		CustomerInfo cust = custDao.get(custId);
+		//验证客户信息是否存在
+		CustomerValidate.valid_not_exist(ValidateUtils.isEmpty(cust));
+		
+		//验证客户编号
+		CustomerValidate.valid_custno(customerInfo.getCustomerNo(), cust.getCustomerNo());
+		
+		//客户信息校验
+		customerValidator(customerInfo);
+		
+		customerInfo.setUpdatedBy(staffId);
+		return custDao.updateSelective(customerInfo) > 0;
+	}
+
+	@Override
+	public Page<Map<String, Object>> pageCustList(CustomerQueryVo queryVo, int currentPage, int pageSize) {
+		Map<String,Object> params =  queryVo.getParam();
+
+		Page<Map<String,Object>> data = custExtDao.pageCustList(params, currentPage, pageSize);
+		
+		if (data != null) {
+			List<Map<String, Object>> rows = data.getRows();
+			Iterator<Map<String, Object>> i_r = rows.iterator();
+			while (i_r.hasNext()) {
+				Map<String, Object> _r = i_r.next();
+				String areaCode = (String) _r.get("areaCode");
+				List<RegionInfo> area = reginService.findRootByCode(areaCode);
+				_r.put("area", area);
+			}
+		}
+		
+		return data;
+	}
+
+	@Override
+	public CustomerInfoVo queryCustDetail(String custId) {
+		CustomerValidate.valid_custId(custId);
+		CustomerInfo cust = custDao.get(custId);
+		CustomerValidate.valid_not_exist(ValidateUtils.isEmpty(cust));
+		
+		CustomerInfoVo custVo = beanMapper.map(cust, CustomerInfoVo.class);
+		
+		CustomerBankInfo bankInfo = bankDao.get(custId);
+		beanMapper.map(bankInfo , custVo);
+			
+		return custVo;
+	}
+
+	@Override
+	public List<Map<String, Object>> queryCustList() {
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		List<Map<String,Object>> custs = custExtDao.find(params);
+		return custs;
+	}
+
+//	@Override
+//	public String createCustno() {
+//		String custno = IdentifierUtils.getSequence(SeqNoKey.CUST).generate().toString();
+//		return custno;
+//	}
+
+
+	
+}

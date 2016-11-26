@@ -1,0 +1,377 @@
+package com.gzzhwl.admin.vehicle.vo;
+
+/**
+ * 车辆信息vo
+ * @author jly
+ *
+ */
+public class VehicleInfoDetailVo {
+	
+	private java.lang.String vehicleInfoId; // 车辆信息标识
+	private java.lang.String vehicleType; // 车头类型
+	private java.lang.String plateNumber; // 车牌号
+	private java.lang.String models; // 车型
+	private java.lang.String length; // 车长
+	private java.lang.String brand; // 品牌
+	private java.lang.String color; // 车头颜色
+	private java.lang.String vin; // 车架号
+	private java.lang.String engineNo; // 发动机号
+	private java.lang.String ownerName; // 车主
+	private java.lang.String ownerPhone; // 车主电话
+	private java.lang.String ownerMobile; // 车主手机
+	private java.lang.String regDate; // 登记日期
+	private java.lang.String regCertCode; // 登记证书号
+	private java.lang.String loadWeight; // 核载重量
+	private java.lang.String wheelsNum; // 车轮数
+	private java.lang.String ownerType; // 所有权
+	private java.lang.String attributes; // 车辆属性
+	private java.lang.String licenseNo; // 行驶证号码
+	private java.lang.String licenseRegDate; // 行驶证注册日期
+	private java.lang.String licenseIssueDate; // 行驶证发证日期
+	private java.lang.String licenseValidDate; // 行驶证有效期至
+	private java.lang.String operatingCertNo; // 营运证号码
+	private java.lang.String operatingCertIssueDate; // 营运证发证日期
+	private java.lang.String licenseImageRefId; // 行驶证照片
+	private java.lang.String ocImageRefId; // 营运证照片
+	private java.lang.String vehicleImageRefId; // 车辆照片
+	private java.lang.String ciEffectDate; // 强制险有效期-起
+	private java.lang.String ciName; // 强制险公司名称
+	private java.lang.String ciNo; // 强制险保单号
+	private java.lang.String viEffectDate; // 商业险有效期-起
+	private java.lang.String viName; // 商业险公司名称
+	private java.lang.String viNo; // 商业险保单号
+	private java.lang.String ciImageRefId; // 强制险图片
+	private java.lang.String viImageRefId; // 商业险图片
+	private java.lang.String type; // 车辆类型
+	private java.lang.String belongDepartName; // 所属部门名称
+	private java.lang.String useDepartName; // 使用部门名称
+	private java.lang.String departureCode; // 线路出发地
+	private java.lang.String destinationCode; // 线路目的地
+	private java.lang.String useStatus; // 状态
+	private java.lang.String operatingCertValidDate; // 营运证有效期至
+	//add by 20160622
+	private java.lang.String regImageRefId; // 登记证照片
+	private java.lang.String headstockType; // 车头类型
+	private java.lang.String remark; // 备注
+	private java.lang.String ciValidDate; //  强制险有效期-止
+	private java.lang.String viValidDate; // 商业险有效期-止
+	private java.lang.String bridgeType; // 车桥类型
+	//add by 20160801
+//	private java.lang.String bridgeType; // 车桥类型
+	private java.lang.String belongDepartId; // 所属部门
+	private java.lang.String useDepartId; // 使用部门
+	private String useStatusCn;
+	
+	
+	public String getUseStatusCn() {
+		return useStatusCn;
+	}
+	public void setUseStatusCn(String useStatusCn) {
+		this.useStatusCn = useStatusCn;
+	}
+	public java.lang.String getBridgeType() {
+		return bridgeType;
+	}
+	public java.lang.String getBelongDepartId() {
+		return belongDepartId;
+	}
+	public void setBelongDepartId(java.lang.String belongDepartId) {
+		this.belongDepartId = belongDepartId;
+	}
+	public java.lang.String getUseDepartId() {
+		return useDepartId;
+	}
+	public void setUseDepartId(java.lang.String useDepartId) {
+		this.useDepartId = useDepartId;
+	}
+	public void setBridgeType(java.lang.String bridgeType) {
+		this.bridgeType = bridgeType;
+	}
+	public java.lang.String getCiValidDate() {
+		return ciValidDate;
+	}
+	public void setCiValidDate(java.lang.String ciValidDate) {
+		this.ciValidDate = ciValidDate;
+	}
+	public java.lang.String getViValidDate() {
+		return viValidDate;
+	}
+	public void setViValidDate(java.lang.String viValidDate) {
+		this.viValidDate = viValidDate;
+	}
+	public java.lang.String getRemark() {
+		return remark;
+	}
+	public void setRemark(java.lang.String remark) {
+		this.remark = remark;
+	}
+	public java.lang.String getRegImageRefId() {
+		return regImageRefId;
+	}
+	public void setRegImageRefId(java.lang.String regImageRefId) {
+		this.regImageRefId = regImageRefId;
+	}
+	public java.lang.String getHeadstockType() {
+		return headstockType;
+	}
+	public void setHeadstockType(java.lang.String headstockType) {
+		this.headstockType = headstockType;
+	}
+	public java.lang.String getOperatingCertValidDate() {
+		return operatingCertValidDate;
+	}
+	public void setOperatingCertValidDate(java.lang.String operatingCertValidDate) {
+		this.operatingCertValidDate = operatingCertValidDate;
+	}
+	public java.lang.String getType() {
+		return type;
+	}
+	public void setType(java.lang.String type) {
+		this.type = type;
+	}
+	public java.lang.String getBelongDepartName() {
+		return belongDepartName;
+	}
+	public void setBelongDepartName(java.lang.String belongDepartName) {
+		this.belongDepartName = belongDepartName;
+	}
+	public java.lang.String getUseDepartName() {
+		return useDepartName;
+	}
+	public void setUseDepartName(java.lang.String useDepartName) {
+		this.useDepartName = useDepartName;
+	}
+	public java.lang.String getDepartureCode() {
+		return departureCode;
+	}
+	public void setDepartureCode(java.lang.String departureCode) {
+		this.departureCode = departureCode;
+	}
+	public java.lang.String getDestinationCode() {
+		return destinationCode;
+	}
+	public void setDestinationCode(java.lang.String destinationCode) {
+		this.destinationCode = destinationCode;
+	}
+	public java.lang.String getUseStatus() {
+		return useStatus;
+	}
+	public void setUseStatus(java.lang.String useStatus) {
+		this.useStatus = useStatus;
+	}
+	public java.lang.String getVehicleInfoId() {
+		return vehicleInfoId;
+	}
+	public void setVehicleInfoId(java.lang.String vehicleInfoId) {
+		this.vehicleInfoId = vehicleInfoId;
+	}
+	public java.lang.String getVehicleType() {
+		return vehicleType;
+	}
+	public void setVehicleType(java.lang.String vehicleType) {
+		this.vehicleType = vehicleType;
+	}
+	public java.lang.String getPlateNumber() {
+		return plateNumber;
+	}
+	public void setPlateNumber(java.lang.String plateNumber) {
+		this.plateNumber = plateNumber;
+	}
+	public java.lang.String getModels() {
+		return models;
+	}
+	public void setModels(java.lang.String models) {
+		this.models = models;
+	}
+	public java.lang.String getLength() {
+		return length;
+	}
+	public void setLength(java.lang.String length) {
+		this.length = length;
+	}
+	public java.lang.String getBrand() {
+		return brand;
+	}
+	public void setBrand(java.lang.String brand) {
+		this.brand = brand;
+	}
+	public java.lang.String getColor() {
+		return color;
+	}
+	public void setColor(java.lang.String color) {
+		this.color = color;
+	}
+	public java.lang.String getVin() {
+		return vin;
+	}
+	public void setVin(java.lang.String vin) {
+		this.vin = vin;
+	}
+	public java.lang.String getEngineNo() {
+		return engineNo;
+	}
+	public void setEngineNo(java.lang.String engineNo) {
+		this.engineNo = engineNo;
+	}
+	public java.lang.String getOwnerName() {
+		return ownerName;
+	}
+	public void setOwnerName(java.lang.String ownerName) {
+		this.ownerName = ownerName;
+	}
+	public java.lang.String getOwnerPhone() {
+		return ownerPhone;
+	}
+	public void setOwnerPhone(java.lang.String ownerPhone) {
+		this.ownerPhone = ownerPhone;
+	}
+	public java.lang.String getOwnerMobile() {
+		return ownerMobile;
+	}
+	public void setOwnerMobile(java.lang.String ownerMobile) {
+		this.ownerMobile = ownerMobile;
+	}
+	public java.lang.String getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(java.lang.String regDate) {
+		this.regDate = regDate;
+	}
+	public java.lang.String getRegCertCode() {
+		return regCertCode;
+	}
+	public void setRegCertCode(java.lang.String regCertCode) {
+		this.regCertCode = regCertCode;
+	}
+	public java.lang.String getLoadWeight() {
+		return loadWeight;
+	}
+	public void setLoadWeight(java.lang.String loadWeight) {
+		this.loadWeight = loadWeight;
+	}
+	public java.lang.String getWheelsNum() {
+		return wheelsNum;
+	}
+	public void setWheelsNum(java.lang.String wheelsNum) {
+		this.wheelsNum = wheelsNum;
+	}
+	public java.lang.String getOwnerType() {
+		return ownerType;
+	}
+	public void setOwnerType(java.lang.String ownerType) {
+		this.ownerType = ownerType;
+	}
+	public java.lang.String getAttributes() {
+		return attributes;
+	}
+	public void setAttributes(java.lang.String attributes) {
+		this.attributes = attributes;
+	}
+	public java.lang.String getLicenseNo() {
+		return licenseNo;
+	}
+	public void setLicenseNo(java.lang.String licenseNo) {
+		this.licenseNo = licenseNo;
+	}
+	public java.lang.String getLicenseRegDate() {
+		return licenseRegDate;
+	}
+	public void setLicenseRegDate(java.lang.String licenseRegDate) {
+		this.licenseRegDate = licenseRegDate;
+	}
+	public java.lang.String getLicenseIssueDate() {
+		return licenseIssueDate;
+	}
+	public void setLicenseIssueDate(java.lang.String licenseIssueDate) {
+		this.licenseIssueDate = licenseIssueDate;
+	}
+	public java.lang.String getLicenseValidDate() {
+		return licenseValidDate;
+	}
+	public void setLicenseValidDate(java.lang.String licenseValidDate) {
+		this.licenseValidDate = licenseValidDate;
+	}
+	public java.lang.String getOperatingCertNo() {
+		return operatingCertNo;
+	}
+	public void setOperatingCertNo(java.lang.String operatingCertNo) {
+		this.operatingCertNo = operatingCertNo;
+	}
+	public java.lang.String getOperatingCertIssueDate() {
+		return operatingCertIssueDate;
+	}
+	public void setOperatingCertIssueDate(java.lang.String operatingCertIssueDate) {
+		this.operatingCertIssueDate = operatingCertIssueDate;
+	}
+	public java.lang.String getLicenseImageRefId() {
+		return licenseImageRefId;
+	}
+	public void setLicenseImageRefId(java.lang.String licenseImageRefId) {
+		this.licenseImageRefId = licenseImageRefId;
+	}
+	public java.lang.String getOcImageRefId() {
+		return ocImageRefId;
+	}
+	public void setOcImageRefId(java.lang.String ocImageRefId) {
+		this.ocImageRefId = ocImageRefId;
+	}
+	public java.lang.String getVehicleImageRefId() {
+		return vehicleImageRefId;
+	}
+	public void setVehicleImageRefId(java.lang.String vehicleImageRefId) {
+		this.vehicleImageRefId = vehicleImageRefId;
+	}
+	public java.lang.String getCiEffectDate() {
+		return ciEffectDate;
+	}
+	public void setCiEffectDate(java.lang.String ciEffectDate) {
+		this.ciEffectDate = ciEffectDate;
+	}
+	public java.lang.String getCiName() {
+		return ciName;
+	}
+	public void setCiName(java.lang.String ciName) {
+		this.ciName = ciName;
+	}
+	public java.lang.String getCiNo() {
+		return ciNo;
+	}
+	public void setCiNo(java.lang.String ciNo) {
+		this.ciNo = ciNo;
+	}
+	public java.lang.String getViEffectDate() {
+		return viEffectDate;
+	}
+	public void setViEffectDate(java.lang.String viEffectDate) {
+		this.viEffectDate = viEffectDate;
+	}
+	public java.lang.String getViName() {
+		return viName;
+	}
+	public void setViName(java.lang.String viName) {
+		this.viName = viName;
+	}
+	public java.lang.String getViNo() {
+		return viNo;
+	}
+	public void setViNo(java.lang.String viNo) {
+		this.viNo = viNo;
+	}
+	public java.lang.String getCiImageRefId() {
+		return ciImageRefId;
+	}
+	public void setCiImageRefId(java.lang.String ciImageRefId) {
+		this.ciImageRefId = ciImageRefId;
+	}
+	public java.lang.String getViImageRefId() {
+		return viImageRefId;
+	}
+	public void setViImageRefId(java.lang.String viImageRefId) {
+		this.viImageRefId = viImageRefId;
+	}
+	
+	
+	
+	
+	
+}

@@ -1,0 +1,256 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_order_detail_info表
+ * @author mew
+ *
+ */
+public class OrderDetailInfo implements Serializable {
+	@Length(max = 36, message = "orderId超过长度限制")
+	private java.lang.String orderId; // 订单标识
+	@Length(max = 50, message = "orderNo超过长度限制")
+	private java.lang.String orderNo; // 订单编号
+	@Length(max = 36, message = "infoId超过长度限制")
+	private java.lang.String infoId; // 信息标识
+	@Length(max = 10, message = "goodsWeight超过长度限制")
+	private java.lang.String goodsWeight; // 货物重量
+	@Length(max = 10, message = "goodsVolume超过长度限制")
+	private java.lang.String goodsVolume; // 货物体积
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 订单状态
+	@Length(max = 36, message = "createdBy超过长度限制")
+	private java.lang.String createdBy; // 创建人
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 36, message = "updatedBy超过长度限制")
+	private java.lang.String updatedBy; // 修改人
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取订单标识属性
+     *
+     * @return orderId
+     */
+	public java.lang.String getOrderId() {
+		return orderId;
+	}
+	
+	/**
+	 * 设置订单标识属性
+	 *
+	 * @param orderId
+	 */
+	public void setOrderId(java.lang.String orderId) {
+		this.orderId = orderId;
+	}
+	
+	/**
+     * 获取订单编号属性
+     *
+     * @return orderNo
+     */
+	public java.lang.String getOrderNo() {
+		return orderNo;
+	}
+	
+	/**
+	 * 设置订单编号属性
+	 *
+	 * @param orderNo
+	 */
+	public void setOrderNo(java.lang.String orderNo) {
+		this.orderNo = orderNo;
+	}
+	
+	/**
+     * 获取信息标识属性
+     *
+     * @return infoId
+     */
+	public java.lang.String getInfoId() {
+		return infoId;
+	}
+	
+	/**
+	 * 设置信息标识属性
+	 *
+	 * @param infoId
+	 */
+	public void setInfoId(java.lang.String infoId) {
+		this.infoId = infoId;
+	}
+	
+	/**
+     * 获取货物重量属性
+     *
+     * @return goodsWeight
+     */
+	public java.lang.String getGoodsWeight() {
+		return goodsWeight;
+	}
+	
+	/**
+	 * 设置货物重量属性
+	 *
+	 * @param goodsWeight
+	 */
+	public void setGoodsWeight(java.lang.String goodsWeight) {
+		this.goodsWeight = goodsWeight;
+	}
+	
+	/**
+     * 获取货物体积属性
+     *
+     * @return goodsVolume
+     */
+	public java.lang.String getGoodsVolume() {
+		return goodsVolume;
+	}
+	
+	/**
+	 * 设置货物体积属性
+	 *
+	 * @param goodsVolume
+	 */
+	public void setGoodsVolume(java.lang.String goodsVolume) {
+		this.goodsVolume = goodsVolume;
+	}
+	
+	/**
+     * 获取订单状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置订单状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取创建人属性
+     *
+     * @return createdBy
+     */
+	public java.lang.String getCreatedBy() {
+		return createdBy;
+	}
+	
+	/**
+	 * 设置创建人属性
+	 *
+	 * @param createdBy
+	 */
+	public void setCreatedBy(java.lang.String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改人属性
+     *
+     * @return updatedBy
+     */
+	public java.lang.String getUpdatedBy() {
+		return updatedBy;
+	}
+	
+	/**
+	 * 设置修改人属性
+	 *
+	 * @param updatedBy
+	 */
+	public void setUpdatedBy(java.lang.String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("OrderDetailInfo");
+        sb.append("{orderId=").append(orderId);
+        sb.append(", orderNo=").append(orderNo);
+        sb.append(", infoId=").append(infoId);
+        sb.append(", goodsWeight=").append(goodsWeight);
+        sb.append(", goodsVolume=").append(goodsVolume);
+        sb.append(", status=").append(status);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedBy=").append(updatedBy);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

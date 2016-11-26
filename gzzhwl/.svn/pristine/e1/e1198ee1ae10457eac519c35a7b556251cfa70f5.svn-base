@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.LoadTripInfoDao">
+
+	<resultMap id="loadTripInfoResultMap" type="LoadTripInfo">
+		<id property="loadId" column="load_id" />
+		<result property="tripTime" column="trip_time" />
+		<result property="goodsWeight" column="goods_weight" />
+		<result property="goodsVolume" column="goods_volume" />
+		<result property="customerBillNo" column="customer_bill_no" />
+		<result property="contractImageRefId" column="contract_image_ref_id" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="loadTripInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="loadTripInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="LoadTripInfo">
+	   insert into zh_load_trip_info (
+	     load_id,
+	     trip_time,
+	     goods_weight,
+	     goods_volume,
+	     customer_bill_no,
+	     contract_image_ref_id,
+	     created_by,
+	     created_time
+	   )values (
+	     #{loadId},
+	     #{tripTime},
+	     #{goodsWeight},
+	     #{goodsVolume},
+	     #{customerBillNo},
+	     #{contractImageRefId},
+	     #{createdBy},
+	     #{createdTime}
+	   )
+	</insert>
+
+	<update id="update" parameterType="LoadTripInfo">
+	   update zh_load_trip_info set
+	     load_id=#{loadId},
+	     trip_time=#{tripTime},
+	     goods_weight=#{goodsWeight},
+	     goods_volume=#{goodsVolume},
+	     customer_bill_no=#{customerBillNo},
+	     contract_image_ref_id=#{contractImageRefId},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime}
+	   where 
+	    load_id=#{loadId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="LoadTripInfo">
+	   update zh_load_trip_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="loadId != null">
+		       load_id=#{loadId},
+		     </if>
+		     <if test="tripTime != null">
+		       trip_time=#{tripTime},
+		     </if>
+		     <if test="goodsWeight != null">
+		       goods_weight=#{goodsWeight},
+		     </if>
+		     <if test="goodsVolume != null">
+		       goods_volume=#{goodsVolume},
+		     </if>
+		     <if test="customerBillNo != null">
+		       customer_bill_no=#{customerBillNo},
+		     </if>
+		     <if test="contractImageRefId != null">
+		       contract_image_ref_id=#{contractImageRefId},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime}
+		     </if>
+	   </trim>
+	
+	   where 
+	    load_id=#{loadId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_load_trip_info 
+	   where 
+	    load_id=#{loadId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="loadTripInfoResultMap">
+	   select 
+	    load_id,
+	    trip_time,
+	    goods_weight,
+	    goods_volume,
+	    customer_bill_no,
+	    contract_image_ref_id,
+	    created_by,
+	    created_time
+	   from zh_load_trip_info
+	   where 
+	    load_id=#{loadId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    load_id,
+	    trip_time,
+	    goods_weight,
+	    goods_volume,
+	    customer_bill_no,
+	    contract_image_ref_id,
+	    created_by,
+	    created_time
+	   from zh_load_trip_info
+	   where 
+	    load_id=#{loadId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     load_id,
+	     trip_time,
+	     goods_weight,
+	     goods_volume,
+	     customer_bill_no,
+	     contract_image_ref_id,
+	     created_by,
+	     created_time
+	   from zh_load_trip_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        load_id=#{loadId}
+	     </if>
+	     <if test="tripTime != null">
+	        and trip_time=#{tripTime}
+	     </if>
+	     <if test="goodsWeight != null">
+	        and goods_weight=#{goodsWeight}
+	     </if>
+	     <if test="goodsVolume != null">
+	        and goods_volume=#{goodsVolume}
+	     </if>
+	     <if test="customerBillNo != null">
+	        and customer_bill_no=#{customerBillNo}
+	     </if>
+	     <if test="contractImageRefId != null">
+	        and contract_image_ref_id=#{contractImageRefId}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     load_id,
+	     trip_time,
+	     goods_weight,
+	     goods_volume,
+	     customer_bill_no,
+	     contract_image_ref_id,
+	     created_by,
+	     created_time
+	   from zh_load_trip_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        load_id=#{loadId}
+	     </if>
+	     <if test="tripTime != null">
+	        and trip_time=#{tripTime}
+	     </if>
+	     <if test="goodsWeight != null">
+	        and goods_weight=#{goodsWeight}
+	     </if>
+	     <if test="goodsVolume != null">
+	        and goods_volume=#{goodsVolume}
+	     </if>
+	     <if test="customerBillNo != null">
+	        and customer_bill_no=#{customerBillNo}
+	     </if>
+	     <if test="contractImageRefId != null">
+	        and contract_image_ref_id=#{contractImageRefId}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

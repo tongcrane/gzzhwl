@@ -1,0 +1,106 @@
+package com.gzzhwl.admin.recieve.vo;
+
+import java.text.ParseException;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.core.constant.ConsignType;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.data.model.OrderBaseInfo;
+import com.gzzhwl.core.utils.DateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class ReceiveQueryVo {
+	private String queryType;
+	private String keyWord;
+	private String customerBillNo;// 客户单号
+	private String customerId;// 客户ID
+	private String startCodeP;// 线路（起）-省
+	private String startCodeC;// 线路（起）-市
+	private String endCodeP;// 线路（止）-省
+	private String endCodeC;// 线路（止）-市
+	private String consignStartTime;// 运单生成时间（起）
+	private String consignEndTime;// 运单生成时间（止）
+	private String elecReceiptStartTime;// 电子回单时间（起）
+	private String elecReceiptEndTime;// 电子回单时间（止）
+	private String isPredict;// 运费是否预估
+	private String verifyStatus;// 审核状态
+	private String sort;// 排序方式 00-按云单生成时间升序 01-按运单生成时间降序
+
+	private static final String QUERYTYPE_NORMAL = "0";
+	private static final String QUERYTYPE_SENIOR = "1";
+
+	public Map<String, Object> getParam() throws ParseException {
+		Map<String, Object> params = Maps.newHashMap();
+
+		if (QUERYTYPE_NORMAL.equals(queryType)) {
+			if (StringUtils.isNotBlank(keyWord)) {
+				params.put("keyWord", keyWord);
+				params.put("keyWordLike", "%" + keyWord + "%");
+			}
+		} else if (QUERYTYPE_SENIOR.equals(queryType)) {
+			if (StringUtils.isNotBlank(customerId)) {
+				params.put("customerId", customerId);
+			}
+			if (StringUtils.isNotBlank(customerBillNo)) {
+				params.put("customerBillNo", customerBillNo);
+			}
+			if (StringUtils.isNotBlank(startCodeP)) {
+				params.put("startCodeP", startCodeP);
+			}
+			if (StringUtils.isNotBlank(startCodeC)) {
+				params.put("startCodeC", startCodeC);
+			}
+			if (StringUtils.isNotBlank(endCodeP)) {
+				params.put("endCodeP", endCodeP);
+			}
+			if (StringUtils.isNotBlank(endCodeC)) {
+				params.put("endCodeC", endCodeC);
+			}
+			if (StringUtils.isNotBlank(consignStartTime)) {
+				params.put("consignStartTime", DateUtils.getStartTime(consignStartTime));
+			}
+			if (StringUtils.isNotBlank(consignEndTime)) {
+				params.put("consignEndTime", DateUtils.getEndTime(consignEndTime));
+			}
+			if (StringUtils.isNotBlank(elecReceiptStartTime)) {
+				params.put("elecReceiptStartTime", DateUtils.getStartTime(elecReceiptStartTime));
+			}
+			if (StringUtils.isNotBlank(elecReceiptEndTime)) {
+				params.put("elecReceiptEndTime", DateUtils.getEndTime(elecReceiptEndTime));
+			}
+			if (StringUtils.isNotBlank(isPredict)) {
+				params.put("isPredict", isPredict);
+			}
+			if (StringUtils.isNotBlank(verifyStatus)) {
+				params.put("verifyStatus", verifyStatus);
+			}
+		} else {
+			throw new RestException(ErrorCode.ERROR_900006.getCode(), ErrorCode.ERROR_900006.getDesc());
+		}
+
+		params.put("loadStatusArray", new String[] { LoadBillType.ELECRECEIPT.getCode(),
+				LoadBillType.PRINTRECEIPT.getCode(), LoadBillType.CLOSED.getCode() });
+		
+		params.put("consignStatusArray", new String[] {ConsignType.CONSIGNNORMAL.getCode(),
+				ConsignType.CONSIGN_WAIT.getCode(), ConsignType.CONSIGN_VERIFIED.getCode() });
+		
+		params.put("status", Global.STATUS_PASSED.toString());
+		params.put("type", OrderBaseInfo.CONSIGNMENT_BILL);
+
+		if (StringUtils.isNotBlank(sort)) {
+			params.put("sort", sort);
+		} 
+		return params;
+	}
+
+}

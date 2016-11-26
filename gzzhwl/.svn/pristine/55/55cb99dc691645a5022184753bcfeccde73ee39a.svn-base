@@ -1,0 +1,116 @@
+package com.gzzhwl.tms.service.impl;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.google.common.collect.Maps;
+import com.gzzhwl.admin.source.service.SourceService;
+import com.gzzhwl.core.data.dao.QuotedInfoDao;
+import com.gzzhwl.core.data.extdao.QuotedInfoExtDao;
+import com.gzzhwl.core.data.model.OrderDetailInfo;
+import com.gzzhwl.core.data.model.QuotedInfo;
+import com.gzzhwl.rest.exception.HttpException;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.http.HttpService;
+import com.gzzhwl.rest.http.model.HttpConfig;
+import com.gzzhwl.tms.model.Operate;
+import com.gzzhwl.tms.model.RemotingResp;
+import com.gzzhwl.tms.service.TMSApiService;
+
+@Service
+public class TMSApiServiceImpl implements TMSApiService {
+	@Autowired
+	private HttpService httpService;
+	@Autowired
+	private SourceService sourceService;
+	@Autowired
+	private QuotedInfoDao quotedInfoDao;
+	@Autowired
+	private QuotedInfoExtDao quotedInfoExtDao;
+
+	@Override
+	public boolean doOperateOrder(String sourceId, Operate operate, String reason) throws RestException {
+		OrderDetailInfo detailInfo = sourceService.getOrderDetailInfo(sourceId);
+
+		final String url = "/source/operate";
+		Map<String, Object> param = Maps.newHashMap();
+		param.put("orderNo", detailInfo.getOrderNo());
+		param.put("opType", operate.getCode());
+		param.put("reason", reason);
+		return this.getRemotingResult(url, param);
+	}
+
+	@Override
+	public boolean doBidOrder(String quotedId) throws RestException {
+		QuotedInfo quotedInfo = quotedInfoDao.get(quotedId);
+		String sourceId = quotedInfo.getSourceId();
+		OrderDetailInfo detailInfo = sourceService.getOrderDetailInfo(sourceId);
+		String price = quotedInfo.getPrice();
+
+		final String url = "/source/bid";
+		Map<String, Object> param = Maps.newHashMap();
+		param.put("orderNo", detailInfo.getOrderNo());
+		param.put("bidPrice", price);
+		return this.getRemotingResult(url, param);
+	}
+
+	@Override
+	public boolean doReturnResponse(String sourceId, boolean agree) throws RestException {
+		OrderDetailInfo detailInfo = sourceService.getOrderDetailInfo(sourceId);
+
+		final String url = "/order/returnResponse";
+		Map<String, Object> param = Maps.newHashMap();
+		param.put("orderNo", detailInfo.getOrderNo());
+		param.put("response", agree ? "01" : "02");
+		return this.getRemotingResult(url, param);
+	}
+
+	@Override
+	public boolean doUnbid(String sourceId) throws RestException {
+		OrderDetailInfo detailInfo = sourceService.getOrderDetailInfo(sourceId);
+
+		final String url = "/source/unbid";
+		Map<String, Object> param = Maps.newHashMap();
+		param.put("orderNo", detailInfo.getOrderNo());
+		return this.getRemotingResult(url, param);
+	}
+
+	@Override
+	public boolean doFinishBid(String loadId) throws RestException {
+		Map<String, Object> param = quotedInfoExtDao.getLoadVADInfo(loadId);
+		if (param != null) {
+			param.remove("loadId");
+			param.remove("orderId");
+			param.remove("price");
+		}
+		final String url = "/source/vadinfo";
+		return this.getRemotingResult(url, param);
+	}
+
+	private boolean getRemotingResult(String url, Map<String, Object> params) throws RestException {
+		try {
+			String body = JSON.toJSONString(params);
+			String json = httpService.postAsBody(url, body, HttpConfig.createDefault());
+			RemotingResp<Boolean> resp = JSON.parseObject(json, new TypeReference<RemotingResp<Boolean>>() {
+			});
+			if (resp.isSuccess()) {
+				if (resp.getData()) {
+					return true;
+				} else {
+					throw new RestException("90007", "TMS返回结果为操作不成功。");
+				}
+			} else {
+				throw new RestException("90006", "TMS返回错误:" + resp.getInfo());
+			}
+		} catch (HttpException e) {
+			e.printStackTrace();
+			throw new RestException("90009", "无法连接到TMS服务器");
+		} catch (Exception e) {
+			throw new RestException("90008", "调用TMS接口发生内部错误");
+		}
+	}
+}

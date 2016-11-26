@@ -1,0 +1,14 @@
+package com.gzzhwl.api.load.service;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+
+public interface TripService {
+	
+	public List<Map<String,Object>> getDriverOrderList(String accountId);
+	
+	public OutputStream getDriverOrderListStream(String accountId,String timeStamp,OutputStream outputStream) throws IOException;
+
+}

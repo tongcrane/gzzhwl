@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.OrderHisDao">
+
+	<resultMap id="orderHisResultMap" type="OrderHis">
+		<id property="hisId" column="his_id" />
+		<result property="orderId" column="order_id" />
+		<result property="srcStatus" column="src_status" />
+		<result property="destStatus" column="dest_status" />
+		<result property="msgInfo" column="msg_info" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="orderHisResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="orderHisResultMap"></resultMap>
+
+	<insert id="insert" parameterType="OrderHis">
+	   insert into zh_order_his (
+	     his_id,
+	     order_id,
+	     src_status,
+	     dest_status,
+	     msg_info,
+	     created_by,
+	     created_time
+	   )values (
+	     #{hisId},
+	     #{orderId},
+	     #{srcStatus},
+	     #{destStatus},
+	     #{msgInfo},
+	     #{createdBy},
+	     now()
+	   )
+	</insert>
+
+	<update id="update" parameterType="OrderHis">
+	   update zh_order_his set
+	     his_id=#{hisId},
+	     order_id=#{orderId},
+	     src_status=#{srcStatus},
+	     dest_status=#{destStatus},
+	     msg_info=#{msgInfo},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime}
+	   where 
+	    his_id=#{hisId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="OrderHis">
+	   update zh_order_his
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="hisId != null">
+		       his_id=#{hisId},
+		     </if>
+		     <if test="orderId != null">
+		       order_id=#{orderId},
+		     </if>
+		     <if test="srcStatus != null">
+		       src_status=#{srcStatus},
+		     </if>
+		     <if test="destStatus != null">
+		       dest_status=#{destStatus},
+		     </if>
+		     <if test="msgInfo != null">
+		       msg_info=#{msgInfo},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime}
+		     </if>
+	   </trim>
+	
+	   where 
+	    his_id=#{hisId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_order_his 
+	   where 
+	    his_id=#{hisId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="orderHisResultMap">
+	   select 
+	    his_id,
+	    order_id,
+	    src_status,
+	    dest_status,
+	    msg_info,
+	    created_by,
+	    created_time
+	   from zh_order_his
+	   where 
+	    his_id=#{hisId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    his_id,
+	    order_id,
+	    src_status,
+	    dest_status,
+	    msg_info,
+	    created_by,
+	    created_time
+	   from zh_order_his
+	   where 
+	    his_id=#{hisId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     his_id,
+	     order_id,
+	     src_status,
+	     dest_status,
+	     msg_info,
+	     created_by,
+	     created_time
+	   from zh_order_his
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="hisId != null">
+	        his_id=#{hisId}
+	     </if>
+	     <if test="orderId != null">
+	        and order_id=#{orderId}
+	     </if>
+	     <if test="srcStatus != null">
+	        and src_status=#{srcStatus}
+	     </if>
+	     <if test="destStatus != null">
+	        and dest_status=#{destStatus}
+	     </if>
+	     <if test="msgInfo != null">
+	        and msg_info=#{msgInfo}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     his_id,
+	     order_id,
+	     src_status,
+	     dest_status,
+	     msg_info,
+	     created_by,
+	     created_time
+	   from zh_order_his
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="hisId != null">
+	        his_id=#{hisId}
+	     </if>
+	     <if test="orderId != null">
+	        and order_id=#{orderId}
+	     </if>
+	     <if test="srcStatus != null">
+	        and src_status=#{srcStatus}
+	     </if>
+	     <if test="destStatus != null">
+	        and dest_status=#{destStatus}
+	     </if>
+	     <if test="msgInfo != null">
+	        and msg_info=#{msgInfo}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

@@ -1,0 +1,235 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_driver_bank_info表
+ * @author mew
+ *
+ */
+public class DriverBankInfo implements Serializable {
+	@Length(max = 36, message = "infoId超过长度限制")
+	private java.lang.String infoId; // 信息标识
+	@Length(max = 36, message = "driverInfoId超过长度限制")
+	private java.lang.String driverInfoId; // 驾驶员信息标识
+	@Length(max = 50, message = "cardName超过长度限制")
+	private java.lang.String cardName; // 开户名
+	@Length(max = 30, message = "cardNo超过长度限制")
+	private java.lang.String cardNo; // 银行卡号
+	@Length(max = 20, message = "depositBank超过长度限制")
+	private java.lang.String depositBank; // 开户行
+	@Length(max = 20, message = "bankName超过长度限制")
+	private java.lang.String bankName; // 银行名称
+	@Length(max = 10, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 20, message = "createdTime超过长度限制")
+	private java.lang.String createdTime; // 创建时间
+	@Length(max = 20, message = "updatedTime超过长度限制")
+	private java.lang.String updatedTime; // 修改时间
+	@Length(max = 2, message = "isDeleted超过长度限制")
+	private java.lang.String isDeleted; // 是否删除
+
+
+	/**
+     * 获取信息标识属性
+     *
+     * @return infoId
+     */
+	public java.lang.String getInfoId() {
+		return infoId;
+	}
+	
+	/**
+	 * 设置信息标识属性
+	 *
+	 * @param infoId
+	 */
+	public void setInfoId(java.lang.String infoId) {
+		this.infoId = infoId;
+	}
+	
+	/**
+     * 获取驾驶员信息标识属性
+     *
+     * @return driverInfoId
+     */
+	public java.lang.String getDriverInfoId() {
+		return driverInfoId;
+	}
+	
+	/**
+	 * 设置驾驶员信息标识属性
+	 *
+	 * @param driverInfoId
+	 */
+	public void setDriverInfoId(java.lang.String driverInfoId) {
+		this.driverInfoId = driverInfoId;
+	}
+	
+	/**
+     * 获取开户名属性
+     *
+     * @return cardName
+     */
+	public java.lang.String getCardName() {
+		return cardName;
+	}
+	
+	/**
+	 * 设置开户名属性
+	 *
+	 * @param cardName
+	 */
+	public void setCardName(java.lang.String cardName) {
+		this.cardName = cardName;
+	}
+	
+	/**
+     * 获取银行卡号属性
+     *
+     * @return cardNo
+     */
+	public java.lang.String getCardNo() {
+		return cardNo;
+	}
+	
+	/**
+	 * 设置银行卡号属性
+	 *
+	 * @param cardNo
+	 */
+	public void setCardNo(java.lang.String cardNo) {
+		this.cardNo = cardNo;
+	}
+	
+	/**
+     * 获取开户行属性
+     *
+     * @return depositBank
+     */
+	public java.lang.String getDepositBank() {
+		return depositBank;
+	}
+	
+	/**
+	 * 设置开户行属性
+	 *
+	 * @param depositBank
+	 */
+	public void setDepositBank(java.lang.String depositBank) {
+		this.depositBank = depositBank;
+	}
+	
+	/**
+     * 获取银行名称属性
+     *
+     * @return bankName
+     */
+	public java.lang.String getBankName() {
+		return bankName;
+	}
+	
+	/**
+	 * 设置银行名称属性
+	 *
+	 * @param bankName
+	 */
+	public void setBankName(java.lang.String bankName) {
+		this.bankName = bankName;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取创建时间属性
+     *
+     * @return createdTime
+     */
+	public java.lang.String getCreatedTime() {
+		return createdTime;
+	}
+	
+	/**
+	 * 设置创建时间属性
+	 *
+	 * @param createdTime
+	 */
+	public void setCreatedTime(java.lang.String createdTime) {
+		this.createdTime = createdTime;
+	}
+	
+	/**
+     * 获取修改时间属性
+     *
+     * @return updatedTime
+     */
+	public java.lang.String getUpdatedTime() {
+		return updatedTime;
+	}
+	
+	/**
+	 * 设置修改时间属性
+	 *
+	 * @param updatedTime
+	 */
+	public void setUpdatedTime(java.lang.String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	/**
+     * 获取是否删除属性
+     *
+     * @return isDeleted
+     */
+	public java.lang.String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	/**
+	 * 设置是否删除属性
+	 *
+	 * @param isDeleted
+	 */
+	public void setIsDeleted(java.lang.String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("DriverBankInfo");
+        sb.append("{infoId=").append(infoId);
+        sb.append(", driverInfoId=").append(driverInfoId);
+        sb.append(", cardName=").append(cardName);
+        sb.append(", cardNo=").append(cardNo);
+        sb.append(", depositBank=").append(depositBank);
+        sb.append(", bankName=").append(bankName);
+        sb.append(", status=").append(status);
+        sb.append(", createdTime=").append(createdTime);
+        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", isDeleted=").append(isDeleted);
+		sb.append('}');
+        return sb.toString();
+    }
+}

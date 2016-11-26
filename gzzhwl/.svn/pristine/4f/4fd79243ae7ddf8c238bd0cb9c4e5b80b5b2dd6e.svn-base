@@ -1,0 +1,38 @@
+package com.gzzhwl.core.constant;
+
+public enum SeqNoKey {
+	VEHICLE("ZHCL", "vehicle"),
+
+	DRIVER("ZHJSY", "driver"),
+
+	ORDER("OR", "order"),
+
+	CUST("ZHKH", "cust"),
+
+	SOURCE("SO", "source"),
+
+	SUPPLY("ZHGHS", "supply"),
+
+	CONSIGN("10", "consign"),
+	
+	LOAD("TH", "load"),
+	
+	CONTRACT("TH", "contract");
+
+	private String suffix;
+	private String seqName;
+
+	private SeqNoKey(String suffix, String seqName) {
+		this.suffix = suffix;
+		this.seqName = seqName;
+	}
+
+	public String getSuffix() {
+		return suffix;
+	}
+
+	public String getSeqName() {
+		return seqName;
+	}
+
+}

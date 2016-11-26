@@ -1,0 +1,126 @@
+package com.gzzhwl.api.account.service.impl;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.load.service.LoadBillService;
+import com.gzzhwl.api.account.service.AccountService;
+import com.gzzhwl.api.account.service.LoginService;
+import com.gzzhwl.api.agent.service.AgentInfoService;
+import com.gzzhwl.core.constant.DeviceType;
+import com.gzzhwl.core.data.dao.AccountInfoDao;
+import com.gzzhwl.core.data.model.AccountInfo;
+import com.gzzhwl.core.data.model.LoginResultModel;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class AccountServiceImpl implements AccountService {
+	@Autowired
+	private LoadBillService loadService;
+	@Autowired
+	private AgentInfoService agentService;
+	@Autowired
+	private LoginService loginService;
+	@Autowired
+	private AccountInfoDao accountDao;
+
+	@Override
+	public LoginResultModel loginByBillForYSJ(String telphone, String idno, String loadNo, String deviceType)
+			throws RestException {
+		LoginResultModel loginResultModel = null;
+
+		// 获取提货单对应的主司机信息
+		Map<String, Object> driverMap = loadService.getLoadMajorDriver(loadNo);
+		String driverIdno = (String) driverMap.get("idno");
+
+		// 判断提交的身份证是否和提货单对应的主司机身份证信息一致
+		boolean idnoIdentical = idno.equals(driverIdno);
+		if (!idnoIdentical) {
+			return null;
+		}
+
+		String realName = (String) driverMap.get("realName");
+		String idFImageRefId = (String) driverMap.get("idFImageRefId");
+		String idBImageRefId = (String) driverMap.get("idBImageRefId");
+		// String vehicleInfoId = (String) driverMap.get("vehicleInfoId");
+
+		// 根据身份证查询是否有该账号
+		Map<String, Object> agentMap = agentService.getAgentByIdno(idno);
+		if (ValidateUtils.isEmpty(agentMap)) {
+			// 如果没有账号
+			loginResultModel = loginWithNoAccount(idno, realName, telphone, idFImageRefId, idBImageRefId, deviceType);
+
+		} else {
+			//存在账号
+			loginResultModel = login(idno, realName, telphone, idFImageRefId, idBImageRefId, deviceType, agentMap);
+		}
+
+		return loginResultModel;
+	}
+
+	private LoginResultModel login(String idno, String realName, String telphone, String idFImageRefId,
+			String idBImageRefId, String deviceType, Map<String, Object> agentMap) {
+		LoginResultModel loginResultModel = null;
+		String agentInfoId = (String) agentMap.get("agentInfoId");
+		String accountId = (String) agentMap.get("accountId");
+		AccountInfo accountInfo = accountDao.get(accountId);
+
+		// 存在账号
+		agentService.AutoSaveAgentInfo(idno, realName, telphone, idFImageRefId, idBImageRefId, agentInfoId, null);
+		DeviceType dType = DeviceType.getDeviceType(deviceType);
+		loginResultModel = loginService.getLoginInfo(accountInfo, dType);
+		return loginResultModel;
+	}
+
+	private LoginResultModel loginWithNoAccount(String idno, String realName, String telphone, String idFImageRefId,
+			String idBImageRefId, String deviceType) {
+		LoginResultModel loginResultModel = null;
+		// 判断该手机是否被用
+		boolean telExist = loginService.isExist(telphone);
+		// 生成账号
+		if (telExist) {
+			loginResultModel = loginService.autoRegister(null, deviceType);
+		} else {
+			loginResultModel = loginService.autoRegister(telphone, deviceType);
+		}
+
+		// 更新账户信息
+		agentService.AutoSaveAgentInfo(idno, realName, telphone, idFImageRefId, idBImageRefId, null,
+				loginResultModel.getAccountId());
+		return loginResultModel;
+	}
+
+	@Override
+	public LoginResultModel loginByBillForCBS(String idno, String loadNo, String deviceType) throws RestException {
+		LoginResultModel loginResultModel = null;
+
+		// 获取提货单对应的主司机信息
+		Map<String, Object> driverMap = loadService.getLoadMajorDriver(loadNo);
+		String driverIdno = (String) driverMap.get("idno");
+
+		// 判断提交的身份证是否和提货单对应的主司机身份证信息一致
+		boolean idnoIdentical = idno.equals(driverIdno);
+		if (!idnoIdentical) {
+			return null;
+		}
+
+		String realName = (String) driverMap.get("realName");
+		String idFImageRefId = (String) driverMap.get("idFImageRefId");
+		String idBImageRefId = (String) driverMap.get("idBImageRefId");
+		String telphone = (String) driverMap.get("telphone");
+
+		// 根据身份证查询是否有该账号
+		Map<String, Object> agentMap = agentService.getAgentByIdno(idno);
+		if (ValidateUtils.isEmpty(agentMap)) {
+			return null;
+		} else {
+			loginResultModel = login(idno, realName, telphone, idFImageRefId, idBImageRefId, deviceType, agentMap);
+		}
+
+		return loginResultModel;
+	}
+
+}

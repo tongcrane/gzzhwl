@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.LoadArriveInfoDao">
+
+	<resultMap id="loadArriveInfoResultMap" type="LoadArriveInfo">
+		<id property="loadId" column="load_id" />
+		<result property="arriveTime" column="arrive_time" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="loadArriveInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="loadArriveInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="LoadArriveInfo">
+	   insert into zh_load_arrive_info (
+	     load_id,
+	     arrive_time,
+	     created_by,
+	     created_time
+	   )values (
+	     #{loadId},
+	     #{arriveTime},
+	     #{createdBy},
+	     now()
+	   )
+	</insert>
+
+	<update id="update" parameterType="LoadArriveInfo">
+	   update zh_load_arrive_info set
+	     load_id=#{loadId},
+	     arrive_time=#{arriveTime},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime}
+	   where 
+	    load_id=#{loadId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="LoadArriveInfo">
+	   update zh_load_arrive_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="loadId != null">
+		       load_id=#{loadId},
+		     </if>
+		     <if test="arriveTime != null">
+		       arrive_time=#{arriveTime},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime}
+		     </if>
+	   </trim>
+	
+	   where 
+	    load_id=#{loadId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_load_arrive_info 
+	   where 
+	    load_id=#{loadId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="loadArriveInfoResultMap">
+	   select 
+	    load_id,
+	    arrive_time,
+	    created_by,
+	    created_time
+	   from zh_load_arrive_info
+	   where 
+	    load_id=#{loadId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    load_id,
+	    arrive_time,
+	    created_by,
+	    created_time
+	   from zh_load_arrive_info
+	   where 
+	    load_id=#{loadId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     load_id,
+	     arrive_time,
+	     created_by,
+	     created_time
+	   from zh_load_arrive_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        load_id=#{loadId}
+	     </if>
+	     <if test="arriveTime != null">
+	        and arrive_time=#{arriveTime}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     load_id,
+	     arrive_time,
+	     created_by,
+	     created_time
+	   from zh_load_arrive_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="loadId != null">
+	        load_id=#{loadId}
+	     </if>
+	     <if test="arriveTime != null">
+	        and arrive_time=#{arriveTime}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

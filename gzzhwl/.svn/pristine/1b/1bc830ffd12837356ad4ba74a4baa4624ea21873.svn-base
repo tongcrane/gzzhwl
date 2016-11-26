@@ -1,0 +1,183 @@
+package com.gzzhwl.api.driver.validate;
+
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.data.model.DriverInfo;
+import com.gzzhwl.core.utils.IdCardUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+
+public class DriverValidate {
+	public static void valid_exist(boolean exists) {
+		if (exists) {
+			throw new RestException(ErrorCode.ERROR_800010.getCode(), ErrorCode.ERROR_800010.getDesc());
+		}
+	}
+
+	public static void valid_idno_exist(boolean exists) {
+		if (exists) {
+			throw new RestException(ErrorCode.ERROR_800018.getCode(), ErrorCode.ERROR_800018.getDesc());
+		}
+	}
+
+	public static void valid_qcno_exist(boolean exists) {
+		if (exists) {
+			throw new RestException(ErrorCode.ERROR_800019.getCode(), ErrorCode.ERROR_800019.getDesc());
+		}
+	}
+
+	// 正式提交修改，待审核，审核通过状态不允许修改
+	public static void valid_status(DriverInfo driverInfo) {
+		if (Global.STATUS_WAIT.toString().equals(driverInfo.getStatus())
+				|| (Global.STATUS_PASSED.toString().equals(driverInfo.getStatus()))) {
+			throw new RestException(ErrorCode.ERROR_900002.getCode(), ErrorCode.ERROR_900002.getDesc());
+		}
+	}
+
+	// 修改临时保存，只有未完成录入的才允许
+	public static void valid_temp_status(DriverInfo driverInfo) {
+		if (!Global.STATUS_ENTRY_NOT_FINISHED.toString().equals(driverInfo.getStatus())) {
+			throw new RestException(ErrorCode.ERROR_900002.getCode(), ErrorCode.ERROR_900002.getDesc());
+		}
+	}
+
+	// 状态校验
+	public static void valid_status(boolean exist) {
+		if (exist) {
+			throw new RestException(ErrorCode.ERROR_900002.getCode(), ErrorCode.ERROR_900002.getDesc());
+		}
+	}
+
+	public static void valid_has_wait_driver(boolean exist) {
+		if (exist) {
+			throw new RestException(ErrorCode.ERROR_800024.getCode(), ErrorCode.ERROR_800024.getDesc());
+		}
+	}
+
+	public static void valid_not_exist(DriverInfo driverInfo) {
+		if (ValidateUtils.isEmpty(driverInfo)) {
+			throw new RestException(ErrorCode.ERROR_800009.getCode(), ErrorCode.ERROR_800009.getDesc());
+		}
+	}
+
+	public static void valid_not_exist(Map<String, Object> driverMap) {
+		if (ValidateUtils.isEmpty(driverMap)) {
+			throw new RestException(ErrorCode.ERROR_800009.getCode(), ErrorCode.ERROR_800009.getDesc());
+		}
+	}
+	
+	public static void valid_not_exist(boolean notExist) {
+		if (notExist) {
+			throw new RestException(ErrorCode.ERROR_800009.getCode(), ErrorCode.ERROR_800009.getDesc());
+		}
+	}
+
+	// 司机信息录入校验-运势界
+	public static void valid_allow_save(DriverInfo driverInfo) {
+
+		if (ValidateUtils.isEmpty(driverInfo.getRealName())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "司机姓名不能为空!");
+		}
+
+		// 姓名5个汉字
+		boolean realName = ValidateUtils.validateChinese(driverInfo.getRealName(), 1, 5);
+		if (!realName) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "司机姓名必须为中文并且长度不得超过5个汉字。");
+		}
+		
+		if (ValidateUtils.isEmpty(driverInfo.getIdno())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "司机身份证号码不能为空!");
+		}
+
+		// 身份证号码为18位
+		boolean idno = IdCardUtils.validateIdCard18(driverInfo.getIdno());
+		if (!idno) {
+			throw new RestException(ErrorCode.ERROR_800015.getCode(), ErrorCode.ERROR_800015.getDesc());
+		}
+
+		// if(ValidateUtils.isEmpty(driverInfo.getQcNo())) {
+		// throw new RestException(ErrorCode.ERROR_900003.getCode(),
+		// "驾驶员从业资格证号码不能为空!");
+		// }
+		//
+		// if(StringUtils.isNotEmpty(driverInfo.getQcNo())) {
+		// String qcNo =driverInfo.getQcNo();
+		// boolean bc=ValidateUtils.validateNumber(qcNo, 19);
+		// if(false==bc) {
+		// throw new RestException(ErrorCode.ERROR_800016.getCode(),
+		// ErrorCode.ERROR_800016.getDesc());
+		// }
+		// }
+		//
+		// if(ValidateUtils.isEmpty(driverInfo.getQcEndDate())) {
+		// throw new RestException(ErrorCode.ERROR_900005.getCode(),
+		// "从业资格证有效期(止)日不能为空!");
+		// }
+		//
+		// if(ValidateUtils.isEmpty(driverInfo.getDlEndDate())) {
+		// throw new RestException(ErrorCode.ERROR_900005.getCode(),
+		// "驾驶证有效期(止)日不能为空!");
+		// }
+		//
+		// if(!DateUtils.isDefaultValidDate(driverInfo.getQcEndDate())) {
+		// throw new RestException(ErrorCode.ERROR_900005.getCode(),
+		// "从业资格证有效期(止)日格式有误!");
+		// }
+		//
+		// if(!DateUtils.isDefaultValidDate(driverInfo.getDlEndDate())) {
+		// throw new RestException(ErrorCode.ERROR_900005.getCode(),
+		// "驾驶证有效期(止)日格式有误!");
+		// }
+
+		// if(ValidateUtils.isEmpty(driverInfo.getDrivingBImageRefId())) {
+		// throw new
+		// RestException(ErrorCode.ERROR_900003.getCode(),"drivingBImageRefId"+
+		// ErrorCode.ERROR_900003.getDesc());
+		// }
+
+		if (ValidateUtils.isEmpty(driverInfo.getIdFImageRefId())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "身份照片(正)ID" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (ValidateUtils.isEmpty(driverInfo.getIdBImageRefId())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "身份照片(反)ID" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (ValidateUtils.isEmpty(driverInfo.getDrivingFImageRefId())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "驾驶证照片(正)ID" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		// if(ValidateUtils.isEmpty(driverInfo.getPhotoFImageRefId())) {
+		// throw new RestException(ErrorCode.ERROR_900003.getCode(),"个人照片ID"+
+		// ErrorCode.ERROR_900003.getDesc());
+		// }
+
+		if (ValidateUtils.isEmpty(driverInfo.getQualifiImageRefId())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "从业资格证1照片ID" + ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if (ValidateUtils.isEmpty(driverInfo.getQualifiImage2RefId())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "从业资格证2照片ID" + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		if (ValidateUtils.isEmpty(driverInfo.getTelphone())) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "手机号" + ErrorCode.ERROR_900003.getDesc());
+		}
+		
+		if (!ValidateUtils.isMobileNo(driverInfo.getTelphone())) {
+			throw new RestException(ErrorCode.ERROR_900004.getCode(), "手机号输入有误。");
+		}
+	}
+
+	// 状态校验
+	public static void valid_driver_id(String driverInfoId) {
+		if (StringUtils.isBlank(driverInfoId)) {
+			throw new RestException(ErrorCode.ERROR_800002.getCode(), ErrorCode.ERROR_800002.getDesc());
+		}
+	}
+
+}

@@ -1,0 +1,7 @@
+package com.gzzhwl.template.callable;
+
+import java.util.Map;
+
+public interface RowParseCallable {
+	public String parse(String key, Object value, Map<String, Object> rowData);
+}

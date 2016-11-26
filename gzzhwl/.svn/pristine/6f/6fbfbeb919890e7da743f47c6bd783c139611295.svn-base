@@ -1,0 +1,17 @@
+package com.gzzhwl.admin.contract.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.gzzhwl.admin.contract.service.ContractService;
+import com.gzzhwl.rest.exception.RestException;
+
+@Service
+public class ContractServiceImpl implements ContractService {
+
+	@Override
+	public String createContract(String loadId, Integer departId, String staffId) throws RestException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

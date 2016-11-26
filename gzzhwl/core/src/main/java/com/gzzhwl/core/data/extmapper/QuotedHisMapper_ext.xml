@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.QuotedHisExtDao">
+
+	<resultMap id="quotedHisResultMap" type="QuotedHis">
+		<id property="hisId" column="his_id" />
+		<result property="quotedId" column="quoted_id" />
+		<result property="srcStatus" column="src_status" />
+		<result property="destStatus" column="dest_status" />
+		<result property="userType" column="user_type" />
+		<result property="msgInfo" column="msg_info" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="quotedHisResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="quotedHisResultMap"></resultMap>
+
+	<select id="getQuotedHis" parameterType="map" resultMap="quotedHisResultMap">
+	   select 
+	    t1.his_id,
+	    t1.quoted_id,
+	    t1.src_status,
+	    t1.dest_status,
+	    t1.user_type,
+	    t1.msg_info,
+	    t1.created_by,
+	    t1.created_time
+	   from zh_quoted_his t1,zh_quoted_info t2
+	   where 
+	   	t1.quoted_id = t2.quoted_id
+	   	and
+	   	t2.source_id = #{sourceId}
+	    and
+	    t1.dest_status = #{destStatus}
+	</select>
+	
+	<select id="getQuotedHisList" parameterType="map" resultMap="findResultMap">
+	   select 
+	    t1.his_id,
+	    t1.quoted_id,
+	    t1.src_status,
+	    t1.dest_status,
+	    t1.user_type,
+	    t1.msg_info,
+	    t1.created_by,
+	    t1.created_time
+	   from zh_quoted_his t1,zh_quoted_info t2
+	   where 
+	   	t1.quoted_id = t2.quoted_id
+	   	and
+	   	t2.source_id = #{sourceId}
+	    order by t1.created_time 
+	</select>
+</mapper> 

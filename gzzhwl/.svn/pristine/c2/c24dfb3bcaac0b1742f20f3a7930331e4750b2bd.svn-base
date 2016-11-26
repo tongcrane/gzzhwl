@@ -1,0 +1,292 @@
+package com.gzzhwl.admin.load.controller;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.admin.load.service.LoadFeedbackService;
+import com.gzzhwl.admin.load.service.TripManageService;
+import com.gzzhwl.admin.load.validator.LoadValidate;
+import com.gzzhwl.admin.load.vo.TripQueryVo;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.rest.exception.RestException;
+import com.gzzhwl.rest.security.utils.SecurityUtils;
+import com.gzzhwl.rest.springmvc.annotation.Pagination;
+import com.gzzhwl.rest.springmvc.model.PageParameter;
+import com.gzzhwl.rest.springmvc.model.ResponseModel;
+
+@RestController
+@RequestMapping("/admin/trip")
+public class TripManageController {
+	@Autowired
+	private TripManageService service;
+
+	@Autowired
+	private LoadFeedbackService loadFeedbackService;
+
+	@RequestMapping(value = "/pageTripList", method = RequestMethod.GET)
+	public ResponseModel pageTripList(TripQueryVo vo, @Pagination PageParameter page) {
+		Page<Map<String, Object>> data = service.tripPage(vo, page.getPageIndex(), page.getPageSize());
+		return new ResponseModel(data);
+
+	}
+
+	// /**
+	// * 删除异常反馈
+	// *
+	// * @param loadFeedbackListVo
+	// * @return
+	// */
+	// @RequestMapping(value = "/removeLoadFeedback", method =
+	// RequestMethod.GET)
+	// public ResponseModel removeLoadFeedback(@RequestParam(required = true)
+	// String feedbackId) {
+	//
+	// String staffId = SecurityUtils.getSubject().getStaffId();
+	//
+	// loadFeedbackService.removeLoadFeedback(feedbackId, staffId);
+	//
+	// return new ResponseModel(null);
+	// }
+
+	/**
+	 * 取消发车
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/cancelTrip", method = RequestMethod.POST)
+	public ResponseModel cancelTrip(@RequestParam(required = true) String loadId) {
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		service.cancelTrip(loadId, staffId);
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 取消发车
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/cancelTripForYSJ", method = RequestMethod.POST)
+	public ResponseModel cancelTripForYSJ(@RequestParam(required = true) String loadId) {
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		service.cancelTripForYSJ(loadId, staffId);
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 线控靠台
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/closeToSurfaceControl", method = RequestMethod.POST)
+	public ResponseModel closeToSurface(@RequestParam(required = true) String loadId,
+			@RequestParam(required = true) String actionTime) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		try {
+			service.closeToSurface(loadId, staffId, actionTime);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 靠台
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/closeToSurface", method = RequestMethod.POST)
+	public ResponseModel closeToSurface(@RequestParam(required = true) String loadId) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		service.closeToSurface(loadId, staffId, null);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 线控发车
+	 * 
+	 * @param loadId
+	 * @param customerBillNo
+	 * @param contractImageRefId
+	 * @param tripTime
+	 * @return
+	 */
+	@RequestMapping(value = "/tripTheCarControl", method = RequestMethod.POST)
+	public ResponseModel tripTheCar(@RequestParam(required = true) String loadId,
+			@RequestParam(required = true) String customerBillNo,
+			@RequestParam(required = true) String contractImageRefId, @RequestParam(required = true) String goodsVolume,
+			@RequestParam(required = true) String goodsWeight, @RequestParam(required = true) String tripTime,
+			@RequestParam(required = true) String actionTime) throws ParseException {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		Integer departId = SecurityUtils.getSubject().getDepartId();
+
+		if (ValidateUtils.isEmpty(actionTime)) {
+			throw new RestException(ErrorCode.ERROR_900003.getCode(), "反馈时间 " + ErrorCode.ERROR_900003.getDesc());
+		}
+
+		try {
+			service.tripTheCar(loadId, customerBillNo, goodsVolume, goodsWeight, contractImageRefId, tripTime, staffId,
+					departId, tripTime);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 发车
+	 * 
+	 * @param loadId
+	 * @param customerBillNo
+	 * @param contractImageRefId
+	 * @param tripTime
+	 * @return
+	 */
+	@RequestMapping(value = "/tripTheCar", method = RequestMethod.POST)
+	public ResponseModel tripTheCar(@RequestParam(required = true) String loadId,
+			@RequestParam(required = true) String customerBillNo,
+			@RequestParam(required = true) String contractImageRefId, @RequestParam(required = true) String goodsVolume,
+			@RequestParam(required = true) String goodsWeight) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		Integer departId = SecurityUtils.getSubject().getDepartId();
+
+		service.tripTheCar(loadId, customerBillNo, goodsVolume, goodsWeight, contractImageRefId, null, staffId,
+				departId, null);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 车检
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/vehicleCheck", method = RequestMethod.POST)
+	public ResponseModel vehicleCheck(@RequestParam(required = true) String loadId) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		service.vehicleCheck(loadId, staffId, null);
+
+		return new ResponseModel(null);
+	}
+
+	/**
+	 * 线控车检
+	 * 
+	 * @param loadId
+	 * @return
+	 */
+	@RequestMapping(value = "/vehicleCheckControl", method = RequestMethod.POST)
+	public ResponseModel vehicleCheck(@RequestParam(required = true) String loadId,
+			@RequestParam(required = true) String actionTime) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		try {
+			service.vehicleCheck(loadId, staffId, actionTime);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseModel(null);
+	}
+
+	@RequestMapping(value = "/getTripDetail", method = RequestMethod.GET)
+	public ResponseModel getTripDetail(@RequestParam String loadId) {
+
+		Map<String, Object> tripDetail = service.getTripDetail(loadId);
+
+		return new ResponseModel(tripDetail);
+	}
+
+	/**
+	 * 获取现控待处理订单列表
+	 * 
+	 * @param addrId
+	 * @param keyWord
+	 * @return
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	@RequestMapping(value = "/getFieldControlList", method = RequestMethod.GET)
+	public ResponseModel getFieldControlList(@RequestParam(required = false) String addrId,
+			@RequestParam(required = false) String keyWord, @RequestParam(required = true) String timeStamp,
+			HttpServletResponse response) throws IOException, ParseException {
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		LoadValidate.valid_timestamp(timeStamp);
+		// String fileName = staffId + DateUtils.parse(timeStamp, "yyyy-MM-dd
+		// HH:mm:ss").getTime();
+		// response.setHeader("Content-Disposition","attachment;filename="+fileName);
+
+		List<Map<String, Object>> listMap = service.getFieldControlList(addrId, keyWord, timeStamp);
+
+		return new ResponseModel(listMap);
+	}
+
+	/**
+	 * 获取现控历史订单列表
+	 * 
+	 * @param addrId
+	 * @param keyWord
+	 * @return
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	@RequestMapping(value = "/getFieldControlHis", method = RequestMethod.GET)
+	public ResponseModel getFieldControlHis() throws IOException, ParseException {
+		String staffId = SecurityUtils.getSubject().getStaffId();
+		List<Map<String, Object>> listMap = service.getFieldControlHis(staffId);
+
+		return new ResponseModel(listMap);
+	}
+
+	/**
+	 * 货主合同图片上传
+	 * 
+	 * @param request
+	 * @param vehicleInfoId
+	 * @param type
+	 * @return
+	 */
+	@RequestMapping(value = "/tripUploadImage", method = RequestMethod.POST)
+	public ResponseModel tripUploadImage(@RequestParam MultipartFile image) {
+
+		String staffId = SecurityUtils.getSubject().getStaffId();
+
+		String imageId = service.updateImage(image, staffId);
+
+		Map<String, Object> resMap = new HashMap<>();
+		resMap.put("imageId", imageId);
+
+		return new ResponseModel(resMap);
+	}
+
+}

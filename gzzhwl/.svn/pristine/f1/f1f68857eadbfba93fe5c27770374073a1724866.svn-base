@@ -1,0 +1,35 @@
+package com.gzzhwl.admin.recieve.service;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.ParseException;
+import java.util.Map;
+
+import com.gzzhwl.admin.recieve.vo.ReceiveQueryVo;
+import com.gzzhwl.admin.recieve.vo.ReceiveStatementQueryVo;
+import com.gzzhwl.core.page.Page;
+
+public interface ReceiveService {
+	/**
+	 * 查询应收列表
+	 */
+	public Page<Map<String, Object>> pageReceiveList(ReceiveQueryVo vo, int currentPage, int pageSize)
+			throws ParseException;
+
+	/**
+	 * 查询应收明细
+	 */
+	public Map<String, Object> getReceiveDetail(String consignId);
+
+	/**
+	 * 审核应收
+	 */
+	public boolean verifyReceive(String consignId, String staffId);
+
+	/**
+	 * 应收对账单
+	 */
+	public void exportReceiveStatement(ReceiveStatementQueryVo queryVo, OutputStream os)
+			throws ParseException, IOException;
+
+}

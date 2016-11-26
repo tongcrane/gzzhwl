@@ -1,0 +1,71 @@
+package com.gzzhwl.api.source.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.gzzhwl.api.source.vo.QuerySourceHallVo;
+import com.gzzhwl.api.source.vo.QuerySourceVO;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.rest.exception.RestException;
+
+public interface ApiSourceService {
+	
+	/**
+	 * 货源大厅货源查询
+	 * @param parm
+	 * @param accountId
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 */
+	public Page<Map<String, Object>> pageSourceHall(QuerySourceHallVo parm,String accountId, int pageIndex, int pageSize);
+	
+	public Page<Map<String, Object>> pageSource(QuerySourceVO param, String accountId, int pageIndex, int pageSize)
+			throws RestException;
+
+	public boolean allowBid(String sourceId, String accountId) throws RestException;
+
+	public Map<String, Object> infoSource(String sourceId, String accountId) throws RestException;
+	
+	/**
+	 * 获取热门线路货源列表
+	 * @param accountId
+	 * @param sourceCount  货源条数
+	 * @return
+	 */
+	public List<Map<String, Object>> getHotLineSourceList(String accountId,Integer sourceCount);
+	
+	
+	/**
+	 * 获取临时热门线路货源列表
+	 * @param accountId
+	 * @param sourceCount  货源条数
+	 * @param tmpLineCount 获取线路条数
+	 * @return
+	 */
+	public  List<Map<String, Object>> getTmpHotLineSourceList(Integer sourceCount,Integer tmpLineCount);
+
+	/**
+	 * 获取最新货源信息
+	 * @param count
+	 * @param accountId
+	 * @return
+	 */
+	public List<Map<String, Object>> getNewSource(int count,String accountId);
+
+	/**
+	 * 获取货源数量和签单的经纪人和驾驶员数量
+	 * @param accountId
+	 * @return
+	 */
+	public Map<String, Object> getSourceAndQutoedCnt();
+	
+	/**
+	 * 获取推荐货源
+	 * @param count
+	 * @param accountId
+	 * @return
+	 */
+	public List<Map<String, Object>> getRecommendSource(String accountId,Integer sourceCount);
+
+}

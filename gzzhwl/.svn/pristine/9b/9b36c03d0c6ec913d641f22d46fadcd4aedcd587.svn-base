@@ -1,0 +1,97 @@
+package com.gzzhwl.admin.order.vo;
+
+/**
+ * 
+ * zh_order_sender_info表
+ * 
+ * @author mew
+ *
+ */
+public class OrderSenderInfoVO {
+	private java.lang.String customerId; // 客户标识
+	private java.lang.String customerName; // 客户全称
+	private java.lang.String contactName; // 联系人
+	private java.lang.String telphone; // 联系电话
+	private java.lang.String mobile; // 联系手机
+
+	/**
+	 * 获取客户标识属性
+	 *
+	 * @return customerId
+	 */
+	public java.lang.String getCustomerId() {
+		return customerId;
+	}
+
+	/**
+	 * 设置客户标识属性
+	 *
+	 * @param customerId
+	 */
+	public void setCustomerId(java.lang.String customerId) {
+		this.customerId = customerId;
+	}
+
+	/**
+	 * 获取联系人属性
+	 *
+	 * @return contactName
+	 */
+	public java.lang.String getContactName() {
+		return contactName;
+	}
+
+	/**
+	 * 设置联系人属性
+	 *
+	 * @param contactName
+	 */
+	public void setContactName(java.lang.String contactName) {
+		this.contactName = contactName;
+	}
+
+	/**
+	 * 获取联系电话属性
+	 *
+	 * @return telphone
+	 */
+	public java.lang.String getTelphone() {
+		return telphone;
+	}
+
+	/**
+	 * 设置联系电话属性
+	 *
+	 * @param telphone
+	 */
+	public void setTelphone(java.lang.String telphone) {
+		this.telphone = telphone;
+	}
+
+	/**
+	 * 获取联系手机属性
+	 *
+	 * @return mobile
+	 */
+	public java.lang.String getMobile() {
+		return mobile;
+	}
+
+	/**
+	 * 设置联系手机属性
+	 *
+	 * @param mobile
+	 */
+	public void setMobile(java.lang.String mobile) {
+		this.mobile = mobile;
+	}
+
+	public java.lang.String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(java.lang.String customerName) {
+		this.customerName = customerName;
+	}
+
+}

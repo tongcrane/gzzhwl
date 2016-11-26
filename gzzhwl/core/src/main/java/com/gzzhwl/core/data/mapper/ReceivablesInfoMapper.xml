@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.ReceivablesInfoDao">
+
+	<resultMap id="receivablesInfoResultMap" type="ReceivablesInfo">
+		<id property="consignId" column="consign_id" />
+		<result property="freightPrice" column="freight_price" />
+		<result property="exceptionTotal" column="exception_total" />
+		<result property="total" column="total" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="receivablesInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="receivablesInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="ReceivablesInfo">
+	   insert into zh_receivables_info (
+	     consign_id,
+	     freight_price,
+	     exception_total,
+	     total,
+	     created_by,
+	     created_time
+	   )values (
+	     #{consignId},
+	     #{freightPrice},
+	     #{exceptionTotal},
+	     #{total},
+	     #{createdBy},
+	     now()
+	   )
+	</insert>
+
+	<update id="update" parameterType="ReceivablesInfo">
+	   update zh_receivables_info set
+	     consign_id=#{consignId},
+	     freight_price=#{freightPrice},
+	     exception_total=#{exceptionTotal},
+	     total=#{total},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime}
+	   where 
+	    consign_id=#{consignId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="ReceivablesInfo">
+	   update zh_receivables_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="consignId != null">
+		       consign_id=#{consignId},
+		     </if>
+		     <if test="freightPrice != null">
+		       freight_price=#{freightPrice},
+		     </if>
+		     <if test="exceptionTotal != null">
+		       exception_total=#{exceptionTotal},
+		     </if>
+		     <if test="total != null">
+		       total=#{total},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime}
+		     </if>
+	   </trim>
+	
+	   where 
+	    consign_id=#{consignId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_receivables_info 
+	   where 
+	    consign_id=#{consignId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="receivablesInfoResultMap">
+	   select 
+	    consign_id,
+	    freight_price,
+	    exception_total,
+	    total,
+	    created_by,
+	    created_time
+	   from zh_receivables_info
+	   where 
+	    consign_id=#{consignId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    consign_id,
+	    freight_price,
+	    exception_total,
+	    total,
+	    created_by,
+	    created_time
+	   from zh_receivables_info
+	   where 
+	    consign_id=#{consignId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     consign_id,
+	     freight_price,
+	     exception_total,
+	     total,
+	     created_by,
+	     created_time
+	   from zh_receivables_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="consignId != null">
+	        consign_id=#{consignId}
+	     </if>
+	     <if test="freightPrice != null">
+	        and freight_price=#{freightPrice}
+	     </if>
+	     <if test="exceptionTotal != null">
+	        and exception_total=#{exceptionTotal}
+	     </if>
+	     <if test="total != null">
+	        and total=#{total}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     consign_id,
+	     freight_price,
+	     exception_total,
+	     total,
+	     created_by,
+	     created_time
+	   from zh_receivables_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="consignId != null">
+	        consign_id=#{consignId}
+	     </if>
+	     <if test="freightPrice != null">
+	        and freight_price=#{freightPrice}
+	     </if>
+	     <if test="exceptionTotal != null">
+	        and exception_total=#{exceptionTotal}
+	     </if>
+	     <if test="total != null">
+	        and total=#{total}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

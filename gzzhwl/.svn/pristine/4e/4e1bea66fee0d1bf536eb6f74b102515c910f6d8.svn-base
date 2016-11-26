@@ -1,0 +1,256 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_real_vehicle_plus_info表
+ * @author mew
+ *
+ */
+public class RealVehiclePlusInfo implements Serializable {
+	@Length(max = 36, message = "vehicleInfoId超过长度限制")
+	private java.lang.String vehicleInfoId; // 车辆信息标识
+	@Length(max = 20, message = "ciEffectDate超过长度限制")
+	private java.lang.String ciEffectDate; // 交强险有效期(起)
+	@Length(max = 20, message = "ciValidDate超过长度限制")
+	private java.lang.String ciValidDate; // 交强险有效期(止)
+	@Length(max = 50, message = "ciName超过长度限制")
+	private java.lang.String ciName; // 交强险公司名称
+	@Length(max = 20, message = "ciNo超过长度限制")
+	private java.lang.String ciNo; // 交强险保单号
+	@Length(max = 20, message = "viEffectDate超过长度限制")
+	private java.lang.String viEffectDate; // 商业险有效期(起)
+	@Length(max = 20, message = "viValidDate超过长度限制")
+	private java.lang.String viValidDate; // 商业险有效期(止)
+	@Length(max = 50, message = "viName超过长度限制")
+	private java.lang.String viName; // 商业险公司名称
+	@Length(max = 20, message = "viNo超过长度限制")
+	private java.lang.String viNo; // 商业险保单号
+	@Length(max = 36, message = "ciImageRefId超过长度限制")
+	private java.lang.String ciImageRefId; // 交强险图片
+	@Length(max = 36, message = "viImageRefId超过长度限制")
+	private java.lang.String viImageRefId; // 商业险图片
+
+
+	/**
+     * 获取车辆信息标识属性
+     *
+     * @return vehicleInfoId
+     */
+	public java.lang.String getVehicleInfoId() {
+		return vehicleInfoId;
+	}
+	
+	/**
+	 * 设置车辆信息标识属性
+	 *
+	 * @param vehicleInfoId
+	 */
+	public void setVehicleInfoId(java.lang.String vehicleInfoId) {
+		this.vehicleInfoId = vehicleInfoId;
+	}
+	
+	/**
+     * 获取交强险有效期(起)属性
+     *
+     * @return ciEffectDate
+     */
+	public java.lang.String getCiEffectDate() {
+		return ciEffectDate;
+	}
+	
+	/**
+	 * 设置交强险有效期(起)属性
+	 *
+	 * @param ciEffectDate
+	 */
+	public void setCiEffectDate(java.lang.String ciEffectDate) {
+		this.ciEffectDate = ciEffectDate;
+	}
+	
+	/**
+     * 获取交强险有效期(止)属性
+     *
+     * @return ciValidDate
+     */
+	public java.lang.String getCiValidDate() {
+		return ciValidDate;
+	}
+	
+	/**
+	 * 设置交强险有效期(止)属性
+	 *
+	 * @param ciValidDate
+	 */
+	public void setCiValidDate(java.lang.String ciValidDate) {
+		this.ciValidDate = ciValidDate;
+	}
+	
+	/**
+     * 获取交强险公司名称属性
+     *
+     * @return ciName
+     */
+	public java.lang.String getCiName() {
+		return ciName;
+	}
+	
+	/**
+	 * 设置交强险公司名称属性
+	 *
+	 * @param ciName
+	 */
+	public void setCiName(java.lang.String ciName) {
+		this.ciName = ciName;
+	}
+	
+	/**
+     * 获取交强险保单号属性
+     *
+     * @return ciNo
+     */
+	public java.lang.String getCiNo() {
+		return ciNo;
+	}
+	
+	/**
+	 * 设置交强险保单号属性
+	 *
+	 * @param ciNo
+	 */
+	public void setCiNo(java.lang.String ciNo) {
+		this.ciNo = ciNo;
+	}
+	
+	/**
+     * 获取商业险有效期(起)属性
+     *
+     * @return viEffectDate
+     */
+	public java.lang.String getViEffectDate() {
+		return viEffectDate;
+	}
+	
+	/**
+	 * 设置商业险有效期(起)属性
+	 *
+	 * @param viEffectDate
+	 */
+	public void setViEffectDate(java.lang.String viEffectDate) {
+		this.viEffectDate = viEffectDate;
+	}
+	
+	/**
+     * 获取商业险有效期(止)属性
+     *
+     * @return viValidDate
+     */
+	public java.lang.String getViValidDate() {
+		return viValidDate;
+	}
+	
+	/**
+	 * 设置商业险有效期(止)属性
+	 *
+	 * @param viValidDate
+	 */
+	public void setViValidDate(java.lang.String viValidDate) {
+		this.viValidDate = viValidDate;
+	}
+	
+	/**
+     * 获取商业险公司名称属性
+     *
+     * @return viName
+     */
+	public java.lang.String getViName() {
+		return viName;
+	}
+	
+	/**
+	 * 设置商业险公司名称属性
+	 *
+	 * @param viName
+	 */
+	public void setViName(java.lang.String viName) {
+		this.viName = viName;
+	}
+	
+	/**
+     * 获取商业险保单号属性
+     *
+     * @return viNo
+     */
+	public java.lang.String getViNo() {
+		return viNo;
+	}
+	
+	/**
+	 * 设置商业险保单号属性
+	 *
+	 * @param viNo
+	 */
+	public void setViNo(java.lang.String viNo) {
+		this.viNo = viNo;
+	}
+	
+	/**
+     * 获取交强险图片属性
+     *
+     * @return ciImageRefId
+     */
+	public java.lang.String getCiImageRefId() {
+		return ciImageRefId;
+	}
+	
+	/**
+	 * 设置交强险图片属性
+	 *
+	 * @param ciImageRefId
+	 */
+	public void setCiImageRefId(java.lang.String ciImageRefId) {
+		this.ciImageRefId = ciImageRefId;
+	}
+	
+	/**
+     * 获取商业险图片属性
+     *
+     * @return viImageRefId
+     */
+	public java.lang.String getViImageRefId() {
+		return viImageRefId;
+	}
+	
+	/**
+	 * 设置商业险图片属性
+	 *
+	 * @param viImageRefId
+	 */
+	public void setViImageRefId(java.lang.String viImageRefId) {
+		this.viImageRefId = viImageRefId;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("RealVehiclePlusInfo");
+        sb.append("{vehicleInfoId=").append(vehicleInfoId);
+        sb.append(", ciEffectDate=").append(ciEffectDate);
+        sb.append(", ciValidDate=").append(ciValidDate);
+        sb.append(", ciName=").append(ciName);
+        sb.append(", ciNo=").append(ciNo);
+        sb.append(", viEffectDate=").append(viEffectDate);
+        sb.append(", viValidDate=").append(viValidDate);
+        sb.append(", viName=").append(viName);
+        sb.append(", viNo=").append(viNo);
+        sb.append(", ciImageRefId=").append(ciImageRefId);
+        sb.append(", viImageRefId=").append(viImageRefId);
+		sb.append('}');
+        return sb.toString();
+    }
+}

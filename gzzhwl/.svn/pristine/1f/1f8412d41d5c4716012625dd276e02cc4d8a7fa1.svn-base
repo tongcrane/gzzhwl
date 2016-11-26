@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.extdao.LendLogExtDao">
+
+	<resultMap id="lendLogResultMap" type="LendLog">
+		<id property="lendId" column="lend_id" />
+		<result property="lendNo" column="lend_no" />
+		<result property="vehicleInfoId" column="vehicle_info_id" />
+		<result property="driver1InfoId" column="driver1_info_id" />
+		<result property="driver2InfoId" column="driver2_info_id" />
+		<result property="fromDepartId" column="from_depart_id" />
+		<result property="toDepartId" column="to_depart_id" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="realReturnedTime" column="real_returned_time" />
+		<result property="departureCode" column="departure_code" />
+		<result property="destinationCode" column="destination_code" />
+		<result property="status" column="status" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="plateNumber" column="plate_number" />
+		<result property="departName" column="depart_name" />
+	</resultMap>
+	<resultMap id="pageResultMap" type="java.util.HashMap"
+		extends="lendLogResultMap"></resultMap>
+	<resultMap id="findResultMap" type="java.util.HashMap"
+		extends="lendLogResultMap"></resultMap>
+
+
+
+	<select id="getLendLogPage" parameterType="map" resultMap="pageResultMap">
+		select
+		t1.lend_id,
+		t1.lend_no,
+		t1.start_time,
+		t1.end_time,
+		t1.real_returned_time,
+		t1.status,
+		t1.departure_code,
+		t1.destination_code,
+		t2.plate_number,
+		t3.name as depart_name
+		from zh_lend_log t1 left join zh_real_vehicle_info t2
+		on t1.vehicle_info_id = t2.vehicle_info_id
+		left join zh_department_info t3
+		on t1.to_depart_id = t3.depart_id
+		
+			<if test="queryType == 0">
+				<if test="queryContent != null">
+				<trim prefix="WHERE" prefixOverrides="AND |OR ">
+					(
+					t2.plate_number like '%${queryContent}%'
+					or
+					t3.name like '%${queryContent}%'
+					or 
+					t1.lend_no like '%${queryContent}%'
+					)
+				</trim>
+				</if>
+			</if>
+			<if test="queryType == 1">
+			<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				<if test="startLendStartTime != null">
+	     		 <![CDATA[  and t1.start_time>=#{startLendStartTime} ]]>
+				</if>
+				<if test="endLendStartTime != null">
+	     		 <![CDATA[  and t1.start_time<=#{endLendStartTime} ]]>
+				</if>
+				<if test="startLendEndTime != null">
+	      		<![CDATA[  and t1.end_time>=#{startLendEndTime} ]]>
+				</if>
+				<if test="endLendEndTime != null">
+	      		<![CDATA[  and t1.end_time<=#{endLendEndTime} ]]>
+				</if>
+				<if test="startRealReturnedTime != null">
+	       		<![CDATA[ and t1.real_returned_time>=#{startRealReturnedTime} ]]>
+				</if>
+				<if test="endRealReturnedTime != null">
+	      		 <![CDATA[ and t1.real_returned_time<=#{endRealReturnedTime} ]]>
+				</if>
+				<if test="status != null">
+					and t1.status=#{status}
+				</if>
+				<if test="isDeleted != null">
+					and t1.is_deleted=#{isDeleted}
+				</if>
+				<if test="sortField == 'startTime'">
+					order by t1.start_time
+				</if>
+
+				<if test="sortField == 'realReturnedTime'">
+					order by t1.real_returned_time
+				</if>
+
+				<if test="sortField == null">
+					order by t1.created_time
+				</if>
+
+				<if test="sort != null and  sort == 00">
+					asc
+				</if>
+				<if test="sort != null and sort == 01">
+					desc
+				</if>
+				</trim>
+			</if>
+		
+	</select>
+
+
+</mapper> 

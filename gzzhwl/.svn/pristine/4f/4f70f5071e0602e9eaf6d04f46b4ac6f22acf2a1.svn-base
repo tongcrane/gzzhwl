@@ -1,0 +1,76 @@
+package com.gzzhwl.core.data.extdao.impl;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.google.common.collect.Maps;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.LoadBillType;
+import com.gzzhwl.core.constant.LoadFeedBackType;
+import com.gzzhwl.core.data.extdao.LoadFeedbackLogExtDao;
+import com.gzzhwl.core.mybatis.support.DaoSupport;
+import com.gzzhwl.core.utils.ValidateUtils;
+
+/**
+ * 数据访问接口
+ * @author mew
+ *
+ */
+@Repository
+public class LoadFeedbackLogExtDaoImpl implements LoadFeedbackLogExtDao {
+	@Autowired	
+	private DaoSupport dao;
+	
+	@Override
+	public <T, K, V> List<T> getFeedBackList(String loadId,DataSource source,String[] loadFeedBackTypes,String isException,String isEnd,String[] loadBillTypes) {
+		
+//		if(loadFeedBackType.equals(loadFeedBackType.DRIVER)){
+//			return getDriverFeedBackList(loadId, loadBillType);
+//		}
+		
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("loadId", loadId);
+		if(!ValidateUtils.isEmpty(loadBillTypes)){
+			params.put("statusArray", loadBillTypes);
+		}
+		if(!ValidateUtils.isEmpty(loadFeedBackTypes)){
+			params.put("types", loadFeedBackTypes);
+		}
+		if(!ValidateUtils.isEmpty(isException)){
+			params.put("isException", isException);
+		}
+		if(!ValidateUtils.isEmpty(isEnd)){
+			params.put("isEnd", isEnd);
+		}
+		if(!ValidateUtils.isEmpty(source)){
+			params.put("source", source.getCode());
+		}
+		
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		
+		return dao.find(PREFIX + ".getFeedBackList", params);
+	}
+
+//
+//	@Override
+//	public <T, K, V> List<T> getDriverFeedBackList(String loadId, LoadBillType loadBillType) {
+//		
+//		Map<String,Object> params  = new HashMap<String, Object>();
+//		params.put("loadId", loadId);
+//		params.put("status", loadBillType.getCode());
+//		params.put("type", LoadFeedBackType.DRIVER.getCode());
+//		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+//		
+//		return dao.find(PREFIX + ".getDriverFeedBackList", params);
+//	}
+}
+
+

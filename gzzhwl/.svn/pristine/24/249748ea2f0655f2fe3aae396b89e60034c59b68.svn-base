@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.AgentInfoDao">
+
+	<resultMap id="agentInfoResultMap" type="AgentInfo">
+		<id property="agentInfoId" column="agent_info_id" />
+		<result property="accountId" column="account_id" />
+		<result property="agentType" column="agent_type" />
+		<result property="realName" column="real_name" />
+		<result property="idno" column="idno" />
+		<result property="sex" column="sex" />
+		<result property="telphone" column="telphone" />
+		<result property="mobile" column="mobile" />
+		<result property="companyFullName" column="company_full_name" />
+		<result property="companyPhone" column="company_phone" />
+		<result property="areaCode" column="area_code" />
+		<result property="address" column="address" />
+		<result property="certType" column="cert_type" />
+		<result property="uscCode" column="usc_code" />
+		<result property="busCode" column="bus_code" />
+		<result property="orgCode" column="org_code" />
+		<result property="taxRegCode" column="tax_reg_code" />
+		<result property="idFImageRefId" column="id_f_image_ref_id" />
+		<result property="idBImageRefId" column="id_b_image_ref_id" />
+		<result property="photoImageRefId" column="photo_image_ref_id" />
+		<result property="busImageRefId" column="bus_image_ref_id" />
+		<result property="orgImageRefId" column="org_image_ref_id" />
+		<result property="taxImageRefId" column="tax_image_ref_id" />
+		<result property="source" column="source" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="agentInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="agentInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="AgentInfo">
+	   insert into zh_agent_info (
+	     agent_info_id,
+	     account_id,
+	     agent_type,
+	     real_name,
+	     idno,
+	     sex,
+	     telphone,
+	     mobile,
+	     company_full_name,
+	     company_phone,
+	     area_code,
+	     address,
+	     cert_type,
+	     usc_code,
+	     bus_code,
+	     org_code,
+	     tax_reg_code,
+	     id_f_image_ref_id,
+	     id_b_image_ref_id,
+	     photo_image_ref_id,
+	     bus_image_ref_id,
+	     org_image_ref_id,
+	     tax_image_ref_id,
+	     source,
+	     created_by,
+	     created_time,
+	     updated_time,
+	     status,
+	     is_deleted
+	   )values (
+	     #{agentInfoId},
+	     #{accountId},
+	     #{agentType},
+	     #{realName},
+	     #{idno},
+	     #{sex},
+	     #{telphone},
+	     #{mobile},
+	     #{companyFullName},
+	     #{companyPhone},
+	     #{areaCode},
+	     #{address},
+	     #{certType},
+	     #{uscCode},
+	     #{busCode},
+	     #{orgCode},
+	     #{taxRegCode},
+	     #{idFImageRefId},
+	     #{idBImageRefId},
+	     #{photoImageRefId},
+	     #{busImageRefId},
+	     #{orgImageRefId},
+	     #{taxImageRefId},
+	     #{source},
+	     #{createdBy},
+	     now(),
+	     now(),
+	     #{status},
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="AgentInfo">
+	   update zh_agent_info set
+	     agent_info_id=#{agentInfoId},
+	     account_id=#{accountId},
+	     agent_type=#{agentType},
+	     real_name=#{realName},
+	     idno=#{idno},
+	     sex=#{sex},
+	     telphone=#{telphone},
+	     mobile=#{mobile},
+	     company_full_name=#{companyFullName},
+	     company_phone=#{companyPhone},
+	     area_code=#{areaCode},
+	     address=#{address},
+	     cert_type=#{certType},
+	     usc_code=#{uscCode},
+	     bus_code=#{busCode},
+	     org_code=#{orgCode},
+	     tax_reg_code=#{taxRegCode},
+	     id_f_image_ref_id=#{idFImageRefId},
+	     id_b_image_ref_id=#{idBImageRefId},
+	     photo_image_ref_id=#{photoImageRefId},
+	     bus_image_ref_id=#{busImageRefId},
+	     org_image_ref_id=#{orgImageRefId},
+	     tax_image_ref_id=#{taxImageRefId},
+	     source=#{source},
+	     created_by=#{createdBy},
+	     created_time=#{createdTime},
+	     updated_time=#{updatedTime},
+	     status=#{status},
+	     is_deleted=#{isDeleted}
+	   where 
+	    agent_info_id=#{agentInfoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="AgentInfo">
+	   update zh_agent_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="agentInfoId != null">
+		       agent_info_id=#{agentInfoId},
+		     </if>
+		     <if test="accountId != null">
+		       account_id=#{accountId},
+		     </if>
+		     <if test="agentType != null">
+		       agent_type=#{agentType},
+		     </if>
+		     <if test="realName != null">
+		       real_name=#{realName},
+		     </if>
+		     <if test="idno != null">
+		       idno=#{idno},
+		     </if>
+		     <if test="sex != null">
+		       sex=#{sex},
+		     </if>
+		     <if test="telphone != null">
+		       telphone=#{telphone},
+		     </if>
+		     <if test="mobile != null">
+		       mobile=#{mobile},
+		     </if>
+		     <if test="companyFullName != null">
+		       company_full_name=#{companyFullName},
+		     </if>
+		     <if test="companyPhone != null">
+		       company_phone=#{companyPhone},
+		     </if>
+		     <if test="areaCode != null">
+		       area_code=#{areaCode},
+		     </if>
+		     <if test="address != null">
+		       address=#{address},
+		     </if>
+		     <if test="certType != null">
+		       cert_type=#{certType},
+		     </if>
+		     <if test="uscCode != null">
+		       usc_code=#{uscCode},
+		     </if>
+		     <if test="busCode != null">
+		       bus_code=#{busCode},
+		     </if>
+		     <if test="orgCode != null">
+		       org_code=#{orgCode},
+		     </if>
+		     <if test="taxRegCode != null">
+		       tax_reg_code=#{taxRegCode},
+		     </if>
+		     <if test="idFImageRefId != null">
+		       id_f_image_ref_id=#{idFImageRefId},
+		     </if>
+		     <if test="idBImageRefId != null">
+		       id_b_image_ref_id=#{idBImageRefId},
+		     </if>
+		     <if test="photoImageRefId != null">
+		       photo_image_ref_id=#{photoImageRefId},
+		     </if>
+		     <if test="busImageRefId != null">
+		       bus_image_ref_id=#{busImageRefId},
+		     </if>
+		     <if test="orgImageRefId != null">
+		       org_image_ref_id=#{orgImageRefId},
+		     </if>
+		     <if test="taxImageRefId != null">
+		       tax_image_ref_id=#{taxImageRefId},
+		     </if>
+		     <if test="source != null">
+		       source=#{source},
+		     </if>
+		     <if test="createdBy != null">
+		       created_by=#{createdBy},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		       updated_time=now(),
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted}
+		     </if>
+	   </trim>
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	   		<if test="agentInfoId!=null">
+	   			agent_info_id=#{agentInfoId} 
+	   		</if>
+	   		<if test="accountId!=null">
+	   			and account_id=#{accountId}
+	   		</if>
+	   </trim>
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_agent_info 
+	   where 
+	    agent_info_id=#{agentInfoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="agentInfoResultMap">
+	   select 
+	    agent_info_id,
+	    account_id,
+	    agent_type,
+	    real_name,
+	    idno,
+	    sex,
+	    telphone,
+	    mobile,
+	    company_full_name,
+	    company_phone,
+	    area_code,
+	    address,
+	    cert_type,
+	    usc_code,
+	    bus_code,
+	    org_code,
+	    tax_reg_code,
+	    id_f_image_ref_id,
+	    id_b_image_ref_id,
+	    photo_image_ref_id,
+	    bus_image_ref_id,
+	    org_image_ref_id,
+	    tax_image_ref_id,
+	    source,
+	    created_by,
+	    created_time,
+	    updated_time,
+	    status,
+	    is_deleted
+	   from zh_agent_info
+	   where 
+	    account_id=#{accountId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    agent_info_id,
+	    account_id,
+	    agent_type,
+	    real_name,
+	    idno,
+	    sex,
+	    telphone,
+	    mobile,
+	    company_full_name,
+	    company_phone,
+	    area_code,
+	    address,
+	    cert_type,
+	    usc_code,
+	    bus_code,
+	    org_code,
+	    tax_reg_code,
+	    id_f_image_ref_id,
+	    id_b_image_ref_id,
+	    photo_image_ref_id,
+	    bus_image_ref_id,
+	    org_image_ref_id,
+	    tax_image_ref_id,
+	    source,
+	    created_by,
+	    created_time,
+	    updated_time,
+	    status,
+	    is_deleted
+	   from zh_agent_info
+	   where 
+	    agent_info_id=#{agentInfoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     agent_info_id,
+	     account_id,
+	     agent_type,
+	     real_name,
+	     idno,
+	     sex,
+	     telphone,
+	     mobile,
+	     company_full_name,
+	     company_phone,
+	     area_code,
+	     address,
+	     cert_type,
+	     usc_code,
+	     bus_code,
+	     org_code,
+	     tax_reg_code,
+	     id_f_image_ref_id,
+	     id_b_image_ref_id,
+	     photo_image_ref_id,
+	     bus_image_ref_id,
+	     org_image_ref_id,
+	     tax_image_ref_id,
+	     source,
+	     created_by,
+	     created_time,
+	     updated_time,
+	     status,
+	     is_deleted
+	   from zh_agent_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="agentInfoId != null">
+	        agent_info_id=#{agentInfoId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="agentType != null">
+	        and agent_type=#{agentType}
+	     </if>
+	     <if test="realName != null">
+	        and real_name=#{realName}
+	     </if>
+	     <if test="idno != null">
+	        and idno=#{idno}
+	     </if>
+	     <if test="sex != null">
+	        and sex=#{sex}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="mobile != null">
+	        and mobile=#{mobile}
+	     </if>
+	     <if test="companyFullName != null">
+	        and company_full_name=#{companyFullName}
+	     </if>
+	     <if test="companyPhone != null">
+	        and company_phone=#{companyPhone}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	     <if test="certType != null">
+	        and cert_type=#{certType}
+	     </if>
+	     <if test="uscCode != null">
+	        and usc_code=#{uscCode}
+	     </if>
+	     <if test="busCode != null">
+	        and bus_code=#{busCode}
+	     </if>
+	     <if test="orgCode != null">
+	        and org_code=#{orgCode}
+	     </if>
+	     <if test="taxRegCode != null">
+	        and tax_reg_code=#{taxRegCode}
+	     </if>
+	     <if test="idFImageRefId != null">
+	        and id_f_image_ref_id=#{idFImageRefId}
+	     </if>
+	     <if test="idBImageRefId != null">
+	        and id_b_image_ref_id=#{idBImageRefId}
+	     </if>
+	     <if test="photoImageRefId != null">
+	        and photo_image_ref_id=#{photoImageRefId}
+	     </if>
+	     <if test="busImageRefId != null">
+	        and bus_image_ref_id=#{busImageRefId}
+	     </if>
+	     <if test="orgImageRefId != null">
+	        and org_image_ref_id=#{orgImageRefId}
+	     </if>
+	     <if test="taxImageRefId != null">
+	        and tax_image_ref_id=#{taxImageRefId}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     agent_info_id,
+	     account_id,
+	     agent_type,
+	     real_name,
+	     idno,
+	     sex,
+	     telphone,
+	     mobile,
+	     company_full_name,
+	     company_phone,
+	     area_code,
+	     address,
+	     cert_type,
+	     usc_code,
+	     bus_code,
+	     org_code,
+	     tax_reg_code,
+	     id_f_image_ref_id,
+	     id_b_image_ref_id,
+	     photo_image_ref_id,
+	     bus_image_ref_id,
+	     org_image_ref_id,
+	     tax_image_ref_id,
+	     source,
+	     created_by,
+	     created_time,
+	     updated_time,
+	     status,
+	     is_deleted
+	   from zh_agent_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="agentInfoId != null">
+	        agent_info_id=#{agentInfoId}
+	     </if>
+	     <if test="accountId != null">
+	        and account_id=#{accountId}
+	     </if>
+	     <if test="agentType != null">
+	        and agent_type=#{agentType}
+	     </if>
+	     <if test="realName != null">
+	        and real_name=#{realName}
+	     </if>
+	     <if test="idno != null">
+	        and idno=#{idno}
+	     </if>
+	     <if test="sex != null">
+	        and sex=#{sex}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="mobile != null">
+	        and mobile=#{mobile}
+	     </if>
+	     <if test="companyFullName != null">
+	        and company_full_name=#{companyFullName}
+	     </if>
+	     <if test="companyPhone != null">
+	        and company_phone=#{companyPhone}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	     <if test="certType != null">
+	        and cert_type=#{certType}
+	     </if>
+	     <if test="uscCode != null">
+	        and usc_code=#{uscCode}
+	     </if>
+	     <if test="busCode != null">
+	        and bus_code=#{busCode}
+	     </if>
+	     <if test="orgCode != null">
+	        and org_code=#{orgCode}
+	     </if>
+	     <if test="taxRegCode != null">
+	        and tax_reg_code=#{taxRegCode}
+	     </if>
+	     <if test="idFImageRefId != null">
+	        and id_f_image_ref_id=#{idFImageRefId}
+	     </if>
+	     <if test="idBImageRefId != null">
+	        and id_b_image_ref_id=#{idBImageRefId}
+	     </if>
+	     <if test="photoImageRefId != null">
+	        and photo_image_ref_id=#{photoImageRefId}
+	     </if>
+	     <if test="busImageRefId != null">
+	        and bus_image_ref_id=#{busImageRefId}
+	     </if>
+	     <if test="orgImageRefId != null">
+	        and org_image_ref_id=#{orgImageRefId}
+	     </if>
+	     <if test="taxImageRefId != null">
+	        and tax_image_ref_id=#{taxImageRefId}
+	     </if>
+	     <if test="source != null">
+	        and source=#{source}
+	     </if>
+	     <if test="createdBy != null">
+	        and created_by=#{createdBy}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<update id="updateStatus" parameterType="map">
+		update zh_agent_info 
+		set status=#{status}
+		where account_id=#{accountId}
+	</update>
+	
+	<select id="hasIdno" parameterType="map" resultType="int">
+		select count(1) from zh_agent_info
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="idno!=null">
+				idno=#{idno}
+			</if>
+			<if test="_idno!=null">
+				and idno not in (#{_idno})
+			</if>
+			<if test="isDeleted!=null">
+				and is_deleted=#{isDeleted}
+			</if>
+		</trim>
+	</select>
+</mapper> 

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.DriverBankInfoDao">
+
+	<resultMap id="driverBankInfoResultMap" type="DriverBankInfo">
+		<id property="infoId" column="info_id" />
+		<result property="driverInfoId" column="driver_info_id" />
+		<result property="cardName" column="card_name" />
+		<result property="cardNo" column="card_no" />
+		<result property="depositBank" column="deposit_bank" />
+		<result property="bankName" column="bank_name" />
+		<result property="status" column="status" />
+		<result property="createdTime" column="created_time" />
+		<result property="updatedTime" column="updated_time" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="driverBankInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="driverBankInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="DriverBankInfo">
+	   insert into zh_driver_bank_info (
+	     info_id,
+	     driver_info_id,
+	     card_name,
+	     card_no,
+	     deposit_bank,
+	     bank_name,
+	     status,
+	     created_time,
+	     updated_time,
+	     is_deleted
+	   )values (
+	     #{infoId},
+	     #{driverInfoId},
+	     #{cardName},
+	     #{cardNo},
+	     #{depositBank},
+	     #{bankName},
+	     #{status},
+	     now(),
+	     now(),
+	     #{isDeleted}
+	   )
+	</insert>
+
+	<update id="update" parameterType="DriverBankInfo">
+	   update zh_driver_bank_info set
+	     card_name=#{cardName},
+	     card_no=#{cardNo},
+	     deposit_bank=#{depositBank},
+	     bank_name=#{bankName},
+	     updated_time=now()
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="DriverBankInfo">
+	   update zh_driver_bank_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="infoId != null">
+		       info_id=#{infoId},
+		     </if>
+		     <if test="driverInfoId != null">
+		       driver_info_id=#{driverInfoId},
+		     </if>
+		     <if test="cardName != null">
+		       card_name=#{cardName},
+		     </if>
+		     <if test="cardNo != null">
+		       card_no=#{cardNo},
+		     </if>
+		     <if test="depositBank != null">
+		       deposit_bank=#{depositBank},
+		     </if>
+		     <if test="bankName != null">
+		       bank_name=#{bankName},
+		     </if>
+		     <if test="status != null">
+		       status=#{status},
+		     </if>
+		     <if test="createdTime != null">
+		       created_time=#{createdTime},
+		     </if>
+		     <if test="isDeleted != null">
+		       is_deleted=#{isDeleted},
+		     </if>
+		     updated_time= now()
+	   </trim>
+	
+	   where 
+	    info_id=#{infoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_driver_bank_info 
+	   where 
+	    info_id=#{infoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="driverBankInfoResultMap">
+	   select 
+	    info_id,
+	    driver_info_id,
+	    card_name,
+	    card_no,
+	    deposit_bank,
+	    bank_name,
+	    status,
+	    created_time,
+	    updated_time,
+	    is_deleted
+	   from zh_driver_bank_info
+	   where 
+	    info_id=#{infoId} 
+	</select>
+	
+	<select id="findByDriver" parameterType="map" resultMap="driverBankInfoResultMap">
+	   select 
+	    info_id,
+	    driver_info_id,
+	    card_name,
+	    card_no,
+	    deposit_bank,
+	    bank_name,
+	    status,
+	    created_time,
+	    updated_time,
+	    is_deleted
+	   from zh_driver_bank_info
+	   where 
+	    driver_info_id=#{driverInfoId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    info_id,
+	    driver_info_id,
+	    card_name,
+	    card_no,
+	    deposit_bank,
+	    bank_name,
+	    status,
+	    created_time,
+	    updated_time,
+	    is_deleted
+	   from zh_driver_bank_info
+	   where 
+	    info_id=#{infoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     info_id,
+	     driver_info_id,
+	     card_name,
+	     card_no,
+	     deposit_bank,
+	     bank_name,
+	     status,
+	     created_time,
+	     updated_time,
+	     is_deleted
+	   from zh_driver_bank_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="driverInfoId != null">
+	        and driver_info_id=#{driverInfoId}
+	     </if>
+	     <if test="cardName != null">
+	        and card_name=#{cardName}
+	     </if>
+	     <if test="cardNo != null">
+	        and card_no=#{cardNo}
+	     </if>
+	     <if test="depositBank != null">
+	        and deposit_bank=#{depositBank}
+	     </if>
+	     <if test="bankName != null">
+	        and bank_name=#{bankName}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     info_id,
+	     driver_info_id,
+	     card_name,
+	     card_no,
+	     deposit_bank,
+	     bank_name,
+	     status,
+	     created_time,
+	     updated_time,
+	     is_deleted
+	   from zh_driver_bank_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="driverInfoId != null">
+	        and driver_info_id=#{driverInfoId}
+	     </if>
+	     <if test="cardName != null">
+	        and card_name=#{cardName}
+	     </if>
+	     <if test="cardNo != null">
+	        and card_no=#{cardNo}
+	     </if>
+	     <if test="depositBank != null">
+	        and deposit_bank=#{depositBank}
+	     </if>
+	     <if test="bankName != null">
+	        and bank_name=#{bankName}
+	     </if>
+	     <if test="status != null">
+	        and status=#{status}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="updatedTime != null">
+	        and updated_time=#{updatedTime}
+	     </if>
+	     <if test="isDeleted != null">
+	        and is_deleted=#{isDeleted}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

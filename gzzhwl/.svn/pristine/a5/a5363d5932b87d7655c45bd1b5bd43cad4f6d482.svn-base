@@ -1,0 +1,15 @@
+jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://192.168.1.233:3306/gzzhwl?useUnicode=true&characterEncoding=utf-8
+jdbc.username=root
+jdbc.password=1qaz2wsx
+
+
+# Database config
+table.fix = ZH_
+
+base.package = com.gzzhwl.core
+model.package = com.gzzhwl.core.data.model
+dao.package = com.gzzhwl.core.data.dao
+dao.impl.package = com.gzzhwl.core.data.dao.impl
+extdao.package = com.gzzhwl.core.data.extdao
+extdao.impl.package = com.gzzhwl.core.data.extdao.impl

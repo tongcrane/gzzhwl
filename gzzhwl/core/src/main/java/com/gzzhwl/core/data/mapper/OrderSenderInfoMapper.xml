@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzhwl.core.data.dao.OrderSenderInfoDao">
+
+	<resultMap id="orderSenderInfoResultMap" type="OrderSenderInfo">
+		<id property="infoId" column="info_id" />
+		<result property="customerId" column="customer_id" />
+		<result property="customerName" column="customer_name" />
+		<result property="contactName" column="contact_name" />
+		<result property="telphone" column="telphone" />
+		<result property="mobile" column="mobile" />
+		<result property="areaCode" column="area_code" />
+		<result property="address" column="address" />
+	</resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="orderSenderInfoResultMap"></resultMap>
+	<resultMap id="findResultMap"  type="java.util.HashMap" extends="orderSenderInfoResultMap"></resultMap>
+
+	<insert id="insert" parameterType="OrderSenderInfo">
+	   insert into zh_order_sender_info (
+	     info_id,
+	     customer_id,
+	     customer_name,
+	     contact_name,
+	     telphone,
+	     mobile,
+	     area_code,
+	     address
+	   )values (
+	     #{infoId},
+	     #{customerId},
+	     #{customerName},
+	     #{contactName},
+	     #{telphone},
+	     #{mobile},
+	     #{areaCode},
+	     #{address}
+	   )
+	</insert>
+
+	<update id="update" parameterType="OrderSenderInfo">
+	   update zh_order_sender_info set
+	     info_id=#{infoId},
+	     customer_id=#{customerId},
+	     customer_name=#{customerName},
+	     contact_name=#{contactName},
+	     telphone=#{telphone},
+	     mobile=#{mobile},
+	     area_code=#{areaCode},
+	     address=#{address}
+	   where 
+	    info_id=#{infoId} 
+	</update>
+	
+	<update id="updateSelective" parameterType="OrderSenderInfo">
+	   update zh_order_sender_info
+	   <trim prefix="set" suffixOverrides=",">
+		     <if test="infoId != null">
+		       info_id=#{infoId},
+		     </if>
+		     <if test="customerId != null">
+		       customer_id=#{customerId},
+		     </if>
+		     <if test="customerName != null">
+		       customer_name=#{customerName},
+		     </if>
+		     <if test="contactName != null">
+		       contact_name=#{contactName},
+		     </if>
+		     <if test="telphone != null">
+		       telphone=#{telphone},
+		     </if>
+		     <if test="mobile != null">
+		       mobile=#{mobile},
+		     </if>
+		     <if test="areaCode != null">
+		       area_code=#{areaCode},
+		     </if>
+		     <if test="address != null">
+		       address=#{address}
+		     </if>
+	   </trim>
+	
+	   where 
+	    info_id=#{infoId} 
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     zh_order_sender_info 
+	   where 
+	    info_id=#{infoId} 
+	</delete>
+
+	<select id="get" parameterType="map" resultMap="orderSenderInfoResultMap">
+	   select 
+	    info_id,
+	    customer_id,
+	    customer_name,
+	    contact_name,
+	    telphone,
+	    mobile,
+	    area_code,
+	    address
+	   from zh_order_sender_info
+	   where 
+	    info_id=#{infoId} 
+	</select>
+
+	<select id="findOne" parameterType="map" resultMap="findResultMap">
+	   select 
+	    info_id,
+	    customer_id,
+	    customer_name,
+	    contact_name,
+	    telphone,
+	    mobile,
+	    area_code,
+	    address
+	   from zh_order_sender_info
+	   where 
+	    info_id=#{infoId} 
+	</select>
+
+	<select id="find" parameterType="map" resultMap="findResultMap">
+	   select 
+	     info_id,
+	     customer_id,
+	     customer_name,
+	     contact_name,
+	     telphone,
+	     mobile,
+	     area_code,
+	     address
+	   from zh_order_sender_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="customerId != null">
+	        and customer_id=#{customerId}
+	     </if>
+	     <if test="customerName != null">
+	        and customer_name=#{customerName}
+	     </if>
+	     <if test="contactName != null">
+	        and contact_name=#{contactName}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="mobile != null">
+	        and mobile=#{mobile}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	   </trim>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     info_id,
+	     customer_id,
+	     customer_name,
+	     contact_name,
+	     telphone,
+	     mobile,
+	     area_code,
+	     address
+	   from zh_order_sender_info
+	   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	     <if test="infoId != null">
+	        info_id=#{infoId}
+	     </if>
+	     <if test="customerId != null">
+	        and customer_id=#{customerId}
+	     </if>
+	     <if test="customerName != null">
+	        and customer_name=#{customerName}
+	     </if>
+	     <if test="contactName != null">
+	        and contact_name=#{contactName}
+	     </if>
+	     <if test="telphone != null">
+	        and telphone=#{telphone}
+	     </if>
+	     <if test="mobile != null">
+	        and mobile=#{mobile}
+	     </if>
+	     <if test="areaCode != null">
+	        and area_code=#{areaCode}
+	     </if>
+	     <if test="address != null">
+	        and address=#{address}
+	     </if>
+	   </trim>
+	</select>
+</mapper> 

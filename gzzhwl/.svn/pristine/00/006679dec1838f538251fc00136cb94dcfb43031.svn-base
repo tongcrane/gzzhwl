@@ -1,0 +1,14 @@
+package com.gzzhwl.admin.transit.service;
+
+import java.text.ParseException;
+import java.util.Map;
+
+import com.gzzhwl.admin.transit.vo.TransitQueryVo;
+import com.gzzhwl.core.page.Page;
+
+public interface TransitService {
+	/*
+	 *获取在途列表
+	 */
+	public Page<Map<String, Object>> pageTransitList(TransitQueryVo vo, int currentPage, int pageSize) throws ParseException;
+}

@@ -1,0 +1,180 @@
+package com.gzzhwl.core.data.model;
+
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+
+/**
+ * 
+ * zh_login_history表
+ * @author mew
+ *
+ */
+public class LoginHistory implements Serializable {
+	@Length(max = 36, message = "loginHistoryId超过长度限制")
+	private java.lang.String loginHistoryId; // 历史标识
+	@Length(max = 36, message = "accountId超过长度限制")
+	private java.lang.String accountId; // 账户标识
+	@Length(max = 36, message = "accessToken超过长度限制")
+	private java.lang.String accessToken; // 登录凭证
+	@Length(max = 2, message = "loginType超过长度限制")
+	private java.lang.String loginType; // 登陆方式
+	@Length(max = 2, message = "status超过长度限制")
+	private java.lang.String status; // 状态
+	@Length(max = 20, message = "loginTime超过长度限制")
+	private java.lang.String loginTime; // 登陆时间
+	@Length(max = 20, message = "logoutTime超过长度限制")
+	private java.lang.String logoutTime; // 登出时间
+	/**
+     * 有效
+     */
+	public static final String STATUS_NORMAL = "00"; // 有效
+	/**
+     * 过期
+     */
+	public static final String STATUS_OVERDUE = "01"; // 过期
+
+
+	/**
+     * 获取历史标识属性
+     *
+     * @return loginHistoryId
+     */
+	public java.lang.String getLoginHistoryId() {
+		return loginHistoryId;
+	}
+	
+	/**
+	 * 设置历史标识属性
+	 *
+	 * @param loginHistoryId
+	 */
+	public void setLoginHistoryId(java.lang.String loginHistoryId) {
+		this.loginHistoryId = loginHistoryId;
+	}
+	
+	/**
+     * 获取账户标识属性
+     *
+     * @return accountId
+     */
+	public java.lang.String getAccountId() {
+		return accountId;
+	}
+	
+	/**
+	 * 设置账户标识属性
+	 *
+	 * @param accountId
+	 */
+	public void setAccountId(java.lang.String accountId) {
+		this.accountId = accountId;
+	}
+	
+	/**
+     * 获取登录凭证属性
+     *
+     * @return accessToken
+     */
+	public java.lang.String getAccessToken() {
+		return accessToken;
+	}
+	
+	/**
+	 * 设置登录凭证属性
+	 *
+	 * @param accessToken
+	 */
+	public void setAccessToken(java.lang.String accessToken) {
+		this.accessToken = accessToken;
+	}
+	
+	/**
+     * 获取登陆方式属性
+     *
+     * @return loginType
+     */
+	public java.lang.String getLoginType() {
+		return loginType;
+	}
+	
+	/**
+	 * 设置登陆方式属性
+	 *
+	 * @param loginType
+	 */
+	public void setLoginType(java.lang.String loginType) {
+		this.loginType = loginType;
+	}
+	
+	/**
+     * 获取状态属性
+     *
+     * @return status
+     */
+	public java.lang.String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * 设置状态属性
+	 *
+	 * @param status
+	 */
+	public void setStatus(java.lang.String status) {
+		this.status = status;
+	}
+	
+	/**
+     * 获取登陆时间属性
+     *
+     * @return loginTime
+     */
+	public java.lang.String getLoginTime() {
+		return loginTime;
+	}
+	
+	/**
+	 * 设置登陆时间属性
+	 *
+	 * @param loginTime
+	 */
+	public void setLoginTime(java.lang.String loginTime) {
+		this.loginTime = loginTime;
+	}
+	
+	/**
+     * 获取登出时间属性
+     *
+     * @return logoutTime
+     */
+	public java.lang.String getLogoutTime() {
+		return logoutTime;
+	}
+	
+	/**
+	 * 设置登出时间属性
+	 *
+	 * @param logoutTime
+	 */
+	public void setLogoutTime(java.lang.String logoutTime) {
+		this.logoutTime = logoutTime;
+	}
+	
+
+	@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("LoginHistory");
+        sb.append("{loginHistoryId=").append(loginHistoryId);
+        sb.append(", accountId=").append(accountId);
+        sb.append(", accessToken=").append(accessToken);
+        sb.append(", loginType=").append(loginType);
+        sb.append(", status=").append(status);
+        sb.append(", loginTime=").append(loginTime);
+        sb.append(", logoutTime=").append(logoutTime);
+		sb.append('}');
+        return sb.toString();
+    }
+}

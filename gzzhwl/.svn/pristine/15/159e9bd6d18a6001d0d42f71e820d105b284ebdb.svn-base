@@ -1,0 +1,434 @@
+package com.gzzhwl.admin.driver.service.impl;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gzzhwl.admin.driver.excel.DriverExportVo;
+import com.gzzhwl.admin.driver.service.DriverManagerService;
+import com.gzzhwl.admin.driver.validate.DriverManageValidate;
+import com.gzzhwl.admin.driver.vo.DriverInfoQueryVo;
+import com.gzzhwl.admin.vehicle.service.VehicleManageService;
+import com.gzzhwl.api.image.model.ImageCategory;
+import com.gzzhwl.api.image.model.ImageItem;
+import com.gzzhwl.api.image.service.ImageServiceFactory;
+import com.gzzhwl.api.vehicle.service.VehicleService;
+import com.gzzhwl.common.service.AccountVerifyService;
+import com.gzzhwl.core.constant.DataSource;
+import com.gzzhwl.core.constant.ErrorCode;
+import com.gzzhwl.core.constant.Global;
+import com.gzzhwl.core.constant.SeqNoKey;
+import com.gzzhwl.core.data.dao.DriverBankInfoDao;
+import com.gzzhwl.core.data.dao.DriverInfoDao;
+import com.gzzhwl.core.data.dao.RealDriverInfoDao;
+import com.gzzhwl.core.data.dao.RealDriverUsedInfoDao;
+import com.gzzhwl.core.data.dao.VehicleInfoDao;
+import com.gzzhwl.core.data.extdao.DriverInfoExtDao;
+import com.gzzhwl.core.data.extdao.RealDriverInfoExtDao;
+import com.gzzhwl.core.data.extdao.RealVehicleDriverInfoExtDao;
+import com.gzzhwl.core.data.extdao.VehicleDriverExtInfoDao;
+import com.gzzhwl.core.data.model.DriverBankInfo;
+import com.gzzhwl.core.data.model.RealDriverInfo;
+import com.gzzhwl.core.data.model.RealDriverUsedInfo;
+import com.gzzhwl.core.data.model.UsedInfoHis;
+import com.gzzhwl.core.page.Page;
+import com.gzzhwl.core.utils.IdentifierUtils;
+import com.gzzhwl.core.utils.ValidateUtils;
+import com.gzzhwl.excel.ExcelUtil;
+import com.gzzhwl.excel.enums.ExcelFileType;
+import com.gzzhwl.rest.exception.RestException;
+
+/**
+ * 内部系统 驾驶员service
+ * 
+ * @author jly
+ *
+ */
+@Service
+public class DriverManagerServiceImpl implements DriverManagerService {
+	@Autowired
+	RealDriverInfoDao realDriverDao;
+	@Autowired
+	RealDriverInfoExtDao realDriverInfoExtDao;
+
+	@Autowired
+	DriverInfoExtDao driverInfoExtDao;
+	@Autowired
+	DriverBankInfoDao bankInfoDao;
+	@Autowired
+	ImageServiceFactory imageFactory;
+	@Autowired
+	Mapper beanMapper;
+	@Autowired
+	AccountVerifyService accountVerifyService;
+
+	@Autowired
+	VehicleManageService vehicleManageService;
+
+	@Autowired
+	VehicleService vehicleService_tmp;
+
+	@Autowired
+	VehicleInfoDao vehicleInfoDao;
+
+	@Autowired
+	DriverInfoDao driverDao_tmp;
+
+	@Autowired
+	VehicleInfoDao vehicleInfoDao_tmp;
+
+	@Autowired
+	RealVehicleDriverInfoExtDao realVehicleDriverInfoExtDao;
+
+	@Autowired
+	VehicleDriverExtInfoDao vehicleDriverExtInfoDao;
+	
+	@Autowired
+	private RealDriverUsedInfoDao driverUserDao;
+
+	@Override
+	/**
+	 * 更新司机及司机账户信息
+	 */
+	public String update(RealDriverInfo driverInfo, DriverBankInfo bankInfo, String staffId) {
+		// 更新司机信息
+		updateDriver(driverInfo, staffId);
+
+		// 更新司机账户信息
+		// 获取账户信息
+		DriverBankInfo bank = bankInfoDao.findByDriver(driverInfo.getDriverInfoId());
+		bankInfo.setInfoId(bank.getInfoId());
+		bankInfoDao.updateSelective(bankInfo);
+		return driverInfo.getDriverInfoId();
+	}
+
+	/**
+	 * 更新司机信息
+	 * 
+	 * @param driverInfo
+	 * @param staffId
+	 * @return
+	 */
+	public boolean updateDriver(RealDriverInfo driverInfo, String staffId) {
+		String driverInfoId = driverInfo.getDriverInfoId();
+
+		if (ValidateUtils.isEmpty(driverInfoId)) {
+			throw new RestException(ErrorCode.ERROR_800002.getCode(), ErrorCode.ERROR_800002.getDesc());
+		}
+		// 司机信息是否存在校验
+		RealDriverInfo info = this.get(driverInfoId);
+		DriverManageValidate.valid_not_exist(info);
+
+		// 必输项及格式校验
+		DriverManageValidate.valid_manage_save(driverInfo);
+
+		// 判断身份证信息是否已经存在
+		List<Map<String, Object>> result = realDriverInfoExtDao.getDriverInfoByCondition(null, driverInfoId,
+				driverInfo.getIdno(), null);
+		DriverManageValidate.valid_idno_exist(!ValidateUtils.isEmpty(result));
+
+		// 从业资格证号码唯一性判断
+		if (!ValidateUtils.isEmpty(driverInfo.getQcNo())) {
+			result = realDriverInfoExtDao.getDriverInfoByCondition(null, driverInfoId, null, driverInfo.getQcNo());
+			DriverManageValidate.valid_qcno_exist(!ValidateUtils.isEmpty(result));
+		}
+
+		driverInfo.setUpdatedBy(staffId);
+		return realDriverDao.updateSelective(driverInfo) > 0;
+	}
+
+	@Override
+	public RealDriverInfo get(String driverInfoId) {
+
+		RealDriverInfo driverinfo = realDriverDao.get(driverInfoId);
+		DriverManageValidate.valid_not_exist(driverinfo);
+		return driverinfo;
+	}
+
+	@Override
+	/**
+	 * 保存司机及司机账户信息
+	 * 
+	 * @param driverInfo
+	 * @param bankInfo
+	 * @param staffId
+	 * @return
+	 */
+	public String save(RealDriverInfo driverInfo, DriverBankInfo bankInfo, String staffId, Integer departId) {
+		// 保存司机信息
+		String driverInfoId = saveDriver(driverInfo, staffId, departId);
+
+		// 保存账号信息
+		saveBankInfo(bankInfo, driverInfoId);
+		
+		//保存司机使用信息
+		RealDriverUsedInfo driverUsedInfo = new RealDriverUsedInfo();
+		driverUsedInfo.setDriverInfoId(driverInfoId);
+		driverUsedInfo.setUseStatus(UsedInfoHis.INUSED);
+		driverUserDao.insert(driverUsedInfo);
+		return driverInfoId;
+	}
+
+	/**
+	 * 保存内部系统司机信息
+	 * 
+	 * @param driverInfo
+	 * @param staffId
+	 * @return
+	 */
+	public String saveDriver(RealDriverInfo driverInfo, String staffId, Integer departId) {
+
+		// 必输项及格式校验
+		DriverManageValidate.valid_manage_save(driverInfo);
+
+		// 判断司机身份证 信息是否已经存在
+		List<Map<String, Object>> result = realDriverInfoExtDao.getDriverInfoByCondition(null, null,
+				driverInfo.getIdno(), null);
+		DriverManageValidate.valid_idno_exist(!ValidateUtils.isEmpty(result));
+
+		// 从业资格证号码唯一性判断
+		if (StringUtils.isNotBlank(driverInfo.getQcNo())) {
+			result = realDriverInfoExtDao.getDriverInfoByCondition(null, null, null, driverInfo.getQcNo());
+			DriverManageValidate.valid_qcno_exist(!ValidateUtils.isEmpty(result));
+		}
+
+		// 保存司机信息
+		String driverInfoId = IdentifierUtils.getId().generate().toString();
+		driverInfo.setDriverInfoId(driverInfoId);
+		String seqNo = IdentifierUtils.getSequence(SeqNoKey.DRIVER).generate().toString();
+		driverInfo.setSeqNo(seqNo);
+		driverInfo.setSource(DataSource.PLATFORM.getCode());
+		driverInfo.setCreatedBy(staffId);
+		if(departId != null) {
+			driverInfo.setBelongDepartId(departId + "");
+		}
+		driverInfo.setStatus(Global.STATUS_NORMAL.toString());
+		driverInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+
+		realDriverDao.insert(driverInfo);
+
+		return driverInfoId;
+	}
+
+	/**
+	 * 保存司机账号信息
+	 * 
+	 * @param bankInfo
+	 * @param driverInfoId
+	 * @return
+	 */
+	public boolean saveBankInfo(DriverBankInfo bankInfo, String driverInfoId) {
+		// 保存账号信息
+		String infoId = IdentifierUtils.getId().generate().toString();
+
+		bankInfo.setInfoId(infoId);
+		bankInfo.setDriverInfoId(driverInfoId);
+		bankInfo.setStatus(Global.STATUS_NORMAL.toString());
+		bankInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		return bankInfoDao.insert(bankInfo) > 0;
+	}
+
+	@Override
+	public boolean remove(String driverInfoId, String staffId) {
+		RealDriverInfo driverInfo = this.get(driverInfoId);
+		DriverManageValidate.valid_not_exist(driverInfo);
+
+		driverInfo.setIsDeleted(Global.ISDEL_DELETE.toString());
+		driverInfo.setUpdatedBy(staffId);
+
+		return realDriverDao.updateSelective(driverInfo) > 0;
+	}
+
+	@Override
+	public Page<Map<String, Object>> page(DriverInfoQueryVo queryVo, int current, int pagesize, String queryType) {
+		Page<Map<String, Object>> result = null;
+		Map<String, Object> params = new HashMap<String, Object>();
+		// 搜索
+		if ("0".equals(queryType)) {
+			if (!ValidateUtils.isEmpty(queryVo.getKeyWord())) {
+				params.put("keyWord", queryVo.getKeyWord());
+			}
+			// 高级搜索
+		} else {
+			beanMapper.map(queryVo, params);
+		}
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("source", DataSource.PLATFORM.getCode());
+
+		result = realDriverInfoExtDao.pageDriverListByCondition(params, current, pagesize);
+		return result;
+	}
+
+	@Override
+	public String updateImageInfo(MultipartFile image, String staffId) {
+
+		ImageItem item = new ImageItem();
+
+		if (image == null || image.isEmpty()) {
+			throw new RestException(ErrorCode.ERROR_800001.getCode(), ErrorCode.ERROR_800001.getDesc());
+		} else {
+			// 校验文件格式
+
+			item = imageFactory.saveImage(ImageCategory.DRIVER, image, staffId);
+		}
+
+		return item.getFileId();
+	}
+
+	public OutputStream exportDriverList(DriverInfoQueryVo queryVo, String queryType) throws Exception {
+		ExcelUtil excel = new ExcelUtil();
+		Map<String, Object> params = new HashMap<String, Object>();
+		if ("0".equals(queryType)) {
+			if (!ValidateUtils.isEmpty(queryVo.getKeyWord())) {
+				params.put("keyWord", queryVo.getKeyWord());
+			}
+
+		} else {
+			beanMapper.map(queryVo, params);
+		}
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("source", DataSource.PLATFORM.getCode());
+
+		List<Map<String, Object>> lists = driverInfoExtDao.getDriverListByCondition(params);
+		List<DriverExportVo> vos = new ArrayList<DriverExportVo>();
+
+		for (int i = 0; i < lists.size(); i++) {
+			Map<String, Object> map = lists.get(i);
+			DriverExportVo exportVo = beanMapper.map(map, DriverExportVo.class);
+			vos.add(exportVo);
+		}
+		OutputStream os = new ByteArrayOutputStream();
+
+		excel.exportExcel(vos, DriverExportVo.class, os, ExcelFileType.XLSX);
+
+		return os;
+
+	}
+
+	public List<DriverExportVo> getDriverExportList(DriverInfoQueryVo queryVo, String queryType) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		if ("0".equals(queryType)) {
+			if (!ValidateUtils.isEmpty(queryVo.getKeyWord())) {
+				params.put("keyWord", queryVo.getKeyWord());
+			}
+
+		} else {
+			beanMapper.map(queryVo, params);
+		}
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("source", DataSource.PLATFORM.getCode());
+
+		List<Map<String, Object>> lists = driverInfoExtDao.getDriverListByCondition(params);
+		List<DriverExportVo> vos = new ArrayList<DriverExportVo>();
+
+		for (int i = 0; i < lists.size(); i++) {
+			Map<String, Object> map = lists.get(i);
+			DriverExportVo exportVo = beanMapper.map(map, DriverExportVo.class);
+			vos.add(exportVo);
+		}
+
+		return vos;
+
+	}
+
+	@Override
+	public Map<String, Object> driverUniqueValidate(String idno, String qcNo, String driverInfoId) {
+		boolean hasIdno = false;
+		boolean hasQcNo = false;
+		List<Map<String, Object>> result = null;
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		if (StringUtils.isNotBlank(idno)) {
+			if (StringUtils.isNotBlank(driverInfoId)) {
+				result = realDriverInfoExtDao.getDriverInfoByCondition(null, driverInfoId, idno, null);
+			} else {
+				result = realDriverInfoExtDao.getDriverInfoByCondition(null, null, idno, null);
+			}
+			hasIdno = !ValidateUtils.isEmpty(result);
+		}
+
+		if (StringUtils.isNotBlank(qcNo)) {
+			if (StringUtils.isNotBlank(driverInfoId)) {
+				result = driverInfoExtDao.getDriverInfoByCondition(null, driverInfoId, null, qcNo);
+			} else {
+				result = driverInfoExtDao.getDriverInfoByCondition(null, null, null, qcNo);
+			}
+			hasQcNo = !ValidateUtils.isEmpty(result);
+		}
+
+		returnMap.put("hasIdno", hasIdno);
+		returnMap.put("hasQcNo", hasQcNo);
+
+		return returnMap;
+	}
+
+	@Override
+	public DriverBankInfo queryDriverBankDetail(String driverInfoId) {
+		return bankInfoDao.findByDriver(driverInfoId);
+	}
+
+	@Override
+	public String insertOrUpdateDriver(RealDriverInfo realDriverInfo) {
+		String driverInfoId = "";
+
+		// 根据idno和source去匹配正式表里的数据
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("idno", realDriverInfo.getIdno());
+		params.put("source", DataSource.VLORRY.getCode());
+		params.put("isDeleted", "00");
+		List<Map<String, Object>> lists = realDriverDao.find(params);
+
+		if (ValidateUtils.isEmpty(lists)) {
+			// 正式表里没有，则做新增
+			driverInfoId = saveDriverVlorry(realDriverInfo);
+		} else {
+			Map<String, Object> driverMap = lists.get(0);
+			driverInfoId = (String) driverMap.get("driverInfoId");
+			realDriverInfo.setDriverInfoId(driverInfoId);
+			realDriverDao.update(realDriverInfo);
+		}
+
+		return driverInfoId;
+	}
+
+	/**
+	 * 运势界司机信息审批通过后，保存到正式表
+	 * 
+	 * @param driverInfo
+	 * @param staffId
+	 * @return
+	 */
+	public String saveDriverVlorry(RealDriverInfo driverInfo) {
+		// 保存司机信息
+		String driverInfoId = IdentifierUtils.getId().generate().toString();
+		driverInfo.setDriverInfoId(driverInfoId);
+		String seqNo = IdentifierUtils.getSequence(SeqNoKey.DRIVER).generate().toString();
+		driverInfo.setSeqNo(seqNo);
+		driverInfo.setStatus(Global.STATUS_NORMAL.toString());
+		driverInfo.setIsDeleted(Global.ISDEL_NORMAL.toString());
+		realDriverDao.insert(driverInfo);
+
+		return driverInfoId;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDrivers(String name) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (StringUtils.isNotBlank(name)) {
+			params.put("name", name);
+		}
+		params.put("isDeleted", Global.ISDEL_NORMAL.toString());
+		params.put("source", DataSource.PLATFORM.getCode());
+		List<Map<String, Object>> drivers = realDriverInfoExtDao.getDriversByCondition(params);
+		return drivers;
+	}
+
+}

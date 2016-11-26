@@ -1,0 +1,11 @@
+package com.gzzhwl.core.data.extdao;
+
+import java.util.Map;
+
+import com.gzzhwl.core.page.Page;
+
+public interface ConsignmentInfoExtDao {
+	 public final static String PREFIX = ConsignmentInfoExtDao.class.getName();
+	 
+	 public <E, K, V> Page<E> pageConsignList(Map<K, V> params, int current, int pagesize);
+}
