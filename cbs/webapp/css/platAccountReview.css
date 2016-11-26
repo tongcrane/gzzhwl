@@ -1,0 +1,46 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-06-22 09:29:03
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-07 15:33:44
+*/
+
+
+/* 引用前需要引用infoListBase.css样式 */
+
+input.check-box {
+	display: block;
+	width:14px;
+	height:14px;
+	border:1px solid #dedede;
+}
+.f-width{
+	width:30px;
+}
+.car-num{
+	width:207px;
+	height:100%;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; 
+	-webkit-box-sizing:border-box;
+	padding-left:10px;
+}
+.car-list{
+	width:580px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; 
+	-webkit-box-sizing:border-box;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis; 
+}
+.owe-to>p{
+	width:165px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; 
+	-webkit-box-sizing:border-box;
+}
+.h-star{
+	width:115px;
+	padding-left:45px;
+}

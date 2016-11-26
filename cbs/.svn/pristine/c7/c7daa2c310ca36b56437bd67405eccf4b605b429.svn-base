@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+	<title>发车反馈详情</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/checkBusFeed.css?ver=0.4" />
+	<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>
+				<p class="order_num">提货单号：<i class="load-column" data-column="loadNo"></i></p>
+			</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">车牌号</p>
+					<span class="fr spa_n load-column" data-column="plateNumber"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">司机姓名</p>
+					<span class="fr spa_n" data-column="_realName"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">司机号码</p>
+					<span class="fr spa_n" data-column="_telphone"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">身份证号码</p>
+					<span class="fr spa_n" data-column="_idno"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">司机姓名</p>
+					<span class="fr spa_n" data-column="_realName"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">司机号码</p>
+					<span class="fr spa_n" data-column="_telphone"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">身份证号码</p>
+					<span class="fr spa_n" data-column="_idno"></span>
+				</div>
+			</div>
+		</div>		
+		<div class="mess_age">
+			<h3>订单/运单号</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">订单号</p>
+					<span class="fr spa_n order-column" data-column="orderNo"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">运单号</p>
+					<span class="fr spa_n order-column" data-column="consignNo"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">客户全称</p>
+					<span class="fr spa_n order-column" data-column="customerName"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">线路</p>
+					<span class="fr spa_n" data-column="_line"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">发货联系人</p>
+					<span class="fr spa_n order-column" data-column="contactName"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">发货联系人手机</p>
+					<span class="fr spa_n order-column" data-column="mobile"></span>
+				</div>
+			</div>
+		</div>
+		<div class="unusual VCFeedBack-info">
+			<h3>
+				<p class="order_num fl">车辆检查</p>
+				<p class="fr">车检时间：<span class="vc_action_time" data-column="" ></span></p>
+			</h3>
+		</div>
+		<div class="unusual CTSFeedBack-info">
+			<h3>
+				<p class="order_num fl">靠台</p>
+				<p class="fr">靠台时间：<span class="cts_action_time" data-column="" ></span></p>
+			</h3>
+		</div>
+		<div class="unusual trip-info">
+			<h3>
+				<p class="order_num fl">发车</p>
+				<p class="fr">发车时间：<span class="trip_action_time" data-column="" ></span></p>
+			</h3>
+		</div>
+	</div>
+	<div class="check">
+		<div class="actions">
+			<a href="javascript:void(0);" class="action_16" hidden="hidden">取消发车</a>
+			<a href="javascript:void(0);" class="action_06" hidden="hidden">取消发车</a>
+			<a href="javascript:void(0);" class="action_customer" hidden="hidden">反馈货主异常</a>
+			<a href="javascript:void(0);" class="action_vehicle" hidden="hidden">反馈车辆异常</a>
+			<a href="javascript:void(0);" class="action_02" hidden="hidden">车辆检查</a>
+			<a href="javascript:void(0);" class="action_03" hidden="hidden">靠台</a>
+			<a href="javascript:void(0);" class="action_05" hidden="hidden">发车反馈</a>
+		</div>
+	</div>
+	<!-- <div class="mo_del">
+		<div class="model_content">
+			<h4>发车反馈</h4>
+			<div class="model_back clearfix">
+				<div class="layout fl">
+					<p class="fl stage">订单号</p>
+					<span class="fr spa_n"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">运单号</p>
+					<span class="fr spa_n">OR123456778</span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">计价方式</p>
+					<span class="fr spa_n"></span>
+				</div>
+			</div>
+			<div class="model_back clearfix">
+				<div class="fl">
+					<div class="layout clearfix">
+						<label class="labe_l">发车时间</label>
+						<input class="inpu_t" type="text">
+					</div>
+					<div class="layout clearfix">
+						<label class="labe_l weight">实际重量</label>
+						<input class="inpu_t unit_short" type="text">
+					</div>
+					<div class="layout clearfix volume">
+						<label class="labe_l">实际体积</label>
+						<input class="inpu_t unit_short" type="text">
+					</div>
+					<div class="layout clearfix">
+						<label class="labe_l">客户单号</label>
+						<input class="inpu_t" type="text">
+					</div>
+				</div>
+				<div class="fr images">
+					<input type="text" class="file-add" readonly onfocus="this.blur();" data-column=""/>
+					<span class="p-add">货主托运合同照片</span>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="">发车</a>
+			<i class="clo_se"></i>
+		</div>
+		 <div class="car_content">
+			<h4>车辆异常反馈</h4>
+			<div class="model_back">
+				<div class="clearfix">
+					<div class="layout fl">
+						<label class="labe_l short">异常名称</label>
+						<input class="inpu_t" type="text">
+					</div>
+					<div class="layout fr">
+						<label class="labe_l short money">产生费用</label>
+						<input class="inpu_t unit_short" type="text">
+					</div>
+				</div>
+				<div class="layout feed_reason">
+					<label class="labe_l">异常描述</label>
+					<textarea name="" id=""></textarea>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="">提交</a>
+			<i class="clo_se"></i>
+		</div>
+		<div class="driver_content" >
+			<h4>货主异常反馈</h4>
+			<div class="model_back">
+				<div class="clearfix">
+					<div class="layout fl">
+						<label class="labe_l short">异常名称</label>
+						<input class="inpu_t" type="text">
+					</div>
+					<div class="layout fr">
+						<label class="labe_l short money">产生费用</label>
+						<input class="inpu_t unit_short" type="text">
+					</div>
+				</div>
+				<div class="layout feed_reason">
+					<label class="labe_l">异常描述</label>
+					<textarea name="" id=""></textarea>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="">提交</a>
+			<i class="clo_se"></i>
+		</div>
+
+	</div> -->
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSImage.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSFeedBack.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSTripInfo.js?ver=0.4"></script>
+
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,33 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<link href="<%=request.getContextPath()%>/img/favicon.ico" rel="Shortcut Icon"/>
+<script type="text/javascript">
+	var global_ctxPath = '<%=request.getContextPath()%>';
+	var global_server = '${server}';
+</script>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/common.css?v=${sessionId}"/>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/datepicker.min.css"/>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery-ui.css"/>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.multiselect.css"/>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.multiselect.filter.css"/>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery-ui-extends.css"/>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.autocomplete.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/jquery.metadata.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/jquery.cookie.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/store.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/jquery.md5.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/moment.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/datepicker.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/jquery.multiselect.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/jquery.multiselect.filter.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/plugin/jquery.autocomplete.js"></script>
+
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js?v=${sessionId}"></script>
+
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/explugin/CBSSelect.js?v=${sessionId}"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/explugin/CBS-PC-Select.js?v=${sessionId}"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/explugin/CBS-PCD-Select.js?v=${sessionId}"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/explugin/CBSConfirm.js?v=${sessionId}"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/explugin/CBSAutocomplete2.js?v=${sessionId}"></script>

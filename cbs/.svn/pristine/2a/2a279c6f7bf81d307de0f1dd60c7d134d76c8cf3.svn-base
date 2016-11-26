@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+<title>新增提货单信息</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+<link rel="stylesheet" type="text/css" href="/css/sourceBass.css">
+<link rel="stylesheet" type="text/css" href="css/addBusVehicles.css" />
+<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="require">
+			<h3>车次信息</h3>
+			<div class="clearfix">
+				<div class="left right_long fl">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<label class=" labe_l" >提货单号</label>
+							<input maxlength="7" class=" inpu_t" type="text" />
+						</div>
+						<div class="layout fr">
+							<label class="labe_l">车牌号</label>
+							<input maxlength="7" class="inpu_t" type="text" />
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl radi_o">
+							<label class="labe_l" >车头类型</label>
+							<input maxlength="7" class="inpu_t" type="text" />
+							<div class="radio_btn">
+								<input type="radio" name="bridge" />单桥
+								<input type="radio" name="bridge"/>双桥
+							</div>
+
+						</div>
+						<div class="layout fr">
+							<label class="labe_l">挂车号</label>
+							<input maxlength="7" class="inpu_t" type="text" />
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<label class="labe_l" >司机电话1</label>
+							<input maxlength="7" class="inpu_t" type="text" />
+						</div>
+						<div class="layout fr">
+							<label class="labe_l">司机姓名2</label>
+							<input maxlength="7" class="inpu_t" type="text" />
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<label class="labe_l" >要求到达场地时间</label>
+							<input maxlength="7" class="inpu_t" type="text" />
+						</div>
+						<div class="layout fr radi_o">
+							<label class="labe_l money">纯运费</label>
+							<input maxlength="7" class="inpu_t" type="text" />
+							<div class="radio_btn">
+								<input type="radio" name="fare" />准确
+								<input type="radio" name="fare"/>预估
+							</div>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<label class="labe_l" >预付现金</label>
+							<input maxlength="7" class="inpu_t" type="text" />
+						</div>
+						<div class="layout fr">
+							<label class="labe_l">预付油卡</label>
+							<input maxlength="7" class="inpu_t" type="text" />
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<label class="labe_l" >结款对象</label>
+							<select class="selec_t" name="" id=""></select>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<label class="labe_l">备注</label>
+							<input maxlength="100" class="inpu_t" type="text" />
+						</div>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<label class="labe_l">车辆属性</label>
+						<input maxlength="7" class="inpu_t" type="text"/>
+					</div>
+					<div class="layout clearfix">
+						<label class="labe_l">司机姓名1</label>
+						<input maxlength="7" class="inpu_t" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<label class="labe_l">司机电话2</label>
+						<input maxlength="7" class="inpu_t" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<label class="labe_l">结款方式</label>
+						<select class="selec_t" name="" id=""></select>
+					</div>
+					<div class="layout clearfix">
+						<label class="labe_l">油卡卡号</label>
+						<input maxlength="7" class="inpu_t" type="text" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age">
+			<h3>联系人信息</h3>
+			<div class="clearfix">
+				<div class="left right_long fl">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">订单号</p>
+							<span class="fl spa_n" data-column=""></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">运单号</p>
+							<span class="fl spa_n" data-column=""></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">货物名称</p>
+							<span class="fl spa_n" data-column=""></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">用车要求</p>
+							<span class="fl spa_n" data-column=""></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">发车时间</p>
+							<span class="fl spa_n" data-column=""></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">要求到达时间</p>
+							<span class="fl spa_n" data-column=""></span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">始发站</p>
+							<span class="fl spa_n">湖南省邵阳市明理路218号货运市场院内1区12号广东之家物流有限公司</span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">目的站</p>
+							<span class="fl spa_nr"></span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">接货地址</p>
+							<span class="fl spa_n"></span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">送货地址</p>
+							<span class="fl spa_n"></span>
+						</div>
+					</div>
+				</div>
+					<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">发货人名称</p>
+						<span class="fr spa_n" data-column=""></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">是否进口</p>
+						<span class="fr spa_n" data-column=""></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="check">
+		<div>
+			<a href="javascript:void(0);" class=" active conserve">提交</a>
+			<a href="javascript:void(0);" class="cansel">取消配货单</a>
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+   	<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSTable.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSContract.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSConfirm.js?ver=0.3"></script>
+	<script type="text/javascript">
+		$('input[data-column="goodsWeight"]').on('blur',function(){
+			var v=$(this).val();
+			var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(1));
+			}
+		});
+		
+		$('input[data-column="goodsVolume"]').on('blur',function(){
+			var v=$(this).val();
+			var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(1));
+			}
+		});
+		
+		$('input[data-column="freightPrice"]').on('blur',function(){
+			var v=$(this).val();
+			/* var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(2));
+			} */
+			$(this).val(Number(v).toFixed(2));
+		});
+		
+		$('input[data-column="loadPrice"]').on('blur',function(){
+			var v=$(this).val();
+			/* var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(2));
+			} */
+			$(this).val(Number(v).toFixed(2));
+		});
+		
+		$('input[data-column="otherPrice"]').on('blur',function(){
+			var v=$(this).val();
+			/* var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(2));
+			} */
+			$(this).val(Number(v).toFixed(2));
+		});
+		
+		/* $('input[data-column="total"]').on('blur',function(){
+			var v=$(this).val();
+			var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(2));
+			}
+		}); */
+		
+	</script>
+
+</html>
+
+
+
+
+
+
+

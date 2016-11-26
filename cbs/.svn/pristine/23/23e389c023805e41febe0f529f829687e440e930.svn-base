@@ -1,0 +1,114 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-07 15:17:13
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-27 09:04:37
+*/
+.f-width{
+	width:170px;
+	padding-left: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space:nowrap;
+}
+.order-line{
+	width:275px;
+	padding-left:15px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space:nowrap;
+
+}
+.order-list{
+	width:410px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space:nowrap;
+	padding-left:0;
+}
+.owe-to{
+	width:100px;
+}
+.owe-to>p{
+	width:74px;
+	padding-left:26px;
+}
+.owe-span.h_star{
+	width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 11px;
+    left: 3px;
+    cursor: pointer;
+	background: url(../img/h_star.png) no-repeat center;
+}
+.owe-to .owe-span{
+	top:0;
+	left:0;
+}
+.owe-to .plat_handle{
+	top:0;
+	left:60px;
+}
+.owe-span.h_star{
+	top:0;
+	left:3px;
+}
+.deadline li > b {
+	margin-top:-5px;
+}
+/* 请输入拒绝理由窗口样式 */
+.mo_del {
+	width: 100%;
+	height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    display: none;
+}
+.model_content{
+	width:414px;
+	height:220px;
+	background: #fff;
+	position: fixed;
+	top:50%;
+	left:50%;
+	margin:-110px 0 0 -212px;
+	box-shadow: 0 1px 8px #ccc;
+}
+.model_content textarea{
+	display: block;
+	width:372px;
+	height:76px;
+	border:1px solid #dedede;
+	border-radius: 4px;
+	margin:52px auto 0;
+	text-indent: 6px;
+	padding-top:4px;
+	color:#525252;
+	resize: none;
+	outline:none;
+}
+.model_content a{
+	height:28px;
+	line-height: 28px;
+	background: #de642c;
+	border: 1px solid #bc5120;
+	padding:0 30px;
+	border-radius: 2px;
+	color:#fff;
+	position:absolute;
+	right:20px;
+	bottom:32px;
+}
+.model_content span{
+	background:url("/img/adv_sea_close.png") no-repeat center;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}

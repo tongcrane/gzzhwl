@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+	<title>新增调配运力记录</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/addBorrowCar.css?ver=0.4" />
+	<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css?ver=0.4"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>车挂信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<label class="labe_l">车牌号</label>
+						<input class="inpu_t autocomplete vehicle" data-column="vehicleInfoId" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">车长</p>
+						<span class="fr spa_n vehicle-column" data-show-column="length"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">所属部门</p>
+						<span class="fr spa_n vehicle-column" data-show-column="belongDepartName"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix mar_top">
+						<p class="fl stage">车辆类型</p>
+						<span class="fr spa_n vehicle-column" data-show-column="type"></span>
+					</div>
+					<div class="layout clearfix mar_bottom">
+						<p class="fl stage">使用部门</p>
+						<span class="fr spa_n vehicle-column" data-show-column="useDepartName"></span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix mar_top">
+						<p class="fl stage">核定载重总质量</p>
+						<span class="fr spa_n vehicle-column" data-show-column="loadWeight"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age">
+			<h3>司机信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<label class="labe_l">司机姓名1</label>
+						<input class="inpu_t autocomplete driver" data-column="driver1InfoId" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">手机号码1</p>
+						<span class="fr spa_n driver1InfoId-column" data-show-column="telphone"></span>
+					</div>
+					<div class="layout clearfix">
+						<label class="labe_l">司机姓名2</label>
+						<input class="inpu_t autocomplete driver" data-column="driver2InfoId" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">手机号码2</p>
+						<span class="fr spa_n driver2InfoId-column" data-show-column="telphone"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix mar_top">
+						<p class="fl stage">身份证号码1</p>
+						<span class="fr spa_n driver1InfoId-column" data-show-column="idno"></span>
+					</div>
+					<div class="layout clearfix id_num">
+						<p class="fl stage">身份证号码2</p>
+						<span class="fr spa_n driver2InfoId-column" data-show-column="idno"></span>
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="require">
+			<h3>借用信息</h3>
+			<div class="clearfix">
+				<div class="left right_long fl">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<label class=" labe_l" >申请部门</label>
+							<input class="inpu_t autocomplete department" data-column="toDepartId" type="text" />
+						</div>
+						<div class="layout fr">
+							<label class="labe_l">开始借用时间</label>
+							<input id="startTime" class="inpu_t" readonly type="text" />
+						</div>
+					</div>
+					<div class="right_one mar_top">
+						<div class="layout rela_tive">
+							<label class="labe_l">使用线路</label>
+							<div class="from line-column" data-column="departureCode">
+							</div>
+							<div class="to line-column" data-column="destinationCode">
+							</div>
+							<!-- <span class="line"></span> -->
+						</div>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout">
+						<label class="labe_l">计划归还时间</label>
+						<input class="inpu_t use-date column" data-column="endTime" type="text"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="check">
+		<div class="actions">
+			<a href="javascript:void(0);" class="active submit_btn">提交</a>
+			<a href="javascript:void(0);" class="cancel_btn">取消</a>
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.autocomplete.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSAutocomplete2.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSLineSelect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSAddLend.js?ver=0.4"></script>
+</html>
+
+
+
+
+
+
+

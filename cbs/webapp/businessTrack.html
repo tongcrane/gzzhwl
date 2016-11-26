@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>在途跟踪</title>
+<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/infoListBase.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/businessTrack.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css"/>
+</head>
+<body>
+	<header id="header">
+	</header>
+	<div id="list-info">
+		<div class="list-info-title">
+			<h2 class="fl">我的业务</h2>
+			<input id="query_content" type="text" class="list-search fl" placeholder="搜索&nbsp;&nbsp; 车牌号 / 订单号 / 提货单号 " />
+			<span class="advance-sea">高级搜索</span>
+			<button id="btn_search"  class="title_search">搜索</button>
+			<div class="search-content">
+				<b class="sea-close"></b>
+				<div class="search-content-div">
+					<label for="">客户全称</label>
+					<input type="text" data-column="customerId" id="autocomplete-ajax" class="column"/>
+				</div>
+				<div class="search-content-div">
+					<label for="">客户单号</label>
+					<input type="text" data-column="customerBillNo" class="column"/>
+				</div>
+				<div class="search-content-div mar_bottom">
+					<label for="">线路</label>
+					<div class="two-col clearfix">
+						<div class="two_sel fl">
+							<select data-width="112" id="startCodeP" class="column p-select" data-column="startCodeP">
+							</select>
+							<select data-width="112" id="startCodeC"  class="column c-select" data-column="startCodeC">
+							</select>
+						</div>
+						<div class="two_sel fr">
+							<select data-width="112" id="endCodeP" class="column p-select" data-column="endCodeP">
+							</select>
+							<select data-width="112" id="endCodeC"  class="column c-select" data-column="endCodeC">
+							</select>
+						</div>
+						<i></i>
+					</div>
+				</div>
+				<div class="search-content-div">
+					<label for="">实际发车时间</label>
+					<div class="two-col clearfix">
+						<input type="text" class="column use-date" data-column="tripTimeStart" data-time=true/>
+						<input type="text" class="column use-date" data-column="tripTimeEnd" data-time=true/>
+						<i></i>
+					</div>
+				</div>
+				<div class="search-content-div mar-top clearfix">
+					<div class="sea-left">
+						<label for="">司机姓名</label>
+						<input type="text" class="column" data-column="realName"/>
+					</div>
+					<div class="sea-right">
+						<label for="">司机电话</label>
+						<input type="text" class="column" data-column="telphone"/>
+					</div>
+				</div>
+				<div class="sea-btn clearfix">
+					<input id="btn_adv_search" type="button"/>
+					<span>根据此条件搜索》</span>
+				</div>
+			</div>
+		</div>
+		<div class=" list-info-content clearfix">
+			<div class="list-Info-left">
+			</div>
+			
+			<div class="list-Info-right">
+				<div class="handle clearfix">
+					<div class="handle-data">
+						<!-- <a href="addBusSourceOrder.html" target="_blank" class="handle-add" ></a>
+						<button class="handle-cansel"></button> -->
+						<!-- <button class="handle-export">约车</button> -->
+					</div>
+					<div class="handle-page">
+
+					</div>					
+				</div>
+				<div class="handle-content">
+					<table>
+						<thead>
+							<tr>
+								<th width="40" ><!-- <input type="checkbox" class="all_check"> -->序号</th>
+								<th width="80">车牌号</th>
+								<th width="140">订单号</th>
+								<th width="90">司机姓名</th>
+								<th width="100" >司机电话</th>
+								<th width="190">线路</th>
+								<th width="135"  class="bus_select trip_time_sort">实际发车时间</th>
+								<th width="135"  class="bus_select need_arrive_time_sort">计划到达时间</th>
+							</tr>
+						</thead>
+						<tbody>                                                      
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="con-foot">
+			 <span> 条款 - 隐私权</span>
+			 <strong>上次账户活动时间<i>1</i>小时前</strong>
+		</div>
+	</div>
+	<div class="mo_del">
+		<div class="model_content">
+			<p>订单号"<b>OR108968789</b>"已在寻车，撤销会影响运势界客户体验，需人工审核申请。是否确认申请撤回？</p>
+			<a href="javascript:void(0);" class="mo_con_yes">是</a>
+			<a href="javascript:void(0);" class="mo_con_no">否</a>
+			<i class="clo_se"></i>
+		</div>
+	</div>
+	
+</body>
+
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery.autocomplete.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/menu/menu.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/explugin/CBSTable.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/explugin/CBSAutocomplete2.js"></script>
+    <script type="text/javascript" src="js/CBSTrackList.js"></script>
+
+</html>

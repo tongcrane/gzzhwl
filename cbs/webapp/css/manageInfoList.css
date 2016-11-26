@@ -1,0 +1,8 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-06 09:05:41
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-06 14:04:23
+*/
+.edit{width:30px;background-position: 5px center;}
+@-moz-document url-prefix() { .edit{background-position: 5px 16px; } }

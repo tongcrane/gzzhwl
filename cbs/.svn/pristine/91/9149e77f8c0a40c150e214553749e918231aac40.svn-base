@@ -1,0 +1,15 @@
+.selectDark {
+	color: #888;
+}
+.selectDark .ui-icon {
+	background-image: url(../img/select.png);
+}
+.selectDark .ui-icon-triangle-1-s{background-position: 2px 3px;}
+.pcd-column .ui-multiselect.ui-widget{
+	width:114px !important;
+}
+
+.selectDark.ui-state-disabled{
+	opacity: 1;
+	filter: Alpha(Opacity=100);
+}

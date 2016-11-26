@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title class="title_val">添加驾驶员信息</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/base.css?ver=0.3">
+<link rel="stylesheet" type="text/css" href="/css/addBase.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/addDriverInfoTwo.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>添加驾驶员信息</p>
+	</div>
+
+	<div class="car-detail">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="photoFImageRefId" />
+						<span class="p-add">添加个人免冠照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>个人信息</h3>
+					<p>
+						<label for="">司机手机</label>
+						<input data-column="telphone" class="column" type="text" value="">
+					</p>
+					<p>
+						<label for="">驾驶员属性</label>
+						<select data-column="attributes" name="" class="mySelect column">
+							<option value="" selected="selected">请选择</option>
+							<option value="招商车司机">招商车司机</option>
+							<option value="第三方车队司机">第三方车队司机</option>
+							<option value="临时外请车司机">临时外请车司机</option>
+							<option value="挂靠外请车司机">挂靠外请车司机</option>
+							<option value="合同外请车司机">合同外请车司机</option>
+						</select>
+					</p>
+					<p>
+						<label for="">是否有不良记录</label>
+						<input data-column="criminalRecord" type="text" value="" class="column">
+					</p>
+					<p>
+						<label for="">联系地址</label>
+						<input data-column="address" class="column" type="text" value="">
+					</p>
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+
+				</div>
+				<div class="detail-info detail-info-right">
+					<h3>账户信息</h3>
+					<p>
+						<label for="">开户行名称</label>
+						<input data-column="depositBank" type="text" value="" class="bank-column">
+					</p>
+
+					<p>
+						<label for="">开户银行</label>
+						<input data-column="bankName" type="text" value="" class="bank-column">
+					</p>
+					<p>
+						<label for="">开户名</label>
+						<input data-column="cardName" type="text" value="" class="bank-column">
+					</p>
+					<p>
+						<label for="">银行账号</label>
+						<input data-column="cardNo" type="text" value="" class="bank-column">
+					</p>
+				</div>
+			</div>
+				
+			<div class="detail-bottom">
+				<div class="btn">
+					<button class="pre">上一页</button>
+					<button class="current">提交</button>
+				</div>
+			</div>
+			
+			<input type="hidden" data-column="realName" value="" class="column">
+			<input type="hidden" data-column="idno" value="" class="column">
+			<input type="hidden" data-column="sex" value="" class="column">
+			<input type="hidden" data-column="birthday" value="" class="column">
+			<input type="hidden" data-column="qcNo" value="" class="column">
+			
+	</div>
+</body>
+
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/moment.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSImage.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSDriver.js?ver=0.3"></script>
+
+<script type="text/javascript">
+	$(function(){
+		var driverInfoId = global.QueryString.driverInfoId;
+		var driver = new CBSDriver({driverInfoId:driverInfoId});
+		$('.current').click(function(){
+			driver.doSave();
+			return false;
+		});
+		
+		$('.btn .pre').click(function(){
+			window.onbeforeunload = null;
+            window.onunload = null;
+			location.href = '/addDriverInfoOne.html?driverInfoId='+driverInfoId;
+			return false;
+		});
+	});
+</script>
+</html>

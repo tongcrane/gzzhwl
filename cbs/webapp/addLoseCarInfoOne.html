@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title class="title_val">添加挂车信息</title>
+<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/base.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/addBase.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/addLoseCarInfoOne.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>添加挂车信息</p>
+	</div>
+
+	<div class="car-detail">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="licenseImageRefId" />
+						<span class="p-add">添加车辆行驶证照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>行驶证信息</h3>
+					<div class="f-tips">
+						<label for="" class="up-need">车辆类型</label>
+						<select data-column="type" class="column require">
+							<option value="">请选择</option>
+							<option value="高低板挂">高低板挂</option>
+							<option value="高栏板挂">高栏板挂</option>
+							<option value="平板挂">平板挂</option>
+							<option value="冷藏挂">冷藏挂</option>
+							<option value="复合板挂">复合板挂</option>
+							<option value="铁挂">铁挂</option>
+							<option value="铝挂">铝挂</option>
+							<option value="玻璃钢挂">玻璃钢挂</option>
+							<option value="钢塑板挂">钢塑板挂</option>
+							<option value="其他集装箱挂">其他集装箱挂</option>
+						</select>
+						<div class="tips" hidden="hidden">请选择车辆类型</div>
+					</div>
+					<div class="f-tips">
+						<label for="">车牌号</label>
+						<input maxlength="7" data-column="plateNumber" class="need column require single" type="text" value="">
+						<div class="tips" hidden="hidden">请输入正确有效的车牌号</div>
+					</div>
+					<div class="f-tips">
+						<label for="">行驶证档案编号</label>
+						<input maxlength="20" data-column="licenseNo" class="need column require single" type="text" value="">
+						<div class="tips" hidden="hidden">请输入正确有效的行驶证档案编号</div>
+					</div>
+					<div class="f-tips">
+						<label for="">所有人</label>
+						<input maxlength="50" data-column="ownerType" class="need column require" type="text" value="">
+						<div class="tips" hidden="hidden">请输入正确有效的所有人</div>
+					</div>
+					<div class="f-tips">
+						<label for="">准牵引总质量（kg）</label>
+						<input maxlength="10" data-column="loadWeight" class="need column require" type="text" value="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+						<div class="tips" hidden="hidden">请输入正确有效的准牵引总质量</div>
+					</div>
+					<div class="f-tips">
+						<label for="">车架号</label>
+						<input maxlength="17" data-column="vin" class="need column require single" type="text" value="">
+						<div class="tips" hidden="hidden">请输入正确有效的车架号</div>
+					</div>
+					<div class="f-tips">
+						<label for="">行驶证注册日期</label>
+						<input data-column="licenseRegDate" type="text" value="" class="use-date need column require slide-down">
+						<div class="tips" hidden="hidden">请输入正确有效的行驶证注册日期</div>
+					</div>
+					<div class="f-tips">
+						<label for="">行驶证发证日期</label>
+						<input data-column="licenseIssueDate" type="text" value="" class="use-date need column require slide-down">
+						<div class="tips" hidden="hidden">请输入正确有效的行驶证发证日期</div>
+					</div>
+					<div class="f-tips">
+						<label for="">行驶证有效期至</label>
+						<input data-column="licenseValidDate" type="text" value="" class="use-date need column require slide-down">
+						<div class="tips" hidden="hidden">请输入正确有效的行驶证有效期</div>
+					</div>
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+					<!-- <p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="ocImageRefId" />
+						<span class="p-add">添加车辆营运证照片</span>
+					</p> -->
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="regImageRefId" />
+						<span class="p-add">添加登记证照片</span>
+					</p>
+					<p class="down">
+						<input  type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="vehicleImageRefId" />
+						<span class="p-add">添加车辆照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>登记证信息</h3>
+					<div class="f-tips">
+						<label for="">机动车登记证编号</label>
+						<input maxlength="20" data-column="regCertCode" class="column single" type="text" value="">
+					</div>
+					<div class="f-tips">
+						<label for="">车辆登记日期</label>
+						<input data-column="regDate" type="text" value=""class="use-date column">				
+					</div>
+					<div class="f-tips">
+						<label for="">车辆品牌</label>
+						<input maxlength="10" data-column="brand" class="column" type="text" value="">
+					</div>
+					<div class="f-tips">
+						<label for="">车辆型号</label>
+						<input maxlength="10" data-column="models" class="column" type="text" value="">
+					</div>
+					<div class="f-tips">
+						<label for="">轮胎数</label>
+						<input maxlength="10" data-column="wheelsNum" class="column" type="text" value="">
+					</div>
+					<div class="f-tips">
+						<label for="">车体颜色</label>
+						<input maxlength="10" data-column="color" class="column" type="text" value="">
+					</div>
+					<h3 class="mar_top">使用信息</h3>
+					<div class="f-tips">
+						<label for="">所属部门</label>
+						<input maxlength="50" data-column="belongDepartId" type="text" class="autocomplete-column need required department">
+						<div class="tips" hidden="hidden">请输入正确有效的所属部门</div>
+					</div>
+					<div class="f-tips">
+						<label for="">使用部门</label>
+						<input maxlength="50" data-column="useDepartId" type="text" class="autocomplete-column need required department">
+						<div class="tips" hidden="hidden">请输入正确有效的使用部门</div>
+					</div>
+					<div class="routline f-tips">
+						<label class="useline">使用线路</label>
+						<!-- <div class="car-from pcd-column" data-column="departureCode"> -->
+						<div class="line-column short_sel up_top" data-column="departureCode"></div>
+						<!-- <div class="car-to pcd-column" data-column="destinationCode"> -->
+						<div class="line-column short_sel mar_top" data-column="destinationCode"></div>
+						<!-- <div class="arrive"><span>至</span></div> -->
+						<div class="tips" hidden="hidden">请选择正确的使用线路</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="detail-bottom">
+				<div class="btn">
+					<button class="current">下一页</button>
+				</div>
+			</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.autocomplete.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+<script type="text/javascript" src="js/explugin/CBSImage.js?ver=0.4"></script>
+<script type="text/javascript" src="js/explugin/CBSLineSelect.js?ver=0.4"></script>
+<script type="text/javascript" src="js/explugin/CBSAutocomplete2.js?ver=0.4"></script>
+<script type="text/javascript" src="js/CBSLoseCar.js?ver=0.4"></script>
+
+</html>
+<script type="text/javascript">
+	//$(document).ready(function() {
+	//$(".mySelect3").styleSelect({styleClass: "selectFruits",optionsWidth: 1,speed: 'fast'});
+	//	$(".mySelect").styleSelect({styleClass: "selectDark"});
+	//});
+	
+	$(function(){
+		var vehicleInfoId = global.QueryString.vehicleInfoId;
+		var loseCar = new CBSLoseCar({vehicleInfoId:vehicleInfoId,step:1});
+		$('.current').click(function(){
+			loseCar.doSave();
+			return false;
+		});
+		
+		var platNumber=$("input[data-column='plateNumber']");
+		platNumber.on('blur',function(){
+			if(this.value) {
+				var re=/^[\u4e00-\u9fa5]{1}[\S]{6}$/;
+				if(platNumber.val().search(re)==-1) {
+					platNumber.val(this.value.toUpperCase());
+					platNumber.next().show();
+					platNumber.focus();
+				} else {
+					platNumber.val(this.value.toUpperCase());
+					platNumber.next().hide();
+				}
+			} else {
+				platNumber.next().hide();
+			}
+		});
+	});
+</script>

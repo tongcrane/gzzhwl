@@ -1,0 +1,65 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-08 17:28:53
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-09-17 14:58:49
+*/
+body{font-size: 14px;color:#414141;}
+.layout{width:350px;}
+.layout.au_to{width:auto;}
+/* .require_spe label{font-size: 16px;} */
+.require_spe .spa_n{width:136px;height:28px;line-height:28px;}
+.require_spe .re_spe_long{width:168px;}
+.require_spe .re_spe_short{width:130px;}
+.layout .spa_n.long{width:748px;margin-left:2px;height:100px;}
+.butt_on {width:auto;margin: 72px 0 0 40px;}
+.butt_on a{padding:0 10px;}
+.butt_on a:first-child{margin-bottom: 14px;}
+.con_tent{width:1150px;border: none;border-top:1px solid #e1e1e1;border-bottom:1px solid #e1e1e1;padding-bottom:30px;}
+.bid_table{width:1160px;border:none;padding:0 20px 20px;margin:15px auto;}
+.handle-data{line-height: 33px;}
+table{border-collapse: collapse;margin-bottom:40px;}
+th{background:#f6f6f6;height:40px;text-align: left;}
+.handle-content td{padding:20px 0 20px 10px;}
+tr>th{padding-left:10px;}
+tr{border-top: 1px solid #dedede;background:#fff;}
+tr:last-child{border-bottom: 1px solid #dedede;}
+.owe-to{height:19px;}
+.owe-to>p{width:80px;padding-left:20px;}
+.owe-to .owe-span{top:0px;left:0px;}
+.owe-to .plat_handle{top:0;left:66px;}
+.deadline li>b{margin-top:-5px;}
+.bottom_info{width:100%;height:50px;position: relative;}
+.bottom_con{width:1158px;height:35px;padding:15px 0 0;background: #f6f6f6;position: absolute;top:0;left:0;}
+.bottom_con a{font-size: 14px;color: #fff;height: 26px;line-height: 26px;padding: 0 26px;border: 1px solid #bc5120;background-color: #de642c;color:#fff;border-radius: 2px;}
+.bottom_con a.active{border:1px solid #dcdcdc;background:#eee;color:#4c4c4c;}
+.bottom_con>p{padding-left: 10px;}
+
+/* 中标信息 */
+.winbid{width:1160px;border:none;padding:0 20px 20px;margin:20px auto 30px;}
+.winbid_info,.winbid_time{height:46px;line-height:46px;}
+.winbid>.handle-content table{margin-bottom: 0;}
+.winbid>.handle-content table>tbody>tr{background:#FFF5C4;}
+.winbid .bottom_info{width:100%;height:50px;position: relative;}
+.winbid .bottom_con{width:1158px;height:39px;background: #f6f6f6;padding:12px 0 0;position: absolute;top:0;left:0;}
+.winbid .bottom_con a{font-size: 14px;color: #fff;height: 26px;line-height: 26px;padding: 0 20px;border: 1px solid #bc5120;background-color: #de642c;color:#fff;border-radius: 2px;}
+.winbid .bottom_con a.active{border:1px solid #dcdcdc;background:#eee;color:#4c4c4c;}
+
+/* 模态窗口 */
+.mo_del{display: none;}
+.model_content{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:214px;}
+.model_content p{padding:40px;color:#525252;text-align: center;margin-top: 20px;}
+
+.model_content_cansel{background:#fff;position:fixed;top:50%;left:50%;box-shadow:0 1px 8px #ccc;display:none;}
+.model_content_cansel a{height:28px;line-height:28px;background:#de642c;border:1px solid #bc5120;padding:0 30px;border-radius:2px;color:#fff;position:absolute;right:20px;bottom:32px;}
+.model_content_cansel i{background:url("../img/adv_sea_close.png") no-repeat center;cursor:pointer;width:20px;height:20px;position:absolute;right:5px;top:5px;}
+.model_content_cansel{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:214px;}
+.model_content_cansel p{padding:40px;color:#525252;text-align: center;margin-top: 20px;}
+
+/* 单位样式 */
+.more_unit{font-weight: normal;}
+

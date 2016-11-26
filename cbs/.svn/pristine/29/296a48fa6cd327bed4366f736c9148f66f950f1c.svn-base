@@ -1,0 +1,16 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-06 16:35:53
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-19 16:11:26
+*/
+.detail-photos p{
+	width:180px;
+	height: 180px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    overflow:hidden;
+    cursor: pointer;
+}
+.detail-photos p>img{cursor: default;}
+.mar_top{margin-top:25px;}

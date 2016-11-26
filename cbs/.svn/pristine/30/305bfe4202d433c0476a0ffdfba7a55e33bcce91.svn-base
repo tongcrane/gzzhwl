@@ -1,0 +1,138 @@
+var CBSOrderDetail = function(options){
+	this.opt = $.extend({}, options);
+
+	this.init = function(options){
+		var _this = this;
+		var orderId = _this.opt.orderId;
+		$.get(global.server+'/admin/order/getOrderDetail',{orderId:orderId}, function(msg){
+			if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				var data = msg.data;
+				_this.data = data;
+				_this.fillContentFromJsonData(data);
+			}
+		});
+		//_this.getRemarkHis(orderId);
+	};
+	
+
+	this.init(options);
+};
+CBSOrderDetail.prototype.getFullAddress = function(info){
+	if(info!=null){
+		var pcd = [];
+		var area = info.area;
+		$.each(area, function(i, j){
+			pcd.push(j.regionName);
+		});
+		var str = pcd.reverse().join("");
+		return str+info.address;
+	} else {
+		return "";
+	}
+};
+
+CBSOrderDetail.prototype.fillData = function(data, selector){
+    $(selector).each(function(i, j){
+    	var properties = $(j).data('column');
+    	var pList = properties.split(',');
+    	var $self = $(j);
+    	if(data!=null){
+    		var value = [];
+    		$.each(pList,function(i, j){
+    			if(j=='createdTime') {
+    				//value.push(data[j].replace(new RegExp(/(-)/g),"."))
+    				var _date=moment(data[j]).format("YYYY.MM.DD hh:mm:ss");
+    				value.push(_date);
+    			} else if(j=="needStartTime"||j=="needArriveTime") {
+    				var _date=moment(data[j]).format("YYYY.MM.DD hh:mm");
+    				value.push(_date);
+    			} else {
+    				value.push(data[j]);
+    			}
+        	});
+    		$self.text(value.join(' '));
+    	} else {
+    		$self.text("");
+    	}
+    });
+}
+
+CBSOrderDetail.prototype.fillContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    //console.log(data);
+    var consignmentInfo = data.consignmentInfo;
+    if(consignmentInfo){
+    	_this.fillData(consignmentInfo,'.consignmentInfo-column');
+    } else {
+    	$('.consign-info').remove();
+    }
+    
+    
+    var chargeInfo = data.chargeInfo;
+    _this.fillData(chargeInfo,'.chargeInfo-column');
+    
+    var orderBaseInfo = data.orderBaseInfo
+    _this.fillData(orderBaseInfo,'.orderBaseInfo-column');
+
+    var orderDetailInfo = data.orderDetailInfo;
+    _this.fillData(orderDetailInfo,'.orderDetailInfo-column');
+
+    var orderLineInfo = data.orderLineInfo;
+    _this.fillData(orderLineInfo,'.orderLineInfo-column');
+    
+
+    var orderReceiverInfo = data.orderReceiverInfo;
+    _this.fillData(orderReceiverInfo,'.orderReceiverInfo-column');
+    var orderSenderInfo = data.orderSenderInfo;
+    _this.fillData(orderSenderInfo,'.orderSenderInfo-column');
+
+};
+
+CBSOrderDetail.prototype.toOrderDetail = function(){
+	var _this = this;
+	var orderId = _this.data.orderDetailInfo.orderId;
+	var url = '/checkBusinessSource.html?orderId='+orderId;
+	var body = document.getElementsByTagName("body")[0];
+	var el = document.createElement("a");
+	body.appendChild(el);
+	el.href = url;
+	el.target = '_blank';
+	el.click();
+	body.removeChild(el);
+}
+
+
+CBSOrderDetail.prototype.toConsignDetail = function(){
+	var _this = this;
+	var consignId = _this.data.consignmentInfo.consignId;
+	var url = 'checkBusContract.html?consignId='+consignId;
+	var body = document.getElementsByTagName("body")[0];
+	var el = document.createElement("a");
+	body.appendChild(el);
+	el.href = url;
+	el.target = '_blank';
+	el.click();
+	body.removeChild(el);
+}
+
+
+
+$(function(){
+	
+	var orderId = global.QueryString.orderId;
+
+	var param = {
+		orderId : orderId
+	};
+	var overView = new CBSOrderDetail(param);
+	
+	$('.order-info .to_order_detail').click(function(){
+		overView.toOrderDetail();
+	});
+	
+	$('.consign-info .to_order_detail').click(function(){
+		overView.toConsignDetail();
+	});
+	
+});

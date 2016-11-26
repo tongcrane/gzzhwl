@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+	<title>供应商信息详情</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/checkSupplier.css?ver=0.4" />
+	<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>联系人信息</h3>
+			<div class="clearfix">
+				<div class="left right_long fl">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">供应商类型</p>
+							<span class="fl spa_n supply_column" data-column="type"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">供应商全称</p>
+							<span class="fl spa_n supply_column" data-column="fullName"></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">负责人</p>
+							<span class="fl spa_n supply_column" data-column="contactName"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">手机号</p>
+							<span class="fl spa_n supply_column" data-column="mobile"></span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">联系地址</p>
+							<span class="fl spa_n pcd-column"></span>
+						</div>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix short">
+						<p class="fl stage toggle_p_c">身份证号码/税务登记号</p>
+						<span class="fr spa_n supply_column" data-column="taxRegCode"></span>
+					</div>
+					<div class="layout clearfix short">
+						<p class="fl stage">结算方式</p>
+						<span class="fr spa_n supply_column" data-column="paymentType"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age">
+			<h3>银行信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">银行名称</p>
+						<span class="fr spa_n bank_column" data-column="bankName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">银行账号</p>
+						<span class="fr spa_n bank_column" data-column="cardNo"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">开户银行</p>
+						<span class="fr spa_n bank_column" data-column="depositBank"></span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix short">
+						<p class="fl stage">开户名</p>
+						<span class="fr spa_n bank_column" data-column="cardName"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="check">
+		<div class="actions">
+			<a href="javascript:void(0);" class="edit_btn active">修改</a>
+			<a href="javascript:void(0);" class="close"></a>	
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSOrderPush.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSSupplyInfo.js?ver=0.4"></script>
+	
+	<script type="text/javascript">
+		var supplyId = global.QueryString.supplyId;
+		var supply = new CBSSupplyInfo({supplyId:supplyId});
+		
+		$('.actions > .active').click(function(){
+			var url = global.getContextPath() + '/addSupplier.html?supplyId='+ supplyId;
+			location.href = url;
+			return false;
+		});
+		$('.actions > .close').click(function(){
+				if(confirm('确认删除？')){
+			    	$.ajax({
+				        url: global.server + '/admin/supply/removeSupply',
+				        type: "post",
+				        data: {supplyId:supplyId},
+				        success: function (msg) {
+				            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				            	alert("操作成功");
+				            	window.close();
+				            	window.opener.location.reload();
+				            }
+				        }
+				    });
+				}
+				return false;
+			});
+	</script>
+
+</html>
+
+
+
+
+
+
+

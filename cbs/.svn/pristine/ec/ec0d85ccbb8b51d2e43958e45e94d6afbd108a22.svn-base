@@ -1,0 +1,179 @@
+var CBSDriverContractInfo = function(options){
+	this.opt = $.extend({}, options);
+	this.loadColumns=$('.load-column');
+	this.orderColumns=$('.order-column');
+
+	this.init = function(options){
+		var _this = this;
+		var contractId = _this.opt.contractId;
+		_this.getData(contractId);
+		_this.getRemarkHis(contractId);
+	};
+	
+	
+	this.getData = function(contractId){
+		var _this = this;
+		$.get(global.server+'/admin/contract/queryDetail',{contractId:contractId}, function(msg){
+			if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				var data = msg.data;
+				_this.data = data;
+				_this.fillContractContentFromJsonData(data.contractInfo);
+				_this.fillOrderContentFromJsonData(data.orderInfo);
+			}
+		}).done(function(msg){
+
+		});
+	};
+	
+	this.init(options);
+};
+
+
+CBSDriverContractInfo.prototype.fillContractContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    this.loadColumns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	_this.text(pValue);
+    });
+    
+    var getDriver = function(driverInfo, type){
+		var result = null;
+		$.each(driverInfo, function(i, j){
+			if(j.isMajor == type){
+				result = j;
+				return false;
+			}
+		});
+		return result;
+	}
+    
+    var driverInfo=data.driverInfo;
+    if(driverInfo){
+    	var driver1 = getDriver(driverInfo,'01');
+    	if(driver1!=null) {
+    		$('span[data-column="_realName1"]').text(driver1.realName);
+        	$('span[data-column="_telphone1"]').text(driver1.telphone);
+    	}
+    	var driver2 = getDriver(driverInfo,'02');
+    	if(driver2!=null) {
+    		$('span[data-column="_realName2"]').text(driver2.realName);
+        	$('span[data-column="_telphone2"]').text(driver2.telphone);
+    	}
+    }
+    var isPredict=data.isPredict;
+    if(isPredict=='01') {
+    	$('span[data-column="isPredict"]').text('准确');
+    } else if(isPredict=='02') {
+    	$('span[data-column="isPredict"]').text('预估');
+    }
+    var bridgeType=data.bridgeType;
+    if(bridgeType=="01") {
+    	$('span[data-column="bridgeType"]').text("单桥");
+    } else if(bridgeType=="02") {
+    	$('span[data-column="bridgeType"]').text("双桥");
+    }
+};
+
+CBSDriverContractInfo.prototype.fillOrderContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    this.orderColumns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	if(pValue){
+    		if(pName == 'pickUpTime' || pName == 'needStartTime' || pName == 'needArriveTime'){
+    			pValue = moment(pValue).format("YYYY-MM-DD HH:mm");
+    		}
+    		_this.text(pValue);
+    	} else {
+    		_this.text('');
+    	}
+    	
+    });
+    
+    var getPcd = function(data){
+		var p = "";
+		var c = "";
+		var d = "";
+		$.each(data,function(i, j){
+			if(j.regionLevel == 1){
+				p = j.regionName;
+			} else if(j.regionLevel == 2){
+				c = j.regionName;
+			} else if(j.regionLevel == 3){
+				d = j.regionName;
+			}
+		});
+		var result = '';
+		if(p){
+			result+=p+" ";
+		}
+		if(c){
+			result+=c+" ";
+		}
+		if(d){
+			result+=d+" ";
+		}
+		return result;
+	}
+    
+    var needType=data.needType?data.needType:'';
+    var needLength=data.needLength?data.needLength:'';
+    if(needLength=='其他') {
+    	needLength=needLength;
+    } else {
+    	needLength=needLength+"米";
+    }
+    var _need=needType+" "+needLength;
+    $('span[data-column="_need"]').text(_need);
+    var startP=data.startCodePCn?data.startCodePCn:'';
+    var startC=data.startCodeCCn?data.startCodeCCn:'';
+    var endP=data.endCodePCn?data.endCodePCn:'';
+    var endC=data.endCodeCCn?data.endCodeCCn:'';
+    var start=startP+" "+startC;
+    var end=endP+" "+endC;
+    $('span[data-column="_start"]').text(start);
+    $('span[data-column="_end"]').text(end);
+    var receive=getPcd(data.receiveRegion);
+    var send=getPcd(data.sendRegion);
+    $('span[data-column="_receive"]').text(receive+" "+data.receiveAddress);
+    $('span[data-column="_send"]').text(send+" "+data.sendAddress)
+};
+
+CBSDriverContractInfo.prototype.getRemarkHis=function(contractId) {
+	var url = "/admin/remark/getRecordList";
+	$.ajax({
+        url: global.server + url,
+        type: "get",
+        data: {targetId:contractId,remarkType:'04'},
+        success: function (msg) {
+            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+            	$('.hover_content').append('<h4>操作纪录</h4>');
+            	var recordList=msg.data;
+            	if(recordList.length>0) {
+            		$.each(recordList,function(i,j){
+            			$('.hover_content').append('<p><span>'+j.real_name+'</span> 推送时间：'+j.createdTime+' 备注:'+j.content+'</p>');
+            		})
+            	}
+            } else {
+            	console.log(msg.status.errorMsg);
+            }
+        }
+    });
+}
+
+
+$(function(){
+	
+	var contractId = global.QueryString.contractId;
+	var param = {
+			contractId : contractId
+	};
+	var load=new CBSDriverContractInfo(param);
+    $(".check_hover").hover(function(){$(".hover_content").show()},function(){$(".hover_content").hide()})
+	
+});

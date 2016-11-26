@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+	<title>应付汇总详情</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/checkPaylist.css?ver=0.4" />
+	<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>车辆信息</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">提货单号</p>
+					<span class="fr spa_n v-column" data-column="loadNo"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">司机合同号</p>
+					<span class="fr spa_n v-column" data-column="driverContractNo"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">车牌号</p>
+					<span class="fr spa_n v-column"  data-column="plateNumber"></span>
+				</div>
+			</div>
+			<div class="clearfix">	
+				<div class="layout fl">
+					<p class="fl stage">客户全称</p>
+					<span class="fr spa_n v-column" data-column="customerName"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">始发站</p>
+					<span class="fr spa_n" data-column="_start"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">到达站</p>
+					<span class="fr spa_n" data-column="_end"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">结款对象</p>
+					<span class="fr spa_n v-column" data-column="supplyFullName"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">结算方式</p>
+					<span class="fr spa_n v-column" data-column="supplyPaymentType"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">实际发车时间</p>
+					<span class="fr spa_n v-column" data-column="tripTime"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">纸质回单时间</p>
+					<span class="fr spa_n v-column" data-column="printTime"></span>
+				</div>
+			</div>
+		</div>
+		<div class="unusual">
+			<h3>费用信息</h3>
+			<div class="fee_type">
+				<div class="layout fl">
+					<p class="fl stage">纯运费(元)</p>
+					<span class="fr spa_n pay-column" data-column="freightPrice"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">预付现金(元)</p>
+					<span class="fr spa_n pay-column" data-column="prePay"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">预付油卡(元)</p>
+					<span class="fr spa_n pay-column" data-column="oilPay"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">异常费用(元)</p>
+					<span class="fr spa_n pay-column" data-column="feedBackPrice"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">总计(元)</p>
+					<span class="fr spa_n pay-column" data-column="totalPrice"></span>
+				</div>
+
+			</div>
+			<div class="un_content">	    				
+				<h4 class="chejian" hidden="hidden">车辆检查</h4>
+				<div class="un_bg che_jian" hidden="hidden"></div>				
+				<h4 class="kaotai" hidden="hidden">靠台</h4>
+				<div class="un_bg kao_tai" hidden="hidden"></div>
+				<h4 class="fache" hidden="hidden">发车</h4>
+				<div class="un_bg fa_che" hidden="hidden"></div>
+				<h4 class="daoda" hidden="hidden">电子回单</h4>
+				<div class="un_bg dao_da" hidden="hidden"></div>			
+			</div>
+		</div>
+	<div class="check">
+		<div class="actions">
+			<a href="javascript:void(0);" class="active padd_ing">审核</a>
+			<!-- <a href="javascript:void(0);" class="add_custom">增加车辆异常</a> -->
+		</div>
+	</div>
+	<!-- 车辆到达弹出框 -->
+	<div class="mo_del">
+	   	<!-- <div class="model_content add_un">
+			<h4>增加车辆异常</h4>
+			<div class="layout">
+				<label class="labe_l" for="">业务节点</label>
+				<select name="" id="">
+					<option value="" select='selected'>请选择</option>
+				</select>
+			</div>
+			<div class="layout">
+				<label class="labe_l" for="">异常名称</label>
+				<input class="inpu_t" type="text" data-column="">
+			</div>
+			<div class="layout inline">
+				<label class="labe_l relati_ve money" for="">异常费用</label>
+				<input class="inpu_t pad_right" type="text" data-column="">
+			</div>
+			<div class="layout inline mar-right">
+				<label class="labe_l short" for="">费用类型</label>
+				<input type="radio" name="way" value="01" checked="checked">扣款
+				<input type="radio" name="way" value="02">补偿
+			</div>
+			<div class="layout mar-right">
+				<label class="labe_l" for="">备注</label>
+				<textarea name="" id="" cols="30" rows="10"></textarea>
+			</div>
+			<a href="javascript:void(0);" class="">提交</a>
+			<i class="clo_se"></i>
+		</div> -->
+		<div class="model_content review">
+			<h4>审核</h4>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">纯运费(元)</p>
+					<span class="fr spa_n pay-column" data-column="freightPrice"></span>
+				</div>
+				<div class="layout fr">
+					<p class="fl stage">预付现金(元)</p>
+					<span class="fr spa_n pay-column" data-column="prePay"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">预付油卡(元)</p>
+					<span class="fr spa_n long" data-column="oilPay"><b></b></span>
+				</div>
+				<div class="layout fr">
+					<p class="fl stage">异常费用(元)</p>
+					<span class="fr spa_n pay-column" data-column="feedBackPrice"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">总计(元)</p>
+					<span class="fr spa_n pay-column" data-column="totalPrice"></span>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="check_confirm">确认审核</a>
+			<i class="clo_se"></i>
+		</div>
+		<!-- <div class="model_content adjust">
+			<h4>费用调整</h4>
+			<div class="layout">
+				<label class="labe_l short" for="">费用类型</label>
+				<input type="radio" name="way" value="01" checked="checked">扣款
+				<input type="radio" name="way" value="02">补偿
+			</div>
+			<div class="layout fl">
+				<label class="labe_l relati_ve money" for="">异常费用</label>
+				<input class="inpu_t pad_right" type="text" data-column="">
+			</div>
+			<a href="javascript:void(0);" class="verify_elec_receipt">提交</a>
+			<i class="clo_se"></i>
+		</div> -->
+	</div>
+	
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSOrderPush.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSImage.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSImageInfo.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSCostAdjust.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSPayInfo.js?ver=0.4"></script>
+	<script type="text/javascript">
+		// 增加客户异常
+		 /* $('.add_custom').click(function() {
+			$('.mo_del').show();
+			$('.add_un').show().siblings('div').hide();
+		});  */
+	</script>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+	<title>回单详情</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/checkReceiptList.css?ver=0.4" />
+	<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>车辆信息</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">车牌号</p>
+					<span class="fr spa_n column car_number" data-column="plateNumber"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">订单号</p>
+					<span class="fr spa_n column" data-column="orderNo"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">提货单号</p>
+					<span class="fr spa_n column"  data-column="loadNo"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">客户单号</p>
+					<span class="fr spa_n column" data-column="customerBillNo"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">客户全称</p>
+					<span class="fr spa_n column" data-column="customerName"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">始发站</p>
+					<span class="fr spa_n" data-column="_start"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">到达站</p>
+					<span class="fr spa_n" data-column="_end"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">司机姓名1</p>
+					<span class="fr spa_n" data-column="realName1"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">司机手机1</p>
+					<span class="fr spa_n" data-column="telphone1"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">司机姓名2</p>
+					<span class="fr spa_n" data-column="realName2"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">司机手机2</p>
+					<span class="fr spa_n" data-column="telphone2"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">车辆类型</p>
+					<span class="fr spa_n column" data-column="type"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">车长</p>
+					<span class="fr spa_n column" data-column="length"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">计划发车时间</p>
+					<span class="fr spa_n column" data-column="needStartTime"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">实际发车时间</p>
+					<span class="fr spa_n column" data-column="tripTime"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">计划到达时间</p>
+					<span class="fr spa_n column" data-column="needArriveTime"></span>
+				</div>
+			</div>
+		</div>
+		<div class="unusual vehicle_arrive">
+			<h3>车辆到达</h3>
+			<div class="un_content elecReceipt">	    				
+				<h4>电子回单</h4>	    				
+				<!-- <div class="un_bg">
+					<p>													
+						<span class="un_time">2016-08-29 15:34</span>							
+						<span class="un_name">诸葛孔明名（司机）</span>							
+						<span class="arrive_time">上传回单<i>2016-10-29 15:34</i></span>
+						<span class="un_name">诸葛孔明名（客服）</span>
+						<span class="arrive_time">审核通过<i>2016-10-29 15:34</i></span>
+						<span class="images"></span>												
+					</p>
+				</div> -->
+			</div>
+			<div class="un_content printReceipt">
+				<h4>纸质回单</h4>	    				
+				<!-- <div class="un_bg">
+					<p>													
+						<span class="un_time">2016-08-29 15:34</span>							
+						<span class="un_name">诸葛孔明名（客服）</span>
+						<span class="company"><i>顺丰速运</i><b>78999968964789</b></span>						
+						<span class="arrive_time">收到时间<i>2016-10-29 15:34</i></span>											
+					</p>
+				</div> -->
+			</div>
+		</div>
+	
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSOrderPush.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSImage.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSImageInfo.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSReceiptInfo.js?ver=0.4"></script>
+
+	</script>
+</html>
+
+
+
+
+
+
+

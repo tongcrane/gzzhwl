@@ -1,0 +1,60 @@
+
+.con_tent{border:none;width:1150px;}
+.check{border:none;width:1150px;}
+.right_long{width:746px;}
+.right_one{width:101%;}
+.right_one .spa_n{width:632px;}
+.right_one .inpu_t{width:632px;}
+.layout_two{width:500px}
+.layout_two .spa_n{width:108px;}
+.layout_two .spa_n:last-child{margin-right:16px;}
+.layout_line .spa_n{width:1032px;height:26px;line-height: 26px;padding-top:0;}
+.layout_long .spa_n{width:113px;}
+.layout_long .spa_n:last-child{margin-right:5px;}
+.check .active{ background-color: #de642c;color:#fff;border: 1px solid #bc5120; border-radius: 2px;}
+.check a{width:90px;}
+
+/* 新增页面 */
+.layout .labe_l{display: inline-block;}
+.layout .inpu_t{width:230px;}
+.right_one .inpu_t{width:627px;}
+.layout .selec_t{width:230px;margin-left:4px;}
+.mess_age .layout{margin-bottom: 15px;}
+
+.right_one .from,.right_one .to{display:inline-block;}
+.right_one .from{margin-right:24px;}
+.from .selec_t,.to .selec_t{width:146px;}
+.from .selec_t.mar_left,.to .selec_t.mar_left{margin-left:-2px;}
+.rela_tive{position: relative;}
+.line{position: absolute;bottom:13px;left:369px;width:18px;border-top:2px solid #ccc;}
+
+.mar_top{margin-top:6px;}
+.middle .mar_top,.right .mar_top{margin-top:43px;}
+.middle .id_num{margin-top:58px;}
+/* .middle .mar_bottom{margin-bottom: 0;} */
+
+/* 模态窗口 */
+.mo_del {width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5);position: fixed;left: 0;top: 0;z-index: 999;display: none;}
+.model_content{width:414px;height:220px;background: #fff;position: fixed;top:50%;left:50%;margin:-110px 0 0 -212px;box-shadow: 0 1px 8px #ccc;}
+.model_content a{font-size:14px;height:28px;line-height: 28px;background: #de642c;border: 1px solid #bc5120;padding:0 30px;border-radius: 2px;color:#fff;position:absolute;right:20px;bottom:32px;}
+.model_content i{background:url("../img/adv_sea_close.png") no-repeat center;cursor: pointer; width: 20px; height: 20px; position: absolute;right: 5px;top: 5px;}
+.model_content{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:220px;}
+.model_content p{padding:40px;color:#525252;margin-top: 20px;font-size: 14px;font-weight: bold;} 
+
+/* 单位样式 */
+/* .people{position:relative;}
+.people:after{content:"人";width:50px;position:absolute;top:0;left:318px;color:#ddd;font-size:14px;} */
+
+/* 去掉详情页面行高 */
+.layout .stage{line-height: normal;height:auto;}
+.layout .spa_n{line-height: normal;height:auto;}
+.layout{margin-bottom:15px;}
+
+/* 弹出框提示语 */
+.tips{margin-top:40px;}
+.tips .text{color:red;}
+
+.from .ui-multiselect.ui-widget.ui-state-default.selectDark:nth-of-type(2){position: relative;}
+.from .ui-multiselect.ui-widget.ui-state-default.selectDark:nth-of-type(2):after{content: '';position: absolute;right:-24px;top:12px;width:17px;border-top:2px solid #ccc;}

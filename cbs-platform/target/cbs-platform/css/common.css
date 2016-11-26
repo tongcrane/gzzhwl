@@ -1,0 +1,38 @@
+
+/* 初始化 */
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td { margin: 0; padding: 0; border: 0;}
+html { color: #333; }
+html,body { height: 100%;background: #f6f6f6; }
+body,button,input,select,textarea,a{ font-family: 'Microsoft Yahei','微软雅黑','黑体','SimHei', \5FAE\8F6F\96C5\9ED1,'宋体',\5b8b\4f53,arial,'Hiragino Sans GB',Tahoma,Arial,Helvetica;}
+ul,ol,li,dl,dd,dt{list-style: none;}
+em,i{ font-style: normal; }
+a { text-decoration: none;}
+a:hover { text-decoration: none; }
+legend { color: #000; }
+fieldset,img { border: 0; }
+button { cursor: pointer; }
+input{outline:none;}
+/* 去掉input框保存记录的黄色背景 */
+input:-webkit-autofill{-webkit-box-shadow:0 0 0px 1000px white inset;-webkit-text-fill-color:#333;}
+/* placeholder字体颜色 */
+input::-webkit-input-placeholder {color:#d2d2d2;font-size: 12px;}
+input:-moz-placeholder {color:#d2d2d2;font-size: 12px;}
+input::-moz-placeholder {color:#d2d2d2;font-size: 12px;}
+input:-ms-input-placeholder {color:#d2d2d2;font-size: 12px;}
+/*解决IE图片缩放失真*/
+img { -ms-interpolation-mode: bicubic; }
+/* 去除图片底部3px的距离 */
+img{vertical-align: top;}
+/*清除浮动*/
+.clearfix:after { content: ''; display: block; height: 0; clear: both; }
+.clearfix { zoom: 1; }
+.clear { clear: both; }
+/*连续英文、数字换行*/
+.wordwrap { word-break: break-all; word-wrap: break-word; }
+/*单行文字超出显示省略号*/
+.omg{overflow: hidden; text-overflow: ellipsis; white-space:nowrap;}
+.hide{display: none;}
+.wrap{width:1200px;margin:0 auto;}
+.fr{float:right;}
+.fl{float:left;}
+

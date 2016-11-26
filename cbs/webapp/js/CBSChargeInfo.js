@@ -1,0 +1,177 @@
+var CBSChargeInfo = function(options){
+	this.opt = $.extend({}, options);
+	this.orderColumns=$('.order-column');
+	this.chargeColumns=$('.charge-column');
+
+	this.init = function(options){
+		var _this = this;
+		var consignId = _this.opt.consignId;
+		_this.getData(consignId);
+	};
+	
+	
+	this.getData = function(consignId){
+		var _this = this;
+		$.get(global.server+'/admin/receive/getReceiveDetail',{consignId:consignId}, function(msg){
+			if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				var data = msg.data;
+				_this.data = data;
+				_this.fillOrderContentFromJsonData(data.orderInfo);
+				_this.fillChargeContentFromJsonData(data.chargeInfo);
+				_this.fillFeedBackContentFromJsonData(data.feedBackList);
+			}
+		}).done(function(msg){
+			var data = msg.data;
+			var status=data.orderInfo.status;
+			if(status=='04') {
+				$('.padd_ing').remove();
+				$('.fee').remove();
+			}
+			$('.padd_ing').click(function() {
+				$('.mo_del').show();
+				$('.review').show().siblings('div').hide();
+				//提交审核
+				$('.check_confirm').click(function(){
+					$.ajax({
+				        url: global.server + '/admin/receive/verifyReceive',
+				        type: "POST",
+				        data: {
+				        	consignId:data.orderInfo.consignId
+				        },
+				        success: function (msg) {
+				            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				            	window.close();
+				            	window.opener.location.reload();
+				            } else {
+				            	alert(msg.status.errorMsg);
+				            }
+				        }
+				    });
+				});
+			});
+		});
+	};
+	
+	this.init(options);
+};
+
+
+CBSChargeInfo.prototype.fillOrderContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    this.orderColumns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	if(pValue) {
+    		if(pName=='tripTime'||pName=='elecReceiptTime'||pName=='printReceiptTime') {
+    			pValue=moment(pValue).format("YYYY-MM-DD HH:mm");
+    		}
+    	}
+    	_this.text(pValue);
+    });
+    var startCodePCn=data.startCodePCn;
+    var startCodeCCn=data.startCodeCCn;
+    var endCodePCn=data.endCodePCn;
+    var endCodeCCn=data.endCodeCCn;
+    $('span[data-column="_start"]').text(startCodePCn+" - "+startCodeCCn);
+    $('span[data-column="_end"]').text(endCodePCn+" - "+endCodeCCn);
+};
+
+CBSChargeInfo.prototype.fillChargeContentFromJsonData=function(data) {
+	if (!data) return;
+    var _this = this;
+    this.chargeColumns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	_this.text(pValue);
+    });
+}
+
+CBSChargeInfo.prototype.fillFeedBackContentFromJsonData=function(data) {
+	if (!data) return;
+    var _this = this;
+    var cheJianList=new Array();
+	var kaoTaiList=new Array();
+	var faCheList=new Array();
+	var daoDaList=new Array();
+	$.each(data,function(i,j){
+		var status=j.status;
+		if(status=='01') {
+			cheJianList.push(j);
+		} else if(status=='02') {
+			kaoTaiList.push(j);
+		} else if(status=='03') {
+			faCheList.push(j);
+		} else if(status=='11') {
+			daoDaList.push(j);
+		}
+	});
+	if(cheJianList.length>0) {
+		$('.chejian').show();
+		$('.che_jian').show();
+		_this.fillFeedBack(cheJianList,$('.che_jian'));
+	}
+	if(kaoTaiList.length>0) {
+		$('.kaotai').show();
+		$('.kao_tai').show();
+		_this.fillFeedBack(kaoTaiList,$('.kao_tai'));
+	}
+	if(faCheList.length>0) {
+		$('.fache').show();
+		$('.fa_che').show();
+		_this.fillFeedBack(faCheList,$('.fa_che'));
+	}
+	if(daoDaList.length>0) {
+		$('.daoda').show();
+		$('.dao_da').show();
+		_this.fillFeedBack(daoDaList,$('.dao_da'));
+	}
+}
+
+CBSChargeInfo.prototype.fillFeedBack=function(data,head) {
+	$.each(data,function(i,j){
+		var el=$('<p>\
+					<span class="un_time" data-column=""></span>\
+					<span class="un_name" data-column="">诸葛孔明名（客服）</span>	\
+					<span class="delay">时效罚款</span>\
+					<span class="un_cost"><i>133</i>元</span>\
+					<span class="delay_reason">实际迟到。副书记方辣椒粉低啦房间爱啦啦房间爱立方</span>\
+					<span class="fee">费用调整</span>\
+				</p>');
+		el.find('.un_time').text(j.feedbackTime);
+		el.find('.un_name').text(global.defaultIfBlack(j.realName,'')+'('+global.defaultIfBlack(j.position,'')+')');
+		el.find('.delay').text(j.itemName);
+		el.find('.un_cost>i').text(j.itemPrice);
+		el.find('.delay_reason').text(j.itemDesc);
+		var price=j.itemPrice;
+		if(price){
+			el.find('.fee').remove();
+		}
+		el.find('.fee').click(function(){
+			var feedbackId=j.feedbackId;
+			var options = {
+			    	data : {
+			    		feedbackId : feedbackId
+			    	}
+			    }
+			    new CBSCostAdjust(options);
+		});
+		head.append(el);
+	});
+}
+
+$(function(){
+	
+	var consignId = global.QueryString.consignId;
+	var param = {
+		consignId : consignId
+	};
+	var consign=new CBSChargeInfo(param);
+	
+	$('.clo_se').click(function() {
+		$('.mo_del').hide();
+	});
+	
+});

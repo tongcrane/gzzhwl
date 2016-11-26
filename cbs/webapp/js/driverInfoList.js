@@ -1,0 +1,189 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-06-22 09:23:12
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-06-29 14:37:34
+*/
+
+
+$(function() {
+	$('.search-content').bind('click', function(e){
+		return false;
+	});
+	var advSearch = {
+		show : function() {
+			$('.search-content').show(10, function(){
+				$('body').one('click', function(){
+					advSearch.hide();
+				});
+			});
+		},
+		hide : function() {
+			$('.search-content').hide();
+			$('body').unbind();
+		}
+	}
+
+	// 点击高级搜索，搜索框显示
+	$('.advance-sea').click(function(event) {
+		advSearch.show();
+	});
+
+	$('.sea-close').click(function(event) {
+		advSearch.hide();
+	});
+
+	 $('.use-date').datetimepicker({
+	 	timepicker:false,
+		format:'Y-m-d',
+		autoclose:true,
+		todayHighlight:true,
+		keyboardNavigation:false
+	 });
+
+	var openDriver = function(driverInfoId){
+		var url = global.getContextPath() + '/addDriverInfoOne.html?driverInfoId='+driverInfoId;
+    	var body = document.getElementsByTagName("body")[0];
+    	var el = document.createElement("a");
+    	body.appendChild(el);
+    	el.href = url;
+    	el.target = '_blank';
+    	el.click();
+    	body.removeChild(el);
+    }
+	var openDriverInfo = function(driverInfoId){
+		var url = global.getContextPath() + '/checkDriverInfomation.html?driverInfoId='+driverInfoId;
+		var body = document.getElementsByTagName("body")[0];
+		var el = document.createElement("a");
+		body.appendChild(el);
+		el.href = url;
+		el.target = '_blank';
+		el.click();
+		body.removeChild(el);
+	}
+	
+	var table = new CBSTable({
+		page : $('.handle-page'),
+		content : $('.handle-content > table > tbody'),
+		url : '/admin/driver/page',
+		method  : 'POST',
+		pageNumber : 0,
+		pageSize : 10,
+		rowRender : function(index, row){
+			var el = $('<tr> \
+						<td> \
+							<div class="f-width"> \
+								<input class="check-box" type="checkbox"/> \
+							</div> \
+						</td> \
+						<td> \
+							<a href="javascript:void(0);" class="edit"></a> \
+						</td> \
+						<td> \
+							<div class="car-num to-info"></div> \
+						</td> \
+						<td> \
+							<div class="car-list to-info"></div> \
+						</td> \
+						<td> \
+							<div class="owe-to"> \
+					    		<p class="attr to-info"></p> \
+					    		<span class="owe-span"> \
+					    			<ul class="deadline"> \
+					    				<li> \
+					    					<p>驾驶证有效期</p> \
+					    					<b class="b1"></b> \
+					    				</li> \
+					    				<li> \
+					    					<p>从业资格证有效期</p> \
+					    					<b class="b2"></b> \
+					    				</li> \
+					    			</ul> \
+					    		</span> \
+					    	</div> \
+						</td> \
+					</tr>');
+			var qcType=global.defaultIfBlack(row.qcType,'')?" 从业资格证类型："+global.defaultIfBlack(row.qcType,''):"";
+			var cardName=global.defaultIfBlack(row.cardName,'')?" - 开户名："+global.defaultIfBlack(row.cardName,''):"";
+			var depositBank=global.defaultIfBlack(row.depositBank,'')?" 开户行："+global.defaultIfBlack(row.depositBank,''):"";
+			el.find('.car-num').html(global.defaultIfBlack(row.realName,'')+" "+global.defaultIfBlack(row.telphone,''));
+			el.find('.car-list').html(global.defaultIfBlack(row.attributes,'')+" 准驾车型"+global.defaultIfBlack(row.dlType,'')+qcType+cardName+depositBank);
+			el.find('.attr').html(row.attributes?row.attributes:"&nbsp;");
+			el.find('.b1').html(global.defaultIfBlack(row.dlEndDate,''));
+			el.find('.b2').html(global.defaultIfBlack(row.qcEndDate,''));
+			el.find('.edit').click(function(){
+				openDriver(row.driverInfoId);
+			});
+			el.find('.to-info').click(function(){
+				openDriverInfo(row.driverInfoId);
+			});
+			el.find('.f-width > .check-box').data(row).val(row.driverInfoId);
+			el.find('.f-width > .check-box').click(function(){
+				var flag=$(this).attr('checked');
+				if(flag===undefined) {
+					$(this).attr('checked','checked');
+					$("tr:eq("+index+")").css('background-color','#FBEDC1');
+				} else {
+					$(this).removeAttr('checked');
+					$("tr:eq("+index+")").removeAttr("style");
+				}
+			});
+			return el;
+		},
+		onBeforeLoad : function(param){
+			return param.queryType != null;
+		}
+	});
+	
+	$('#btn_search').click(function(){
+		table.load({
+			queryType:0,
+			keyWord:$('.list-search').val()
+		});
+	});
+	
+	$('#btn_adv_search').click(function(){
+		var columns=$('.column');
+		var data = {};
+		columns.each(function(i, j){
+			var _this = $(this);
+			var pName = _this.data("column");
+			var pValue = _this.val();
+			if(null!=pValue&&""!=pValue) {
+				data[pName] = pValue;
+			}
+		});
+		data.queryType=1;
+		table.load(data);
+		advSearch.hide();
+	});
+	
+	$('.handle-data>.handle-delete').click(function(){
+		var selected=$('.f-width > .check-box:checked');
+		if(selected.length>0) {
+			if(confirm('确认删除？')){
+				$('.f-width > .check-box:checked').each(function() {  
+			    	var driverInfoId=$(this).val();
+			    	$.ajax({
+				        url: global.server + '/admin/driver/removeDriver',
+				        type: "POST",
+				        data: {driverInfoId:driverInfoId},
+				        success: function (msg) {
+				            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				            	table.reload();
+				            }
+				        }
+				    });
+			    });
+			}
+		} else {
+			alert("请选择要删除的记录");
+		}
+	});
+	
+	table.load({
+		queryType:0,
+		keyWord:$('.list-search').val()
+	});
+	
+});

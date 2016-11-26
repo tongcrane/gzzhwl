@@ -1,0 +1,116 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-08 10:40:02
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-21 15:03:50
+*/
+.list-info-title{margin-bottom: 0;}
+.status{width:1148px;height:46px;padding:0 26px;margin:0 auto;font-size:14px;color:#414141;}
+.sourse_num,.push_time{height:46px;line-height:46px;}
+.sourse_num b{font-weight: normal;}
+.con_tent{width:1148px;padding:12px 25px 0;margin:0 auto;padding-bottom:50px;border:1px solid #e1e1e1; border-bottom:none;}                                                                                      
+
+/* 信息部分样式 */
+.mess_age{padding-bottom:20px;}
+.mess_age h3,.require h3{width:1123px;height:48px;line-height:48px;padding-left:25px;margin-bottom:24px;border-bottom:1px solid #e1e1e1;background:url(../img/detail_info.png) no-repeat 0 center;font-size:16px;color:#525252;}
+.left,.middle,.right{width:350px;}
+.middle{margin-left:50px;}
+.layout{margin-bottom:12px;}
+.layout .stage,.layout .labe_l{width:112px;height:26px;line-height:26px;font-size:14px;color:#414141;font-weight: bold;/* background:pink; */}
+.layout .spa_n,.layout .inpu_t{width:234px;height:26px;font-size:14px;color:#525252;line-height:26px;/* background: orange; */}
+.layout .spa_n{word-break:break-all;}
+
+/* 用车要求部分样式 */
+.require_line{width:1148px;height:54px;border:1px solid #a0caf9;margin:0 auto 24px;background:#f6f9ff;}
+.require_spe{margin:13px 0 0 15px;font-size:14px;}
+.require_spe .labe_l{height:28px;line-height:28px;margin-right:8px;}
+.require_spe .inpu_t{width:136px;height:26px;line-height:26px;border-radius:3px;border:1px solid #dcdcdc;text-indent:4px;}
+.require_spe .selec_t{width:136px;height:28px;line-height: 28px;}
+.require_spe .re_spe_long{width:168px;}
+.require_spe .re_spe_short{width:130px;}
+.layout .labe_l{height:28px;line-height:28px;}
+.layout .inpu_t{text-indent:4px; border:1px solid #dcdcdc;border-radius: 3px;}
+.layout textarea{width:640px;height:100px;border-radius: 3px;border:1px solid #dcdcdc;margin-left:2px;resize: none;outline: none;text-indent:4px;padding-top:6px;font-size:14px;color:#525252;}
+.butt_on{margin:70px 0 0 40px;}
+.butt_on a{font-size: 14px;color: #fff;height:26px;line-height:26px;padding:0 26px;margin-right:15px;border: 1px solid #bc5120;background-color: #de642c;border-radius:2px;}
+
+/* 关闭作废部分样式 */
+.check{width:1198px;height:49px;margin:0 auto 20px;border:1px solid #e1e1e1; border-top:none;background:#f6f6f6;}
+.check a{float:right;width:82px;text-align:center;height:28px;line-height:28px;border:1px solid #dcdcdc;margin:12px 32px 0 0;border-radius:2px;font-size:14px;color:#4c4c4c;background:#eee;}
+.check .check_hover{background:#eee url(../img/clock.png) no-repeat center;position:relative;}
+.check .active{ background-color: #de642c;color:#fff;border: 1px solid #bc5120; border-radius: 2px;}
+.hover_content{width:440px;padding:0 12px;min-height:140px;background:#fff;box-shadow: 0 0 8px #ccc;position: absolute;bottom:43px;right:-148px;display:none;}
+.hover_content:after{content: "";display: block;width: 0;height: 0;border: 10px solid transparent;border-top-color: #fff;position: absolute;bottom:-19px;right:184px;}
+.hover_content h4{font-size:16px;color:#282828;margin:8px 0;text-align:left;}
+.hover_content>p{width:100%;overflow: hidden; text-overflow: ellipsis; white-space:nowrap;color:#414141;font-size:14px;text-align:left;}
+.hover_content>p>span{color:#4286f5;margin-right:10px;height:24px;line-height: 24px;display:inline-block;width:70px;}
+
+/* 下拉框样式 */
+.layout .selec_t{float:right;width:236px;height:28px;font-size:14px;color:#414141;line-height:28px;/* border-radius:3px;border:1px solid #dcdcdc; */}
+
+.layout_two .selec_t{width:110px;}
+.layout_two .selec_t:last-child{margin-right:16px;}
+
+.layout_three .selec_t{width:76px;margin-left:4px;}
+.layout_three .selec_t:last-child{margin-left:0;}
+
+/* 模态窗口样式 */
+.mo_del {
+	width: 100%;
+	height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    display: none;
+}
+.model_content{
+	width:414px;
+	height:220px;
+	background: #fff;
+	position: fixed;
+	top:50%;
+	left:50%;
+	margin:-110px 0 0 -212px;
+	box-shadow: 0 1px 8px #ccc;
+}
+.model_content textarea{
+	display: block;
+	width:372px;
+	height:76px;
+	border:1px solid #dedede;
+	border-radius: 4px;
+	margin:52px auto 0;
+	text-indent: 6px;
+	padding-top:4px;
+	color:#525252;
+	resize: none;
+	outline:none;
+	font-size:14px;
+}
+.model_content a{
+	height:28px;
+	line-height: 28px;
+	background: #de642c;
+	border: 1px solid #bc5120;
+	padding:0 30px;
+	border-radius: 2px;
+	color:#fff;
+	position:absolute;
+	right:20px;
+	bottom:32px;
+}
+.model_content i{
+	background:url("/img/adv_sea_close.png") no-repeat center;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+/* 详情页面单位样式 */
+
+.more_unit{font-weight: normal;}

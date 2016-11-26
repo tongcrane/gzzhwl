@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN" ng-app="editApp">
+	<head ng-controller="head">
+		<meta charset="utf-8">
+		<title>关于我们</title>
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/about.css"/>
+		<link rel="stylesheet" type="text/css" href="css/dialog.css"/>
+		<link rel="shortcut icon" ng-href="{{path}}" />
+	</head>
+	<body style="overflow-x:hidden">
+	<!--[if (gt IE 9)|!(IE)]><!-->
+    	<headtop></headtop>
+    	<div class="banner_w">
+    		<div class="banner_bg"></div>
+    	</div>
+    	<div class="about_w">
+    		<div class="about">
+    			<div class="tit" >关于志鸿</div>
+    			<div class="text" style="margin-top: 60px;margin-bottom: 40px;">志鸿物流成立于2003年，是国家“AAAA”级物流企业。历经10余年的发展，凭借精湛的卡车运营管理技术，汲取先进的物流实践经验，自2013年从专线物流转型为“大车队”运营模式，实现每年100%的速度增长，<b>现已成为中国领先的公路物流运输解决方案提供商。</b></div>
+    			<div class="text pic"></div>
+    			<div class="text" style="margin-top: 40px;padding-bottom: 100px;">服务的客户包括顺丰速运、韵达、圆通、中通、百世、德邦、天地华宇、唯品会、京东等，运输网络覆盖国内160多个城市,链接运输车辆超过5000台。于2015年10月，引入中国本土排名前十大私募股权投资公司广发信德、中国A股深创板最大市值公司温氏集团、专注供应链与物流投资领域的创岚投资作为A轮投资者，依托自主研发的移动互联网和物流数据交互系统，<b>致力于构建中国最大的公路物流运输网，成为中国公路物流运输领导者。</b></div>
+			</div>
+    	</div>
+		<div class="corporate_culture">
+			<div class="culture">
+				<div class="tit">企业文化</div>
+				<ul class="clearfix">
+					<li>
+						<span>企业精神</span>
+						<span>包容、变化、坚持、勇进</span>
+					</li>
+					<li>
+						<span>企业使命</span>
+						<span>效率中国，让物流更舒心</span>
+					</li>
+					<li>
+						<span>企业目标</span>
+						<span>5年内突破100亿</span>
+					</li>
+					<li>
+						<span>团队构成</span>
+						<span>“互联网+金融+物流”顶级人才</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="history_w">
+    		<div class="history">
+    			<div class="tit">志鸿发展历程</div>
+    			<div class="pic pic1"></div>
+    			<div class="pic pic2"></div>
+    			<div class="pic pic3"></div>
+    			<div class="pic pic4"></div>
+    			<div class="padding"></div>
+			</div>
+    	</div>
+		<div class="con_foot mt0 index_foot">
+		    <div class="wrap clearfix foot_w">
+		        <p>
+		        	<span class="about_us">
+		        		<a href="about.htm">关于我们</a>　　　　
+		        		<a href="javascript:;">联系我们</a>
+		        	</span>
+		        	<span class="copyright"><a href="help.htm">条款 - 隐私权</a>　　　　©2016 guangzhouzhihong　　　　粤ICP备05123318号-2</span>
+		            <span class="tel">
+		                <i>400-888-0906</i>
+		                </br>
+		                <i class="time">周一至周日<em>7*24小时</em></i>
+		            </span>
+		        </p>
+		    </div>
+		</div>
+    <!--<![endif]-->
+    <!--[if IE | (gte IE 9)]>
+        <div class="dialog_wrap">
+            <div class="dialog_done dialog_w upgrade">
+                <p class="star">
+                    <img src="img/upgrade_bg.png">
+                </p>
+                <p class="txt">
+                    <span class="txt_d">您当前的浏览器版本过低</span></br>
+                </p>
+                <p class="txt txt2">
+                    <span class="txt_d font14">可能存在安全风险，建议升级浏览器</span></br>
+                </p>
+                <div class="btn-group clearfix">
+                    <a href="https://www.google.cn/intl/zh-CN/chrome/browser/desktop/" target="_blank" class="btn_l">谷歌 Chome</a>
+                    <a href="http://www.firefox.com.cn/" target="_blank" class="btn_r">Firefox 火狐</a>
+                </div>
+            </div>
+            <div class="mask"></div>
+        </div>
+    <![endif]-->
+	</body>
+	<script type="text/javascript" src="js/vendor/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="js/vendor/toTop.min.js"></script>
+    <script type="text/javascript" src="js/vendor/angular.min.js"></script>
+	<script type="text/javascript" src="js/vendor/angular-route.min.js"></script>
+	<script type="text/javascript" src="js/vendor/angular-resource.min.js"></script>
+    <script type="text/javascript" src="js/vendor/store.min.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery.cookie.js"></script>
+	<script type="text/javascript" src="js/vendor/lazyload.js"></script>
+	<script type="text/javascript" src="js/public/global_config.js"></script>	
+	<script type="text/javascript" src="js/public/global.js"></script>
+	<script type="text/javascript" src="js/services/services.js"></script>
+	<script type="text/javascript" src="js/filters/filters.js"></script>
+	<script type="text/javascript" src="js/directives/directives.js"></script>
+	<script type="text/javascript" src="js/controllers/controller.js"></script>
+</html>

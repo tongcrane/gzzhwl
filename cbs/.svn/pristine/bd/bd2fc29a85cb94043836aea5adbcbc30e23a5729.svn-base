@@ -1,0 +1,13 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-06 16:35:53
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-21 16:40:10
+*/
+.up-need{background: url(../img/star.png) no-repeat 62px center;}
+.up-need.long{background-position: 89px center;}
+.mar_top{margin-top:10px;}
+.detail-photos p{overflow:hidden;}
+.selectDark.ui-multiselect.ui-widget{
+	width:357px !important;
+}

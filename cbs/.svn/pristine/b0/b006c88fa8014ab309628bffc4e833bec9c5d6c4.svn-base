@@ -1,0 +1,84 @@
+/**
+ * 
+ */
+var ViewMap = function(options){
+	this.opt = $.extend({}, options);
+	var _this = this;
+	
+	this.init = function(options){
+		var _this = this;
+		$('#search_type').multiselect({
+			header : false,
+			multiple : false,
+			selectedList : 1,
+			noneSelectedText: '请选择',
+			minWidth : 104,
+			click: function(event, ui){
+				$('#search_input').prop('placeholder',ui.placeholder);
+		    }
+		});
+		
+		_this.amap = new CBSMap({
+			target : "map",
+			onMarkerShow : _this.onMarkerShow
+		});
+	}
+	
+	//地图上点的click时间
+	this.onMarkerShow = function(param){
+		var data = param.data;
+		var el = $('<div class="map_tips"> \
+			<div class="tip_con"> \
+				<span>位置</span> \
+				<p>'+data.longitude+','+data.latitude+'</p> \
+			</div> \
+		</div>');
+		return el.prop('outerHTML');
+	}
+	
+	
+	this.search = function(){
+		var param = {};
+		param.type = $('#search_type').val();
+		param.billNo = $('#search_input').val();
+		_this.getData(param);
+	}
+	
+	this.getData = function(param){
+		var _this = this;
+
+		_this.amap.clearMarker();
+		
+		$.get(global.server+'/admin/maptrans/list', param, function(msg){
+			if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				var data = msg.data;
+				_this.showMap(data);
+			}
+		});
+	}
+	
+	this.showMap = function(data){
+		var _this = this;
+		var amap = _this.amap;
+		$.each(data, function(i, j){
+			amap.addMarker({
+				param:{
+					data:j
+				},
+				position: new AMap.LngLat(j.longitude,j.latitude)
+			});
+		});
+		amap.fitView();
+	}
+	
+	
+	this.init(options);
+}
+
+$(function(){
+	var view = new ViewMap();
+	
+	$('.search_btn').click(function(){
+		view.search();
+	})
+})

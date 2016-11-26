@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+	<title>车辆到达详情</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/checkBusArrive.css?ver=0.4" />
+	<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>车辆信息</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">车牌号</p>
+					<span class="fr spa_n column car_number" data-column="plateNumber"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">订单号</p>
+					<span class="fr spa_n column" data-column="orderNo"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">提货单号</p>
+					<span class="fr spa_n column"  data-column="loadNo"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">客户单号</p>
+					<span class="fr spa_n column" data-column="customerBillNo"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">客户全称</p>
+					<span class="fr spa_n column" data-column="customerName"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">始发站</p>
+					<span class="fr spa_n" data-column="_start"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">到达站</p>
+					<span class="fr spa_n" data-column="_end"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">司机姓名1</p>
+					<span class="fr spa_n" data-column="realName1"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">司机手机1</p>
+					<span class="fr spa_n" data-column="telphone1"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">司机姓名2</p>
+					<span class="fr spa_n" data-column="realName2"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">司机手机2</p>
+					<span class="fr spa_n" data-column="telphone2"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">车辆类型</p>
+					<span class="fr spa_n column" data-column="type"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">车长</p>
+					<span class="fr spa_n column" data-column="length"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">计划发车时间</p>
+					<span class="fr spa_n column" data-column="needStartTime"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">实际发车时间</p>
+					<span class="fr spa_n column" data-column="tripTime"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">计划到达时间</p>
+					<span class="fr spa_n column" data-column="needArriveTime"></span>
+				</div>
+			</div>
+		</div>
+		<div class="unusual">
+			<h3>车辆到达</h3>
+			<div class="un_content">	    				
+				<h4></h4>	    				
+				<div class="un_bg no_bg">
+					<p>													
+						<span class="un_time" data-column="createdTime"></span>							
+						<span class="un_name" data-column="createdBy"></span>							
+						<span class="un_arrive">确认到达<i data-column="arriveTime"></i></span>												
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="unusual elecReceipt">
+			<h3>电子回单</h3>
+<!-- 			<div class="un_content">	    				
+				<h4>货主异常</h4>	    				
+				<div class="un_bg">
+					<p>													
+						<span class="un_time">2016-08-29 15:34</span>							
+						<span class="un_name">诸葛孔明名（客服）</span>							
+						<span class="delay">时效罚款<i>-133元</i></span>
+						<span class="delay_reason">实际迟到。副书记方辣椒粉低啦房间爱啦啦房间爱立方</span>												
+					</p>
+				</div>
+			</div>
+			<div class="un_content">
+				<h4>司机反馈异常</h4>	    				
+				<div class="un_bg">
+					<p>													
+						<span class="un_time">2016-08-29 15:34</span>							
+						<span class="un_name">诸葛孔明名（客服）</span>							
+						<span class="delay">时效罚款<i>-133元</i></span>
+						<span class="delay_reason">实际迟到。副书记方辣椒粉低啦房间爱啦啦房间爱立方</span>												
+					</p>
+				</div>
+			</div>
+			<div class="un_content">
+				<h4></h4>	    				
+				<div class="un_bg no_bg">
+					<p>													
+						<span class="un_time">2016-08-29 15:34</span>							
+						<span class="un_name">诸葛孔明名（客服）</span>							
+						<span class="arrive_time">上传回单<i>2016-10-29 15:34</i></span>
+						<span class="un_name">诸葛孔明名（客服）</span>
+						<span class="arrive_time">审核不通过<i>2016-10-29 15:34</i></span>
+						<span class="images"></span>
+						<button class="long back_check">审核</button>
+					</p>
+				</div>
+			</div> -->
+		</div>
+		<div class="unusual printReceipt">
+			<h3>纸质回单</h3>
+			<!-- <div class="un_content">	    				
+				<h4></h4>	    				
+				<div class="un_bg no_bg">
+					<p>													
+						<span class="un_time">2016-08-29 15:34</span>							
+						<span class="un_name">诸葛孔明名（客服）</span>	
+						<span class="company"><i>顺丰速运</i><b>78999968964789</b></span>						
+						<span class="arrive_time">收到时间<i>2016-10-29 15:34</i></span>
+						<button>收到纸质运单</button>												
+					</p>
+				</div>
+			</div> -->
+		</div>
+	<div class="check">
+		<div class="actions">
+			<a href="javascript:void(0);" class="active elec_receipt">上传电子回单</a>
+			<a href="javascript:void(0);" class="source_feedback">货主异常</a>
+			<a href="javascript:void(0);" class="vehicle_feedback">车辆异常</a>
+			<a href="javascript:void(0);" class="active print_receipt" hidden="hidden">纸质回单</a>
+			<a href="javascript:void(0);" class="arrive_close" hidden="hidden">关闭单据</a>
+			<!-- <a href="javascript:void(0);" class="check_hover">
+				<div class="hover_content">
+				</div>
+			</a>	 -->
+		</div>
+	</div>
+	<!-- 车辆到达弹出框 -->
+	<div class="mo_del">
+ 		<div class="model_content common1 upload">
+			<h4>上传电子回单</h4>
+			<div class="layout">
+				<label class="labe_l" for="">回单时间</label>
+				<input class="inpu_t" type="text" data-column="actionTime" data-time=true>
+			</div>
+			<div class="receipt_img">
+				<input type="text" class="file-add elec-image-column" onfocus="this.blur();" data-column="imageId">
+				<span>上传回单照片</span>
+			</div>
+			<a href="javascript:void(0);" class="action_elec_receipt">提交</a>
+			<i class="clo_se"></i>
+		</div>
+		<div class="model_content common1 clos_e">
+			<h4>关闭单据</h4>
+			<div class="layout">
+				<label class="labe_l fl" for="">关闭原因</label>
+				<textarea class="fr"  name="" id="" data-column="close_reason"></textarea>
+			</div>
+			<a href="javascript:void(0);" class="action_arrive_close">提交</a>
+			<i class="clo_se"></i>
+		</div>
+		<div class="model_content common2 waybill_time ">
+			<h4>纸质回单</h4>
+			<div class="layout">
+				<label class="labe_l" for="">收到纸质回单时间</label>
+				<input class="inpu_t" type="text" data-column="signTime" data-time=true>
+			</div>
+			<a href="javascript:void(0);" class="action_print_receipt">提交</a>
+			<i class="clo_se"></i>
+		</div>
+		<div class="model_content common2 receipt_time">
+			<h4>纸质回单</h4>
+			<div class="layout">
+				<label class="labe_l" for="">上交方式</label>
+				<input type="radio" name="way" value="01" checked="checked">快递寄回
+				<input type="radio" name="way" value="02">直接上交
+			</div>
+			<div class="layout part_1">
+				<label class="labe_l" for="">快递公司</label>
+				<input class="inpu_t" type="text" data-column="expressDelivery">
+			</div>
+			<div class="layout part_2">
+				<label class="labe_l" for="">单号</label>
+				<input class="inpu_t" type="text" data-column="billNo">
+			</div>
+			<div class="layout part_3" hidden="hidden">
+				<label class="labe_l" for="">上交时间</label>
+				<input class="inpu_t" type="text" data-column="signTime" data-time=true>
+			</div>
+			<a href="javascript:void(0);" class="action_print_submit">提交</a>
+			<i class="clo_se"></i>
+		</div>
+		 <div class="model_content common2  review">
+			<h4>审核</h4>
+			<div class="layout">
+				<label class="labe_l" for="">审核结果</label>
+				<input type="radio" name="review" value="01">通过
+				<input type="radio" name="review" value="02">不通过
+			</div>
+			<a href="javascript:void(0);" class="verify_elec_receipt">确认</a>
+			<i class="clo_se"></i>
+		</div> 
+	</div>
+	
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSOrderPush.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSImage.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSImageInfo.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSFeedBack.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSArriveInfo.js?ver=0.4"></script>
+	<script type="text/javascript">
+		// 收到纸质运单
+		/* $('.waybill').click(function() {
+			$('.mo_del').show();
+			$('.waybill_time').show().siblings('div').hide();
+		}); */
+
+		//上传电子回单
+		/* $('.up_load').click(function() {
+			$('.mo_del').show();
+			$('.upload').show().siblings('div').hide();
+		});*/
+		
+		// 纸质回单
+		/* $('.paper').click(function() {
+			$('.mo_del').show();
+			$('.receipt_time').show().siblings('div').hide();
+		}); */
+
+		// 关闭单据
+		/* $('.colse_waybill').click(function() {
+			$('.mo_del').show();
+			$('.clos_e').show().siblings('div').hide();
+		}); */
+
+		//审核
+		/* $('.back_check').click(function() {
+			$('.mo_del').show();
+			$('.review').show().siblings('div').hide();
+		}); */
+		
+
+		$('.clo_se').click(function() {
+			$('.mo_del').hide();
+		});
+
+	</script>
+</html>
+
+
+
+
+
+
+

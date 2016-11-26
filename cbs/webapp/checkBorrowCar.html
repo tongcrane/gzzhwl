@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+	<title>调配运力详情</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/checkBorrowCar.css?ver=0.4" />
+	<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>车挂信息</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">车牌号</p>
+					<span class="fr spa_n vehicle-column" data-column="plateNumber"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">车长</p>
+					<span class="fr spa_n vehicle-column" data-column="length"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">车辆类型</p>
+					<span class="fr spa_n vehicle-column" data-column="type"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">核定载重总质量</p>
+					<span class="fr spa_n vehicle-column"  data-column="loadWeight"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">所属部门</p>
+					<span class="fr spa_n vehicle-column" data-column="belongDepartName"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">使用部门</p>
+					<span class="fr spa_n vehicle-column" data-column="useDepartName"></span>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age">
+			<h3>司机信息</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">司机姓名1</p>
+					<span class="fr spa_n driver-column" data-column="realName"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">手机号码1</p>
+					<span class="fr spa_n driver-column" data-column="telphone"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">身份证号码1</p>
+					<span class="fr spa_n driver-column" data-column="idno"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">司机姓名2</p>
+					<span class="fr spa_n driver-column" data-column="realName"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">手机号码2</p>
+					<span class="fr spa_n driver-column" data-column="telphone"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">身份证号码2</p>
+					<span class="fr spa_n driver-column" data-column="idno"></span>
+				</div>
+			</div>
+		</div>		
+		<div class="mess_age">
+			<h3>借用信息</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">申请部门</p>
+					<span class="fr spa_n lend-column" data-column="toDepartName"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">开始借用时间</p>
+					<span class="fr spa_n lend-column" data-column="startTime"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">计划归还时间</p>
+					<span class="fr spa_n lend-column" data-column="endTime"></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">实际归还时间</p>
+					<span class="fr spa_n lend-column" data-column="realReturnedTime"></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">使用线路</p>
+					<span class="fr spa_n" data-column="line"></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">使用状态</p>
+					<span class="fr spa_n lend-column" data-column="statusCn"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="check">
+		<div class="actions">
+			<!-- <a href="javascript:void(0);" class="edit_btn">修改</a> -->
+			<a href="javascript:void(0);" class="return_car">收回车辆</a>
+			<!-- <a href="javascript:void(0);" class="check_hover">
+				<div class="hover_content">
+				</div>
+			</a>	 -->
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSOrderPush.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSBorrowCarInfo.js?ver=0.4"></script>
+
+</html>
+
+
+
+
+
+
+

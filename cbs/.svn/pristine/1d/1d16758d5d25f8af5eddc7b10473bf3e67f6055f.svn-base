@@ -1,0 +1,39 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-12 18:41:32
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-08-04 14:41:26
+*/
+.con_tent{border:none;width:1200px;padding:12px 0 0;}
+.mess_age{width:1150px;margin:0 auto;}
+h3>p{float:left;width:350px;font-size:14px;}
+h3>p:nth-child(2){margin-left:12px;}
+h3>p:nth-child(3){margin-left:58px;}
+h3>p i{font-style: normal;font-size:16px;}
+.order_num{font-size:16px;}
+
+.layout_line .spa_n{width:1032px;height:26px;line-height: 26px;padding-top:0;}
+
+.rela_tive{position:relative;}
+.fee{position:absolute;top:-2px;right:84px;font-style: normal;font-size:14px;color:#525252;}
+
+.check{width:1200px;border:none;}
+
+/* 去掉详情页面行高 */
+.layout .stage{line-height: normal;height:auto;}
+.layout .spa_n{line-height: normal;height:auto;}
+.layout{margin-bottom:15px;}
+
+/* 异常部分样式 */
+.unusual h3{width: 1123px;height: 48px;line-height: 48px;padding-left: 25px;margin-bottom: 24px;border-bottom: 1px solid #e1e1e1;background: url(../img/detail_info.png) no-repeat 0 center;font-size: 16px;color: #525252;}
+.unusual{width:1150px;margin:0 auto;}
+.un_content{margin-bottom: 30px;}
+.un_content h4{font-size:14px;color:#414141;margin-bottom:20px;}
+.un_bg{background: #f0f5ff;font-size: 14px;color:#414141;padding:15px 0;}
+.un_bg>p{padding:5px 10px;}
+.un_num{}
+.un_time,.un_name,.un_cost{padding:0 10px;}
+.un_reason{padding-left:10px;display:inline-block;width:818px;vertical-align: top;}
+.unusual .images{width: 178px;height: 178px;border: 1px solid #e5e5e5;border-radius: 4px;background: #fbfbfb;background-size: cover;background-position: center center;}
+.unusual .layout{margin-bottom:35px;}
+.mar_bottom{margin-bottom: 20px;}

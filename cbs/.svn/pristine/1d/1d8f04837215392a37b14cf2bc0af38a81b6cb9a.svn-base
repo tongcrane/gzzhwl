@@ -1,0 +1,298 @@
+//异常反馈
+var CBSTrackWin = function(options){
+	this.opt = $.extend({}, options);
+	
+	this.el=$('<div class="mo_del"> \
+		<div class="model_content mask"> \
+			<h4> \
+				<p>跟踪信息</p> \
+				<div class="radio_btn"> \
+					<input type="radio" name="status" value="01" checked="checked">无异常 \
+					<input type="radio" name="status" value="02">有异常 \
+				</div> \
+			</h4> \
+			<div class="mask_nor"> \
+				<div class="layout"> \
+					<label class="labe_l">车辆位置</label> \
+					<input type="text" class="inpu_t"> \
+				</div> \
+				<div class="layout"> \
+					<label class="labe_l">备注</label> \
+					<textarea name="" id="" cols="30" rows="10"></textarea> \
+				</div> \
+			</div> \
+			<div class="mask_abnor" hidden="hidden"> \
+				<div class="clearfix"> \
+					<div class="layout fl"> \
+						<label class="labe_l">异常开始时间</label> \
+						<input type="text" class="inpu_t"> \
+					</div> \
+					<div class="layout fr right_no"> \
+						<label class="labe_l">异常结束时间</label> \
+						<input type="text" class="inpu_t"> \
+					</div> \
+				</div> \
+				<div class="clearfix"> \
+					<div class="layout fl"> \
+						<label class="labe_l">异常原因</label> \
+						<input type="text" class="inpu_t"> \
+					</div> \
+					<div class="layout fr right_no"> \
+						<label class="labe_l">车辆位置</label> \
+						<input type="text" class="inpu_t"> \
+					</div> \
+				</div> \
+				<div class="layout right_no"> \
+					<label class="labe_l">备注</label> \
+					<textarea name="" id="" cols="30" rows="10"></textarea> \
+				</div> \
+				<ol class="line_img"> \
+					<li class="ab_image"> \
+						<input type="text" class="file-add" readonly="" onfocus="this.blur();" data-column=""> \
+						<span class="p-add">上传车辆异常照片</span> \
+					</li> \
+					<li class="ab_image"> \
+						<input type="text" class="file-add" readonly="" onfocus="this.blur();" data-column=""> \
+						<span class="p-add">上传车辆异常照片</span> \
+					</li> \
+					<li class="ab_image"> \
+						<input type="text" class="file-add" readonly="" onfocus="this.blur();" data-column=""> \
+						<span class="p-add">上传车辆异常照片</span> \
+					</li> \
+					<li class="ab_image"> \
+						<input type="text" class="file-add" readonly="" onfocus="this.blur();" data-column=""> \
+						<span class="p-add">上传车辆异常照片</span> \
+					</li> \
+					<li class="ab_image right_no"> \
+						<input type="text" class="file-add" readonly="" onfocus="this.blur();" data-column=""> \
+						<span class="p-add">上传车辆异常照片</span> \
+					</li> \
+				</ol> \
+			</div> \
+			<a href="javascript:void(0);" class="">提交</a> \
+			<i class="clo_se"></i> \
+		</div> \
+	</div>');
+	
+	
+	this.init = function(options){
+		var _this = this;
+		$('body').append(_this.el);
+		_this.el.find('input[name="status"]').on('change',function(){
+			var status=_this.el.find("input[name='status']:checked").val();
+			if(status=='01') {
+				_this.el.find('.mask_nor').show();
+				_this.el.find('.mask_abnor').hide();
+			} else if(status=='02') {
+				_this.el.find('.mask_nor').hide();
+				_this.el.find('.mask_abnor').show();
+			}
+		});
+		_this.el.find('.clo_se').click(function(){
+			_this.destory();
+		});
+		_this.el.find('a').click(function(){
+			_this.opt.callback.call(_this, _this.opt.data);
+		});
+		_this.show();
+	};
+	
+	this.show = function(){
+		var _this = this;
+		_this.el.find('.model_content').show();
+		_this.el.show();
+	}
+	
+	this.destory = function(){
+		var _this = this;
+		_this.el.remove();
+	}
+	
+	this.init(options);
+}
+
+var CBSTrackInfo = function(options){
+	this.opt = $.extend({}, options);
+	this.loadColumns=$('.load-column');
+	this.orderColumns=$('.order-column');
+	//this.imageColumns = $('.image-column');
+	this.imageList = [];
+
+	this.init = function(options){
+		var _this = this;
+		var orderId = _this.opt.orderId;
+		_this.getData(orderId);
+	};
+	
+	this.getData = function(orderId){
+		var _this = this;
+		$.get(global.server+'/admin/transit/getDetail',{orderId:orderId}, function(msg){
+			if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				var data = msg.data;
+				_this.data = data;
+				//_this.fillLoadContentFromJsonData(data.loadInfo);
+				//_this.fillOrderContentFromJsonData(data.orderInfo);
+				//_this.getFeedBack(data);
+			}
+		}).done(function(msg){
+			
+		});
+	};
+	
+	this.getTrack=function(data) {
+		
+	}
+	
+	this.init(options);
+};
+
+
+CBSTrackInfo.prototype.fillLoadContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    this.loadColumns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	_this.text(pValue);
+    });
+    var driverInfo=data.driverInfo;
+    var idno=$('span[data-column="_idno"]');
+    var realName=$('span[data-column="_realName"]');
+    var telphone=$('span[data-column="_telphone"]');
+    $.each(driverInfo,function(i,j){
+    	if(j.idno) {
+    		$(idno[i]).text(j.idno);
+    	}
+    	if(j.realName) {
+    		$(realName[i]).text(j.realName);
+    	}
+    	if(j.telphone) {
+    		$(telphone[i]).text(j.telphone);
+    	}
+    });
+};
+
+CBSTrackInfo.prototype.fillOrderContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    this.orderColumns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	_this.text(pValue);
+    });
+    
+/*    var getPcd = function(data){
+		var p = "";
+		var c = "";
+		var d = "";
+		$.each(data,function(i, j){
+			if(j.regionLevel == 1){
+				p = j.regionName;
+			} else if(j.regionLevel == 2){
+				c = j.regionName;
+			} else if(j.regionLevel == 3){
+				d = j.regionName;
+			}
+		});
+		var result = '';
+		if(p){
+			result+=p+" ";
+		}
+		if(c){
+			result+=c+" ";
+		}
+		if(d){
+			result+=d+" ";
+		}
+		return result;
+	}*/
+    
+    //var startP=data.startCodePCn?data.startCodePCn:'';
+    //var endP=data.endCodePCn?data.endCodePCn:'';
+    //var start=startP+" "+startC;
+    //var end=endP+" "+endC;
+    //$('span[data-column="_start"]').text(start);
+    //$('span[data-column="_end"]').text(end);
+    //var receive=getPcd(data.receiveRegion);
+    //var send=getPcd(data.sendRegion);
+    //$('span[data-column="_receive"]').text(receive+" "+data.receiveAddress);
+    //$('span[data-column="_send"]').text(send+" "+data.sendAddress)
+    
+    var startC=data.startCodeCCn?data.startCodeCCn:'';
+    var endC=data.endCodeCCn?data.endCodeCCn:'';
+    $('span[data-column="_line"]').text(startC+" - "+endC);
+};
+//异常反馈
+CBSTrackInfo.prototype.saveLoadFeedBack=function(loadId,status,type,dialog) {
+	var _this=this;
+	var data = {};
+	var result={};
+	var obj=new Array();
+	$('.feed-column').each(function(i, j){
+        var _this = $(this);
+        var pName = _this.data("column");
+        var pValue = _this.val();
+        data[pName] = pValue;
+    });
+	data.loadId=loadId;
+	data.status=status;
+	data.type=type;
+	obj.push(data);
+	result.loadFeedbackList=obj;
+	var valid=_this.validFeedBack(data);
+	if(valid){
+		var dataStringify = JSON.stringify(result);
+	    $.ajax({
+	        url: global.server + '/admin/trip/saveLoadFeedback',
+	        type: "POST",
+	        contentType: "application/json; charset=utf-8",
+	        data: dataStringify,
+	        dataType: "json",
+	        success: function (msg) {
+	            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+	            	alert("提交成功");
+	            	dialog.destory();
+	            	window.location.reload();
+	            } else {
+	            	alert(msg.status.errorMsg);
+	            }
+	        }
+	    });
+	}
+}
+
+CBSTrackInfo.prototype.validFeedBack=function(data) {
+	var valid=true;
+	if(!data.itemName) {
+		valid=false;
+		alert('异常名称不能为空');
+		return false;
+	}
+	if(data.itemPrice>=100000) {
+		valid=false;
+		alert('产生费用最多为5位整数2位小数');
+		return false;
+	}
+	if(!data.itemDesc){
+		valid=false;
+		alert('异常描述不能为空');
+		return false;
+	}
+	return valid;
+}
+
+$(function(){
+	
+	var orderId = global.QueryString.orderId;
+	var param = {
+		orderId : orderId
+	};
+	var track=new CBSTrackInfo(param);
+	
+	$('.track_btn').click(function(){
+		new CBSTrackWin();
+	});
+	
+});

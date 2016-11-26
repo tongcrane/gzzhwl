@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title class="title_val">添加车辆信息</title>
+	<link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/base.css?ver=0.3">
+	<link rel="stylesheet" type="text/css" href="/css/addBase.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/addCarInformation.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>添加车辆信息</p>
+	</div>
+
+	<div class="car-detail">
+		<div class="detail-left">
+			<div class="detail-photos">
+				<p>
+					<input type="text" class="file-add image-column" onfocus="this.blur();" data-column="ciImageRefId"/>
+					<span class="p-add">添加交强险扫描件</span>
+				</p>
+				<p>
+					<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="viImageRefId"/>
+					<span class="p-add">添加商业险扫描件</span>
+				</p>
+			</div>
+			<div class="detail-info">
+				<h3>保险信息</h3>
+				<p>
+					<label for="">交强险公司</label>
+					<input maxlength="50" data-column="ciName" type="text" class="column" value="">
+				</p>
+				<p>
+					<label for="">交强险保险单号</label>
+					<input maxlength="20" data-column="ciNo" type="text" class="column" value="">
+				</p>
+				<p class="exp-date">
+					<label for="">交强险有效期</label>
+					<input data-column="ciEffectDate" type="text" value="" class="use-date column" data-time="true" data-position="bottom left">
+					<input type="text" value="" class="use-date column" data-time="true" data-position="bottom left">
+				</p>
+				<p>
+					<label for="">商业险公司</label>
+					<input maxlength="50" data-column="viName" type="text" class="column" value="">
+				</p>
+				<p>
+					<label for="">商业险保险单号</label>
+					<input maxlength="20" data-column="viNo" type="text" class="column" value="">
+				</p>
+				<p class="exp-date">
+					<label for="">商业险有效期</label>
+					<input data-column="viEffectDate" type="text" value="" class="use-date column" data-time="true" data-position="bottom left">
+					<input type="text" value="" class="use-date column" data-time="true" data-position="bottom left">
+				</p>
+				<h3 class="add-width">使用信息</h3>
+				<p>
+					<label for="">所属部门</label>
+					<input maxlength="50" data-column="belongDepartName" type="text" value="" class="column">
+				</p>
+				<p class="user-apart">
+					<label for="">使用部门</label>
+					<input maxlength="50" data-column="useDepartName" type="text" value="" class="column">
+				</p>
+				<p class="routline">
+					<label class="useline">使用线路</label>
+					<div class="car-from pcd-column" data-column="departureCode">
+					</div>
+					<div class="car-to pcd-column" data-column="destinationCode">
+					</div>
+				</p>
+			</div>
+		</div>
+		<div class="detail-right">
+			<div class="detail-photos">
+				<p>
+					<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="vehicleImageRefId"/>
+					<span class="p-add">添加车辆照片</span>
+				</p>
+			</div>
+			<div class="detail-info">
+				<h3>其他信息</h3>
+				<p>
+					<label for="">车主</label>
+					<input maxlength="10" data-column="ownerName" type="text" value="" class="column">
+				</p>
+				<p>
+					<label for="">车主联系方式</label>
+					<input maxlength="20" data-column="ownerPhone" type="text" value="" class="column">
+				</p>
+				<p class="f-select clearfix">
+					<label for="">车长（m）</label>
+					<select data-column="length" class="column mySelect">
+						<option value="" selected="selected">请选择</option>
+						<option value="4.2">4.2</option>
+						<option value="4.5">4.5</option>
+						<option value="5">5</option>
+						<option value="6.2">6.2</option>
+						<option value="6.8">6.8</option>
+						<option value="7.2">7.2</option>
+						<option value="7.7">7.7</option>
+						<option value="7.8">7.8</option>
+						<option value="8.2">8.2</option>
+						<option value="8.6">8.6</option>
+						<option value="8.7">8.7</option>
+						<option value="9.6">9.6</option>
+						<option value="11.7">11.7</option>
+						<option value="12.5">12.5</option>
+						<option value="13">13</option>
+						<option value="13.5">13.5</option>
+						<option value="14">14</option>
+						<option value="16">16</option>
+						<option value="17">17</option>
+						<option value="17.5">17.5</option>
+						<option value="18">18</option>
+						<option value="其他">其他</option>
+					</select>
+				</p>
+				<p class="f-select clearfix">
+					<label for="">车属性</label>
+					<select data-column="attributes" class="column mySelect">
+						<option value="" selected="selected">请选择</option>
+						<option value="招商车">招商车</option>
+						<option value="自有车">自有车</option>
+						<option value="临时外请车">临时外请车</option>
+						<option value="挂靠外请车">挂靠外请车</option>
+						<option value="合同外请车">合同外请车</option>
+					</select>
+				</p>
+				<p class="f-select clearfix">
+					<label for="">车头类型</label>
+					<select data-column="headstockType" class="column mySelect">
+						<option value="" selected="selected">请选择</option>
+						<option value="牵引车头">牵引车头</option>
+						<option value="整体车">整体车</option>
+					</select>
+				</p>
+				<p>
+					<label for="">备注</label>
+					<textarea maxlength="200" rows="3" data-column="remark" class="column remarks" ></textarea>
+				</p>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="detail-bottom">
+			<div class="btn">
+				<button class="pre">上一页</button>
+				<button class="current">提交</button>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/moment.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSImage.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBS-PCD-Select.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSVehicle.js?ver=0.3"></script>
+
+
+<script type="text/javascript">
+	$(function(){
+		var vehicleInfoId = global.QueryString.vehicleInfoId;
+		var vehicle = new CBSVehicle({vehicleInfoId:vehicleInfoId,step:2});
+		$('.btn .current').click(function(){
+			vehicle.doSave();
+			return false;
+		});
+		$('.btn .pre').click(function(){
+			window.onbeforeunload = null;
+            window.onunload = null;
+			location.href = '/addCarInfoOne.html?vehicleInfoId='+vehicleInfoId;
+			return false;
+		});
+	});
+</script>
+
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	
+	<definition name="login" template="/WEB-INF/layout/login/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/layout/login/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/login.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+	</definition>
+	
+	<definition name="list.definition" template="/WEB-INF/layout/list/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/layout/list/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/layout/list/menu.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/layout/list/footer.jsp" />
+	</definition>
+	
+	<definition name="info.definition" template="/WEB-INF/layout/info/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/layout/list/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/layout/list/menu.jsp" />
+	</definition>
+	
+	<definition name="list/*/*" extends="list.definition">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+	
+	<definition name="info/*/*" extends="info.definition">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+
+</tiles-definitions>

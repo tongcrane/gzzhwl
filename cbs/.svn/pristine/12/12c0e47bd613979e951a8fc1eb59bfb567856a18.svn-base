@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+	<title>发车反馈详情</title>
+	<link rel="stylesheet" type="text/css" href="/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/css/sourceBass.css">
+	<link rel="stylesheet" type="text/css" href="/css/checkBusFeed.css" />
+	<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>
+				<p class="order_num">提货单号：<i class="" data-column=""></i>PZ10098</p>
+			</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">车牌号</p>
+					<span class="fr spa_n">OR123456778</span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">身份证号码</p>
+					<span class="fr spa_n">OR123456778</span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">司机名称</p>
+					<span class="fr spa_n">123</span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">司机号码</p>
+					<span class="fr spa_n">123</span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">车牌号</p>
+					<span class="fr spa_n">OR123456778</span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">身份证号码</p>
+					<span class="fr spa_n">OR123456778</span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">司机名称</p>
+					<span class="fr spa_n">123</span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">司机号码</p>
+					<span class="fr spa_n">123</span>
+				</div>
+			</div>
+		</div>		
+		<div class="mess_age">
+			<h3>订单/运单号</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">订单号</p>
+					<span class="fr spa_n">OR123456778</span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">运单号</p>
+					<span class="fr spa_n">123</span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">客户全称</p>
+					<span class="fr spa_n">123</span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">线路</p>
+					<span class="fr spa_n">OR123456778</span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">发货联系人</p>
+					<span class="fr spa_n">123</span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">发货联系人手机</p>
+					<span class="fr spa_n">123</span>
+				</div>
+			</div>
+		</div>
+		<div class="feedback clearfix">
+			<h3>货主异常反馈</h3>
+			<div class="feedline">
+				<div class="fl">
+					<div class="layout fl">
+						<label class="labe_l">异常名称</label>
+						<input maxlength="50" class="inpu_t" data-column=""  type="text" />
+					</div>
+					<div class="layout fl">
+						<label class="labe_l">产生费用（元）</label>
+						<input maxlength="50" class="inpu_t" data-column=""  type="text" />
+					</div>
+					<div class="layout fl right_short">
+						<label class="labe_l">异常描述</label>
+						<input maxlength="50" class="inpu_t" data-column=""  type="text" />
+					</div>
+				</div>
+				<div class="fr right_none"></div>
+			</div>
+			<div class="btn">
+				<a href="javascript:;" class="submit">提交</a>
+				<a href="javascript:;" class="add"></a>
+			</div>			
+		</div>
+		<div class="feedback clearfix">
+			<h3>车辆异常反馈</h3>
+			<div class="feedline">
+				<div class="fl">
+					<div class="layout fl">
+						<label class="labe_l">异常名称</label>
+						<input maxlength="50" class="inpu_t" data-column=""  type="text" />
+					</div>
+					<div class="layout fl">
+						<label class="labe_l">产生费用（元）</label>
+						<input maxlength="50" class="inpu_t" data-column=""  type="text" />
+					</div>
+					<div class="layout fl right_short">
+						<label class="labe_l">异常描述</label>
+						<input maxlength="50" class="inpu_t" data-column=""  type="text" />
+					</div>
+				</div>
+				<div class="fr right_none"></div>
+			</div>
+			<div class="btn">
+				<a href="javascript:;" class="submit">提交</a>
+				<a href="javascript:;" class="add"></a>
+			</div>			
+		</div>
+		<div class="mess_age rela_tive">
+			<h3>发车反馈</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">订单号</p>
+					<span class="fr spa_n">OR123456778</span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">运单号</p>
+					<span class="fr spa_n">123</span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">计价方式</p>
+					<span class="fr spa_n">123</span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<label class=" labe_l" >发车时间</label>
+					<input maxlength="7" class=" inpu_t" type="text" />
+				</div>
+				<div class="layout fl weight">
+					<label class=" labe_l" >实际重量</label>
+					<input maxlength="" class=" inpu_t unit_short" type="text" />
+				</div>
+				<div class="layout fl right_no volume">
+					<label class=" labe_l" >实际体积</label>
+					<input class=" inpu_t unit_short" type="text" />
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<label class=" labe_l" >客户单号</label>
+					<input maxlength="7" class=" inpu_t" type="text" />
+				</div>
+			</div>
+			<p class="images">
+				<input type="text" class="file-add" readonly onfocus="this.blur();" data-column=""/>
+				<span class="p-add">货主托运合同照片</span>
+			</p>
+			<button class="pull_out">发车</button>
+		</div>
+	</div>
+	<div class="check">
+		<div class="actions">
+			<a href="javascript:void(0);" class="">取消发车</a>
+			<a href="javascript:void(0);" class="">反馈货主异常</a>
+			<a href="javascript:void(0);" class="">反馈车辆异常</a>
+			<a href="javascript:void(0);" class="">车辆检查</a>
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/moment.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+   	<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSOrderPush.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSConfirm.js?ver=0.3"></script>
+	<!-- <script type="text/javascript" src="/js/CBSOrderInfo.js?ver=0.3"></script> -->
+
+</html>
+
+
+
+
+
+
+

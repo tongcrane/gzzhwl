@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+<title>货主合同</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+<link rel="stylesheet" type="text/css" href="/css/sourceBass.css">
+<link rel="stylesheet" type="text/css" href="/css/busContract.css" />
+<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>客户合同</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">订单号</p>
+						<span class="fr spa_n detailInfo-column" data-column="orderNo" ></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">客户合同</p>
+						<span class="fr spa_n baseInfo-column" data-column="agreementId"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">线路属性</p>
+						<span class="fr spa_n baseInfo-column" data-column="lineAttribute"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">是否允许外请</p>
+						<span class="fr spa_n baseInfo-column" data-column="needOwnVehicles"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">订单类型</p>
+						<span class="fr spa_n baseInfo-column" data-column="orderType"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">始发地</p>
+						<span class="fr spa_n lineInfo-column" data-column="startCodePCn,startCodeCCn"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">用车要求</p>
+						<span class="fr spa_n baseInfo-column" data-column="needLength,needType"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">客户单号</p>
+						<span class="fr spa_n baseInfo-column" data-column="customerBillNo"></span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">客户全称</p>
+						<span class="fr spa_n senderInfo-column" data-column="customerName" ></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">目的地</p>
+						<span class="fr spa_n lineInfo-column" data-column="endCodePCn,endCodeCCn"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">是否进口</p>
+						<span class="fr spa_n baseInfo-column" data-column="needImportedVehicles"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="mess_age">
+			<h3>联系人信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">发货人公司</p>
+						<span class="fr spa_n senderInfo-column" data-column="customerName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">发货人手机</p>
+						<span class="fr spa_n senderInfo-column" data-column="contactName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">收货人公司</p>
+						<span class="fr spa_n receiverInfo-column" data-column="customerName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">收货人手机</p>
+						<span class="fr spa_n receiverInfo-column" data-column="mobile"></span>
+					</div>
+				</div>
+				<div class="right right_long fr">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">发货联系人</p>
+							<span class="fl spa_n senderInfo-column" data-column="contactName"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">发货人电话</p>
+							<span class="fl spa_n senderInfo-column" data-column="telphone"></span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">发货人地址</p>
+							<span class="fl spa_n senderInfo-addr"></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">收货人名称</p>
+							<span class="fl spa_n receiverInfo-column" data-column="contactName"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">收货人电话</p>
+							<span class="fl spa_n receiverInfo-column" data-column="telphone"></span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">收货人地址</p>
+							<span class="fl spa_n receiverInfo-addr"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age">
+			<h3>货物及时效</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">货物品名</p>
+						<span class="fr spa_n baseInfo-column" data-column="goodsName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">公里数</p>
+						<span class="fr spa_n"><b class="more_unit  baseInfo-column" data-column="miles"></b>&nbsp;&nbsp;km</span>
+						
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">计划发车</p>
+						<span class="fr spa_n baseInfo-column" data-column="needStartTime"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">结算方式</p>
+						<span class="fr spa_n baseInfo-column" data-column="orderAdvice"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">计价方式</p>
+						<span class="fr spa_n chargeInfo-column" data-column="name"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl real_weight stage">实际重量</p>
+						<input maxlength="10" type="text" class="fr inpu_t price_column" data-column="goodsWeight" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">到达时限</p>
+						<span class="fr spa_n baseInfo-column" data-column="needArriveTime"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">是否已开单</p>
+						<span class="fr spa_n" ></span>
+					</div>
+
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">单价</p>
+						<span class="fr spa_n"><b class="more_unit baseInfo-column" data-column="unitPrice"></b>&nbsp;&nbsp;元/kg</span>
+						
+					</div>
+					<div class="layout clearfix">
+						<p class="fl real_vol stage">实际体积</p>
+						<input maxlength="10" type="text" class="fr inpu_t price_column" data-column="goodsVolume" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">回单要求</p>
+						<span class="fr spa_n baseInfo-column" data-column="paymentType"></span>
+					</div>
+				</div>
+			</div>
+			<div class="layout layout_line clearfix">
+				<p class="fl stage">备注</p>
+				<span class="fl spa_n baseInfo-column" data-column="remark"></span>
+			</div>
+		</div>
+		<div class="require">
+			<h3>费用信息</h3>
+			<div class="clearfix">
+				<div class="left right_long fl">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<label class="fl labe_l money" >纯运费</label>
+							<input maxlength="9" class="fl inpu_t price_column" type="text" data-column="freightPrice" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')">
+						</div>
+						<div class="layout fr">
+							<label class="fl labe_l money">装卸费</label>
+							<input maxlength="9" class="fl inpu_t price_column" type="text" data-column="loadPrice" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')">
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<label class="fl labe_l">其他费用说明</label>
+							<input maxlength="100" class="fl inpu_t price_column" type="text" data-column="otherExplain">
+						</div>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<label class="fl labe_l money">其他费用</label>
+						<input maxlength="9" class="fr inpu_t price_column" type="text" data-column="otherPrice" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l money">总费用</label>
+						<input maxlength="9" class="fr inpu_t price_column" type="text" data-column="total" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layout layout_line clearfix">
+			<label class="fl labe_l">备注</label>
+			<textarea maxlength="400" name="" id="" class="fl price_column" data-column="remark"></textarea>
+		</div>
+	</div>
+	<div class="check">
+		<div>
+			<a href="javascript:void(0);" class=" active conserve">生成运单</a>
+			<a href="javascript:void(0);" class="cansel">取消</a>
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+   	<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSTable.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSContract.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSConfirm.js?ver=0.3"></script>
+	<script type="text/javascript">
+		$('input[data-column="goodsWeight"]').on('blur',function(){
+			var v=$(this).val();
+			var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(1));
+			}
+		});
+		
+		$('input[data-column="goodsVolume"]').on('blur',function(){
+			var v=$(this).val();
+			var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(1));
+			}
+		});
+		
+		$('input[data-column="freightPrice"]').on('blur',function(){
+			var v=$(this).val();
+			var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(2));
+			}
+		});
+		
+		$('input[data-column="loadPrice"]').on('blur',function(){
+			var v=$(this).val();
+			var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(2));
+			}
+		});
+		
+		$('input[data-column="otherPrice"]').on('blur',function(){
+			var v=$(this).val();
+			var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(2));
+			}
+		});
+		
+		$('input[data-column="total"]').on('blur',function(){
+			var v=$(this).val();
+			var dot = v.indexOf(".");
+			if(dot=="-1") {
+				$(this).val(v);
+			} else {
+				$(this).val(Number(v).toFixed(2));
+			}
+		});
+		
+	</script>
+
+</html>
+
+
+
+
+
+
+

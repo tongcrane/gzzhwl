@@ -1,0 +1,153 @@
+var CBSLoadInfo = function(options){
+	this.opt = $.extend({}, options);
+	this.loadColumns=$('.load-column');
+	this.orderColumns=$('.order-column');
+
+	this.init = function(options){
+		var _this = this;
+		var loadId = _this.opt.loadId;
+		_this.getData(loadId);
+		_this.getRemarkHis(loadId);
+	};
+	
+	
+	this.getData = function(loadId){
+		var _this = this;
+		$.get(global.server+'/admin/load/getLoadDetail',{loadId:loadId}, function(msg){
+			if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				var data = msg.data;
+				_this.data = data;
+				_this.fillLoadContentFromJsonData(data.loadInfo);
+				_this.fillOrderContentFromJsonData(data.orderInfo);
+
+			}
+		}).done(function(msg){
+			
+		});
+	};
+	
+	this.init(options);
+};
+
+
+CBSLoadInfo.prototype.fillLoadContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    this.loadColumns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	_this.text(pValue);
+    });
+    var driverInfo=data.driverInfo;
+    var realName=$('span[data-column="_realName"]');
+    var telphone=$('span[data-column="_telphone"]');
+    $.each(driverInfo,function(i,j){
+    	console.log(realName[i])
+    	if(j.realName) {
+    		$(realName[i]).text(j.realName);
+    	}
+    	if(j.telphone) {
+    		$(telphone[i]).text(j.telphone);
+    	}
+    });
+    var isPredict=data.isPredict;
+    if(isPredict=='01') {
+    	$('span[data-column="isPredict"]').text('准确');
+    } else if(isPredict=='02') {
+    	$('span[data-column="isPredict"]').text('预估');
+    }
+};
+
+CBSLoadInfo.prototype.fillOrderContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    this.orderColumns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	_this.text(pValue);
+    });
+    
+    var getPcd = function(data){
+		var p = "";
+		var c = "";
+		var d = "";
+		$.each(data,function(i, j){
+			if(j.regionLevel == 1){
+				p = j.regionName;
+			} else if(j.regionLevel == 2){
+				c = j.regionName;
+			} else if(j.regionLevel == 3){
+				d = j.regionName;
+			}
+		});
+		var result = '';
+		if(p){
+			result+=p+" ";
+		}
+		if(c){
+			result+=c+" ";
+		}
+		if(d){
+			result+=d+" ";
+		}
+		return result;
+	}
+    
+    var needType=data.needType?data.needType:'';
+    var needLength=data.needLength?data.needLength:'';
+    if(needLength=='其他') {
+    	needLength=needLength;
+    } else {
+    	needLength=needLength+"米";
+    }
+    var _need=needType+" "+needLength;
+    $('span[data-column="_need"]').text(_need);
+    var startP=data.startCodePCn?data.startCodePCn:'';
+    var startC=data.startCodeCCn?data.startCodeCCn:'';
+    var endP=data.endCodePCn?data.endCodePCn:'';
+    var endC=data.endCodeCCn?data.endCodeCCn:'';
+    var start=startP+" "+startC;
+    var end=endP+" "+endC;
+    $('span[data-column="_start"]').text(start);
+    $('span[data-column="_end"]').text(end);
+    var receive=getPcd(data.receiveRegion);
+    var send=getPcd(data.sendRegion);
+    $('span[data-column="_receive"]').text(receive+" "+data.receiveAddress);
+    $('span[data-column="_send"]').text(send+" "+data.sendAddress)
+};
+
+CBSLoadInfo.prototype.getRemarkHis=function(orderId) {
+	var url = "/admin/remark/getRecordList";
+	$.ajax({
+        url: global.server + url,
+        type: "get",
+        data: {targetId:orderId,remarkType:'03'},
+        success: function (msg) {
+            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+            	$('.hover_content').append('<h4>操作纪录</h4>');
+            	var recordList=msg.data;
+            	if(recordList.length>0) {
+            		$.each(recordList,function(i,j){
+            			$('.hover_content').append('<p><span>'+j.real_name+'</span> 推送时间：'+j.createdTime+' 备注:'+j.content+'</p>');
+            		})
+            	}
+            } else {
+            	console.log(msg.status.errorMsg);
+            }
+        }
+    });
+}
+
+
+$(function(){
+	
+	var loadId = global.QueryString.loadId;
+	var param = {
+		loadId : loadId
+	};
+	new CBSLoadInfo(param);
+    $(".check_hover").hover(function(){$(".hover_content").show()},function(){$(".hover_content").hide()})
+	
+});

@@ -1,0 +1,169 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-06-17 14:12:19
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-08-08 15:24:58
+*/
+
+body{background:#fff;}
+/* 查看信息等部分样式 */
+.car-information p{
+	width:1140px;
+	height:46px;
+	border-bottom:1px solid #eee;
+	margin:0 auto;
+	font-size:18px;
+	line-height:46px;
+	padding-left:60px;
+	color:#525252;
+	font-weight: bold;
+	background: url(../img/car_info_bg.jpg) no-repeat 24px 12px;
+}
+.car-detail{
+	width:1172px;
+	min-height:772px;
+	border:1px solid #dcdcdc;
+	margin:12px auto 3px;
+	position:relative;
+}
+.detail-left,.detail-right{
+	width:574px;
+	height:auto;
+	float:left;
+	padding-left:12px;
+	background:#fff;
+}
+.clear-float{
+	padding-bottom: 50px;
+}
+.detail-right{
+	float:right;
+}
+.detail-photos{
+	width:180px;
+	float:left;
+}
+.detail-photos p{
+	width:180px;	
+	margin-top:20px;
+}
+.car-img{
+	width:178px;
+	height:178px;
+	border:1px solid #e5e5e5;
+	border-radius: 4px;
+	cursor: pointer;
+	background:#fbfbfb;
+	background-size:cover;
+	background-position: center center;
+}
+.detail-photos span{
+	display:block;
+	width:100%;
+	line-height:28px;
+	font-size:14px;
+	text-align:center;
+	color:#3b3b3b;
+	font-weight: bold;
+}
+.detail-info{
+	width:360px;
+	margin:20px 18px 0 0;
+	float:right;	
+}
+.detail-info h3{
+	font-size:16px;
+	line-height:22px;
+	background: url(../img/detail_info.png) no-repeat 0 center;
+	margin-bottom:10px;
+	padding-left:32px;
+	color:#525252;
+}
+.detail-info h3.add-width{
+	margin-top:15px;
+}
+.detail-info p{
+	padding-left:32px;
+	font-size:14px;
+	margin-bottom:10px;
+	color:#525252;
+
+}
+/* 添加信息页面 */
+.detail-info p label{
+	display: inline-block;
+	width:118px;
+	font-weight: bold;
+
+}
+.detail-info p input{
+	width:190px;
+	height:22px;
+	font-size:14px;
+	letter-spacing: 1;
+	color:#6e6e6e;
+}
+/* 查看信息页面 */
+.detail-info  p .lab-left{
+	float:left;
+}
+.detail-info p .span-right{
+	width:190px;
+	float:right;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+.detail-info .re-mark{
+	width:170px;
+	font-size:14px;
+	float: right;
+	color:#6e6e6e;
+	display: block;
+}
+.detail-info .b-remark{
+	float:left;
+}
+.detail-bottom{
+	position:absolute;
+	left:0;
+	bottom:0;
+	width:100%;
+	height:50px;
+	background:#f6f6f6;
+}
+.detail-bottom .btn{
+	float:right;
+}
+.detail-bottom button,.detail-bottom a{
+	display: block;
+	float:left;
+	width:85px;
+	height:30px;
+	line-height:30px;
+	border-radius: 3px;
+	border:1px solid #dcdcdc;
+	margin:12px 10px 0 0;
+	cursor: pointer;
+	outline: none;
+	text-align: center;
+}
+.detail-bottom a{
+	color:#414141;
+	font-size:14px;
+	font-weight: bold;
+}
+.detail-bottom .clock{
+	background: url(../img/clock.png) no-repeat center;
+	
+}
+.detail-bottom .close{
+	background:#eee url(../img/delete-icon.png) no-repeat center;
+}
+.detail-bottom .current{
+	background-color: #de642c;
+	color:#fff;
+	border:1px solid #bc5120;
+	font-size: 14px;
+	font-weight: bold;
+}
+

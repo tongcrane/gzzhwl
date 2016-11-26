@@ -1,0 +1,199 @@
+/**
+ * 
+ */
+var CBSAddLend = function(options){
+	this.opt = $.extend({}, options);
+	this.acm = {};
+	this.lineList = [];
+	
+	
+	var _this = this;
+	
+	this.init = function(options){
+		$('.autocomplete.vehicle').each(function(i, j){
+			var self = $(j);
+			var _p = self.data('column');
+			var ac = new CBSAutocomplete({
+				target : self,
+				url : '/admin/vehiclemanage/listAll',
+				method : 'get',
+			    valueField : 'vehicleInfoId',
+			    textField : 'plateNumber',
+			    onBlur : function(value){
+			    	if(value == null){
+			    		$('.vehicle-column').each(function(i, j){
+    			    		var self = $(j);
+    						self.text('');
+    			    	});
+			    	}
+			    },
+			    onSelect : function(row){
+			    	$('.vehicle-column').each(function(i, j){
+			    		var self = $(j);
+						var _p = self.data('show-column');
+						self.text(row[_p]);
+			    	});
+			    }
+			})
+			_this.acm[_p] = ac;
+		});
+		
+		
+		$('.autocomplete.driver').each(function(i, j){
+			var self = $(j);
+			var _p = self.data('column');
+			var _v = {};
+			var ac = new CBSAutocomplete({
+				target : self,
+				url : '/admin/driver/getDrivers',
+				method : 'get',
+			    valueField : 'driverInfoId',
+			    textField : 'realName',
+			    onBlur : function(value){
+			    	if(value == null){
+			    		$('.'+_p+'-column').each(function(i, j){
+    			    		var self = $(j);
+    						self.text('');
+    			    	});
+			    	}
+			    },
+			    onSelect : function(row){
+			    	$('.'+_p+'-column').each(function(i, j){
+			    		var self = $(j);
+						var _p = self.data('show-column');
+						self.text(row[_p]);
+			    	});
+			    }
+			})
+			_this.acm[_p] = ac;
+		});
+		
+		$('.autocomplete.department').each(function(i, j){
+			var self = $(j);
+			var _p = self.data('column');
+			var _v = {};
+			var ac = new CBSAutocomplete({
+				target : self,
+				url : '/admin/staff/getDepartList',
+				method : 'get',
+				valueField : 'departId',
+				textField : 'name'
+			})
+			_this.acm[_p] = ac;
+		});
+		
+		$('.use-date').each(function(i, j){
+            $(this).datetimepicker({
+                timepicker:false,
+                format:'Y-m-d',
+                autoclose:true,
+                todayHighlight:true,
+                keyboardNavigation:false
+            });
+        });
+		
+		$('.line-column').each(function(i, j){
+     		var category = $(this).data('column');
+     		var line = new CBSLineSelect({width:100,category:category}, $(this));
+     		_this.lineList.push(line);
+     	});
+	}
+	
+	
+	
+	this.init(options);
+}
+
+CBSAddLend.prototype.validData = function(data){
+	var _this = this;
+	console.log(data);
+	
+	var vehicleInfoId = data.vehicleInfoId;
+	if(vehicleInfoId == null){
+		alert('请选择外借车辆');
+		return false;
+	}
+	
+	var driver1InfoId = data.driver1InfoId;
+	if(driver1InfoId == null){
+		delete data.driver1InfoId;
+	}
+	var driver2InfoId = data.driver2InfoId;
+	if(driver2InfoId == null){
+		delete data.driver2InfoId;
+	}
+	
+	var toDepartId = data.toDepartId;
+	if(toDepartId == null){
+		alert('请选择申请部门');
+		return false;
+	}
+	
+	var endTime = data.endTime;
+	if(endTime == ''){
+		alert('请填写计划归还时间');
+		return false;
+	}
+	var departureCode = data.departureCode;
+	if(departureCode == ''){
+		alert('请选择计划线路');
+		return false;
+	}
+	
+	var destinationCode = data.destinationCode;
+	if(destinationCode == ''){
+		alert('请选择计划线路');
+		return false;
+	}
+	
+	return true;
+}
+
+CBSAddLend.prototype.getData = function(){
+	var _this = this;
+	var data = {};
+	
+	$.each(_this.acm, function(i, j) {
+		var _p = i;
+		var _v = j.getValue();
+		data[_p] = _v;
+	});
+	
+	$('.column').each(function(i, j){
+		var self = $(j);
+		var _p = self.data('column');
+		var _v = self.val();
+		data[_p] = _v;
+	});
+	
+	$.each(_this.lineList, function(i, j){
+		var _v = j.getValue();
+		var _p = _v.category;
+		data[_p] = _v.c;
+	});
+	return data;
+}
+
+CBSAddLend.prototype.postData = function(){
+	var _this = this;
+	var data = _this.getData();
+	var valid = _this.validData(data);
+	if(valid){
+		$.post(global.server + '/admin/lend/add', data, function(msg){
+			 if (msg && msg.status && msg.status.statusCode == global.status.success) {
+            	alert("提交成功");
+            } else {
+            	alert(msg.status.errorMsg);
+            }
+		});
+	}
+}
+
+$(function(){
+	var addLend = new CBSAddLend();
+	
+	$('.submit_btn').click(function(){
+		addLend.postData();
+	});
+	
+})

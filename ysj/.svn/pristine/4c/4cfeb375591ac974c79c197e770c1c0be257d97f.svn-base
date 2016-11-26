@@ -1,0 +1,501 @@
+/*
+* @Author: Administrator
+* @Date:   2016-06-06 17:36:40
+* @Last Modified by:   Administrator
+* @Last Modified time: 2016-06-30 16:11:18
+*/
+$(function(){
+	$("span.msg").hide();
+	window.countdown=60;
+	window.usuallyPath = new Array();
+	window.timerRunning = false;
+	window.validId = "";
+	window.value2 = "我是司机";
+	window.picCodeValidated = false;
+	window.settime =function(val) {
+		if (countdown == 0) {
+			val.removeAttribute("disabled");
+			val.innerHTML ="获取验证码";
+			$("#getMobileCode").css({"color": "#f25a0b"});
+			countdown = 60;
+			timerRunning = false;
+			return false;
+		} else {
+			val.innerHTML = "获取验证码(" + countdown + "秒)";
+			countdown--;
+			timerRunning = true;
+			val.setAttribute("disabled", true);
+		}
+		setTimeout(function() {
+			settime(val)
+		},1000)
+	}
+
+	//获取常跑线路路线
+	$.ajax({
+		type: "get",
+		url: global.server + '/api/region/findById',
+		data: {parentId:1},
+		async: true,
+		success: function(msg) {
+			if (msg && msg.status && msg.status.statusCode == global.status.success)
+			{
+				var data = msg.data;
+				//console.log(data);
+                var opt = "";
+                for(var i=0; i < data.length; i++)
+                {
+                    var regionName = data[i].regionName;
+                    opt =  opt + "<option  class='first' value='"+ regionName+"' >"+ regionName +"</option>";
+                }
+
+                $("#origin").append(opt);
+                $("#destination").append(opt);
+				$("#destination").styleSelect({styleClass: "selectDark", valueId: 1});
+				$("#origin").styleSelect({styleClass: "selectDark", valueId: 0});
+			}
+			else if(msg.status.statusCode != global.status.success)
+			{
+				//return false;
+				console.error(msg.status.statusCode + ":" + msg.status.errorMsg);
+			}
+		}
+	});
+	
+	//验证手机号是否正确
+	function validatePhone()
+	{
+		var v = $("#reg_phone").val();
+		var ret = true;
+		
+		if ($.trim(v) == ""){
+			msg = "手机号不能为空";
+			$("#reg_hint_phone").show().html(msg);
+			$("#reg_phone").css('border-color', '#e4867b');
+			ret = false;
+		}else if (!/^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test($.trim(v))){
+			msg = "手机号格式不正确！";
+			$("#reg_hint_phone").show().html(msg);
+			$("#reg_phone").css('border-color', '#e4867b');
+			ret = false;
+		}
+		else
+		{
+			$("#reg_hint_phone").hide();
+			$("#reg_phone").css({
+				'border-color': '#d9d9d9',
+				'border-top-color': '#c1c1c1'
+			});
+		}
+		
+		return ret;
+	}
+	
+	//验证图形验证码
+	function validatePicCode()
+	{
+		var v = $("#reg_val_code").val();
+		var ret = true;
+		if ($.trim(v) == ""){
+			msg = "图形验证码不能为空";
+			$("#reg_hint_code").show().html(msg);
+			$("#reg_val_code").css('border-color', '#e4867b');
+			ret = false;
+		}
+		else
+		{
+			$("#reg_hint_code").hide();
+			
+			//发送验证校验请求
+			$.ajax({
+				type: "get",
+				url: global.server + '/api/account/captcha ',
+				data: {token: v, validId:window.validId},
+				async: true,
+				success: function(msg) {
+					if (msg && msg.status && msg.status.statusCode == global.status.success) 
+					{
+						var data = msg.data;
+						if(data == true)
+						{
+							$("#reg_hint_code").show().html("验证码错误");
+							$("#reg_val_code").css('border-color', '#e4867b');
+							window.picCodeValidated = false;
+						}
+						else
+						{
+							$("#reg_hint_code").hide();
+							$("#reg_val_code").css({
+								'border-color': '#d9d9d9',
+								'border-top-color': '#c1c1c1'
+							});
+							window.picCodeValidated = true;
+						}
+					}
+					else if(msg.status.statusCode != global.status.success)
+					{
+						//return false;
+					}
+				}
+			});
+		}
+		
+		return ret;
+	}
+	
+	//验证手机验证码
+	function validateSMS()
+	{
+		var v = $("#code").val();
+		var ret = true;
+		if ($.trim(v) == ""){
+			msg = "手机验证码不能为空";
+			$("#reg_hint_sms").show().html(msg);
+			$("#code").css('border-color', '#e4867b');
+			ret = false;
+		}
+		else
+		{
+			$("#reg_hint_sms").hide();
+			$("#code").css({
+				'border-color': '#d9d9d9',
+				'border-top-color': '#c1c1c1'
+			});
+		}
+		
+		return ret;
+	}
+	
+	//验证密码
+	function validatePassword()
+	{
+		var v = $("#reg_pass").val();
+		var ret = true;
+		if ($.trim(v) == ""){
+			msg = "密码不能为空";
+			$("#reg_hint_password").show().html(msg);
+			$("#reg_pass").css('border-color', '#e4867b');
+			ret = false;
+		}
+		else if (v.length < 6 || v.length > 16)
+		{
+			msg = "密码长度必须是6到16位";
+			$("#reg_hint_password").show().html(msg);
+			$("#reg_pass").css('border-color', '#e4867b');
+			ret = false;
+		}
+		else
+		{
+			$("#reg_pass").css({
+				'border-color': '#d9d9d9',
+				'border-top-color': '#c1c1c1'
+			});
+			$("#reg_hint_password").hide();
+		}
+		
+		return ret;
+	}
+	
+	//验证再次密码
+	function validatePassword2()
+	{
+		var v0 = $("#reg_pass").val();
+		var v1 = $("#re_pass").val();
+		
+		var ret = true;
+		if (v0 != v1){
+			msg = "两次密码不一致";
+			$("#reg_hint_password2").show().html(msg);
+			$("#re_pass").css('border-color', '#e4867b');
+			ret = false;
+		}
+		else
+		{
+			$("#re_pass").css({
+				'border-color': '#d9d9d9',
+				'border-top-color': '#c1c1c1'
+			});
+			$("#reg_hint_password2").hide();
+		}
+		
+		return ret;
+	}
+
+	function validateUsuallyPath()
+	{
+		if(window.usuallyPath.length <= 0)
+		{
+			$("#reg_hint_path").show().html("必须添加至少一条常跑线路");
+			$("#origin").focus();
+			return false;
+		}
+		else
+		{
+			$("#reg_hint_path").hide();
+			return true;
+		}
+	}
+
+	// 勾选协议
+	function validateAgreement(){
+		var vAgree=$("#agree");
+		if (vAgree.is(":checked")){
+			$("#reg_hint_agr").hide();
+			return true;
+		}else{
+			$("#reg_hint_agr").show().html("您必须同意《运势界服务协议》才可注册");
+			return false;
+		}
+	}
+
+	//删除常规线路
+	window.removePath = function(obj) {
+		var v1 = $(obj).parent().find("span.from em.city").text();
+		var v2 = $(obj).parent().find("span.to em.city").text();
+		var arrVal = v1 + "_" + v2;
+
+		var i = window.usuallyPath.indexOf(arrVal);
+		window.usuallyPath.splice(i, 1);
+
+		$(obj).parent().remove();
+		if($("#routeWrap").children().length <= 0)
+		{
+			$("span#add").text("添加");
+		}
+	}
+
+	//点击输入手机号
+	$("#reg_phone").focusin(function(){
+		$(this).siblings("span.msg").show();
+	})
+
+	$("#reg_phone").focusout(function(){
+		validatePhone();
+		$(this).siblings("span.msg").hide();
+	})
+
+	//验证输入图形验证码
+	$("#reg_val_code").focusout(function(){
+		validatePicCode();
+	})
+
+	//验证输入手机验证码
+	$("#code").focusout(function(){
+		validateSMS();
+	})
+
+	//点击图形验证码
+	$("#img_val_code").click(function(){
+		$.ajax({
+			type: "get",
+			url: global.server + '/api/account/captcha',
+			data: null,
+			async: true,
+			success: function(msg) {
+				if (msg && msg.status && msg.status.statusCode == global.status.success) {
+					var data = msg.data;
+					$('#img_val_code')[0].src = "data:image/jpg;base64," + data.image;
+					window.validId = data.validId;
+				}
+				else if(msg.status.statusCode != global.status.success){
+					return false;
+				}
+			}
+		});
+	})
+
+	//点击获取手机验证码按钮
+	$("#getMobileCode").click(function(){
+		if((validatePhone() == false) || (window.timerRunning))
+		{
+			return;
+		}
+
+		var phone = $("#reg_phone").val();
+		$("#getMobileCode").attr("disabled", "true");
+		$("#getMobileCode").css({"background-image": "none"});
+		$("#getMobileCode").css({"color": "#adadad"});
+		var btn = $("#getMobileCode");
+		settime(btn[0]);
+
+		$.ajax({
+			type: "post",
+			url: global.server + '/api/account/generate',
+			async:true,
+			data: { telphone: phone, codeType: '00'},
+			success: function (msg) {
+				if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				}
+				else if(msg.status.statusCode != global.status.success){
+					alert(msg.status.errorMsg);
+					return false;
+				}
+			}
+		})
+	})
+
+	//验证密码
+	$("#reg_pass").focusout(function(){
+		validatePassword();
+	})
+
+	//验证再次密码
+	$("#re_pass").focusout(function(){
+		if(validatePassword())
+			validatePassword2();
+	})
+
+	//添加常跑线路
+	$("span#add").click(function(){
+		var childCount = $("ul#routeWrap").children().length;
+
+		if(childCount < 5){
+
+			if(undefined == window.value0) return;
+			if(undefined == window.value1) return;
+
+			var arrVal = window.value0 + "_" + window.value1;
+			var i = window.usuallyPath.indexOf(arrVal);
+			if(i < 0)
+			{
+				console.log("添加了一条常跑线路:" + arrVal);
+				window.usuallyPath.push(arrVal);
+				$("#reg_hint_path").hide();
+			}
+			else
+			{
+				alert("此条线路已经添加，请选择其他线路。");
+				return;
+			}
+
+			var line = "";
+			line += "<li>";
+			line += "	<span class='from'>";
+			line += "		<em class='are'>起运地</em>";
+			line += "       <em class='city'>"+window.value0+"</em>";
+			line += "   </span>";
+			line += "   <span class='line'>——</span>";
+			line += "   <span class='to'>";
+			line += "       <em class='are'>目的地</em>";
+			line += "       <em class='city'>"+window.value1+"</em>";
+			line += "   </span>";
+			line += "   <span class='close' onClick='window.removePath(this)'>删除</span>";
+			line += "</li>";
+
+			$("ul#routeWrap").append(line);
+			$("span#add").text("继续添加");
+		}
+	})
+
+	function showDialog()
+	{
+		$(".dialog_w").dialog({
+			width:718,
+			modal:true,
+		});
+
+		$(".dialog_w").dialog("open");
+	}
+
+	function submitUsuallyPath(fromStation, toStation, lastOne)
+	{
+		$.ajax({
+			type:"post",
+			url: global.server + '/api/line/addLine',
+			async:true,
+			data: {Authorization: $.cookie("accountId") + ":" + $.cookie("token"), departureCode: fromStation, destinationCode: toStation},
+			success: function (msg) {
+				if (msg && msg.status && msg.status.statusCode == global.status.success) {
+					console.log("addLine status=" + msg.status.statusCode + ", lastOne = " + lastOne);
+				}
+				else if(msg.status.statusCode != global.status.success) {
+					console.error(msg.status.statusCode + ":" + msg.status.errorMsg);
+				}
+
+				if(lastOne == true)
+				{
+					showDialog();
+				}
+		}})
+	}
+
+	//提交
+	$("#nextStep").click(function(){
+
+		var data;
+		var vRole = window.value2;
+
+		if(!global.isDebug)
+		{
+			if(!validatePhone()) return;
+			if(!validatePicCode()) return;
+			if(!validateSMS()) return;
+			if(!validatePassword()) return;
+			if(!validatePassword2()) return;
+			if(!validateUsuallyPath()) return;
+			if(!validateAgreement()) return;
+
+			var vTelephone = $("#reg_phone").val();
+			var vPassword = $("#re_pass").val();
+			var vSMS = $("#code").val();
+
+			data = { telphone: vTelephone, "password":vPassword, barCode:vSMS, deviceType:"01", departureCode:"00", destinationCode:"00"};
+		}
+		else
+		{
+			data = { telphone: "13800139032", "password":"123456", barCode:"1234", deviceType:"01", departureCode:"00", destinationCode:"00"};
+		}
+
+		console.log("call ajax");
+		$.ajax({
+			type:"post",
+			url: global.server + '/api/account/register',
+			async:true,
+			data: data,
+			success: function (msg) {
+				if (msg && msg.status && msg.status.statusCode == global.status.success) {
+
+					console.log(msg);
+					$.cookie("accountId", msg.data.accountId);
+					$.cookie("token", msg.data.token);
+					$.cookie("telphone", msg.data.telphone);
+					$.cookie("agentType", msg.data.agentType);
+					$.cookie("checkStatus", msg.data.checkStatus);
+					$.cookie("status", msg.data.status);
+
+					//判断角色
+					if(vRole == "我是司机")
+					{
+						$("#car_info_link")[0].href= "info_cars.htm";
+					}
+					else
+					{
+						$("#car_info_link")[0].href= "info_agent.htm";
+					}
+
+					console.log(window.usuallyPath);
+					for(var i=0; i<window.usuallyPath.length; i++)
+					{
+						console.log("add line:" + i);
+						var s = window.usuallyPath[i];
+						var p = s.split("_");
+						var lastOne = false;
+						if(i >= window.usuallyPath.length-1)
+						{
+							lastOne = true;
+						}
+						submitUsuallyPath(p[0], p[1], lastOne);
+					}
+				}
+				else {
+					console.error(msg.status.statusCode + ":" + msg.status.errorMsg);
+				}
+			}})
+	})
+	
+    $(window).scroll(function () {
+        $('.ui-dialog').css('position', "fixed");
+        $('.ui-dialog').css('top',200);
+    });
+})
+

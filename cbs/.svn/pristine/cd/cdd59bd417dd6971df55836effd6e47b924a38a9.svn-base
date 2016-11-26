@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <title>司机信息</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+    <link rel="stylesheet" type="text/css" href="css/base.css?ver=0.4"/>
+    <link rel="stylesheet" type="text/css" href="css/driverInfo.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+	<div class="car-information">
+		<p>车辆信息</p>
+	</div>
+	<div class="car-detail clearfix">
+		<form action="">
+			<div class="detail-left clearfix">
+				<div class="detail-photos">
+					<p>
+						<div class="car-img" data-column="vehicleImageId"></div>
+						<span>车辆照片</span>
+					</p>
+				</div>
+				<div class="detail-info mar-bottom">
+					<h3>基本信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">车牌号</label>
+						<span  class="column span-right" data-column="plateNumber"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">车型</label>
+						<span  class="column span-right" data-column="type"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">车长（m）</label>
+						<span  class="column span-right" data-column="length"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">车品牌</label>
+						<span  class="column span-right" data-column="brand"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">车辆登记日期</label>
+						<span  class="column span-right" data-column="regDate"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">登记证书号</label>
+						<span  class="column span-right" data-column="regCertCode"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">强制险有效期</label>
+						<span  class="column span-right" data-column="ciEffectDate"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">强制险公司名称</label>
+						<span  class="column span-right" data-column="ciName"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">商业险有效期</label>
+						<span  class="column span-right" data-column="viEffectDate"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">商业险公司名称</label>
+						<span  class="column span-right" data-column="viName"></span>
+					</p>
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+					<p>
+						<div class="car-img" data-column="licenseImageRefId"></div>
+						<span>行驶证照片</span>
+					</p>
+					<p class="mar-top">
+						<div class="car-img" data-column="ocImageRefId"></div>
+						<span>运营证照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>行驶证信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">有效期至 </label>
+						<span  class="column span-right" data-column="licenseValidDate"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">核载重量（kg）</label>
+						<span  class="column span-right" data-column="loadWeight"></span>
+					</p>
+					<h3>运营证信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">发证日期</label>
+						<span  class="column span-right" data-column="operatingCertIssueDate"></span>
+					</p>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div class="car-information">
+		<p>司机信息</p>
+	</div>	
+	<div class="car-detail mar-bottom clearfix">
+		<form action="">
+			<div class="detail-left clearfix">
+				<div class="detail-photos">
+					<p>
+						<div class="car-img" data-column="idFImageRefId"></div>
+						<span>身份证照片</span>
+					</p>
+					<p class="mar-top">
+						<div class="car-img" data-column="drivingFImageRefId"></div>
+						<span>驾驶证照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>身份证信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">姓名</label>
+						<span  class="column span-right" data-column="realName"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">身份证号</label>
+						<span  class="column span-right" data-column="idno"></span>
+					</p>
+					<h3>驾驶证信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">有效期至</label>
+						<span  class="column span-right" data-column="dlEndDate"></span>
+					</p>
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+					<p>
+						<div class="car-img" data-column="qualifiImageRefId"></div>
+						<span>从业资格证照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>从业资格证信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">有效期至 </label>
+						<span  class="column span-right" data-column="qcEndDate"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">证件号</label>
+						<span  class="column span-right" data-column="qcNo"></span>
+					</p>
+					<h3>常跑线路</h3>
+					<p class="rote-data">
+					</p>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	<div class="driver-bottom">
+		<div class="btn">
+			<div class="btn">
+				<button class="current" id="checkUnpass">审核不通过</button>
+				<button class="current" id="checkPass">审核通过</button>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+<script type="text/javascript" src="js/explugin/CBSImageInfo.js?ver=0.4"></script>
+<script type="text/javascript" src="js/driverInfo.js?ver=0.4"></script>
+
+<script type="text/javascript">
+	var driverInfoId = global.QueryString.driverInfoId;
+	var driver = new CBSDriver({driverInfoId:driverInfoId});
+	
+	$('#checkUnpass').click(function(){
+		driver.check({driverInfoId:driverInfoId,authFlag:1});
+		return false;
+	});
+	
+	$('#checkPass').click(function(){
+		driver.check({driverInfoId:driverInfoId,authFlag:0});
+		return false;
+	});
+</script>
+
+</html>

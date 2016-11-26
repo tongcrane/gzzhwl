@@ -1,0 +1,12 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-06-22 08:42:29
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-08-08 17:09:40
+*/
+.reduce-width input{width:230px;}
+.search-content-div{	/* margin-bottom: 11px; */}
+.search-content-div .pad_top{padding-top:15px;}
+.car-num{width:130px;}
+.car-list{width:585px;}
+.owe-to>p{width:188px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}

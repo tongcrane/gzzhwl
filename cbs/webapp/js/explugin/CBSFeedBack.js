@@ -1,0 +1,122 @@
+var CBSFeedBack = function(options){
+	this.opt = $.extend({}, options);
+	
+	this.el=$('<div class="mo_del">\
+			<div class="model_content car_content">\
+			<h4 class="_title">车辆异常反馈</h4>\
+			<div class="model_back">\
+				<div class="clearfix">\
+					<div class="layout">\
+						<label class="labe_l short">异常名称</label>\
+						<input maxlength="10" class="inpu_t feed-column" type="text" data-column="itemName">\
+					</div>\
+					<div class="layout inline">\
+						<label class="labe_l short money relati_ve">产生费用</label>\
+						<input maxlength="11" class="inpu_t unit_short feed-column itemPrice" type="text" data-column="itemPrice" onkeyup="if(isNaN(value))execCommand(\'undo\')">\
+					</div>\
+					<div class="layout inline">\
+						<label class="labe_l short">费用类型</label>\
+						<input type="radio" name="radi_o" value="00" checked="checked"/>扣款\
+						<input type="radio" name="radi_o" value="01"/>补偿\
+					</div>\
+				</div>\
+				<div class="layout feed_reason">\
+					<label class="labe_l">异常描述</label>\
+					<textarea maxlength="50" name="" id="" class="feed-column" data-column="itemDesc"></textarea>\
+				</div>\
+			</div>\
+			<a href="javascript:void(0);" class="">提交</a>\
+			<i class="clo_se"></i>\
+		</div>\
+			</div>');
+	
+	
+	this.init = function(options){
+		var _this = this;
+		$('body').append(_this.el);
+		_this.el.find('._title').html(_this.opt.title);
+		_this.el.find('.itemPrice').on('blur',function(){
+			var v=$(this).val();
+			if(v) {
+				$(this).val(Math.abs(Number(v)).toFixed(2));
+			}
+		});
+		_this.el.find('.clo_se').click(function(){
+			_this.destory();
+		});
+		_this.el.find('a').click(function(){
+//			_this.opt.callback.call(_this, _this.opt.data);
+			
+			var data = {};
+			var result={};
+			var obj=new Array();
+			_this.el.find('.feed-column').each(function(i, j){
+		        var _this = $(this);
+		        var pName = _this.data("column");
+		        var pValue = _this.val();
+		        data[pName] = pValue;
+		    });
+			data.loadId=_this.opt.data.loadId;
+			data.status=_this.opt.data.status;
+			data.type=_this.opt.data.type;
+			data.priceSymbol=_this.el.find("input[name='radi_o']:checked").val();
+			obj.push(data);
+			result.loadFeedbackList=obj;
+			var valid=_this.validFeedBack(data);
+			if(valid){
+				var dataStringify = JSON.stringify(result);
+			    $.ajax({
+			        url: global.server + '/admin/feedback/saveLoadFeedback',
+			        type: "POST",
+			        contentType: "application/json; charset=utf-8",
+			        data: dataStringify,
+			        dataType: "json",
+			        success: function (msg) {
+			            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+			            	alert("提交成功");
+			            	_this.destory();
+			            	window.location.reload();
+			            } else {
+			            	alert(msg.status.errorMsg);
+			            }
+			        }
+			    });
+			}
+		});
+		
+		_this.show();
+	};
+	
+	this.validFeedBack=function(data) {
+		var valid=true;
+		if(!data.itemName) {
+			valid=false;
+			alert('异常名称不能为空');
+			return false;
+		}
+		if(data.itemPrice>99999999.99) {
+			valid=false;
+			alert('请输入正确有效的异常费用');
+			return false;
+		}
+		if(!data.itemDesc){
+			valid=false;
+			alert('异常描述不能为空');
+			return false;
+		}
+		return valid;
+	}
+	
+	this.show = function(){
+		var _this = this;
+		_this.el.find('.car_content').show();
+		_this.el.show();
+	}
+	
+	this.destory = function(){
+		var _this = this;
+		_this.el.remove();
+	}
+	
+	this.init(options);
+}

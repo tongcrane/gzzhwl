@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>竞标详情</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/infoListBase.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/sourceBass.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/checkBidManage.css">
+<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="status">
+		<p class="fl sourse_num">货源编号：<span>1234567</span>(<b class="source_status">竞标中</b>)</p>
+		<div class="fr push_time">推送时间：<span>2012-12-12 12:12</span></div>
+	</div>
+	<div class="con_tent">
+		<div class="require">
+			<div class="require_line clearfix">
+				<div class="require_spe fl">
+					<label class="fl labe_l">车型</label>
+					<span class="fr spa_n column" data-column="needType"></span>
+				</div>
+				<div class="require_spe fl">
+					<label class="fl labe_l">车长</label>
+					<span class="fr spa_n re_spe_short"><b class="more_unit column" data-column="needLength"></b>&nbsp;&nbsp;<i>m</i></span>
+				</div>
+				<div class="require_spe fl">
+					<label class="fl labe_l">竞标开始时间</label>
+					<span class="fr spa_n re_spe_long column" data-column="startTime">345454</span>
+				</div>
+				<div class="require_spe fl">
+					<label class="fl labe_l">竞标结束时间</label>
+					<span class="fr spa_n re_spe_long column" data-column="endTime">345454</span>
+				</div>
+				<div class="require_spe fl">
+					<label class="fl labe_l">司机要求</label>
+					<span class="fr spa_n re_spe_short"><b class="more_unit column" data-column="needDriverNum"></b>&nbsp;&nbsp;人</span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">在途要求</p>
+						<span class="fr spa_n column" data-column="transitRequire"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">优先级</p>
+						<span class="fr spa_n column" data-column="level"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">公里数</p>
+						<span class="fr spa_n "><b class="more_unit column"  data-column="miles"></b>&nbsp;&nbsp;km</span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">预计应付费用</p>
+						<span class="fr spa_n"><b class="more_unit column" data-column="estimatedPrice"></b>&nbsp;&nbsp;元</span>
+					</div>
+				</div>
+			</div>
+			<div class="layout clearfix">
+				<label class="fl labe_l">备注</label>
+				<span class="fl spa_n long column" data-column="remark"></span>
+				<div class="butt_on fl">
+					<a href="javascript:void(0);" class="fl bid_close"id="close_current" hidden>关闭此次竞标</a>
+					<a href="javascript:void(0);" class="fl refuse">查看货源详情</a>
+				</div>
+			</div>
+		</div>                                                    
+	</div>
+	<div class="bid_table">
+		<div class="handle clearfix">
+			<div class="handle-data">
+				应标<span id="quotedCount">122</span>人
+			</div>
+			<div class="handle-page">
+				<span>第<i class="page-num">1</i>页，共十页</span>
+				<div class="han-page">
+					<button class="handle-pre"></button>
+					<button class="handle-next"></button>
+				</div>
+				<select name="" id="" class="mySelect">
+					<option value="" selected>第一页</option>
+				</select>
+			</div>					
+		</div>
+		
+		<div class="handle-content">
+		<table>
+			<thead>
+			<tr><th>用户名</th><th>姓名</th><th>身份证号</th><th>报价</th><th>报价人备注</th><th>状态</th><th>备注</th><th>完成运输</th><th>毁约</th><th></th></tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+		</div>
+		<div class="bottom_info">
+			<div class="bottom_con">
+				<p class="fl" id="vehicle_info">运输车辆信息：粤A8888888 驾驶员：张三 李四 （已审核）</p>
+				<a href="javascript:void(0);" class="fr" id="show_card_info" hidden>查看证照信息</a>
+			</div>
+		</div>
+	</div>
+	<div class="mo_del close_win">
+		<div class="model_content">
+			<textarea maxlength="400" name="" id="close_reason" placeholder="请输入关闭理由"></textarea>
+			<a href="javascript:void(0);">确定</a>
+			<i></i>
+		</div>
+	</div>
+	
+</body>
+
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+    <script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSTable.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSConfirm.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSBidManageInfo.js?ver=0.3"></script>
+	<script type="text/javascript">
+
+		// 模态窗口
+		$('.bid_close').click(function(){
+			$('.mo_del').show();
+		});
+		$('.model_content i').click(function(){
+			$('.mo_del').hide();
+		});
+		$('body').on('click','.bid_remark',function(){
+			$('.model_content textarea').val('请输入备注');
+			$('.mo_del').show();
+		});
+		
+		var sourceId=global.QueryString.sourceId;
+		var bidManage=new CBSBidManageInfo({sourceId:sourceId});
+		
+		$('.butt_on .refuse').click(function(){
+			window.open('checkSourceList.html?sourceId='+sourceId);
+		});
+		
+		$('.close_win a').click(function(){
+			bidManage.doClose();
+		});
+	</script>
+</html>

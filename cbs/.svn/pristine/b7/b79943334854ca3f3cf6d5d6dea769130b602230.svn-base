@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <title>账号信息</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+    <link rel="stylesheet" type="text/css" href="css/base.css?ver=0.4"/>
+    <link rel="stylesheet" type="text/css" href="css/accountInfo.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>账号信息</p>
+	</div>
+	
+	<div class="car-detail">
+		<form action="">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<p>
+						<div class="car-img" data-column="idFImageRefId"></div>
+						<span>身份证正面照</span>
+					</p>
+					<p>
+						<div class="car-img" data-column="idBImageRefId"></div>
+						<span>身份证反面照</span>
+					</p>
+					<p>
+						<div class="car-img" data-column="busImageRefId"></div>
+						<span>营业执照照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>身份证信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">姓名</label>
+						<span  class="column span-right" data-column="realName"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">手机号</label>
+						<span  class="column span-right" data-column="telphone"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">身份证号</label>
+						<span  class="column span-right" data-column="idno"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">审核状态</label>
+						<span  class="column span-right" data-column="status"></span>
+					</p>
+
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+					<p>
+						<div class="car-img" data-column="orgImageRefId"></div>
+						<span>组织机构代码证照片</span>
+					</p>
+					<p>
+						<div class="car-img" data-column="taxImageRefId"></div>
+						<span>税务登记照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>公司信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">公司名称</label>
+						<span  class="column span-right" data-column="companyFullName"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">公司注册号</label>
+						<span  class="column span-right" data-column="busCode"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">组织机构代码证号</label>
+						<span  class="column span-right" data-column="orgCode"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">税务登记证税字</label>
+						<span  class="column span-right" data-column="taxRegCode"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">统一社会信用代码</label>
+						<span  class="column span-right" data-column="uscCode"></span>
+					</p>
+				</div>
+			</div>
+			<div class="detail-bottom">
+				<div class="btn">
+					<div class="btn">
+						<button class="current" id="checkUnpass">审核不通过</button>
+						<button class="current" id="checkPass">审核通过</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+    <script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+    <script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSImageInfo.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/accountInfo.js?ver=0.4"></script>
+	
+	<script type="text/javascript">
+		var accountId = global.QueryString.accountId;
+		var account = new CBSAccount({accountId:accountId});
+		
+		$('#checkUnpass').click(function(){
+			account.checkUnpass({accountId:accountId});
+			return false;
+		});
+		
+		$('#checkPass').click(function(){
+			account.checkPass({accountId:accountId});
+			return false;
+		});
+	</script>
+	
+</html>

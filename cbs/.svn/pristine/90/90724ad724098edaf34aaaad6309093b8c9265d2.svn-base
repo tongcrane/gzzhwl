@@ -1,0 +1,331 @@
+var CBSCustom = function(options){
+    console.log(options);
+	this.opt = $.extend({}, options);
+	this.columns = $('.column');
+	this.needColumns=$('.required');
+	this.pcdColumns = $('.pcd-column');
+	this.inModify = false;
+	this.pcdList = [];
+	
+    var _this = this;
+    
+    this.init = function (options) {
+    	var _this = this;
+    	
+    	_this.needColumns.click(function(){
+        	$(this).siblings('.tips').hide();
+        });
+        
+        _this.needColumns.change(function(){
+        	$(this).siblings('.tips').hide();
+        });
+        
+        if (options && options.custId) {
+            console.log('init customer data with id: ' + options.custId);
+            var url = "/admin/customer/queryCustDetail?custId=" + options.custId;
+            var _this = this;
+            $.get(global.server + url, function (msg) {
+                if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                	$('input[data-column="customerNo"]').css('border','none');
+                    var data = msg.data;
+                    _this.fillContentFromJsonData(data);
+                    _this.modify();
+                    $('.car-information p').html('修改客户信息');
+                    $('.title_val').html('修改客户信息');
+                } else {
+                	alert("页面参数错误");
+                	window.close();
+                }
+            }).done(function (msg) {
+            	var data = msg.data;
+            	$('select').multiselect({
+					header : false,
+					multiple : false,
+					selectedList : 1,
+					noneSelectedText: '请选择'
+				});
+            	 _this.pcdColumns.each(function(i, j){
+             		$(this).append('<select class="pcd-select-p"></select>');
+             		$(this).append('<select class="pcd-select-c"></select>');
+             		$(this).append('<select class="pcd-select-d"></select>');
+             		var category = $(this).data('column');
+             		var value = data[category];
+             		var pcd = new CBSPcdSelect({width:100,category:category,initCode:value}, $(this));
+             		_this.pcdList.push(pcd);
+             	});
+            });
+        } else {
+            console.log('new customer');
+
+            _this.pcdColumns.each(function(i, j){
+        		$(this).append('<select class="pcd-select-p"></select>');
+        		$(this).append('<select class="pcd-select-c"></select>');
+        		$(this).append('<select class="pcd-select-d"></select>');
+        		var category = $(this).data('column');
+        		var pcd = new CBSPcdSelect({width:100,category:category}, $(this));
+        		_this.pcdList.push(pcd);
+        	});
+            $('select').multiselect({
+				header : false,
+				multiple : false,
+				selectedList : 1,
+				noneSelectedText: '请选择'
+			});
+        };
+        
+    };
+    
+    //this.onBeforeClose = function(e){
+    //	console.log(e);
+    //	event.returnValue="确定离开当前页面吗？";
+    //}
+    
+	this.init(options);
+	
+};
+
+CBSCustom.prototype.doSave = function () {
+    var _this = this;
+    var valid = _this.validToPost();
+    if(valid){
+    	var validExp=_this.validKeyExpress();
+    	if(validExp) {
+    		var result = _this.getJsonDataFromContent();
+            var url = null;
+            if(_this.inModify){
+            	url = "/admin/customer/updateCustomer";
+            	result.customerId = _this.opt.custId;
+            } else {
+            	url = "/admin/customer/saveCustomer";
+            }
+            $.ajax({
+                url: global.server + url,
+                type: "POST",
+                data: result,
+                success: function (msg) {
+                    if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                    	var custId = null;
+                    	if(_this.inModify){
+                    		customerId = _this.opt.custId;
+                    	} else {
+                    		customerId = msg.data.custId;
+                    	}
+                    	alert("保存成功。");
+                    	window.close();
+                        window.opener.location.reload();
+                    } else {
+                    	//console.log(msg.status.errorMsg);
+                    	alert(msg.status.errorMsg);
+                    }
+                }
+            });
+    	}
+    } else {
+    	
+    }
+};
+
+CBSCustom.prototype.getJsonDataFromContent = function(){
+	var data = {};
+	this.columns.each(function(i, j){
+		var _this = $(this);
+		var pName = _this.data("column");
+		var pValue = _this.val();
+		data[pName] = pValue;
+	});
+	$.each(this.pcdList,function(i, j){
+		var result = j.getValue();
+		var pName = result.category;
+		var pValue = result.code;
+		data[pName] = pValue;
+	});
+	return data;
+};
+
+CBSCustom.prototype.fillContentFromJsonData = function (data) {
+    if (!data) return;
+    this.data = data;
+    var _this = this;
+    this.columns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	_this.val(pValue);
+    });
+};
+
+CBSCustom.prototype.modify = function () {
+    this.inModify = true;
+};
+
+
+CBSCustom.prototype.validToPost = function () {
+    var _this = this;
+    var valid = true;
+    this.needColumns.each(function(i, j){
+		var _this = $(this);
+		var pValue = $.trim(_this.val());
+		if( pValue=='' || pValue == null) {
+			valid = false;
+			_this.siblings('.tips').show();
+		}else{
+			_this.siblings('.tips').hide();
+		}
+	});
+    return valid;
+};
+
+CBSCustom.prototype.validKeyExpress=function() {
+	var _this=this;
+	var valid=true;
+	var telphone=$("input[data-column='telphone']");
+	var mobile=$("input[data-column='mobile']");
+	var email=$("input[data-column='email']");
+	var type=$("select[data-column='type']");
+	var taxRegCode=$("input[data-column='taxRegCode']");
+	var validMobile=/^1[0-9]{10}$/;
+	//var validEmail=/[a-zA-Z0-9]{1,10}@[a-zA-Z0-9]+\.[a-zA-Z0-9]{1,5}/;
+	var validEmail=/^([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)*@([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)+[\\.][A-Za-z]{2,3}([\\.][A-Za-z]{2})?$/;
+	var validTelphone = /^(0\d{2,3}-)?\d{7,8}(-\d{1,6})?$/;
+	var validAllNum = /^[0-9]*$/;
+	if(type.val()=='01') {
+		if(taxRegCode.val()!='') {
+			if(!validAllNum.test(taxRegCode.val())){
+				valid=false;
+				taxRegCode.siblings('.tips').html('税务登记号应为20位数字');
+				taxRegCode.siblings('.tips').show();
+			} else if(taxRegCode.val().length==20) {
+				taxRegCode.siblings('.tips').hide();
+			} else {
+				valid=false;
+				taxRegCode.siblings('.tips').html('税务登记号应为20位数字');
+				taxRegCode.siblings('.tips').show();
+			}
+		} else {
+			taxRegCode.siblings('.tips').hide();
+		}
+	} else if(type.val()=='02') {
+		if(taxRegCode.val()!='') {
+			if(!validAllNum.test(taxRegCode.val())){
+				valid=false;
+				taxRegCode.siblings('.tips').html('税务登记号应为15位数字');
+				taxRegCode.siblings('.tips').show();
+			} else if(taxRegCode.val().length==15) {
+				taxRegCode.siblings('.tips').hide();
+			} else {
+				valid=false;
+				taxRegCode.siblings('.tips').html('税务登记号应为15位数字');
+				taxRegCode.siblings('.tips').show();
+			}
+		} else {
+			taxRegCode.siblings('.tips').hide();
+		}
+	}
+	if($.trim(telphone.val())==''&&$.trim(mobile.val())=='') {
+		valid=false;
+		telphone.siblings('.tips').html('电话/手机号必须填写一项');
+		telphone.siblings('.tips').show();
+	} else {
+		telphone.siblings('.tips').hide();
+		if(mobile.val()!='') {
+			if(!validMobile.test(mobile.val())) {
+				valid=false;
+				mobile.siblings('.tips').html('手机号格式错误');
+				mobile.siblings('.tips').show();
+			} else {
+				mobile.siblings('.tips').hide();
+			}
+		}
+		if(telphone.val()!=''){
+			if(!validTelphone.test(telphone.val())) {
+				valid=false;
+				telphone.siblings('.tips').html('联系电话格式错误');
+				telphone.siblings('.tips').show();
+			} else {
+				telphone.siblings('.tips').hide();
+			}
+		}
+		
+	}
+	if($.trim(email.val())!='') {
+		if(!validEmail.test(email.val())) {
+			valid=false;
+			email.siblings('.tips').show();
+		} else {
+			email.siblings('.tips').hide();
+		}
+	} else {
+		email.siblings('.tips').hide();
+	}
+	var contactName = $("input[data-column='contactName']");
+	if($.trim(contactName.val())!=''){
+		if(!global.isChinese(contactName.val())) {
+			valid=false;
+			contactName.siblings('.tips').html('联系人姓名错误');
+			contactName.siblings('.tips').show();
+		} else {
+			contactName.siblings('.tips').hide();
+		}
+	} else {
+		contactName.siblings('.tips').hide();
+	}
+	
+	var cardNo = $("input[data-column='cardNo']");
+	if($.trim(cardNo.val())!=''){
+		if(!validAllNum.test(cardNo.val())) {
+			valid=false;
+			cardNo.siblings('.tips').show();
+		} else {
+			cardNo.siblings('.tips').hide();
+		}
+	} else {
+		cardNo.siblings('.tips').hide();
+	}
+	
+	var fullName = $("input[data-column='fullName']");
+	if($.trim(fullName.val())!=''){
+		if(!global.isChinese(fullName.val())) {
+			valid=false;
+			fullName.siblings('.tips').show();
+		} else {
+			fullName.siblings('.tips').hide();
+		}
+	} else {
+		fullName.siblings('.tips').hide();
+	}
+	var bankName = $("input[data-column='bankName']");
+	if($.trim(bankName.val())!=''){
+		if(!global.isChinese(bankName.val())) {
+			valid=false;
+			bankName.siblings('.tips').show();
+		} else {
+			bankName.siblings('.tips').hide();
+		}
+	} else {
+		bankName.siblings('.tips').hide();
+	}
+	var depositBank = $("input[data-column='depositBank']");
+	if($.trim(depositBank.val())!=''){
+		if(!global.isChinese(depositBank.val())) {
+			valid=false;
+			depositBank.siblings('.tips').show();
+		} else {
+			depositBank.siblings('.tips').hide();
+		}
+	} else {
+		depositBank.siblings('.tips').hide();
+	}
+	var cardName = $("input[data-column='cardName']");
+	if($.trim(cardName.val())!=''){
+		if(!global.isChinese(cardName.val())) {
+			valid=false;
+			cardName.siblings('.tips').show();
+		} else {
+			cardName.siblings('.tips').hide();
+		}
+	} else {
+		cardName.siblings('.tips').hide();
+	}
+	
+	return valid;
+}

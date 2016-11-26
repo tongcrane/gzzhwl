@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+	<title>司机合同详情</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/checkBusVehicles.css?ver=0.4" />
+	<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>车次信息</h3>
+			<div class="clearfix">
+				<div class="left right_long fl">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">提货单号</p>
+							<span class="fl spa_n load-column" data-column="loadNo">123455555</span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">车牌号</p>
+							<span class="fl spa_n load-column" data-column="plateNumber"></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl span_two">
+							<p class="fl stage">车头类型</p>
+							<span class="fl spa_n first load-column" data-column="headstockType">牵引车头</span>
+							<span class="fl spa_n load-column" data-column="bridgeType"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">挂车号</p>
+							<span class="fl spa_n load-column" data-column="loadPlateNumber"></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">司机电话1</p>
+							<span class="fl spa_n" data-column="_telphone1"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">司机姓名2</p>
+							<span class="fl spa_n" data-column="_realName2"></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<!-- <div class="layout fl">
+							<p class="fl stage">提货时间</p>
+							<span class="fl spa_n order-column" data-column="pickUpTime"></span>
+						</div> -->
+						<div class="layout fl">
+							<p class="fl stage">结款对象</p>
+							<span class="fl spa_n load-column" data-column="paymentName"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">结款方式</p>
+							<span class="fl spa_n load-column" data-column="paymentType"></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">预付现金</p>
+							<span class="fl spa_n"><b class="more_unit load-column" data-column="prePay"></b>&nbsp;&nbsp;元</span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">预付油卡</p>
+							<span class="fl spa_n"><b class="more_unit load-column" data-column="oilPay"></b>&nbsp;&nbsp;元</span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">备注</p>
+							<span class="fl spa_n load-column" data-column="remark"></span>
+						</div>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">车辆属性</p>
+						<span class="fr spa_n load-column" data-column="attributes"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">司机姓名1</p>
+						<span class="fr spa_n" data-column="_realName1"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">司机电话2</p>
+						<span class="fr spa_n" data-column="_telphone2"></span>
+					</div>
+					<div class="layout span_two clearfix">
+						<p class="fl stage">纯运费</p>
+						<span class="fl spa_n first"><b class="more_unit load-column" data-column="freightPrice"></b>&nbsp;&nbsp;元</span>
+						<span class="fl spa_n" data-column="isPredict"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">油卡卡号</p>
+						<span class="fr spa_n load-column" data-column="oilCardNo"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age">
+			<h3>配载单据</h3>
+			<div class="clearfix">
+				<div class="left right_long fl">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">订单号</p>
+							<span class="fl spa_n order-column" data-column="orderNo"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">运单号</p>
+							<span class="fl spa_n order-column" data-column="consignNo"></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">货物名称</p>
+							<span class="fl spa_n order-column" data-column="goodsName"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">用车要求</p>
+							<span class="fl spa_n" data-column="_need"></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">发车时间</p>
+							<span class="fl spa_n order-column" data-column="needStartTime"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">要求到达时间</p>
+							<span class="fl spa_n order-column" data-column="needArriveTime"></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">始发站</p>
+							<span class="fl spa_n" data-column="_start"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">目的站</p>
+							<span class="fl spa_n" data-column="_end"></span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">接货地址</p>
+							<span class="fl spa_n" data-column="_send"></span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">送货地址</p>
+							<span class="fl spa_n" data-column="_receive"></span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">司机合同单号</p>
+							<span class="fl spa_n load-column" data-column="contractNo"></span>
+						</div>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">发货人公司</p>
+						<span class="fr spa_n order-column" data-column="customerName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">是否进口</p>
+						<span class="fr spa_n order-column" data-column="needImportedVehicles"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">线路属性</p>
+						<span class="fr spa_n order-column" data-column="lineAttribute"></span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">提货时间</p>
+						<span class="fl spa_n order-column" data-column="pickUpTime"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="check" style="display:block;">
+		<div class="actions">
+			<a href="javascript:void(0);" class="edit_btn active">打印</a>
+			<a href="javascript:void(0);" class="check_hover">
+				<div class="hover_content">
+					<!-- <h4>操作记录</h4>
+					<p><span>李四</span> 推送时间是；备注:此单十分着急；</p>
+					<p><span>李四</span> 推送时间是；备注:此单十分着急；</p> -->
+				</div>
+			</a>	
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSOrderPush.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSDriverContractManagerInfo.js?ver=0.4"></script>
+
+</html>
+
+
+
+
+
+
+

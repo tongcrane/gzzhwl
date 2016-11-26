@@ -1,0 +1,21 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-05 18:48:35
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-11 17:48:21
+*/
+.detail-photos p{
+	width:178px;
+	height:178px;
+	overflow:hidden;
+	background:url(../img/hr.jpg) no-repeat; 
+}
+.up-need{
+	background: url(../img/star.png) no-repeat 35px center;
+}
+.up-need-dep{
+	background:url(../img/star.png) no-repeat 90px center;
+}
+.selectDark.ui-multiselect.ui-widget{
+	width:357px !important;
+}

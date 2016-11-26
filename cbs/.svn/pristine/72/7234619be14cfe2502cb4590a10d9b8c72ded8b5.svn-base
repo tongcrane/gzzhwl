@@ -1,0 +1,221 @@
+$(function() {
+//	$('.search-content').bind('click', function(e){
+//		return false;
+//	});
+	
+	var onBodyDown = function(event){
+    	if(($(event.target).parents(".search-content").length>0)){
+    		
+    	} else {
+    		advSearch.hide();
+    	}
+    };
+	
+	/*var advSearch = {
+		show : function() {
+			$('.search-content').show(10, function(){
+				$('body').one('click', function(){
+					advSearch.hide();
+				});
+			});
+		},
+		hide : function() {
+			$('.search-content').hide();
+			$('body').unbind();
+		}
+	}*/
+    
+    var advSearch = {
+            show : function() {
+                $('.search-content').show(10, function(){
+                	$("body").bind("mousedown", onBodyDown);
+                });
+            },
+            hide : function() {
+            	$("body").unbind("mousedown", onBodyDown);
+                $('.search-content').hide();
+            }
+     }
+    
+	// 点击高级搜索，搜索框显示
+	$('.advance-sea').click(function(event) {
+		advSearch.show();
+	});
+
+	$('.sea-close').click(function(event) {
+		advSearch.hide();
+	});
+	
+	$('select').each(function(i, j){
+		var minWidth = $(j).data('width');
+		$(j).multiselect({
+			minWidth : minWidth,
+			header : false,
+			multiple : false,
+			selectedList : 1,
+			appendTo : '.search-content',
+			position:{
+				my: 'left top',
+			    at: 'left bottom'
+			},
+			noneSelectedText: '请选择',
+		})
+	});
+	
+	var editCustom=function(customerId) {
+		var url = global.getContextPath() + '/addCustomInfo.html?custId='+customerId;
+    	var body = document.getElementsByTagName("body")[0];
+    	var el = document.createElement("a");
+    	body.appendChild(el);
+    	el.href = url;
+    	el.target = '_blank';
+    	el.click();
+    	body.removeChild(el);
+	}
+	
+	var openCustom = function(customerId){
+    	var url = global.getContextPath() + '/checkCustomInfo.html?custId='+customerId;
+    	var body = document.getElementsByTagName("body")[0];
+    	var el = document.createElement("a");
+    	body.appendChild(el);
+    	el.href = url;
+    	el.target = '_blank';
+    	el.click();
+    	body.removeChild(el);
+    }
+	
+	var getPcd = function(data){
+		var p = "";
+		var c = "";
+		var d = "";
+		$.each(data,function(i, j){
+			if(j.regionLevel == 1){
+				p = j.regionName;
+			} else if(j.regionLevel == 2){
+				c = j.regionName;
+			} else if(j.regionLevel == 3){
+				d = j.regionName;
+			}
+		});
+		var result = '';
+		if(p){
+			result+=p;
+		}
+		if(c){
+			result+=c;
+		}
+		if(d){
+			result+=d;
+		}
+		return result;
+	}
+	
+	var table = new CBSTable({
+		page : $('.handle-page'),
+		content : $('.handle-content > table > tbody'),
+		url : '/admin/customer/pageCustList',
+		method  : 'get',
+		pageNumber : 0,
+		pageSize : 10,
+		rowRender : function(index, row){
+			var el = $('<tr>\
+							<td width="30" class="f-width">\
+								<input class="check-box" type="checkbox"/>\
+							</td>\
+							<td width="30">\
+								<a href="javascript:void(0);" class="edit"></a>\
+							</td>\
+							<td width="210">\
+								<div class="name_num custom-info to-info"></div>\
+							</td>\
+							<td width="710">\
+								<div class="main custom-list to-info">\
+								</div>\
+							</td>\
+						</tr>');
+			var area = getPcd(row.area);
+			var mobile=global.defaultIfBlack(row.mobile,'')?global.defaultIfBlack(row.mobile,'')+'':';';
+			var telphone=global.defaultIfBlack(row.telphone,'')?global.defaultIfBlack(row.telphone,'')+';':'';
+			el.find('.custom-info').html(global.defaultIfBlack(row.fullName,''));
+			el.find('.custom-list').html(global.defaultIfBlack(row.contactName,'')+" "+mobile+" "+telphone+" "+exStatus(global.defaultIfBlack(row.isAgreement,''))+" - "+global.defaultIfBlack(area,'')+global.defaultIfBlack(row.address,''));
+			el.find('.edit').click(function(){
+				editCustom(row.customerId);
+			});
+			el.find('.to-info').click(function(){
+				openCustom(row.customerId);
+			});
+			el.find('.f-width > .check-box').data(row).val(row.customerId);
+			el.find('.f-width > .check-box').click(function(){
+				var flag=$(this).attr('checked');
+				if(flag===undefined) {
+					$(this).attr('checked','checked');
+					$("tr:eq("+index+")").css('background-color','#FBEDC1');
+				} else {
+					$(this).removeAttr('checked');
+					$("tr:eq("+index+")").removeAttr("style");
+				}
+			});
+			return el;
+		},
+		onBeforeLoad : function(param){
+			return param.queryType != null;
+		}
+	});
+	
+	var exStatus=function(code) {
+		if(code=="0") {
+			return "非合同用户";
+		} else if(code=="1") {
+			return "合同用户";
+		}
+	}
+	
+	$('#btn_search').click(function(){
+		table.load({
+			queryType:0,
+			keyWord:$('.list-search').val()
+		});
+	});
+	
+	$('#btn_adv_search').click(function(){
+		var columns=$('.column');
+		var data = {};
+		columns.each(function(i, j){
+			var _this = $(this);
+			var pName = _this.data("column");
+			var pValue = _this.val();
+			data[pName] = pValue;
+		});
+		data.queryType=1;
+		table.load(data);
+		advSearch.hide();
+	});
+	
+	$('.handle-data>.handle-delete').click(function(){
+		var selected=$('.f-width > .check-box:checked');
+		if(selected.length>0) {
+			if(confirm('确认删除？')){
+				$('.f-width > .check-box:checked').each(function() {  
+			    	var customerId=$(this).val();
+			    	$.ajax({
+				        url: global.server + '/admin/customer/removeCustomer',
+				        type: "POST",
+				        data: {custId:customerId},
+				        success: function (msg) {
+				            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				            	table.reload();
+				            }
+				        }
+				    });
+			    });
+			}
+		} else {
+			alert("请选择要删除的记录");
+		}
+	});
+	
+	table.load({
+		queryType:0
+	});
+
+});

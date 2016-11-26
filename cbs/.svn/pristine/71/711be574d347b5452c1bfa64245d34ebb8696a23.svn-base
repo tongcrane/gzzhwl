@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>货源详情</title>
+<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/infoListBase.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/checkSourceList.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+				<h2>志鸿物流核心业务系统</h2>
+			</div>
+	</header>
+	<!-- <div class="list-info-title wrap">
+		<h2>资料维护</h2>
+		<input type="text" class="list-search" />
+		<button id="btn_search" class="title_search">搜索</button>
+	</div> -->
+	<div class="status">
+		<p class="fl sourse_num">货源编号：<span></span><!-- (<b class="source_status">待审核</b>) --></p>
+		<div class="fr push_time">推送时间：<span></span></div>
+	</div>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>基础信息</h3>
+			<div class="clearfix base">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">订单号</p>
+						<span class="fr spa_n" data-column="orderNo"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">中转站</p>
+						<span class="fr spa_n column" data-column="transfer"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">到达时限</p>
+						<span class="fr spa_n column" data-column="needArriveTime"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">是否允许外请</p>
+						<span class="fr spa_n column" data-column="needOwnVehicles"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">客户合同</p>
+						<span class="fr spa_n column" data-column="agreementId"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">线路属性</p>
+						<span class="fr spa_n column" data-column="lineAttribute"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">运输方式</p>
+						<span class="fr spa_n column" data-column="needType"></span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">线路</p>
+						<span class="fr spa_n column" data-column="line"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">计划发车</p>
+						<span class="fr spa_n column" data-column="needStartTime"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">是否进口车</p>
+						<span class="fr spa_n column" data-column="needImportedVehicles"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age sender">
+			<h3>发货人信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">客户全称</p>
+						<span class="fr spa_n column" data-column="customerName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">发货人手机</p>
+						<span class="fr spa_n column" data-column="mobile"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">发货联系人</p>
+						<span class="fr spa_n column" data-column="contactName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">发货人地址</p>
+						<span class="fr spa_n column" data-column="sender_areaCode"></span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">发货人电话</p>
+						<span class="fr spa_n column" data-column="telphone"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">详细地址</p>
+						<span class="fr spa_n column" data-column="address"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age receiver">
+			<h3>收货人信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">收货人公司</p>
+						<span class="fr spa_n column" data-column="customerName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">收货人手机</p>
+						<span class="fr spa_n column" data-column="mobile"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">收货人名称</p>
+						<span class="fr spa_n column" data-column="contactName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">收货人地址</p>
+						<span class="fr spa_n column" data-column="receiver_areaCode"></span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">收货人电话</p>
+						<span class="fr spa_n column" data-column="telphone"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">详细地址</p>
+						<span class="fr spa_n column" data-column="address"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age goods">
+			<h3>货物信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">货物名称</p>
+						<span class="fr spa_n column" data-column="goodsName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">回单要求</p>
+						<span class="fr spa_n column" data-column="orderAdvice"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">预估重量</p>
+						<span class="fr spa_n"><b class="more_unit column" data-column="goodsWeight"></b>&nbsp;&nbsp;kg</span>
+						
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">预估体积</p>
+						<span class="fr spa_n"><b class="more_unit column" data-column="goodsVolume"></b>&nbsp;&nbsp;m³</span>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age price_base">
+			<h3>费用信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">计价方式</p>
+						<span class="fr  spa_n column" data-column="name"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">结算方式</p>
+						<span class="fr spa_n column" data-column="paymentType"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">单价</p>
+						<span class="fr spa_n column" data-column="unitPrice"></span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">公里数</p>
+						<span class="fr spa_n"><b class="more_unit column" data-column="miles"></b>&nbsp;&nbsp;km</span>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="require price">
+			<h3>费用信息</h3>
+			<div class="require_line clearfix">
+				<div class="require_spe fl">
+					<label class="fl labe_l">车型</label>
+					<!-- <input type="text" class="fr column" data-column="needType"> -->
+					<select data-column="needType" class=" selec_t column require" disabled>
+							<option value="">请选择</option>
+							<option value="低栏车">低栏车</option>
+							<option value="中栏车">中栏车</option>
+							<option value="高栏车">高栏车</option>
+							<option value="封闭式货车">封闭式货车</option>
+							<option value="厢式货车">厢式货车</option>
+							<option value="单桥拖头">单桥拖头</option>
+							<option value="双桥拖头">双桥拖头</option>
+							<option value="集装箱">集装箱</option>
+							<option value="冷藏车">冷藏车</option>
+							<option value="高低板车">高低板车</option>
+							<option value="栏板车">栏板车</option>
+							<option value="平板车">平板车</option>
+							<option value="自卸车">自卸车</option>
+							<option value="危险品车">危险品车</option>
+							<option value="其他车">其他车</option>
+					</select>
+				</div>
+				<div class="require_spe fl">
+					<label class="fl labe_l">车长</label>
+					<!-- <input type="text" class="fr column" data-column="needLength"> -->
+					<select data-column="needLength" class="selec_t column" disabled>
+						<option value="" selected="selected">请选择</option>
+						<option value="4.2">4.2米</option>
+						<option value="5">5米</option>
+						<option value="6.2">6.2米</option>
+						<option value="6.8">6.8米</option>
+						<option value="7.2">7.2米</option>
+						<option value="7.6">7.6米</option>
+						<option value="8.5">8.5米</option>
+						<option value="9.6">9.6米</option>
+						<option value="12.5">12.5米</option>
+						<option value="13">13米</option>
+						<option value="13.5">13.5米</option>
+						<option value="15">15米</option>
+						<option value="16">16米</option>
+						<option value="17.5">17.5米</option>
+						<option value="18.5">18.5米</option>
+						<option value="21">21米</option>
+						<option value="22">22米</option>
+					</select>
+				</div>
+				<div class="require_spe fl">
+					<label class="fl labe_l">竞标开始时间</label>
+					<input type="text" class="use-date fr inpu_t re_spe_long column" data-column="startTime" data-time="true" disabled>
+				</div>
+				<div class="require_spe fl">
+					<label class="fl labe_l">竞标结束时间</label>
+					<input type="text" class="use-date fr inpu_t re_spe_long column" data-column="endTime" data-time="true" disabled>
+				</div>
+				<div class="require_spe fl">
+					<label class="fl labe_l">司机要求</label>
+					<!-- <input type="text" class="fr inpu_t re_spe_short column" data-column="needDriverNum" disabled> -->
+					<select class="selec_t column" data-column="needDriverNum" disabled>
+						<option value="1">1人</option>
+						<option value="2">2人</option>
+					</select>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<label class="fl labe_l">在途要求</label>
+						<!-- <input class="fr inpu_t column" type="text" data-column="transitRequire" disabled/> -->
+						<select class="selec_t column" data-column="transitRequire" disabled>
+							<option value="2小时1次">2小时一次</option>
+							<option value="4小时1次">4小时一次</option>
+							<option value="8小时1次">8小时一次</option>
+						</select>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">优先级</label>
+						<!-- <input class="fr inpu_t column" type="text" data-column="level" disabled/> -->
+						<select class="selec_t column" data-column="level" disabled>
+							<option value="非常重要">非常重要</option>
+							<option value="重要">重要</option>
+							<option value="一般">一般</option>
+						</select>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<label class="fl labe_l km">公里数</label>
+						<input maxlength="6" class="fr inpu_t column unit_short" type="text" data-column="miles" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" disabled/>
+					</div>
+				</div>
+				<div class="right fr labe_l">
+					<div class="layout clearfix">
+						<label class="fl labe_l money">预计应付费用</label>
+						<input maxlength="7" class="fr inpu_t column unit_short" type="text" data-column="estimatedPrice" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" disabled/>
+					</div>
+				</div>
+			</div>
+			<div class="layout clearfix">
+				<label class="fl labe_l">备注</label>
+				<textarea maxlength="400" name="" id="" class="fl column" data-column="remark" disabled></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="check">
+		<div>
+			<a href="javascript:void(0);" class="check_order">订单备注</a>
+			<a href="javascript:void(0);" class="check_close" id="action_07" hidden="hidden">关闭</a>
+			<a href="javascript:void(0);" class="active refuse" id="action_03" hidden="hidden">拒绝</a>
+			<a href="javascript:void(0);" class="active" id="action_02" hidden="hidden">发布</a>
+			<a href="javascript:void(0);" class="active" id="return_03" hidden="hidden">拒绝</a>
+			<a href="javascript:void(0);" class="active" id="return_02" hidden="hidden">同意</a>
+			<a href="javascript:void(0);" class="check_hover">
+				<div class="hover_content">
+				</div>
+			</a>
+		</div>
+	</div>
+	
+</body>
+
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSTable.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSPop.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSSourceInfo.js?ver=0.4"></script>
+	<script type="text/javascript">
+		var timer;
+		$('.check_hover').hover(function() {
+			$('.hover_content').show();
+			clearTimeout(timer);
+		}, function() {
+			timer = setTimeout(function(){
+				$('.hover_content').hide();
+			},200);
+		});
+		$('.hover_content').hover(function() {
+			clearTimeout(timer);
+		}, function() {
+			timer = setTimeout(function(){
+				$('.hover_content').hide();
+			},200);
+		});
+		
+		$('input[data-column="estimatedPrice"]').on('blur',function(){
+			var v=$(this).val();
+			$(this).val(Number(v).toFixed(2));
+		});
+
+		var sourceId=global.QueryString.sourceId;
+		var action=global.QueryString.action;
+		var source=new CBSSourceInfo({sourceId:sourceId,action:action});
+		
+		$('#action_02').click(function(){
+			var options = {
+    				data : {sourceId : sourceId},
+    				text : '是否确认',
+    				callback:function(data){
+    					source.doPublic();
+    				}
+    			}
+    		new CBSConfirm(options);
+		});
+		
+		$('#return_02').click(function(){
+			var options = {
+    				data : {sourceId : sourceId},
+    				text : '是否确认',
+    				callback:function(data){
+    					source.agree();
+    				}
+    			}
+    		new CBSConfirm(options);
+		});
+		
+		$('#return_03').click(function(){
+			var options = {
+    				data : {sourceId : sourceId},
+    				text : '是否确认',
+    				callback:function(data){
+    					source.disAgree();
+    				}
+    			}
+    		new CBSConfirm(options);
+		});
+		
+		// 拒绝
+		$('#action_03').click(function(){
+			var options = {
+	    		data : {},
+	    		text : '请输入拒绝理由',
+	    		callback:function(data){
+	    			source.doReject();
+	    		}
+	    	}
+	    	new CBSPop(options);
+		});
+		//关闭
+		$('#action_07').click(function(){
+			var options = {
+		    	data : {},
+		    	text : '请输入关闭理由',
+		    	callback:function(data){
+		    		source.doClose();
+		    	}
+		    }
+		    new CBSPop(options);
+		});
+		//备注
+		$('.check_order').click(function(){
+			var options = {
+			    data : {},
+			    text : '请输入备注',
+			    callback:function(data){
+			    	source.doRemark();
+			    }
+			}
+			new CBSPop(options);
+		});
+	</script>
+</html>

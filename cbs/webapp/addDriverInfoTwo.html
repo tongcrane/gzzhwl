@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title class="title_val">添加司机信息</title>
+<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/base.css?ver=0.4">
+<link rel="stylesheet" type="text/css" href="css/addBase.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/addDriverInfoTwo.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>添加司机信息</p>
+	</div>
+
+	<div class="car-detail">
+			<div class="detail-left">
+				<!-- <div class="detail-photos">
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="photoFImageRefId" />
+						<span class="p-add">添加个人免冠照片</span>
+					</p>
+				</div> -->
+				<div class="detail-info">
+					<h3>账户信息</h3>
+					<div class="f-tips">
+						<label for="">开户行名称</label>
+						<input data-column="depositBank" type="text" value="" class="bank-column">
+						<div class="tips" hidden>请输入正确的开户行名称</div>
+					</div>
+
+					<div class="f-tips">
+						<label for="">开户银行</label>
+						<input data-column="bankName" type="text" value="" class="bank-column">
+						<div class="tips" hidden>请输入正确的开户银行</div>
+					</div>
+					<div class="f-tips">
+						<label for="">开户名</label>
+						<input data-column="cardName" type="text" value="" class="bank-column">
+						<div class="tips" hidden>请输入正确的开户名</div>
+					</div>
+					<div class="f-tips">
+						<label for="">银行账号</label>
+						<input maxlength="20" data-column="cardNo" type="text" value="" class="bank-column">
+						<div class="tips" hidden>请输入正确的银行账号</div>
+					</div>
+				</div>
+			</div>
+			<!-- <div class="detail-right"></div> -->									
+			<div class="detail-bottom">
+				<div class="btn">
+					<button class="pre">上一页</button>
+					<button class="current">提交</button>
+				</div>
+			</div>
+			
+			<input type="hidden" data-column="realName" value="" class="column"/>
+			<input type="hidden" data-column="idno" value="" class="column"/>
+			<input type="hidden" data-column="sex" value="" class="column"/>
+			<input type="hidden" data-column="birthday" value="" class="column"/>
+			<input type="hidden" data-column="qcNo" value="" class="column"/>
+			<input type="hidden" data-column="telphone" value="" class="column"/>
+			<input type="hidden" data-column="attributes" value="" class="column"/>
+			<input type="hidden" data-column="belongDepartId" value="" class="column"/>
+			<input type="hidden" data-column="useDepartId" value="" class="column"/>
+			
+	</div>
+</body>
+
+<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.autocomplete.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+<script type="text/javascript" src="js/explugin/CBSAutocomplete.js?ver=0.4"></script>
+<script type="text/javascript" src="js/explugin/CBSImage.js?ver=0.4"></script>
+<script type="text/javascript" src="js/CBSDriver.js?ver=0.4"></script>
+
+<script type="text/javascript">
+	$(function(){
+		var driverInfoId = global.QueryString.driverInfoId;
+		var driver = new CBSDriver({driverInfoId:driverInfoId});
+		$('.current').click(function(){
+			driver.doSave();
+			return false;
+		});
+		
+		$('.btn .pre').click(function(){
+			window.onbeforeunload = null;
+            window.onunload = null;
+			location.href = global.getContextPath() + '/addDriverInfoOne.html?driverInfoId='+driverInfoId;
+			return false;
+		});
+	});
+</script>
+</html>

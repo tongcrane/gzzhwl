@@ -1,0 +1,65 @@
+/**
+ * Created by zhwl on 2016/7/14.
+ */
+$(function(){
+    var $url = location.href.split('?')[1];
+    var json = {};
+    var arr = $url.split('&');
+    for (var i = 0; i < arr.length; i++) {
+        var newArr = arr[i].split('=');
+        json[newArr[0]] = newArr[1];
+    }
+    if(json.orderId){
+        $.ajax({
+            type: "get",
+            url: global.server + "/admin/order/getOrderDetail",
+            data: {orderId:json.orderId},
+            async: false,
+            dataType: "json",
+            success: function(msg) {
+                if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                    var BusDate=msg.data;
+                    content(BusDate);
+                }
+            }
+        });
+    }
+  function content(v){
+      console.log(v);
+      $(".RTelphone").html(v.orderReceiverInfo.contactName);
+      $(".RMobile").html(v.orderReceiverInfo.mobile);
+      $(".RContactName").html(v.orderReceiverInfo.contactName);
+      $(".STelphone").html(v.orderSenderInfo.contactName);
+      $(".SContactName").html(v.orderSenderInfo.contactName);
+      $(".SMobile").html(v.orderSenderInfo.mobile);
+      $(".orderNo").html(v.orderDetailInfo.orderNo);
+      $(".createdTime").html(v.orderDetailInfo.createdTime);
+      $(".customerName").html(v.orderSenderInfo.customerName);
+      $(".orderType").html(v.orderBaseInfo.orderType);
+      $(".startCodeP").html(v.orderLineInfo.startCodePCn+"-"+v.orderLineInfo.startCodeCCn);
+      $(".endCodeP").html(v.orderLineInfo.endCodePCn+"-"+v.orderLineInfo.endCodeCCn);
+      $(".needArriveTime").html(v.orderBaseInfo.needArriveTime);
+      $(".needStartTime").html(v.orderBaseInfo.needStartTime);
+      $(".unitPrice").html(v.orderBaseInfo.unitPrice);
+      $(".orderAdvice").html(v.orderBaseInfo.orderAdvice);
+      $(".goodsName").html(v.orderBaseInfo.goodsName);
+      $(".goodsWeight").html(v.orderBaseInfo.goodsWeight);
+      $(".goodsVolume").html(v.orderBaseInfo.goodsVolume);
+      $(".miles").html(v.orderBaseInfo.miles);
+      $(".lineAttribute").html(v.orderBaseInfo.lineAttribute);
+      $(".customerBillNo").html(v.orderBaseInfo.customerBillNo);
+      $(".chargeInfo").html(v.chargeInfo.name);
+      $(".needType").html(v.orderBaseInfo.needType);
+      $(".consignId").html(v.consignmentInfo.orderId);
+      $(".consignCreatedTime").html(v.consignmentInfo.createdTime);
+      $(".updatedBy").html(v.orderDetailInfo.updatedBy);
+      $(".consignCreatedBy").html(v.consignmentInfo.updatedBy);
+      $(".consignOtherPrice").html(v.consignmentInfo.otherPrice);
+      $(".consignFreightPrice").html(v.consignmentInfo.freightPrice);
+      $(".consignTotal").html(v.consignmentInfo.total);
+      $(".consignLoadPrice").html(v.consignmentInfo.loadPrice);
+      $(".consignOtherExplain").html(v.consignmentInfo.otherExplain);
+      $(".consignRemark").html(v.consignmentInfo.remark);
+
+  }
+})

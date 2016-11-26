@@ -1,0 +1,405 @@
+/**
+ * 
+ */
+var CBSAddLoad = function(options){
+	this.opt = $.extend({}, options);
+	this.acm = {};
+	
+	
+	this.initSelect = function(){
+		var _this = this;
+		$('.autocomplete.supply').each(function(i, j){
+			var self = $(j);
+			var ac = new CBSAutocomplete({
+				target : self,
+				url : '/admin/supply/getSupplyList',
+				method : 'get',
+			    valueField : 'supplyId',
+			    textField : 'fullName',
+			    onSelect : function(row){
+			    	console.log(row);
+			    }
+			})
+			var _p = self.data('column');
+			_this.acm[_p] = ac;
+		});
+		
+		$('.multiselect').each(function(i, j){
+			var minWidth = $(j).data('width');
+			$(j).multiselect({
+				minWidth : minWidth,
+				header : false,
+				multiple : false,
+				selectedList : 1,
+				noneSelectedText: '请选择',
+			})
+		});
+		
+	}
+	
+	this.init = function(options){
+		var _this = this;
+		_this.initSelect()
+		if (options && options.loadId) {
+			console.log('init load data with id: ' + options.loadId);
+            var url = "/admin/load/getLoadDetail?loadId=" + options.loadId;
+            var _this = this;
+            $.get(global.server + url, function (msg) {
+                if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                    var data = msg.data;
+                    _this.data = data;
+                    _this.initBtn();
+                    _this.showLoadInfo();
+                    _this.showOrderInfo();
+                }
+            }).done(function(msg){
+            	var data = msg.data;
+            	var loadInfo = data.loadInfo;
+            	
+            	$('.autocomplete.vehicle').each(function(i, j){
+        			var self = $(j);
+        			var _p = self.data('column');
+        			var ac = new CBSAutocomplete({
+        				target : self,
+        				url : '/admin/vehiclemanage/listVehicle',
+        				method : 'get',
+        			    valueField : 'vehicleInfoId',
+        			    textField : 'plateNumber',
+        			    initValue : loadInfo[_p],
+        			    onSelect : function(row){
+        			    	console.log(row);
+        			    }
+        			})
+        			
+        			_this.acm[_p] = ac;
+        		});
+            	
+            	
+        		$('.autocomplete.hung').each(function(i, j){
+        			var self = $(j);
+        			var _p = self.data('column');
+        			var ac = new CBSAutocomplete({
+        				target : self,
+        				url : '/admin/vehiclemanage/listHung',
+        				method : 'get',
+        			    valueField : 'vehicleInfoId',
+        			    textField : 'plateNumber',
+        			    initValue : loadInfo[_p],
+        			    onSelect : function(row){
+        			    	console.log(row);
+        			    }
+        			})
+        			
+        			_this.acm[_p] = ac;
+        		});
+        		
+        		var getDriver = function(driverInfo, type){
+        			var result = {};
+        			$.each(driverInfo, function(i, j){
+        				if(j.isMajor == type){
+        					result = j;
+        					return false;
+        				}
+        			});
+        			return result;
+        		}
+        		
+        		$('.autocomplete.driver').each(function(i, j){
+        			var self = $(j);
+        			var _p = self.data('column');
+        			var _v = {};
+        			if(_p == 'driver1'){
+        				_v = getDriver(loadInfo.driverInfo, '01');
+        			} else {
+        				_v = getDriver(loadInfo.driverInfo, '02');
+        			}
+        			var ac = new CBSAutocomplete({
+        				target : self,
+        				url : '/admin/driver/getDrivers',
+        				method : 'get',
+        			    valueField : 'driverInfoId',
+        			    textField : 'realName',
+        			    initValue : _v.driverInfoId,
+        			    onSelect : function(row){
+        			    	console.log(row);
+        			    }
+        			})
+        			
+        			_this.acm[_p] = ac;
+        		});
+            });
+		}
+	}
+	
+	this.initBtn = function(){
+		 var _this = this;
+		 var data = _this.data;
+		 var actionList = data.actionList;
+		 
+		 if(actionList){
+			 $.each(actionList, function(i, j){
+				 $('.actions > .action_'+j.code).removeClass('disable').data('action', j.code);
+			 });
+		 }
+		 
+		 //移除其他无用按钮
+		 $('.actions > .disable').remove();
+		 
+		 
+		 $('.actions > .action_13').click(function(){
+			_this.createLoad();
+		 });
+		 
+		 $('.actions > .action_14').click(function(){
+			_this.modifyLoad();
+		 });
+		 
+		 $('.actions > .action_12').click(function(){
+			 _this.showCancel();
+		 });
+	}
+	
+	
+	this.init(options);
+	
+}
+
+
+CBSAddLoad.prototype.showLoadInfo = function(){
+	var _this = this;
+	var loadInfo = _this.data.loadInfo;
+	var status = loadInfo.status;
+	if(status != '07') {
+		console.log(loadInfo);
+		$('.load-column').each(function(i, j){
+			var self = $(j);
+			var _p = self.data('show-column');
+			self.val(loadInfo[_p]);
+		});
+		
+		if(loadInfo.isPredict){
+			$('input:radio[name=isPredict][value="'+loadInfo.isPredict+'"]').attr('checked',true);
+		}
+		
+		if(loadInfo.bridgeType){
+			$('input:radio[name=bridge][value="'+loadInfo.bridgeType+'"]').attr('checked',true);
+		}
+		
+		var supplyInfo = loadInfo.supplyInfo;
+		$('.supply-column').each(function(i, j){
+			var self = $(j);
+			var _p = self.data('show-column');
+			self.val(supplyInfo[_p]);
+		});
+		$('select.supply-column').each(function(i, j){
+			var self = $(j);
+			var _p = self.data('show-column');
+			$(j).multiselect('setValue', supplyInfo[_p]);
+			$(j).multiselect('disable');
+		});
+		
+		var driverInfo = loadInfo.driverInfo;
+		$.each(driverInfo, function(i, j){
+			var isMajor = j.isMajor;
+			$('.driver-column-'+isMajor).each(function(k, l){
+				var self = $(l);
+				var _p = self.data('show-column');
+				self.val(j[_p]);
+			})
+		});
+	}
+}
+
+CBSAddLoad.prototype.getFullAddress = function(region){
+	if($.isArray(region)){
+		var pcd = [];
+		$.each(region, function(i, j){
+			pcd.push(j.regionName);
+		});
+		return pcd.reverse().join(' ');
+	} else {
+		return "";
+	}
+};
+
+CBSAddLoad.prototype.fillData = function(data, selector){
+	var _this = this;
+    $(selector).each(function(i, j){
+    	var properties = $(j).data('column');
+    	var pList = properties.split(',');
+    	var $self = $(j);
+    	if(data!=null){
+    		var value = [];
+    		$.each(pList,function(i, j){
+    			var _v = data[j];
+    			if (j=='needLength'){
+        			if(_v!='其他'){
+        				value.push(_v+" 米");
+        			} else {
+            			value.push(_v);
+            		}
+        		} else if(j=='sendRegion'){
+        			value.push(_this.getFullAddress(_v));
+        		} else if(j=='receiveRegion'){
+        			value.push(_this.getFullAddress(_v));
+        		} else {
+        			value.push(_v);
+        		}
+        	});
+    		$self.text(value.join(' '));
+    	} else {
+    		$self.text("");
+    	}
+    });
+}
+
+CBSAddLoad.prototype.showOrderInfo = function(){
+	var _this = this;
+	var orderInfo = _this.data.orderInfo;
+	_this.fillData(orderInfo, '.order-column');
+}
+
+
+
+CBSAddLoad.prototype.getJsonFromContent = function(){
+	var _this = this;
+	var data = {};
+	data.loadId = _this.opt.loadId;
+	
+	$('.column').each(function(i, j){
+		var self = $(j);
+		var _p = self.data('column');
+		var _v = self.val();
+		data[_p] = _v;
+	});
+	
+	$('.radio').each(function(i, j){
+		var self = $(j);
+		var target = self.find('input:radio:checked');
+		var _p = self.data('column');
+		var _v = "";
+		if(target.length == 1){
+			_v = target.val();
+		}
+		data[_p] = _v;
+	});
+	
+	$.each(_this.acm, function(i, j) {
+		var _p = i;
+		var _v = j.getValue();
+		data[_p] = _v;
+	});
+	
+	
+	var driver1 = data.driver1;
+	var driver2 = data.driver2;
+	var driverList = [];
+	var d1 = {};
+	d1.driverInfoId = driver1;
+	d1.isMajor = '01';
+	
+	var d2 = {};
+	d2.driverInfoId = driver2;
+	d2.isMajor = '02';
+	
+	driverList.push(d1);
+	driverList.push(d2);
+	
+	delete data.driver1;
+	delete data.driver2;
+	
+	data.driverList = driverList;
+	return data;
+}
+
+CBSAddLoad.prototype.validData = function(data){
+	console.log(data);
+	
+	return false;
+}
+
+CBSAddLoad.prototype.createLoad = function(){
+	var _this = this;
+	var data = _this.getJsonFromContent();
+	var valid = _this.validData(data);
+	if(valid){
+		var dataStringify = JSON.stringify(data);
+	    $.ajax({
+	        url: global.server + '/admin/load/create',
+	        type: "POST",
+	        contentType: "application/json; charset=utf-8",
+	        data: dataStringify,
+	        dataType: "json",
+	        success: function (msg) {
+	            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+	            	alert("提交成功");
+	            } else {
+	            	
+	            }
+	        }
+	    });
+	}
+}
+
+CBSAddLoad.prototype.modifyLoad = function(){
+	var _this = this;
+	var data = _this.getJsonFromContent();
+	var valid = _this.validData(data);
+	if(valid){
+		var dataStringify = JSON.stringify(data);
+	    $.ajax({
+	        url: global.server + '/admin/load/modify',
+	        type: "POST",
+	        contentType: "application/json; charset=utf-8",
+	        data: dataStringify,
+	        dataType: "json",
+	        success: function (msg) {
+	            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+	            	alert("提交成功");
+	            } else {
+	            	
+	            }
+	        }
+	    });
+	}
+}
+
+CBSAddLoad.prototype.showCancel = function(){
+	var _this = this;
+	var options = {
+		data : {},
+		text : '是否取消提货单',
+		callback:function(data){
+			_this.cancelLoad();
+		}
+	}
+	new CBSConfirm(options);
+}
+
+
+CBSAddLoad.prototype.cancelLoad = function(){
+	var _this = this;
+	var loadId = _this.opt.loadId;
+    $.ajax({
+        url: global.server + '/admin/load/cancel',
+        type: "POST",
+        data: {loadId:loadId},
+        success: function (msg) {
+            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+            	alert("提交成功");
+            } else {
+            	
+            }
+        }
+    });
+}
+
+$(function(){
+	
+	var loadId = global.QueryString.loadId;
+	
+	new CBSAddLoad({
+		loadId : loadId
+	});
+	
+})

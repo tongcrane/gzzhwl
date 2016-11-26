@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>客户信息列表</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="/css/infoListBase.css"/>
+<link rel="stylesheet" type="text/css" href="/css/customInfoList.css">
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css"/>
+</head>
+<body>
+	<header id="header">
+	</header>
+	<div id="list-info">
+		<div class="list-info-title">
+			<h2>资料维护</h2>
+			<input type="text" class="list-search" placeholder="搜索&nbsp;&nbsp;客户全称 / 联系人姓名 / 手机 / 电话"/>
+			<span class="advance-sea">高级搜索</span>
+			<button id="btn_search" class="title_search">搜索</button>
+			<div class="search-content">
+				<b class="sea-close"></b>
+				<div class="search-content-div">
+					<label for="">客户编码</label>
+					<input type="text" class="column" data-column="customerNo"/>
+				</div>
+				<!-- <div class="search-content-div">
+					<label for="">客户全称</label>
+					<input type="text" class="column" data-column="fullName"/>
+				</div> -->
+				<div class="search-content-div mar-top clearfix">
+					<div class="sea-left">
+						<label for="">客户类型&nbsp;&nbsp;&nbsp;&nbsp;</label>
+						<select name="" id="" class="column" data-column="type">
+							<option value="" selected="selected">请选择</option>
+							<option value="01" >个人</option>
+							<option value="02">公司</option>
+						</select>
+					</div>
+					<div class="sea-right">
+						<label for="">税务登记号</label>
+						<input type="text" class="column" data-column="taxRegCode"/>
+					</div>
+				</div>
+				<!-- <div class="search-content-div mar-top clearfix">
+					<div class="sea-left short">
+						<label for="">业务联系人</label>
+						<input type="text" class="column" data-column="contactName"/>
+					</div>
+					<div class="sea-right">
+						<label for="">联系手机</label>
+						<input type="text" class="column" data-column="mobile"/>
+					</div>
+				</div> -->
+				<div class="search-content-div mar-top clearfix">
+					<div class="sea-left">
+						<label for="">是否合同&nbsp;&nbsp;&nbsp;&nbsp;</label>
+						<select name="" id="" class="column" data-column="isAgreement">
+							<option value="" selected="selected">请选择</option>
+							<option value="1">是</option>
+							<option value="0">否</option>
+						</select>
+					</div>
+					<!-- <div class="sea-right">
+						<label for="">联系地址</label>
+						<input type="text" class="column" data-column="address"/>
+					</div> -->
+				</div>
+				<div class="sea-btn clearfix">
+					<input id="btn_adv_search" type="button"/>
+					<span>根据此条件搜索》</span>
+				</div>
+			</div>
+		</div>
+		<div class=" list-info-content clearfix">
+			<div class="list-Info-left">
+			</div>
+			<div class="list-Info-right">
+				<div class="handle clearfix">
+					<div class="handle-data">
+						<a target="_blank" href="/addCustomInfo.html" class="handle-add"></a>
+						<button class="handle-delete "></button>
+						<!-- <button class="handle-export">导出数据</button> -->
+					</div>
+					<div class="handle-page"></div>					
+				</div>
+				<div class="handle-content">
+					<table>
+						<tbody>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="con-foot">
+			 <span> 条款 - 隐私权</span>
+			 <strong>上次账户活动时间<i>1</i>小时前</strong>
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.js"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.filter.js"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js"></script>
+	<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js"></script>
+    <script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js"></script>
+	<script type="text/javascript" src="/js/global.js"></script>
+	<script type="text/javascript" src="/js/menu/menu.js"></script>
+	<script type="text/javascript" src="/js/CBSTable.js"></script>
+	<script type="text/javascript" src="/js/customInfoList.js"></script>
+</html>

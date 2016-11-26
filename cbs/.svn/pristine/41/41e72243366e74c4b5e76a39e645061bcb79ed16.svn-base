@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title class="title_val">添加驾驶员信息</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/base.css?ver=0.3">
+<link rel="stylesheet" type="text/css" href="/css/addBase.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/addDriverInfoOne.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>添加驾驶员信息</p>
+	</div>
+
+	<div class="car-detail">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="drivingFImageRefId" />
+						<span class="p-add">添加驾驶证照片<br/>(正页及副页)</span>
+					</p>
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="qualifiImageRefId" />
+						<span class="p-add">添加从业资格证照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>行驶证信息</h3>
+					<div class="f-tips">
+						<label for="" class="star-type">准驾车型</label>
+						<!-- <input class="need" type="text" value=""> -->
+						<select data-column="dlType" name="" class="column mySelect require">
+							<option value="">请选择</option>
+							<option value="A1">A1</option>
+							<option value="A2">A2</option>
+							<option value="A3">A3</option>
+							<option value="B1">B1</option>
+							<option value="B2">B2</option>
+							<option value="C1">C1</option>
+							<option value="C2">C2</option>
+							<option value="C3">C3</option>
+							<option value="C4">C4</option>
+							<option value="D">D</option>
+							<option value="E">E</option>
+							<option value="F">F</option>
+							<option value="M">M</option>
+							<option value="N">N</option>
+							<option value="P">P</option>
+						</select>
+						<div class="tips" hidden="hidden">请选择准驾车型</div>
+					</div>
+					<div class="f-tips">
+						<label for="">驾驶证初次领证日期</label>
+						<input data-column="dlIssueDate" class="use-date need column require" type="text" value="">
+						<div class="tips" hidden="hidden">请输入驾驶证初次领证日期</div>
+					</div>
+					<div class="exp-date f-tips">
+						<label for="" class="need">驾驶证有效期</label>
+						<input data-column="dlStartDate" class="use-date column require" type="text" value="">
+						<input data-column="dlEndDate" type="text" value="" class="use-date column require second">
+						<div class="tips" hidden="hidden">请输入驾驶证有效期</div>
+					</div>
+					<h3>从业资格证信息</h3>
+					<div class="f-tips">
+						<label for="">从业资格证号码</label>
+						<input maxlength="19" data-column="qcNo" class="column single" type="text" value="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+					</div>
+					<div class="f-tips">
+						<label for="">从业资格证类型</label>
+						<input maxlength="10" data-column="qcType" class="column" type="text" value="">
+						
+					</div>
+					<div class="f-tips">
+						<label for="">从业资格证初次领证日期</label>
+						<input data-column="qcIssueDate" class="use-date column slide-down" type="text" value="">
+					</div>
+					<div class="exp-date f-tips">
+						<label for="" class="right-date">从业资格证有效期</label>
+						<input data-column="qcStartDate" type="text" value="" class="use-date column slide-down">
+						<input data-column="qcEndDate" type="text" value="" class="use-date column second slide-down">
+					</div>
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="idFImageRefId" />
+						<span class="p-add">添加身份证正面照片</span>
+					</p>
+					<p>
+						<input  type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="idBImageRefId" />
+						<span class="p-add">添加身份证反面照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>身份证信息</h3>
+					<div class="f-tips">
+						<label for="">驾驶员姓名</label>
+						<input maxlength="5" data-column="realName" class="need column require" type="text" value="">
+						<div class="tips" hidden="hidden">请输入驾驶员姓名(最多5个中文)</div>
+					</div>
+					<div class="f-tips">
+						<label for="">身份证号码</label>
+						<input data-column="idno" class="need column require single" type="text" value="">
+						<div class="tips" hidden="hidden">请输入正确有效的身份证号码</div>
+					</div>
+					<div class="f-tips">
+						<label for="" class="star-sex">性别</label>
+						<select data-column="sex" name="" class="mySelect column require" >
+							<option value="">请选择</option>
+							<option value="男">男</option>
+							<option value="女">女</option>
+						</select>
+						<div class="tips" hidden="hidden">请选择性别</div>
+					</div>
+					<div class="f-tips">
+						<label for="">出生日期</label>
+						<input data-column="birthday" class="use-date need column require" type="text" value="" disabled="disabled">
+						<div class="tips" hidden="hidden">请输入出生日期</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="detail-bottom">
+				<div class="btn">
+					<button class="current">下一页</button>
+				</div>
+			</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/moment.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSImage.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSDriver.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/IdCardNoUtil.js?ver=0.3"></script>
+<script type="text/javascript">
+	$(function(){
+		var driverInfoId = global.QueryString.driverInfoId;
+		var driver = new CBSDriver({driverInfoId:driverInfoId,step:1});
+		$('.btn > .current').click(function(){
+			driver.doSave();
+			return false;
+		});
+		
+		var realName=$("input[data-column='realName']");
+		realName.on('blur',function() {
+			if(this.value) {
+				var re=/^[\u4e00-\u9fa5]{2,5}$/;
+				if(realName.val().search(re)==-1) {
+					realName.next().show();
+					realName.focus();
+				} else {
+					realName.next().hide();
+				}
+			} else {
+				realName.next().hide();
+			}
+			
+		});
+		
+		var idno=$("input[data-column='idno']");
+		var sex=$("select[data-column='sex']");
+		var birthday=$("input[data-column='birthday']");
+		idno.on('blur',function(){
+			if(this.value){
+				if(IdCardNoUtil.checkIdCardNo(idno.val())==false) {
+					idno.next().show();
+					idno.focus();
+				} else {
+					idno.next().hide();
+					var idCardInfo=IdCardNoUtil.getIdCardInfo(idno.val());
+					sex.val(idCardInfo.gender);
+					sex.multiselect('setValue',idCardInfo.gender);
+					birthday.val(idCardInfo.birthday);
+					birthday.next().hide();
+				}
+			} else {
+				idno.next().hide();
+			}
+			
+		});
+	});
+</script>
+</html>

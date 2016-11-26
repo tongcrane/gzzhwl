@@ -1,0 +1,61 @@
+
+
+.con_tent{border:none;width:1150px;min-height: 600px;}
+.check{border:none;width:1150px;}
+.right_long{width:746px;}
+.right_one{width:100%;}
+.right_one .inpu_t{width:632px;}
+.right_one .in_short{width:386px;}
+.layout_two .inpu_t{width:108px;}
+.layout_two .inpu_t:last-child{margin-right:16px;}
+.layout_line textarea{width:1032px;height:52px;padding-top:0;}
+.layout_long .inpu_t{width:113px;}
+.layout_long .inpu_t:last-child{margin-right:5px;}
+.check .active{ background-color: #de642c;color:#fff;border: 1px solid #bc5120; border-radius: 2px;}
+.check_hover{background:url(../img/clock.png) no-repeat center;}
+.check a{width:90px;}
+.layout .input_short{width:114px;margin:0 4px 0 1px;}
+
+.short .labe_l{width:148px;}
+.short .inpu_t{width:192px;}
+
+.layout{font-size: 14px;}
+.people{margin:8px 4px 0 1px;vertical-align: -2px;}
+.company{margin:8px 4px 0 15px;vertical-align: -2px;}
+
+/* 提示信息 */
+.rela_tive{position:relative;}
+.tips{position: absolute;top: -2px;left:-104px;width: 190px;background: #fff;padding: 5px;border: 1px solid #CBCBCB;border-radius: 2px;box-shadow: 0 1px 6px #ddd;color: #525252;z-index: 9999;}
+.tips:before{content:"";display: block;height:0;width:0;border:10px solid transparent;border-left-color: #cbcbcb;position:absolute;top:3px;right:-20px;}
+.tips:after{content:"";display: block;height:0;width:0;border:9px solid transparent;border-left-color:#fff;position:absolute;top:4px;right:-17px;}
+
+/* 插件修改 */
+.input_short .ui-multiselect.ui-widget.ui-state-default.selectDark{width:194px!important;margin-left:8px;}
+.pcd-column .ui-multiselect.ui-widget.ui-state-default.selectDark{width:76px !important;}
+.pcd-column .ui-multiselect.ui-widget{margin-right:4px;}
+.ui-multiselect-menu.ui-widget.ui-widget-content.selectDark.ui-multiselect-single{width:148px !important;}
+
+/* 模态窗口 */
+.model_content_cansel{background:#fff;position:fixed;top:50%;left:50%;box-shadow:0 1px 8px #ccc;display:none;}
+.model_content_cansel a{height:28px;line-height:28px;background:#de642c;border:1px solid #bc5120;padding:0 30px;border-radius:2px;color:#fff;position:absolute;right:20px;bottom:32px;}
+.model_content_cansel i{background:url("../img/adv_sea_close.png") no-repeat center;cursor:pointer;width:20px;height:20px;position:absolute;right:5px;top:5px;}
+.model_content_cansel{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:214px;}
+.model_content_cansel p{padding:40px;color:#525252;text-align: center;margin-top: 20px;}
+
+/* 单位样式 */
+.km,.weight,.volume{position:relative;}
+.km:after,.weight:after,.volume:after{content:"元/kg";width:50px;position:absolute;top:0;left:305px;color:#ddd;font-weight: normal;}
+.km:after{content:"km";left:320px;}
+.weight:after{content:"kg";left:325px;}
+.volume:after{content:"m³";left:324px;}
+
+.rela_tive{position:relative;}
+.unit{text-align:right;height:26px;line-height:26px;position:absolute;top:1px;right:127px;font-style: normal;font-size:14px;color:#ddd;}
+
+/* 有单位input加padding-right */
+.layout .unit_short{width:206px;padding-right:28px;}
+
+
+

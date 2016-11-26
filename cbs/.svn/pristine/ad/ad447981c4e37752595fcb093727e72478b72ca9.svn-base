@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>查看地图</title>
+<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/infoListBase.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/ViewMap.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css"/>
+</head>
+<body>
+	<header id="header">
+	</header>
+	<div id="container">
+		<div id="map"></div>
+		<div class="map_search">
+			<div class="search_box">
+				<select name="" id="" class="selec_t">
+					<option value="">车牌号</option>
+					<option value="">提货单号</option>
+				</select>
+				<input type="text" class="inpu_t" placeholder="粤A12345"/>
+			</div>
+			<button class="search_btn"></button>
+		</div>
+	</div>
+	<div class="map_tips">
+		<div class="tip_con">
+			<span>车牌号</span>
+			<p>粤12345</p>
+		</div>
+		<div class="tip_con">
+			<span>位置</span>
+			<p>重岳高速恩施段233km处</p>
+		</div>
+		<div class="tip_con">
+			<span>行驶速度</span>
+			<p><b>33.5</b><i class='speed'>&nbsp;km/h</i></p>
+		</div>
+	</div>
+	
+</body>
+
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery.autocomplete.js"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/menu/menu.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/explugin/CBSTable.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.3"></script>
+	<script type="text/javascript" src="js/explugin/CBSAutocomplete.js"></script>
+	<script>
+		// var _height = (document.body.clientHeight-60)+'px';
+		// $('#container').css('height',_height);
+	</script>
+   <!--  <script type="text/javascript" src="js/CBSSourceList.js"></script> -->
+
+</html>

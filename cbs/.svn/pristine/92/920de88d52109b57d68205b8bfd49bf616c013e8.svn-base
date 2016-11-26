@@ -1,0 +1,8 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-06 16:32:59
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-08-08 16:31:57
+*/
+.sea-right.pad_right{padding-right:100px;}
+.sea-left label, .sea-right label{margin-right:0px;}

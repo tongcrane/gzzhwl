@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8"/>
+        <title>登录</title>
+        <link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+        <link rel="stylesheet" type="text/css" href="css/login.css?ver=0.4"/>
+    </head>
+    <body>
+    	<div class="header log_head">
+			<h1 class="logo">
+				<a href="#">
+					<img src="img/logo.png"/>
+				</a>
+			</h1>
+		</div>
+    	<div class="wrap">
+    		<div class="con_w">
+    			<div class="log_tit">
+    				<h2>志鸿物流核心业务系统</h2>
+	    			<p>使用您的营运系统账户登录</p>
+	    		</div>
+	    		<div class="log_con">
+	    			<div class="touxiang">
+	    				<img src="img/touxiang.png" height="102" width="102">
+	    			</div>
+	    			<div class="log_inps">
+							<p>
+								<input maxlength="20" type="text" placeholder="请输入工号" name="phone" class="phone" id="phone" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+								<span class="reg_hint"></span>
+							</p>
+							<p>
+								<input maxlength="12" type="password" placeholder="请输入密码" name="pass" class="pass" id="pass" />
+								<span class="reg_hint"></span>
+							</p>
+							<p class="forget_pass">
+								<a href="forgetPass.html" target="_blank">忘记密码</a>
+							</p>
+							<p>
+								<input type="button" id="LoginBtn" value="登&nbsp;录" class="LoginBtn" />
+							</p>
+	    			</div>
+	    		</div>
+    		</div>
+    	</div>
+    	<div class="footer"></div>
+    </body>
+    <script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+    <script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+    <script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+    <script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+    <script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/login.js?ver=0.4"></script>
+</html>

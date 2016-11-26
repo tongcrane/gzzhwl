@@ -1,0 +1,62 @@
+$(function(){
+    var openCustom = function(orderId){
+        var url = '/checkBusOverView.html?orderId='+orderId;
+        var body = document.getElementsByTagName("body")[0];
+        var el = document.createElement("a");
+        body.appendChild(el);
+        el.href = url;
+        el.target = '_blank';
+        el.click();
+        body.removeChild(el);
+    }
+    var table = new CBSTable({
+        page : $('.handle-page'),
+        content : $('.handle-content > table > tbody'),
+        url : '/admin/order/pageOrderList',
+        method  : 'GET',
+        pageNumber : 0,
+        pageSize : 10,
+        rowRender : function(index, row){
+
+            var el = $('<tr> \
+            <td class="index"></td> \
+            <td  class="orderNo"></td> \
+            <td  class="customerName"></td> \
+            <td  class="consignNo"></td> \
+            <td  class="allocatTime"></td> \
+            <td  class="elecOrderTime"></td> \
+            <td class="statusCn"></td> \
+            <td  class="createdTime"></td> \
+            </tr>');
+          var $index=index+1;
+            el.find(".orderNo").html(row.orderNo);
+            el.find(".index").html($index);
+            el.find(".customerName").html(row.customerName);
+            el.find(".statusCn").html(row.statusCn);
+            el.find(".createdTime").html(row.createdTime);
+            el.find(".elecOrderTime").html(row.elecOrderTime);
+            el.find(".allocatTime").html(row.allocatTime);
+            el.find(".consignNo").html(row.consignNo);
+            el.find("td").click(function(){
+                openCustom(row.orderId);
+            });
+            return el;
+        },
+        onBeforeLoad : function(param){
+            return true;
+        }
+    });
+    $('#btn_search').click(function(){
+        console.log(
+            $('.list-search').val()
+        );
+        table.load({
+            queryType:0,
+            keyWord:$('.list-search').val()
+        });
+    });
+
+    table.load({
+        queryType:0
+    });
+});

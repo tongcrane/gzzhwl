@@ -1,0 +1,50 @@
+/**
+ * 
+ */
+var CBSAddLend = function(options){
+	this.opt = $.extend({}, options);
+	this.acm = {};
+	
+	var _this = this;
+	
+	this.init = function(options){
+		$('.autocomplete.vehicle').each(function(i, j){
+			var self = $(j);
+			var _p = self.data('column');
+			var ac = new CBSAutocomplete({
+				target : self,
+				url : '/admin/vehiclemanage/listVehicle',
+				method : 'get',
+			    valueField : 'vehicleInfoId',
+			    textField : 'plateNumber',
+			    onBlur : function(value){
+			    	if(value == null){
+			    		$('.vehicle-column').each(function(i, j){
+    			    		var self = $(j);
+    						self.val('');
+    			    	});
+			    		$('input:radio[name=bridge]').prop('checked',false);
+			    	}
+			    },
+			    onSelect : function(row){
+			    	$('.vehicle-column').each(function(i, j){
+			    		var self = $(j);
+						var _p = self.data('show-column');
+						self.text(row[_p]);
+			    	});
+			    }
+			})
+			
+			_this.acm[_p] = ac;
+		});
+	}
+	
+	
+	
+	this.init(options);
+}
+
+
+$(function(){
+	new CBSAddLend();
+})

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>对账单</title>
+<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/infoListBase.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/bankStatementList.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+	</header>
+	<div id="list-info">
+		<div class="list-info-title">
+			<h2 class="fl">结算</h2>
+		</div>
+		<div class=" list-info-content clearfix">
+			<div class="list-Info-left">
+			</div>
+			<div class="list-Info-right">
+				<div class="handle-content">
+					<div class="content-left clearfix">
+						<h4><i>应收</i>对账单</h4>
+						<div class="statement">
+							<div class="layout">
+								<label class="labe_l">客户</label>
+								<input class="inpu_t" type="text" id="autocomplete-ajax-cust">
+							</div>
+							<div class="layout">
+								<label class="labe_l">线路</label>
+								<div class="two-col clearfix">
+									<div class="two_sel fl">
+										<select data-width="87" class="charge-column p-select chargeStartCodeP" data-column="startCodeP"></select>
+										<select data-width="87" class="charge-column c-select chargeStartCodeC" data-column="startCodeC"></select>
+									</div>
+									<div class="two_sel fr mar-left">
+										<select data-width="87" class="charge-column p-select chargeEndCodeP" data-column="endCodeP">
+										</select>
+										<select data-width="87" class="charge-column c-select chargeEndCodeC" data-column="endCodeC">
+										</select>
+									</div>
+									<i></i>
+								</div>
+							</div>
+							<div class="layout">
+								<label class="labe_l">业务部门</label>
+								<input class="inpu_t" type="text" id="autocomplete-ajax-charge-depart">
+							</div>
+							<div class="layout time">
+								<label class="labe_l">发车时间</label>
+								<input class="inpu_t use-date charge-column" type="text" data-time=true data-column="tripStartTime">
+								<input class="inpu_t use-date charge-column" type="text" data-time=true data-column="tripEndTime">
+								<b></b>
+							</div>
+							<div class="layout">
+								<label class="labe_l">运费是否预估</label>
+								<select data-width="175" data-column="isPredict" class="charge-column is_predict">
+									<option value="">请选择</option>
+									<option value="02">预估</option>
+									<option value="01">准确</option>
+								</select>
+							</div>
+							<a href="javascript:;" class="export_charge">导出对账单</a>	
+						</div>	
+					</div>
+					<div class="content-right clearfix">
+						<h4><i>应付</i>对账单</h4>
+						<div class="statement">
+							<div class="layout">
+								<label class="labe_l">结款对象</label>
+								<input class="inpu_t" type="text" id="autocomplete-ajax-supply">
+							</div>
+							<div class="layout">
+								<label class="labe_l">线路</label>
+								<div class="two-col clearfix">
+									<div class="two_sel fl">
+										<select data-width="87" class="pay-column p-select payStartCodeP" data-column="startCodeP">
+										</select>
+										<select data-width="87" class="pay-column c-select payStartCodeC" data-column="startCodeC">
+										</select>
+									</div>
+									<div class="two_sel fr mar-left">
+										<select data-width="87" class="pay-column p-select payEndCodeP" data-column="endCodeP">
+										</select>
+										<select data-width="87" class="pay-column c-select payEndCodeC" data-column="endCodeC">
+										</select>
+									</div>
+									<i></i>
+								</div>
+							</div>
+							<div class="layout">
+								<label class="labe_l">业务部门</label>
+								<input class="inpu_t" type="text" id="autocomplete-ajax-pay-depart">
+							</div>
+							<div class="layout time">
+								<label class="labe_l">发车时间</label>
+								<input class="inpu_t use-date pay-column" type="text" data-time=true data-column="tripStartTime">
+								<input class="inpu_t use-date pay-column" type="text" data-time=true data-column="tripEndTime">
+								<b></b>
+							</div>
+							<div class="layout">
+								<label class="labe_l">运费是否预估</label>
+								<select data-width="175" data-column="isPredict" class="pay-column is_predict">
+									<option value="">请选择</option>
+									<option value="02">预估</option>
+									<option value="01">准确</option>
+								</select>
+							</div>
+							<a href="javascript:;" class="export_pay">导出对账单</a>	
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="con-foot">
+			 <span> 条款 - 隐私权</span>
+			 <strong>上次账户活动时间<i>1</i>小时前</strong>
+		</div>
+	</div>
+	
+</body>
+
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.autocomplete.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/menu/menu.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/ajaxdownload.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSTable.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSAutocomplete2.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/bankStatementList.js?ver=0.4"></script>
+
+</html>

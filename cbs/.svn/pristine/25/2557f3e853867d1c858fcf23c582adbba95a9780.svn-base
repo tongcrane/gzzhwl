@@ -1,0 +1,39 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-07 18:22:40
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-11 17:15:14
+*/
+.f-width{
+	width:160px;
+	padding-left: 10px;
+}
+.order-line{
+	width:320px;
+	text-align:center;
+	padding-left:0;
+}
+.order-list{
+	width:390px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space:nowrap;
+	padding-left:0;
+}
+.owe-to{
+	width:100px;
+}
+.owe-to>p{
+	width:74px;
+	padding-left:26px;
+}
+.plat_bid{
+	font-weight: bold;
+	color:#D3784C;
+	position: absolute;
+	top:0;
+	left:62px;
+}
+.deadline li > b {
+	margin-top:-5px;
+}

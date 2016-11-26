@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>权限信息列表</title>
+<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/infoListBase.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/permissionList.css?ver=0.4">
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+	</header>
+	<div id="list-info">
+		<div class="list-info-title">
+			<h2>资料维护</h2>
+			<input type="text" class="list-search" placeholder="搜索&nbsp;&nbsp;工号/姓名/部门"/>
+			<span class="advance-sea">高级搜索</span>
+			<button id="btn_search" class="title_search">搜索</button>
+			<div class="search-content">
+				<b class="sea-close"></b>
+				<div class="search-content-div">
+					<label for="">姓名</label>
+					<input type="text" class="column" data-column="realName"/>
+				</div>
+				<div class="search-content-div">
+					<label for="">工号</label>
+					<input type="text" class="column" data-column="number"/>
+				</div>
+				<div class="search-content-div">
+					<label for="">所属部门</label>
+					<input type="text" class="column" data-column="departName"/>
+				</div>
+				<div class="search-content-div">
+					<label for="">权限部门</label>
+					<input type="text" class="column" data-column="dataDepart"/>
+				</div>
+				<div class="sea-btn clearfix">
+					<input id="btn_adv_search" type="button"/>
+					<span>根据此条件搜索》</span>
+				</div>
+			</div>
+		</div>
+		<div class=" list-info-content clearfix">
+			<div class="list-Info-left">
+			</div>
+			<div class="list-Info-right">
+				<div class="handle clearfix">
+					<div class="handle-data">
+						<!-- <a target="_blank" href="addPermissionInfo.html" class="handle-add"></a>
+						<button class="handle-delete "></button> -->
+						<!-- <button class="handle-export">导出数据</button> -->
+					</div>
+					<div class="handle-page"></div>					
+				</div>
+				<div class="handle-content">
+					<table>
+						<tbody>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="con-foot">
+			 <span> 条款 - 隐私权</span>
+			 <strong>上次账户活动时间<i>1</i>小时前</strong>
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+    <script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/menu/menu.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSTable.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/permissionList.js?ver=0.4"></script>
+</html>

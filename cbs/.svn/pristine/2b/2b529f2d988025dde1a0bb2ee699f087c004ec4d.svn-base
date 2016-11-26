@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+<title>新增订单</title>
+<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+<link rel="stylesheet" type="text/css" href="css/addBusSourceOrder.css?ver=0.4" />
+<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="require">
+			<h3>客户合同</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<label class="fl labe_l">订单号</label>
+						<input id="orderNo" class="fr inpu_t" type="text" readonly placeholder="系统自动生成"/>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">客户合同</label>
+						<select data-width="236" data-column="agreementId" class="selec_t baseInfo-column agreement-select"></select>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">线路属性</label>
+						<select data-width="236" data-column="lineAttribute" class="selec_t baseInfo-column agreement-column" data-agreement="lineAttribute">
+							<option value="">请选择</option>
+							<option value="单边">单边</option>
+							<option value="往返">往返</option>
+							<option value="闭合">闭合</option>
+						</select>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">是否允许外请</label>
+						<select data-width="236" data-column="needOwnVehicles" class="selec_t baseInfo-column agreement-column" data-agreement="needOwnVehicles">
+							<option value="">请选择</option>
+							<option>是</option>
+							<option>否</option>
+						</select>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<label class="fl labe_l">订单类型</label>
+						<select data-width="236" data-column="orderType" class="selec_t baseInfo-column agreement-column" data-agreement="carryType">
+							<option value="">请选择</option>
+							<option value="整车">整车</option>
+							<option value="零担">零担</option>
+						</select>
+					</div>
+					<div class="layout layout_two clearfix">
+						<label class="fl labe_l">始发地</label>
+						<select data-width="116" id="startCodeP" data-column="startCodeP" class="selec_t lineInfo-column p-select" data-agreement="startCodeP"></select>
+						<select data-width="116" id="startCodeC" data-column="startCodeC" class="selec_t lineInfo-column c-select" data-agreement="startCodeC"></select>
+					</div>
+					<div class="layout layout_two clearfix">
+						<label class="fl labe_l">用车要求</label>
+						<select data-width="116" data-column="needType" class="selec_t baseInfo-column agreement-column" data-agreement="needType">
+							<option value="">车型</option>
+							<option value="高栏车">高栏车</option>
+							<option value="中栏车">中栏车</option>
+							<option value="低栏车">低栏车</option>
+							<option value="厢式车">厢式车</option>
+							<option value="平板车">平板车</option>
+							<option value="高低板车">高低板车</option>
+							<option value="冷藏车">冷藏车</option>
+							<option value="危险品车">危险品车</option>
+							<option value="自卸货车">自卸货车</option>
+							<option value="集装箱">集装箱</option>
+							<option value="其他车型">其他车型</option>
+						</select>
+						<select data-width="116" data-column="needLength" class="selec_t baseInfo-column agreement-column" data-agreement="needLength">
+							<option value="" selected="selected">车长</option>
+							<option value="4.2">4.2 米</option>
+							<option value="4.5">4.5 米</option>
+							<option value="5">5 米</option>
+							<option value="6.2">6.2 米</option>
+							<option value="6.8">6.8 米</option>
+							<option value="7.2">7.2 米</option>
+							<option value="7.7">7.7 米</option>
+							<option value="7.8">7.8 米</option>
+							<option value="8.2">8.2 米</option>
+							<option value="8.6">8.6 米</option>
+							<option value="8.7">8.7 米</option>
+							<option value="9.6">9.6 米</option>
+							<option value="11.7">11.7 米</option>
+							<option value="12.5">12.5 米</option>
+							<option value="13">13 米</option>
+							<option value="13.5">13.5 米</option>
+							<option value="14">14 米</option>
+							<option value="16">16 米</option>
+							<option value="17">17 米</option>
+							<option value="17.5">17.5 米</option>
+							<option value="18">18 米</option>
+							<option value="其他">其他</option>
+						</select>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">客户单号</label>
+						<input maxlength="50" class="fr inpu_t baseInfo-column" data-empty="true" data-column="customerBillNo" type="text" />
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<label class="fl labe_l">客户全称</label>
+						<select maxlength="50" data-width="236" data-column="customerId" class="selec_t sender-column customer-select"></select>
+					</div>
+					<div class="layout layout_two clearfix">
+						<label class="fl labe_l">目的地</label>
+						<select data-width="116" id="endCodeP" data-column="endCodeP" class="selec_t lineInfo-column p-select" data-agreement="endCodeP"></select>
+						<select data-width="116" id="endCodeC" data-column="endCodeC" class="selec_t lineInfo-column c-select" data-agreement="endCodeC"></select>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">是否进口</label>
+						<select data-width="236" data-column="needImportedVehicles" class="selec_t baseInfo-column agreement-column" data-agreement="needImportedVehicles">
+							<option value="">请选择</option>
+							<option>是</option>
+							<option>否</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="require">
+			<h3>联系人信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<label class="fl labe_l">发货人公司</label>
+						<input maxlength="50" class="fr inpu_t sender-column" data-column="customerName" readonly type="text" />
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">发货人手机</label>
+						<input maxlength="11" class="fr inpu_t sender-column" data-column="mobile" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">收货人公司</label>
+						<input maxlength="50"  class="fr inpu_t receiver-column" data-empty="true" data-column="customerName" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">收货人手机</label>
+						<input maxlength="11" class="fr inpu_t receiver-column" data-column="mobile" type="text"/>
+					</div>
+				</div>
+				<div class="right right_long fr">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<label class="fl labe_l">发货联系人</label>
+							<input maxlength="50" type="text" class="fl inpu_t sender-column" data-column="contactName">
+						</div>
+						<div class="layout fr">
+							<label class="fl labe_l">发货人电话</label>
+							<input maxlength="20" type="text" class="fl inpu_t sender-column" data-column="telphone">
+						</div>
+					</div>
+					<div class="right_one specia_l">
+						<div class="layout clearfix">
+							<label class="labe_l">货场地址</label>
+							<select maxlength="50" data-width="236" data-column="addrId" class="selec_t baseInfo-column addr-select"></select>
+							<span class="spa_n" data-column="addr-address"></span>
+							
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<label class="fl labe_l">收货联系人</label>
+							<input maxlength="50" type="text" class="fl inpu_t receiver-column" data-column="contactName">
+						</div>
+						<div class="layout fr">
+							<label class="fl labe_l">收货人电话</label>
+							<input maxlength="20" type="text" class="fl inpu_t receiver-column" data-column="telphone">
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix pcd-column  receiver-column"  data-column="areaCode">
+							<label class="fl labe_l">收货人地址</label>
+							<input maxlength="80"  type="text" class="fr inpu_t in_short receiver-column" data-column="address">
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+		<div class="require">
+			<h3>货物及时效</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<label class="fl labe_l">货物品名</label>
+						<input maxlength="40" data-column="goodsName" class=" inpu_t baseInfo-column fr" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<label class="fl km labe_l">公里数</label>
+						<input maxlength="10" data-column="miles" class=" inpu_t baseInfo-column fr unit_short" type="text"/>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">计划发车</label>
+						<input data-column="needStartTime" class=" inpu_t baseInfo-column fr use-date" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">结算方式</label>
+						<select data-width="236" data-column="paymentType" class="selec_t baseInfo-column agreement-column" data-agreement="paymentType">
+							<option value="">请选择</option>
+							<option value="月结">月结</option>
+							<option value="回单">回单</option>
+							<option value="现付">现付</option>
+							<option value="提付">提付</option>
+							<option value="临欠">临欠</option>
+						</select>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<label class="fl labe_l">计价方式</label>
+						<select data-width="236" data-column="chargeId" class="baseInfo-column charge-select agreement-column" data-agreement="chargeId"></select>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l weight">预估重量</label>
+						<input maxlength="10" data-column="goodsWeight" class=" inpu_t baseInfo-column fr unit_short" type="text"/>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">到达时限</label>
+						<input data-column="needArriveTime" class=" inpu_t baseInfo-column fr use-date" type="text"/>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">提货时间</label>
+						<input data-column="pickUpTime" class=" inpu_t baseInfo-column fr use-date" type="text"/>
+						<span>&nbsp;</span>
+					</div>
+					 
+					<!-- <div class="layout clearfix">
+						<label class="fl labe_l">是否已开单</label>
+						<select data-width="236" class="fr baseInfo-column">
+							<option value="是">是</option>
+							<option value="否">否</option>
+						</select>
+					</div> -->
+ 					
+				</div>
+				<div class="right fr">
+					<div class="layout rela_tive clearfix">
+						<label class="fl labe_l">单价</label>
+						<input maxlength="10" data-column="unitPrice" class="baseInfo-column fl inpu_t agreement-column input_short" data-agreement="unitPrice" type="text"/>
+						<select data-width="114" class="fr baseInfo-column" data-column="isPredict">
+							<option value="">是否预估</option>
+							<option value="02">预估</option>
+							<option value="01">准确</option>
+						</select>
+						<i class="unit"></i>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l volume">预估体积</label>
+						<input maxlength="10" data-column="goodsVolume" class="baseInfo-column fr inpu_t unit_short" type="text"/>
+					</div>
+					<div class="layout clearfix">
+						<label class="fl labe_l">回单要求</label>
+						<select data-width="236" data-column="orderAdvice" class="selec_t baseInfo-column">
+							<option value="">请选择</option>
+							<option value="客户专签">客户专签</option>
+							<option value="公章">公章</option>
+							<option value="身份证">身份证</option>
+							<option value="收条">收条</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="layout layout_line clearfix">
+				<label class="fl labe_l">备注</label>
+				<textarea  maxlength="400" data-column="remark" class="baseInfo-column" class="fl"></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="check">
+		<div>
+			<a href="javascript:void(0);" class="check_order active conserve">提交</a>
+			<a href="javascript:void(0);" class="check_close cancel">取消</a>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSSelect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBS-PC-Select.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBS-PCD-Select.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSAddOrder.js?ver=0.4"></script>
+	
+	
+	</body>
+</html>

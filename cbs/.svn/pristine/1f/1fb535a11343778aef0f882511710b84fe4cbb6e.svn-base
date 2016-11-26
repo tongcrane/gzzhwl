@@ -1,0 +1,22 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-11 15:23:36
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-21 16:19:52
+*/
+/* th,td{display: inline-block;overflow: hidden; text-overflow: ellipsis; word-break:keep-all;white-space:nowrap;} 溢出隐藏 */
+
+
+/* td内部不加标签样式 */ 
+.handle-content table{table-layout: fixed;}
+td{overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+td:first-child,th:first-child{text-align: center;}
+th{text-align:left;}
+.handle-content td,th{padding:12px 0 12px 10px;}
+
+/* 状态 */
+.f_single{position: relative;}
+.bus_sel_single{background:url(../img/plat_handle.png) no-repeat 71px center; cursor:pointer;}
+.bus_select{background:url(../img/select.png) no-repeat 99px center; cursor:pointer;}
+.bus_sel_single .statu_s{top:33px;left:-9px;}
+

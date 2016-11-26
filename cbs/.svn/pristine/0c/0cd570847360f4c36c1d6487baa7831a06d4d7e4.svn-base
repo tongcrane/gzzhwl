@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>车辆司机信息</title>
+    <link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+    <link rel="stylesheet" type="text/css" href="/css/NewDriverInfo.css?ver=0.3"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>车辆信息</p>
+	</div>
+	
+	<div class="car-detail">
+		<div class="info_line">
+			<div class="info_line_div">
+				<label class="fl labe_l">车牌号：</label>
+				<span class="fr spa_n car-column" data-column="plateNumber">粤A39439</span>
+			</div>
+		</div>
+		<ul class="u_l clearfix">
+			<li class="mar_left">
+				<div class="im_ages car-img" data-column="ciImageRefId"></div>
+				<span>强制险照片</span>
+			</li>
+			<li>
+				<div  class="im_ages car-img" data-column="viImageRefId"></div>
+				<span>商业险照片</span>
+			</li>
+			<li>
+				<div class="im_ages car-img" data-column=""></div>
+				<span>行驶证照片</span>
+			</li>
+			<li>
+				<div class="im_ages car-img" data-column="ocImageRefId"></div>
+				<span>行驶证照片</span>
+			</li>
+			<li>
+				<div class="im_ages car-img" data-column="licenseImageRefId"></div>
+				<span>营运证照片</span>
+			</li>
+			<li class="mar_left">
+				<div class="im_ages car-img" data-column=""></div>
+				<span>营运证照片</span>
+			</li>
+			<li>
+				<div class="im_ages car-img" data-column=""></div>
+				<span>营运证照片</span>
+			</li>
+		</ul>
+		
+	</div>
+	<div class="car-information">
+		<p>司机信息</p>
+	</div>
+	
+	<div class="car-detail driver-info">
+
+		
+	</div>
+	<div class="detail-bottom">
+		<div class="clearfix">
+			<a href="javascript:;" class="current" id="checkPass">审核通过</a>
+			<a href="javascript:;" class="current" id="checkUnpass">审核不通过</a>
+		</div>
+	</div>
+</body>
+
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+    <script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+    <script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSImageInfo.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/newCBSDriverInfo.js?ver=0.3"></script>
+	
+	<script type="text/javascript">
+		var accountId = global.QueryString.accountId;
+		var vehicleInfoId=global.QueryString.vehicleInfoId;
+		var driver = new CBSDriverInfo({accountId:accountId,vehicleInfoId:vehicleInfoId});
+		
+		$('#checkUnpass').click(function(){
+			driver.check({accountId:accountId,vehicleInfoId:vehicleInfoId,authFlag:1});
+			return false;
+		});
+		
+		$('#checkPass').click(function(){
+			driver.check({accountId:accountId,vehicleInfoId:vehicleInfoId,authFlag:0});
+			return false;
+		});
+	</script>
+	
+</html>

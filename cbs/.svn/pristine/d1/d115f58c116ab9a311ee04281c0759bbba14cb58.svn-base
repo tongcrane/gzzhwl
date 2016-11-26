@@ -1,0 +1,68 @@
+var CBSLoadInfo = function(options){
+	this.opt = $.extend({}, options);
+
+	this.init = function(options){
+		var _this = this;
+		var loadId = _this.opt.loadId;
+		_this.getData(loadId);
+		_this.getRemarkHis(loadId);
+	};
+	
+	
+	this.getData = function(loadId){
+		var _this = this;
+		$.get(global.server+'/admin/load/getLoadDetail',{loadId:loadId}, function(msg){
+			if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				var data = msg.data;
+				_this.data = data;
+				_this.fillContentFromJsonData(data);
+
+			}
+		}).done(function(msg){
+			
+		});
+	};
+	
+	this.init(options);
+};
+
+
+CBSLoadInfo.prototype.fillContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    
+};
+
+CBSLoadInfo.prototype.getRemarkHis=function(orderId) {
+	var url = "/admin/remark/getRecordList";
+	$.ajax({
+        url: global.server + url,
+        type: "get",
+        data: {targetId:orderId,remarkType:'03'},
+        success: function (msg) {
+            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+            	$('.hover_content').append('<h4>操作纪录</h4>');
+            	var recordList=msg.data;
+            	if(recordList.length>0) {
+            		$.each(recordList,function(i,j){
+            			$('.hover_content').append('<p><span>'+j.real_name+'</span> 推送时间：'+j.createdTime+' 备注:'+j.content+'</p>');
+            		})
+            	}
+            } else {
+            	console.log(msg.status.errorMsg);
+            }
+        }
+    });
+}
+
+
+$(function(){
+	
+	var loadId = global.QueryString.loadId;
+	var param = {
+		loadId : loadId
+	};
+	new CBSLoadInfo(param);
+    $(".check_hover").hover(function(){$(".hover_content").show()},function(){$(".hover_content").hide()})
+	
+});

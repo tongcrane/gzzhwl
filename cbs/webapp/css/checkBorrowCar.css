@@ -1,0 +1,49 @@
+
+.con_tent{border:none;width:1150px;}
+.layout{margin-right:50px;width:346px;}
+.right_no{margin-right:0;}
+.check{border:none;width:1150px;}
+.check .active{ background-color: #de642c;color:#fff;border: 1px solid #bc5120; border-radius: 2px;}
+.check a{width:90px;}
+
+/* 新增页面 */
+.layout .labe_l{display: inline-block;}
+.layout .inpu_t{width:230px;}
+.mess_age .layout{margin-bottom: 15px;}
+
+/* 模态窗口 */
+.model_content,.model_content_next{width:690px;height:366px;margin:-203px 0 0 -365px;padding:20px;}
+.left.short,.right.short{width:340px;}
+.model_content .layout .stage,.model_content .layout .labe_l,.model_content_next .layout .stage,.model_content_next .layout .labe_l{width:94px;}
+.model_content .layout .spa_n,.model_content .layout .inpu_t,.model_content_next .layout .spa_n,.model_content_next .layout .inpu_t{width:244px;}
+.model_content .layout_two .inpu_t{width:160px;}
+.model_content .layout_two .mar_rig{margin-right:12px;}
+.model_content h4,.model_content_next h4{font-size:20px;padding-bottom:15px;border-bottom:1px solid #dcdcdc;margin-bottom: 15px;color:#525252;}
+.lab_line{position: relative;}
+.lab_line:after{content:"" ;width:8px;height:3px;border-bottom:1px solid #dcdcdc;display: block;position: absolute;top:11px;left:260px;}
+.model_content_next,.model_content_cansel{background: #fff;position: fixed;top:50%;left:50%;box-shadow: 0 1px 8px #ccc;display: none;}
+.model_content textarea{display: block;width:372px;height:76px;border:1px solid #dedede;border-radius: 4px;margin:52px auto 0;text-indent: 6px;padding-top:4px;color:#525252;resize: none;outline:none;}
+.model_content a,.model_content_next a,.model_content_cansel a{height:28px;line-height: 28px;background: #de642c;border: 1px solid #bc5120;padding:0 30px;border-radius: 2px;color:#fff;position:absolute;right:20px;bottom:32px;}
+.model_content i,.model_content_next i,.model_content_cansel i{background:url("../img/adv_sea_close.png") no-repeat center;cursor: pointer;width: 20px;height: 20px;position: absolute;right: 5px;top: 5px;}
+
+/* 订单取消弹框 */
+.model_content_cansel{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:214px;}
+.model_content_cansel p{padding:40px;color:#525252;text-align: center;margin-top: 20px;}
+
+/* 单位样式 */
+/* .people{position:relative;}
+.people:after{content:"人";width:50px;position:absolute;top:0;left:318px;color:#ddd;font-size:14px;} */
+
+/* 去掉详情页面行高 */
+.layout .stage{line-height: normal;height:auto;}
+.layout .spa_n{line-height: normal;height:auto;}
+.layout{margin-bottom:15px;}
+
+.tips{
+	margin-top:40px;
+}
+.tips .text{
+	color:red;
+}

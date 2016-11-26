@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title class="title_val">添加客户信息</title>
+	<link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/base.css?ver=0.3">
+	<link rel="stylesheet" type="text/css" href="/css/addBase.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/addCustomInfo.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>添加客户信息</p>
+	</div>
+
+	<div class="car-detail">
+		<div class="clearfix clear-float">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<p><img src="img/custom1.png"></p>
+				</div>
+				<div class="detail-info">
+					<h3>基本信息</h3>
+					<div class="f-tips">
+						<label for="">客户编码</label>
+						<input type="text" class="column" data-column="customerNo" value="" readonly placeholder="系统自动生成">
+						<div class="tips" hidden>请输入正确客户编码</div>
+					</div>
+					<div class="f-tips f-select">
+						<label class="up-need">客户类型</label>
+						<!-- <input type="text" value=""> -->
+						<select class="mySelect column required" data-column="type">
+							<option value="" selected>请选择</option>
+							<option value="01">个人</option>
+							<option value="02">公司</option>
+						</select>
+						<div class="tips" hidden>客户类型必须填写</div>
+					</div>
+					<div class="f-tips">
+						<label for="">客户全称</label>
+						<input maxlength="50" type="text" class="need column required cChinese" data-column="fullName" value="">
+						<div class="tips" hidden>请输入客户全称</div>
+					</div>
+					<div class="f-tips">
+						<label class="up-need long">是否合同客户</label>
+						<!-- <input type="text" value=""> -->
+						<select class="mySelect column required" data-column="isAgreement">
+							<option value="" selected>请选择</option>
+							<option value="1">是</option>
+							<option value="0">否</option>
+						</select>
+						<div class="tips" hidden>是否合同必须填写</div>
+					</div>
+					<div class="f-tips">
+						<label for="">合同编码</label>
+						<input maxlength="20" type="text" class="column cNo" data-column="agreementNo" value="">
+						<div class="tips" hidden>请输入正确的合同编码</div>
+					</div>
+					<div class="f-tips">
+						<label for="">税务登记号</label>
+						<input maxlength="20" type="text" value="" class="column" data-column="taxRegCode">
+						<div class="tips" hidden>请输入正确的税务登记号</div>
+					</div>
+					<div class="f-tips">
+						<label for="">业务联系人</label>
+						<input maxlength="20" type="text" class="need column required cChinese" data-column="contactName" value="">
+						<div class="tips" hidden>请输入姓名</div>
+					</div>
+					<div class="f-tips">
+						<label for="">业务联系人电话</label>
+						<input maxlength="20" type="text" class="need column cNo" data-column="telphone" value="">
+						<div class="tips" hidden>请输入正确有效的电话</div>
+					</div>
+					<div class="f-tips">
+						<label for="">业务联系人手机</label>
+						<input maxlength="11" type="text" class="need column " data-column="mobile" value="">
+						<div class="tips" hidden>请输入手机号</div>
+					</div>
+					<div class="f-tips">
+						<label for="">业务联系人邮箱</label>
+						<input maxlength="50" type="text" value="" class="column" data-column="email">
+						<div class="tips" hidden>请输入正确的邮箱</div>
+					</div>
+					<div class="f-tips">
+						<label class="up-need">联系地址</label>
+						<div class="pcd-column add_width" data-column="areaCode"></div>
+						<input maxlength="40" type="text" value="" placeholder="请输入详细地址" class="column required mar_top" data-column="address">
+						<div class="tips" hidden>请输入联系地址</div>
+					</div>
+					<div class="f-tips">
+						<label for="">备注</label>
+						<textarea maxlength="400" class="remarks column" data-column="remark"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+					<p><img src="img/custom2.png"></p>
+				</div>
+				<div class="detail-info">
+					<h3>财务信息</h3>
+					<div class="f-tips">
+						<label for="">银行名称</label>
+						<input maxlength="20" type="text" value="" class="column cChinese" data-column="bankName">
+						<div class="tips" hidden>请输入正确的银行名称</div>
+					</div>
+					<div class="f-tips">
+						<label for="">开户银行</label>
+						<input maxlength="20" type="text" value="" class="column cChinese" data-column="depositBank">
+						<div class="tips" hidden>请输入正确的开户银行</div>
+					</div>
+					<div class="f-tips">
+						<label for="">开户名</label>
+						<input maxlength="40" type="text" value="" class="column cChinese" data-column="cardName">
+						<div class="tips" hidden>请输入正确的开户名</div>
+					</div>
+					<div class="f-tips">
+						<label for="">银行账号</label>
+						<input maxlength="30" type="text" value="" class="column cNo" data-column="cardNo">
+						<div class="tips" hidden>请输入正确的银行账号</div>
+					</div>
+					<div class="f-tips">
+						<label for="">发票抬头</label>
+						<input maxlength="40" type="text" value="" class="column" data-column="invoiceTitle">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="detail-bottom">
+			<div class="btn">
+				<a href="javascript:void(0);" class="cancel">取消</a>
+				<a href="javascript:void(0);" class="current">提交</a>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSImage.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBS-PCD-Select.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSCustom.js?ver=0.3"></script>
+<script type="text/javascript">
+	$(function(){
+		var custId = global.QueryString.custId;
+		var customer = new CBSCustom({custId:custId});
+		$('.btn > .current').click(function(){
+			customer.doSave();
+			return false;
+		});
+		$('.cancel').click(function(){
+			window.close();
+		});
+	});
+</script>
+
+</html>

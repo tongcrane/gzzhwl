@@ -1,0 +1,13 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-07 18:22:40
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-09-21 14:26:15
+*/
+.f-width{width:170px;padding-left:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.order-line{width:145px;padding-left:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.order-list{width:520px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-left:0;padding-right:20px;}
+.owe-to{width:100px;}
+.owe-to>p{width:74px;padding-left:26px;}
+.plat_bid{font-weight:bold;color:#D3784C;position:absolute;top:0;left:62px;}
+.deadline li {padding: 1px 10px;}

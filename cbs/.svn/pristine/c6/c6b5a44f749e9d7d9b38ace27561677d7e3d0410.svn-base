@@ -1,0 +1,213 @@
+$(function(){
+    $('.search-content').bind('click', function(e){
+        return false;
+    });
+    var advSearch = {
+        show : function() {
+            $('.search-content').show(10, function(){
+                $('body').one('click', function(){
+                    advSearch.hide();
+                });
+            });
+        },
+        hide : function() {
+            $('.search-content').hide();
+            $('body').unbind();
+        }
+    }
+    
+    $('.use-date').each(function(i, j){
+		var time = $(this).data('time');
+		if(time){
+			$(this).datetimepicker({
+        		timepicker:true,
+        		format:'Y-m-d H:i',
+        		autoclose:true,
+        		todayHighlight:true,
+        		keyboardNavigation:false
+    		});
+		} else {
+			$(this).datetimepicker({
+        		timepicker:false,
+        		format:'Y-m-d',
+        		autoclose:true,
+        		todayHighlight:true,
+        		keyboardNavigation:false
+    		});
+		}
+    });
+    
+    var CBSOrderPCSelect = function(start, end){
+		this.init = function(start, end){
+			var _this = this;
+			var _ptarget = start;
+			var _ctarget = end;
+			
+			this.pSelect = new CBSPcsSelectRow(_ptarget, {showEmpty:true});
+			this.cSelect = new CBSPcsSelectRow(_ctarget, {showEmpty:true});
+
+			_ptarget.multiselect({
+				header : false,
+				multiple : false,
+				selectedList : 1,
+				minWidth : 110,
+				noneSelectedText: '请选择',
+				click: function(event, ui){
+					_this.cSelect.refresh(ui.id);
+			    }
+			});
+			_ctarget.multiselect({
+				header : false,
+				multiple : false,
+				selectedList : 1,
+				minWidth : 108,
+				noneSelectedText: '请选择'
+			});
+			
+			_this.showDefault();
+		};
+		
+		
+		this.showDefault = function(code){
+			var _this = this;
+			_this.pSelect.refresh(1);
+		};
+		
+		this.getValue = function(){
+			var _this = this;
+			var category = _this.opt.category;
+			return {};
+		};
+		
+		this.init(start, end);
+	}
+	
+	new CBSOrderPCSelect($("#startCodeP"),$('#startCodeC'));
+	new CBSOrderPCSelect($("#endCodeP"),$('#endCodeC'));
+    
+    var table = new CBSTable({
+        page : $('.handle-page'),
+        content : $('.handle-content > table > tbody'),
+        url : '/admin/order/pageOrders',
+        method  : 'GET',
+        pageNumber : 0,
+        pageSize : 10,
+        rowRender : function(index, row){
+            var el = $('<tr> \
+            <td class="f-width" width="">\
+            <input type="checkbox" class="cancel check_box" val="" status="" orderId=""/>\
+            <span class="edit"></span>\
+            <b class="index"></b>\
+            </td> \
+            <td  class="orderNo to-info"></td> \
+            <td  class="customerName to-info"></td> \
+            <td  class="line to-info"></td> \
+            <td class="lineAttribute to-info"></td> \
+            <td class="statusCn to-info"></td> \
+            <td class="retStatusCn to-info"></td> \
+            <td  class="createdTime to-info"></td> \
+            </tr>');
+            var $index=index+1;
+            el.find(".orderNo").html(row.orderNo);
+            el.find(".index").html($index);
+            el.find(".customerName").html(row.customerName);
+            el.find(".statusCn").html(row.statusCn);
+            el.find(".createdTime").html(row.createdTime);
+            el.find(".lineAttribute").html(row.lineAttribute);
+            el.find(".line").html(row.startCodePCn+"-"+row.endCodePCn);
+            el.find(".cancel").val(row.orderNo).attr("status",row.status).attr("orderId",row.orderId);
+            el.find(".retStatusCn").html(row.retStatusCn);
+            el.find(".edit").click(function(){
+            });
+            el.find(".to-info").click(function(){
+                openCustom(row.orderId);
+            });
+            el.find('.check_box').click(function(){
+                var flag=$(this).attr('checked');
+                if(flag===undefined) {
+                    $(this).attr('checked','checked');
+                    $("tr:eq("+(index+1)+")").css('background-color','#FBEDC1');
+                } else {
+                    $(this).removeAttr('checked');
+                    $("tr:eq("+(index+1)+")").removeAttr("style");
+                }
+            });
+            return el;
+        },
+        onBeforeLoad : function(param){
+            return param.queryType != null;;
+        }
+    });
+    var openCustom = function(orderId){
+        var url = '/checkBusinessSource.html?orderId='+orderId;
+        var body = document.getElementsByTagName("body")[0];
+        var el = document.createElement("a");
+        body.appendChild(el);
+        el.href = url;
+        el.target = '_blank';
+        el.click();
+        body.removeChild(el);
+    }
+    $('.handle-data>.handle-cansel').click(function() {
+        var selected = $('.f-width > .cancel:checked');
+        var status = $(".f-width>.cancel").attr("status");
+        if (selected.length > 0) {
+            $('.f-width > .cancel:checked').each(function () {
+                var orderNo = $(this).val();
+                var orderId = $(this).attr("orderId");
+                var status = $(this).attr("status");
+                if (status == "02") {
+                    alert(orderNo + "订单已取消");
+                    return false;
+                } else if (confirm('确认取消？')) {
+                    $.ajax({
+                        url: global.server + '/admin/order/cancel ',
+                        type: "POST",
+                        data: {orderId: orderId},
+                        success: function (msg) {
+                            alert("取消成功!")
+                            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                                table.load({
+                                    queryType: 0
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    alert("请选择要取消的的订单");
+                }
+            })
+        }
+    });
+    $('#btn_search').click(function(){
+        table.load({
+            queryType:0,
+            keyWord:$('.list-search').val()
+        });
+    });
+    $('.advance-sea').click(function(event) {
+        advSearch.show();
+    });
+
+    $('.sea-close').click(function(event) {
+        advSearch.hide();
+    });
+    $('#btn_adv_search').click(function(){
+        var columns=$('.column');
+        var data = {};
+        columns.each(function(i, j){
+            var _this = $(this);
+            var pName = _this.data("column");
+            var pValue = _this.val();
+            data[pName] = pValue;
+        });
+        data.queryType=1;
+        table.load(data);
+        advSearch.hide();
+    });
+
+    table.load({
+        queryType:0
+    });
+
+});

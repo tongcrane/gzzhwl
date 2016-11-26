@@ -1,0 +1,36 @@
+
+.rec_right{padding-left:40px;}
+.handle-content .bus_edit{text-align:left;}
+.handle-content .bus_edit input{margin-left:10px;vertical-align: -1px;}
+.handle-content .bus_edit span{display:inline-block;width:20px;height:12px;background: url(../img/handle_edit.png) no-repeat center;cursor:pointer;margin-left:2px;}
+.handle-content .bus_edit b{font-weight: normal;margin-left:5px;}
+.sea-left input,.sea-right input{width:173px;}
+.handle-export,.handle-cansel{padding:0 20px;background: #eee;font-weight: bold;color:#414141;outline:none;} 
+.handle-data .handle-cansel{width:70px;background:#eee url(../img/handle_jian.png) no-repeat center;}
+.mar-top{padding-top:10px;}
+.sea-left label{margin-right:3px;}
+
+
+/* td内部不加标签样式 */ 
+.handle-content table{table-layout: fixed;}
+td{overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+th{text-align:left;}
+.handle-content td,th{padding:12px 0 12px 10px;}
+
+/* thead>tr>th:first-child{text-indent: 10px;} */
+.index{margin-left:4px;}
+
+
+/* 状态 */
+.f_single{position: relative;}
+.bus_sel_single{background:url(../img/plat_handle.png) no-repeat 72px center; cursor:pointer;}
+.bus_sel_single.sin_long{background-position: 99px center;}
+.bus_select{background:url(../img/select.png) no-repeat 100px center; cursor:pointer;}
+.bus_sel_single .statu_s{top:33px;left:-9px;}
+.sin_long .statu_s{left:3px;}
+
+.handle-data button{letter-spacing: 3px;}
+.all_check{vertical-align: -2px;margin-right:6px;}
+.search-content-div.mar_bottom{padding-bottom:16px;}
+
+/* .edit{height:16px;background:url(../img/map.png) no-repeat center;margin-right:4px;vertical-align:top;cursor: pointer;} */

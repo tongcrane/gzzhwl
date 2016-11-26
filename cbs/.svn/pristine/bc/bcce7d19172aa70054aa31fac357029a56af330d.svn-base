@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <title>用户资料详情</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+    <link rel="stylesheet" type="text/css" href="css/checkUserManage.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>账号信息</p>	
+		<div class="big_wrap account">
+			<div class="info_line_div">
+				<span class="fl spa_n column account_info_1"></span>
+			</div>
+			<div class="info_line_div">
+				<span class="fl spa_n column account_info_2"></span>
+			</div>
+			<div class="info_line_div">
+				<span class="fl spa_n column account_info_3"></span>
+			</div>
+		</div>
+	</div>
+	<div class="car-information line-info">
+		<p>常跑线路</p>	
+		<div class="big_wrap always line-info-detail">
+			<!-- <div class="info_line_div">
+				<span class="spa_n from">北京</span>
+				<span class="spa_n to column" data-column="">武汉</span>
+			</div>
+			<div class="info_line_div">
+				<span class="spa_n from">北京</span>
+				<span class="spa_n to column" data-column="">武汉</span>
+			</div>
+			<div class="info_line_div">
+				<span class="spa_n from">北京</span>
+				<span class="spa_n to column" data-column="">武汉</span>
+			</div>
+			<div class="info_line_div">
+				<span class="spa_n from">北京</span>
+				<span class="spa_n to column" data-column="">武汉</span>
+			</div>
+			<div class="info_line_div">
+				<span class="spa_n from">北京</span>
+				<span class="spa_n to column" data-column="">武汉</span>
+			</div> -->
+		</div>
+	</div>
+	<div class="car-information vehicle-info">
+		<p>车辆司机信息</p>
+		<div class="info-content" hidden="hidden">
+			<table>
+				<tbody>
+					<!-- <tr>
+						<td>
+							<div class="car-num to-info">张三 18356565656</div>
+						</td>
+						<td>
+							<div class="car-list to-info">待审核：身份证号310100199845454745</div>
+						</td>
+						<td>
+							<div class="owe-to">
+					    		<p class="check_by to-info">审核人：张萌萌萌吗</p>
+					    	</div>
+						</td>
+					</tr> -->
+				</tbody>
+			</table>
+	</div>
+	</div>
+	
+	<div class="detail-bottom">
+		<div class="clearfix">
+			<a href="javascript:;" class="current" id="action_freeze">冻结</a>
+			<a href="javascript:;" class="current" id="action_thaw">解冻</a>
+		</div>
+	</div>
+</body>
+
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+    <script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+    <script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSImageInfo.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/userManagerInfo.js?ver=0.4"></script>
+	
+	<script type="text/javascript">
+	
+		var accountId = global.QueryString.accountId;
+		var account = new CBSUseManager({accountId:accountId});
+	
+	</script>
+	
+</html>

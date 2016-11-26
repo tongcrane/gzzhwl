@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>忘记密码</title>
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<link rel="stylesheet" type="text/css" href="css/forgetPass.css">
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="wrap">
+		<div class="step step1">
+			<h3>忘记密码？</h3>
+			<p>要重置密码，请使用工号、邮箱或手机进行密码重置。</p>
+			<div class="for_con for_w">
+				<label for="job_num">工号</label>
+				<input maxlength="5" type="text" id="job_num" placeholder="请输入您的工号" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+				<div class="findOut"><input type="radio" name="find" value="email" />通过邮箱找回</div>
+				<div class="findOut"><input type="radio" name="find" value="telphone"/>通过手机号码找回</div>
+				<a href="javascript:void(0);" id="conBtn">继续</a>
+			</div>
+		</div>		
+		<div class="step post_box for_w">
+			<h3><span class="number">098826</span>密码重置</h3>
+			<p>已发送密码重置链接到您的企业邮箱<span class="special">w***l@gz***l.com</span>，</p>
+			<p>您可登录公司邮箱查阅验证链接</p>
+			<div class="for_con">
+				<a href="http://mm.263.com/" target="_blank">前往邮箱</a>
+			</div>
+		</div>
+
+		<div class="step phone for_w">
+			<h3><span class="number">098826</span>密码重置</h3>
+			<div class="img_code code_w">
+				<label for="">图形验证码</label>
+				<input type="text" class="code data-pic-code" placeholder="请输入右侧图形验证码"/>
+				<span class="picCode">
+					<img src="img/code.png"/>
+				</span>
+				<span class="code_tip">图形验证码不能为空</span>
+			</div>
+			<div class="phone_code">
+				<label for="">短信验证码</label>
+				<input type="text" class="code data-sms-code" placeholder="请点击获取短信验证码" />
+				<b class="getMobileCode">获取验证码</b>
+				<span class="code_tip">短信验证码不能为空</span>
+			</div>
+			<div class="for_con">
+				<a href="javascript:void(0);">继续</a>
+			</div>
+		</div>
+	</div>
+
+	<div id="model">
+		<div class="model_con for_w">
+			<span id="close"></span>
+			<img src="img/model_lose.png" alt="">
+			<h4>抱歉！找回密码失败</h4>
+			<p>系统中未维护您的邮箱、手机号码，请联系当地人事。</p>
+		</div>
+	</div>
+	<input type="text" value="" hidden="hidden" id="telphone"/>
+	<input type="text" value="" hidden="hidden" id="email"/>
+	<input type="text" value="" hidden="hidden" id="smsCode"/>
+</body>
+
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/js/jquery.md5.js"></script>
+<script type="text/javascript" src="/js/global_config.js"></script>
+<script type="text/javascript" src="/js/global.js"></script>
+<script type="text/javascript" src="/js/forgetPass.js"></script>
+
+</html>

@@ -1,0 +1,13 @@
+
+.detail-photos p{
+	width:180px;
+	height: 180px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    overflow:hidden;
+    cursor: pointer;
+}
+.detail-photos p>img{cursor: default;}
+.mar_top{margin-top:25px;}
+.rela_tive{position: relative;}
+.detail-info .rela_tive .span-right{position: absolute;top:0;left:169px;width:480px;}

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+	<title>在途详情</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/checkBusTrack.css?ver=0.4" />
+	<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>车辆信息</h3>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">车牌号</p>
+					<span class="fr spa_n"><a href="javascript:;">沪C2346</a></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">订单号</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">提货单号</p>
+					<span class="fr spa_n"  data-column=""></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">客户单号</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">客户全称</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">始发站</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">到达站</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">司机名称1</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">司机手机1</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">司机名称2</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">司机手机2</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">车辆类型</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">车长</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+				<div class="layout fl">
+					<p class="fl stage">计划发车时间</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+				<div class="layout fl right_no">
+					<p class="fl stage">实际发车时间</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="layout fl">
+					<p class="fl stage">计划到达时间</p>
+					<span class="fr spa_n" data-column=""></span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="mess_age">
+			<h3>跟踪信息</h3>
+			<div class="app_normal alike">
+				<div class="clearfix">
+					<div class="layout fl">
+						<p class="fl stage">跟踪时间</p>
+						<span class="fr spa_n" data-column="">1</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">跟踪人</p>
+						<span class="fr spa_n" data-column="">系统</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">车辆位置</p>
+						<span class="fr spa_n" data-column=""><a href="javascript:;">21456.235</a></span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">备注</p>
+						<span class="fr spa_n long" data-column="">你好你好</span>
+					</div>
+				</div>
+			</div>
+			<div class="app_abnormal alike">
+				<div class="clearfix">
+					<div class="layout fl">
+						<p class="fl stage">跟踪时间</p>
+						<span class="fr spa_n" data-column="">1</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">异常开始时间</p>
+						<span class="fr spa_n" data-column="">1</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">跟踪人</p>
+						<span class="fr spa_n" data-column="">广州</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">异常原因</p>
+						<span class="fr spa_n" data-column="">广州</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">车辆位置</p>
+						<span class="fr spa_n" data-column=""><a href="javascript:;">21456.235</a></span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">备注</p>
+						<span class="fr spa_n long" data-column="">广州</span>
+					</div>	
+				</div>
+				<div class="abnormal_img">
+					<ul>
+						<li>
+							<p class="images"></p>
+							<span class="img_word">车辆限行照片</span>
+						</li>
+						<li>
+							<p class="images"></p>
+							<span class="img_word">车辆限行照片</span>
+						</li>
+						<li>
+							<p class="images"></p>
+							<span class="img_word">车辆限行照片</span>
+						</li>
+						<li>
+							<p class="images"></p>
+							<span class="img_word">车辆限行照片</span>
+						</li>
+						<li class="right_no">
+							<p class="images"></p>
+							<span class="img_word">车辆限行照片</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="cbs_normal alike">
+				<div class="clearfix">
+					<div class="layout fl">
+						<p class="fl stage">跟踪时间</p>
+						<span class="fr spa_n" data-column="">1</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">跟踪人</p>
+						<span class="fr spa_n" data-column="">1</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">车辆位置</p>
+						<span class="fr spa_n long" data-column="">广州</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">备注</p>
+						<span class="fr spa_n long" data-column="">你好你好</span>
+					</div>
+				</div>
+			</div>
+			<div class="cbs_abnormal alike">
+				<div class="clearfix">
+					<div class="layout fl">
+						<p class="fl stage">跟踪时间</p>
+						<span class="fr spa_n" data-column="">1</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">异常开始时间</p>
+						<span class="fr spa_n" data-column="">1</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">异常结束时间</p>
+						<span class="fr spa_n" data-column="">你好你好</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">跟踪人</p>
+						<span class="fr spa_n" data-column="">广州</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">异常原因</p>
+						<span class="fr spa_n" data-column="">广州</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">车辆位置</p>
+						<span class="fr spa_n long" data-column="">广州</span>
+					</div>
+					<div class="layout fl">
+						<p class="fl stage">备注</p>
+						<span class="fr spa_n long" data-column="">广州</span>
+					</div>
+				</div>
+				<div class="abnormal_img">
+					<ul>
+						<li>
+							<p class="images"></p>
+							<span class="img_word">车辆限行照片</span>
+						</li>
+						<li>
+							<p class="images"></p>
+							<span class="img_word">车辆限行照片</span>
+						</li>
+						<li>
+							<p class="images"></p>
+							<span class="img_word">车辆限行照片</span>
+						</li>
+						<li>
+							<p class="images"></p>
+							<span class="img_word">车辆限行照片</span>
+						</li>
+						<li class="right_no">
+							<p class="images"></p>
+							<span class="img_word">车辆限行照片</span>
+						</li>
+					</ul>
+				</div>
+				<button class="over">异常结束</button>
+			</div>
+		</div>		
+	</div>
+	<div class="check">
+		<div class="actions">
+			<a href="javascript:void(0);" class="active">跟踪在途情况</a>
+			<a href="javascript:void(0);" class="">车辆到达</a>
+			<!-- <a href="javascript:void(0);" class="check_hover">
+				<div class="hover_content">
+				</div>
+			</a>	 -->
+		</div>
+	</div>
+	<!-- 异常结束时间弹框 -->
+	<div class="mo_del">
+		<div class="model_remark">
+		    <h4>异常结束</h4>
+			<div class="layout">
+				<label class="labe_l">结束时间</label>
+				<input type="text" class="inpu_t">
+
+			</div>			
+			<a href="javascript:void(0);">确定</a>				
+			<span></span>			
+		</div>
+	</div>
+	<!-- 跟踪在途情况弹框 -->
+	<div class="mo_del">
+		<div class="model_content mask">
+			<h4>
+				<p>跟踪信息</p>
+				<div class="radio_btn">
+					<input type="radio" name="status" value="">无异常
+					<input type="radio" name="status" value="">有异常
+				</div>
+			</h4>
+			<div class="mask_nor">
+				<div class="layout">
+					<label class="labe_l">车辆位置</label>
+					<input type="text" class="inpu_t">
+				</div>
+				<div class="layout">
+					<label class="labe_l">备注</label>
+					<textarea name="" id="" cols="30" rows="10"></textarea>
+				</div>
+			</div>
+			<div class="mask_abnor">
+				<div class="clearfix">
+					<div class="layout fl">
+						<label class="labe_l">异常开始时间</label>
+						<input type="text" class="inpu_t">
+					</div>
+					<div class="layout fr right_no">
+						<label class="labe_l">异常原因</label>
+						<input type="text" class="inpu_t">
+					</div>
+				</div>
+				<div class="layout right_no">
+					<label class="labe_l">车辆位置</label>
+					<input type="text" class="inpu_t long">
+				</div>
+				<div class="layout right_no">
+					<label class="labe_l">备注</label>
+					<textarea name="" id="" cols="30" rows="10"></textarea>
+				</div>
+				<ol class="line_img">
+					<li class="ab_image">
+						<input type="text" class="file-add" readonly="" onfocus="this.blur();" data-column="">						
+						<span class="p-add">上传车辆异常照片</span>
+					</li>
+					<li class="ab_image">
+						<input type="text" class="file-add" readonly="" onfocus="this.blur();" data-column="">						
+						<span class="p-add">上传车辆异常照片</span>
+					</li>
+					<li class="ab_image">
+						<input type="text" class="file-add" readonly="" onfocus="this.blur();" data-column="">						
+						<span class="p-add">上传车辆异常照片</span>
+					</li>
+					<li class="ab_image">
+						<input type="text" class="file-add" readonly="" onfocus="this.blur();" data-column="">						
+						<span class="p-add">上传车辆异常照片</span>
+					</li>
+					<li class="ab_image right_no">
+						<input type="text" class="file-add" readonly="" onfocus="this.blur();" data-column="">						
+						<span class="p-add">上传车辆异常照片</span>
+					</li>
+				</ol>
+			</div>
+			<a href="javascript:void(0);" class="">提交</a>
+			<i class="clo_se"></i>
+		</div>
+	</div>
+	
+	
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSOrderPush.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<!-- <script type="text/javascript" src="js/CBSBorrowCarInfo.js?ver=0.4"></script>
+ -->
+ 	<script type="text/javascript">
+
+ 	</script>
+</html>
+
+
+
+
+
+
+

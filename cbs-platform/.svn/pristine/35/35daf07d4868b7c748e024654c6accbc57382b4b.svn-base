@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="false">
+		<property name="locations">
+			<list>
+				<value>classpath:/properties/${spring.profiles.active}/properties-${spring.profiles.active}.properties</value>
+				<value>classpath:/properties/application.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+		<property name="ignoreResourceNotFound" value="false" />
+	</bean>
+
+	<context:component-scan base-package="com.gzzhwl.cbs">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<context:spring-configured />
+</beans>

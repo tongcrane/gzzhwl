@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+	<title>新增借车记录</title>
+	<link rel="stylesheet" type="text/css" href="/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/css/sourceBass.css">
+	<link rel="stylesheet" type="text/css" href="/css/addBorrowCar.css" />
+	<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>车挂信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<label class="labe_l">车牌号</label>
+						<input maxlength="7" class="inpu_t" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">车长</p>
+						<span class="fr spa_n " ><b class="more_unit"></b>&nbsp;&nbsp;cm</span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">所属部门</p>
+						<span class="fr spa_n" data-column=""></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix mar_top">
+						<p class="fl stage">车辆类型</p>
+						<span class="fr spa_n" data-column=""></span>
+					</div>
+					<div class="layout clearfix mar_bottom">
+						<p class="fl stage">使用部门</p>
+						<span class="fr spa_n"></span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix mar_top">
+						<p class="fl stage">核定载重总质量</p>
+						<span class="fr spa_n" data-column="" ><b class="more_unit"></b>&nbsp;&nbsp;kg</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age">
+			<h3>驾驶员信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<label class="labe_l">驾驶员名称</label>
+						<input maxlength="7" class="inpu_t" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">手机号码</p>
+						<span class="fr spa_n"></span>
+					</div>
+					<div class="layout clearfix">
+						<label class="labe_l">驾驶员名称</label>
+						<input maxlength="7" class="inpu_t" type="text" />
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">手机号码</p>
+						<span class="fr spa_n" data-column=""></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix mar_top">
+						<p class="fl stage">身份证号码</p>
+						<span class="fr spa_n" data-column=""></span>
+					</div>
+					<div class="layout clearfix id_num">
+						<p class="fl stage">身份证号码</p>
+						<span class="fr spa_n"></span>
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="require">
+			<h3>借用信息</h3>
+			<div class="clearfix">
+				<div class="left right_long fl">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<label class=" labe_l" >申请部门</label>
+							<select name="" id="" class="selec_t"></select>
+						</div>
+						<div class="layout fr">
+							<label class="labe_l">开始借用时间</label>
+							<input maxlength="7" class="inpu_t" type="text" />
+						</div>
+					</div>
+					<div class="right_one mar_top">
+						<div class="layout rela_tive">
+							<label class="labe_l">使用线路</label>
+							<div class="from">
+								<select class="selec_t" name="" id=""></select>
+								<select class="selec_t mar_left" name="" id=""></select>
+							</div>
+							<div class="to">
+								<select class="selec_t" name="" id=""></select>
+								<select class="selec_t mar_left" name="" id=""></select>
+							</div>
+							<span class="line"></span>
+						</div>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout">
+						<label class="labe_l">计划归还时间</label>
+						<input maxlength="7" class="inpu_t" type="text"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="check">
+		<div class="actions">
+			<a href="javascript:void(0);" class="active">提交</a>
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/moment.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+   	<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSOrderPush.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSConfirm.js?ver=0.3"></script>
+	<!-- <script type="text/javascript" src="/js/CBSOrderInfo.js?ver=0.3"></script> -->
+
+</html>
+
+
+
+
+
+
+

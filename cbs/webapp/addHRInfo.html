@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8"/>
+	<title class="title_val">添加HR信息</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/base.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/addBase.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/addHRInfo.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css?ver=0.4"/>
+</head>
+<body>
+
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>添加HR信息</p>
+	</div>
+
+	<div class="car-detail">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<p></p>
+				</div>
+				<div class="detail-info">
+					<h3>人员信息</h3>
+					<div class="f-tips">
+						<label for="">工号</label>
+						<input maxlength="5" class="need column require cNo" type="text" data-column="number">
+						<div class="tips" hidden>请输入正确的工号</div>
+					</div>
+					<div class="f-tips">
+						<label for="">姓名</label>
+						<input maxlength="20" class="need column require cChinese" type="text" data-column="realName"  >
+						<div class="tips" hidden>请输入有效姓名</div>
+					</div>
+					<div class="f-tips">
+						<label for="">手机号</label>
+						<input maxlength="11" class="need column require" type="text" data-column="telphone">
+						<div class="tips" hidden>请输入正确的手机号码</div>
+					</div>
+					<div class="f-tips">
+						<label for="">邮箱</label>
+						<input maxlength="50" class="column" type="text" data-column="email">
+						<div class="tips" hidden>请输入正确的邮箱</div>
+					</div>
+					<div class="f-tips">
+						<label class="up-need">职级</label>
+						<select class="column require" data-column="position">
+							<option value="">请选择</option>
+							<option value="管理员">管理员</option>
+							<option value="高级经理">高级经理</option>
+							<option value="主管">主管</option>
+							<option value="调度">调度</option>
+							<option value="储备经理">储备经理</option>
+							<option value="经理">经理</option>
+							<option value="客服">客服</option>
+							<option value="驻场">驻场</option>
+							<option value="统计员">统计员</option>
+							<option value="数据分析员">数据分析员</option>
+							<option value="会计">会计</option>
+							<option value="总经理">总经理</option>
+							<option value="客服主管">客服主管</option>
+							<option value="安全员">安全员</option>
+							<option value="客服经理">客服经理</option>
+							<option value="项目主管">项目主管</option>
+							<option value="项目经理">项目经理</option>
+							<option value="操作">操作</option>
+							<option value="运营经理">运营经理</option>
+							<option value="调度经理">调度经理</option>
+							<option value="副总经理">副总经理</option>
+							<option value="业务经理">业务经理</option>
+							<option value="业务员">业务员</option>
+							<option value="理货员">理货员</option>
+							<option value="现场主管">现场主管</option>
+							<option value="成本专员">成本专员</option>
+							<option value="总经理助理">总经理助理</option>
+							<option value="财务主管">财务主管</option>
+							<option value="财务专员">财务专员</option>
+							<option value="质控经理">质控经理</option>
+							<option value="驻场经理">驻场经理</option>
+							<option value="操作主管">操作主管</option>
+							<option value="驻场主管">驻场主管</option>
+							<option value="驾驶员">驾驶员</option>
+							<option value="运营主管">运营主管</option>
+						</select>
+						<div class="tips" hidden="hidden">请选择职级</div>
+					</div>
+					<div class="f-tips">
+						<label class="up-need-dep">所属部门名称</label>
+						<input type="text" id="autocomplete-ajax" class="require">
+						<!-- <select class="column require" data-column="departId" id="depart">
+						</select> -->
+						<div class="tips" hidden>请填写有效的所属部门</div>
+					</div>
+					
+			</div>
+				
+			<div class="detail-bottom">
+				<div class="btn">
+					<a href="javascript:void(0);" class="cancel">取消</a>
+					<a href="javascript:void(0);" class="current">提交</a>
+				</div>
+			</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.autocomplete.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+<script type="text/javascript" src="js/explugin/CBSAutocomplete2.js?ver=0.4"></script>
+<script type="text/javascript" src="js/CBSHr.js?ver=0.4"></script>
+
+<script type="text/javascript">
+	$(function(){
+		var staffId=global.QueryString.staffId;
+		var staff=new CBSHr({staffId:staffId});
+		$('.current').click(function(){
+			staff.doSave();
+			return false;
+		});
+		$('.cancel').click(function(){
+			window.close();
+		});
+	});
+</script>
+
+</html>

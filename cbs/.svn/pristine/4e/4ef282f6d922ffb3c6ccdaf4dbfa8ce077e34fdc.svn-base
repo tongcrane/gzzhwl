@@ -1,0 +1,87 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-12 18:14:56
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-08-10 10:52:59
+*/
+.con_tent{border:none;width:1150px;}
+.check{border:none;width:1150px;}
+.right_long{width:746px;}
+.right_one{width:100%;}
+.layout .inpu_t{height:24px;line-height:24px;}
+.right_one .spa_n{width:632px;}
+.right_one .inpu_t{width:632px;}
+.layout_two .spa_n{width:108px;}
+.layout_two .spa_n:last-child{margin-right:16px;}
+.layout_line .spa_n,.layout_line textarea{width:1032px;height:100px;line-height: 26px;padding-top:0;}
+.layout_long .spa_n{width:113px;}
+.layout_long .spa_n:last-child{margin-right:5px;}
+.check .active{ background-color: #de642c;color:#fff;border: 1px solid #bc5120; border-radius: 2px;}
+.check a{width:90px;}
+
+/* 详情页面去行高 */
+.layout .stage{line-height: normal;height:auto;}
+.layout .spa_n{line-height: normal;height:auto;}
+
+/* 新增页面 */
+.layout .labe_l{display: inline-block;}
+.layout .inpu_t{width:230px;}
+.right_one .inpu_t{width:627px;}
+.layout .selec_t{width:230px;}
+.mess_age .layout{margin-bottom: 15px;}
+.require,.mess_age{margin-bottom:20px;}
+
+.radi_o .inpu_t{width:130px;}
+.radio_btn{display: inline-block;font-size: 14px;}
+.radio_btn input{margin-left:4px;vertical-align: -2px;}
+
+/* 模态窗口 */
+.mo_del{display: none;}
+.model_content{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:214px;}
+.model_content p{padding:40px;color:#525252;text-align: center;margin-top: 20px;}
+
+.model_content_cansel{
+	background: #fff;
+	position: fixed;
+	top:50%;
+	left:50%;
+	box-shadow: 0 1px 8px #ccc;
+	display: none;
+}
+.model_content_cansel a{
+	height:28px;
+	line-height: 28px;
+	background: #de642c;
+	border: 1px solid #bc5120;
+	padding:0 30px;
+	border-radius: 2px;
+	color:#fff;
+	position:absolute;
+	right:20px;
+	bottom:32px;
+}
+.model_content_cansel i{
+	background:url("../img/adv_sea_close.png") no-repeat center;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+.model_content_cansel{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:214px;}
+.model_content_cansel p{padding:40px;color:#525252;text-align: center;margin-top: 20px;}
+
+/* 单位样式 */
+.money,.real_weight,.real_vol{position:relative;}
+.money:after{content:"元";position:absolute;top:0;left:328px;color:#ddd;font-size:14px;font-weight: normal;}
+.radi_o .money:after{left:228px;}
+.real_weight:after{content:"kg";width:50px;position:absolute;top:3px;left:327px;color:#ddd;font-size:14px;font-weight: normal;}
+.real_vol:after{content:"m³";width:50px;position:absolute;top:3px;left:327px;color:#ddd;font-size:14px;font-weight: normal;}
+
+.radi_o .money + .inpu_t{width:110px;padding-right:22px;}
+.money + .inpu_t{width:210px;padding-right:22px;}

@@ -1,0 +1,63 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-06-22 09:30:18
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-07 15:33:51
+*/
+.sea-special{
+	float:left;
+	margin-left:100px;
+}
+.han-content{
+	float:left;
+}
+.han-content>p{
+	display: inline-block;
+	height:28px;
+	line-height: 28px;
+	color:#414141;
+	font-size:12px;
+	color:#6d6d6d;
+	margin-left: 30px;
+}
+.han-content>p:first-child{
+	margin-left: 10px;
+}
+.han-content>p span{
+	display: inline-block;
+}
+.han-content>p i{
+	font-style:normal;
+	color:#000;
+}
+
+.f-width{
+	width:30px;
+}
+.car-num{
+	width:197px;
+	height:100%;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; 
+	-webkit-box-sizing:border-box;
+	padding-left:10px;
+}
+.car-list{
+	width:590px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; 
+	-webkit-box-sizing:border-box;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis; 
+}
+.owe-to>p{
+	width:165px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; 
+	-webkit-box-sizing:border-box;
+}
+.h-star{
+	width:115px;
+	padding-left:45px;
+}

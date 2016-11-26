@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN" ng-app="editApp">
+	<head ng-controller="head">
+		<meta charset="utf-8">
+		<title>关于我们</title>
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/about.css"/>
+		<link rel="stylesheet" type="text/css" href="css/dialog.css"/>
+		<link rel="shortcut icon" ng-href="{{path}}" />
+	</head>
+	<body style="overflow-x:hidden">
+	<!--[if (gt IE 9)|!(IE)]><!-->
+    	<headtop></headtop>
+    	<div class="banner_w">
+    		<div class="banner_bg"></div>
+    	</div>
+    	<div class="about_w">
+    		<div class="about about_zh">
+    			<div class="tit" >关于志鸿</div>
+    			<div class="text mb60">志鸿物流成立于2003年，是国家“AAAA”级物流企业。历经10余年的发展，凭借精湛的卡车运营管理技术，汲取先进的物流实践经验，自2013年从专线物流转型为“大车队”运营模式，实现每年100%的速度增长，<b>现已成为中国领先的公路物流运输解决方案提供商。</b></div>
+    			<div class="text pic"></div>
+    			<div class="text mt40">服务的客户包括顺丰速运、韵达、圆通、中通、百世、德邦、天地华宇、唯品会、京东等，运输网络覆盖国内160多个城市,链接运输车辆超过5000台。于2015年10月，引入中国本土排名前十大私募股权投资公司广发信德、中国A股深创板最大市值公司温氏集团、专注供应链与物流投资领域的创岚投资作为A轮投资者，依托自主研发的移动互联网和物流数据交互系统，<b>致力于构建中国最大的公路物流运输网，成为中国公路物流运输领导者。</b></div>
+			</div>
+    	</div>
+		<div class="corporate_culture">
+			<div class="culture">
+				<div class="tit">企业文化</div>
+				<ul class="clearfix">
+					<li>
+						<span>企业精神</span>
+						<span>包容、变化、坚持、勇进</span>
+					</li>
+					<li>
+						<span>企业使命</span>
+						<span>效率中国，让物流更舒心</span>
+					</li>
+					<li>
+						<span>企业目标</span>
+						<span>5 年内突破 100 亿 </span>
+					</li>
+					<li>
+						<span>团队构成</span>
+						<span>“互联网+金融+物流"顶级人才</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="history_w">
+    		<div class="history">
+    			<div class="tit">志鸿发展历程</div>
+    			<ol>
+    				<li>
+    					<p>2016年</p>
+    					<p>启动“核能计划”内部员工股权激励方案（65人）；6月单月营业额破亿；对标学习（华为、德邦、东风），打造学习型组织；借力IBM、合益咨询，实现精细化管理；自主研发业务系统，实现智能化办公；</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2015年</p>
+    					<p>引入中国本土排名前十大私募股权投资公司广发信德、中国A股资深创板最大市值公司温氏集团、专注供应链与物流投资领域的创岚投资作为A轮投资者。与沃尔沃正式建立战略合作关系；总裁刘志远受邀参加CCTV《奋斗》栏目访谈；创世界记录:单月载货有效行驶56262公里；广发信德融资上亿元；“双十一”五天发车6195台，营业额达4582万元；与温氏、创瑞坚木签订投资协议。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2014年</p>
+    					<p>公司通过ISO9000质量体系认证，成为广州“AAAA”物流企业、中国物流联合会常务理事单位，公司管理升级，引进“赢天下”企业智能管理平台和金蝶K/3系统。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2013年</p>
+    					<p>2013年度广州十佳物流企业，OA成功上线，公司成功转型，从原来的“专线领头羊”完美升级到“全国效率运力整合平台”。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2012年</p>
+    					<p>公司再次引进多批沃尔沃和日野大卡车，专门成立车队管理中心，在先进的车辆监控系统的支持下，公司顺利实现甩挂操作，大大提高了运作效率，节省了各项运营成本，使公司的业绩迈上了一个新的台阶。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2011年</p>
+    					<p>公司隆重推出“隔日达”（穗、蓉、渝）干线高端运输产品；并和斯堪尼亚集团开始合作，采购“公路之王”支持不断扩大的运输业务。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2010年</p>
+    					<p>自主开发建立了ERP系统，构建了现代化的运输和信息平台。实现业务控制，物流财务同步化。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2009年</p>
+    					<p>2公司开始购车，组建自有标准集装箱运输车队；截止到第四季度，全年营业收入增长率达到122%，超额完成五年经营目标。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2008年</p>
+    					<p>公司重回到干线运输主营业务，与青田家具合作，进军家具业；在此同时公司着力开通了成都、重庆运输往返业务，成本的降低和业务的上升，使公司的发展再次提速。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2007年</p>
+    					<p>公司通过了“五年发展规划纲要”，重新定位，确定市场运营模式：以项目类业务为主导，为国际、国内知名物流运输产量缩减下降，但转型由于政策原因受阻，发展遇到瓶颈。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2006年</p>
+    					<p>公司提出要做“最强的标杆式专线物流运输供应商，全面打造西南区域专线服务网络”年营业额以40%的速度提升。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2005年</p>
+    					<p>公司通过了“五年发展规划纲要”，重新定位，确定市场经营模式：以项目类业务为主导，为国际、国内知名品牌企业提供订单式公路运输服务，公司开始与电装合作进军汽配业，后来先后与奔驰、宝马、丰田、铃木等汽配行业合作。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2004年</p>
+    					<p>推出引领行业的西南“68快线”干线运输概念，神州数码、佳能、宏碁成为公司的合作伙伴，正式进军IT行业，公司开始高端服务市场，进入了高速发展期。</p>
+    					<span class="dot"></span>
+    				</li>
+    				<li>
+    					<p>2003年</p>
+    					<p>公司成立。</p>
+    					<span class="dot"></span>
+    				</li>
+    			</ol>
+			</div>
+    	</div>
+		<div class="con_foot mt0 index_foot">
+		    <div class="wrap clearfix foot_w">
+		        <p>
+		        	<span class="about_us">
+		        		<a href="about.htm">关于我们</a>　　　　
+		        		<a href="javascript:;">联系我们</a>
+		        	</span>
+		        	<span class="copyright"><a href="help.htm">条款 - 隐私权</a>　　　　©2016 guangzhouzhihong　　　　粤ICP备05123318号-2</span>
+		            <span class="tel">
+		                <i>400-888-0906</i>
+		                </br>
+		                <i class="time">周一至周日<em>7*24小时</em></i>
+		            </span>
+		        </p>
+		    </div>
+		</div>
+    <!--<![endif]-->
+    <!--[if IE | (gte IE 9)]>
+        <div class="dialog_wrap">
+            <div class="dialog_done dialog_w upgrade">
+                <p class="star">
+                    <img src="img/upgrade_bg.png">
+                </p>
+                <p class="txt">
+                    <span class="txt_d">您当前的浏览器版本过低</span></br>
+                </p>
+                <p class="txt txt2">
+                    <span class="txt_d font14">可能存在安全风险，建议升级浏览器</span></br>
+                </p>
+                <div class="btn-group clearfix">
+                    <a href="https://www.google.cn/intl/zh-CN/chrome/browser/desktop/" target="_blank" class="btn_l">谷歌 Chome</a>
+                    <a href="http://www.firefox.com.cn/" target="_blank" class="btn_r">Firefox 火狐</a>
+                </div>
+            </div>
+            <div class="mask"></div>
+        </div>
+    <![endif]-->
+	</body>
+	<script type="text/javascript" src="js/vendor/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="js/vendor/toTop.min.js"></script>
+    <script type="text/javascript" src="js/vendor/angular.min.js"></script>
+	<script type="text/javascript" src="js/vendor/angular-route.min.js"></script>
+	<script type="text/javascript" src="js/vendor/angular-resource.min.js"></script>
+    <script type="text/javascript" src="js/vendor/store.min.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery.cookie.js"></script>
+	<script type="text/javascript" src="js/vendor/lazyload.js"></script>
+	<script type="text/javascript" src="js/public/global_config.js"></script>	
+	<script type="text/javascript" src="js/public/global.js"></script>
+	<script type="text/javascript" src="js/services/services.js"></script>
+	<script type="text/javascript" src="js/filters/filters.js"></script>
+	<script type="text/javascript" src="js/directives/directives.js"></script>
+	<script type="text/javascript" src="js/controllers/controller.js"></script>
+</html>

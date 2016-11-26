@@ -1,0 +1,56 @@
+
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-18 15:04:12
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-09-21 09:55:15
+*/
+.car-information p{width:1140px;height:46px;margin:0 auto;font-size:18px;line-height:46px;padding-left:60px;color:#525252;font-weight: bold;background: url(../img/car_info_bg.jpg) no-repeat 24px 12px;}
+.car-detail{width:1174px;padding-bottom:35px;margin:10px auto;border:1px solid #dcdcdc;font-size:14px;}
+.info_line{width:1084px;padding:0 12px;height:48px;background: #f9fdff;border:1px solid #e3eff6;border-radius:2px;margin:30px auto 40px;}
+.u_l li{width:180px;float:left;margin-left:140px;}
+.u_l li:nth-child(1){margin-left:34px;}
+.u_l li .im_ages{width:178px;height:178px;border:1px solid #e5e5e5;background:#fbfbfb;border-radius: 4px;background-size:cover;background-position:center center;cursor:pointer;}
+.u_l li>span{display:block;width:100%;height:28px;line-height:28px;text-align: center;color:#3b3b3b;font-weight: bold;}
+.detail-bottom{width:1176px;margin:25px auto 4px;height:50px;background:#f6f6f6;}
+
+.detail-bottom a{display: block;float:right;width:85px;height:30px;line-height:30px;border-radius: 2px;border:1px solid #dcdcdc;margin:10px 15px 0 0;outline: none;text-align: center;color:#4c4c4c;}
+.detail-bottom .current{background-color: #de642c;color:#fff;border:1px solid #bc5120;font-size: 14px;font-weight: bold;}
+.info_line_div{float:left;margin:14px 0 0 110px;}
+.info_line_div:nth-child(1){margin-left:0;}
+
+/* 表格*/ 
+.info-content table{border-collapse:collapse;width:100%;font-size:14px;color:#414141;}
+ td{padding:12px 0;}
+
+/* 车辆司机信息 */
+.info-content{width:1174px;margin:10px auto 110px;border:1px solid #dcdcdc;}
+.info-content>table>tbody>tr:nth-child(2n+1){background: #F6F6F6;}
+.info-content>table>tbody>tr>td:nth-child(1){width:190px;padding-left:40px;}
+.info-content>table>tbody>tr>td:nth-child(2){padding-right:60px;}
+.info-content>table>tbody>tr>td:nth-child(3){width:170px;}
+.f-width{width:30px;}
+.car-num{width:190px;}
+.car-list{width:714px;}
+.car-num,.car-list,.owe-to>p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* 审核人部分 */
+.to-info{cursor:pointer;}
+.owe-to{position:relative;}
+.owe-to>p{width:147px;height:100%;padding-left:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.owe-to .owe-span{width:20px;height:20px;position:absolute;top:0px;left:0px;z-index:10;cursor:pointer;background:url(../img/star.png) no-repeat center;}
+.owe-span.h_star{width:20px;height:20px;position:absolute;top:11px;left:3px;cursor:pointer;background:url(../img/h_star.png) no-repeat center;}
+.owe-to .deadline{height:auto;background:#fff;box-shadow:0 1px 4px #ccc;position:absolute;top:18px;left:-70px;z-index:11;display: none;}
+.owe-span:hover .deadline{display:block;}
+.deadline li{padding:4px 10px;height:48px;border-bottom:1px solid #dedede;}
+.deadline li>p{height:30px;line-height:30px;white-space:nowrap;text-align:center;}
+.deadline li>b{display:block;font-weight:normal;margin-top:-3px;white-space:nowrap;text-align:center;}
+.h-star{width:115px;height:100%;padding-left:45px;background:url(../img/h_star.png) no-repeat 23px center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+
+
+
+#show-pic{width:100%;height:100%;background:rgba(0,0,0,0.6);position:fixed;top:0;left:0;z-index:9999;display:none;}
+#show-pic .content{width:600px;height:600px;background:#fff;border-radius:10px;position:absolute;top:50%;left:50%;margin-top:-350px;margin-left:-350px;overflow:hidden;}
+#show-pic .content-img{width:100%;height:100%;background-position:center;background-repeat:no-repeat;background-size:cover;}
+#show-pic .content span{width:18px;height:18px;background:url(../img/show_pic_bg.png) no-repeat;position:absolute;top:10px;right:10px;cursor:pointer;}

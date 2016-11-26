@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <title>账号信息</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+    <link rel="stylesheet" type="text/css" href="css/newAccountInfo2.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>账号信息</p>
+	</div>
+
+	<div class="car-detail">
+		<div class="info_line">
+			<div class="info_line_div">
+				<label class="fl labe_l">姓名：</label>
+				<span class="fr spa_n column" data-column="realName"></span>
+			</div>
+			<div class="info_line_div">
+				<label class="fl labe_l">手机号：</label>
+				<span class="fr spa_n column" data-column="telphone"></span>
+			</div>
+			<div class="info_line_div">
+				<label class="fl labe_l">身份证号：</label>
+				<span class="fr spa_n column" data-column="idno"></span>
+			</div>
+			<div class="info_line_div">
+				<label class="fl labe_l">审核状态：</label>
+				<span class="fr spa_n column" data-column="status"></span>
+			</div>
+		</div>
+		<ul class="u_l clearfix">
+			<li>
+				<p>
+				<div class="im_ages car-img" data-column="idFImageRefId"></div>
+				<span>身份证正面照片</span>
+				</p>
+			</li>
+			<li>
+				<p>
+				<div  class="im_ages car-img" data-column="idBImageRefId"></div>
+				<span>身份证反面照片</span>
+				</p>
+			</li>
+			<li>
+				<p>
+				<div class="im_ages car-img" data-column="busImageRefId"></div>
+				<span>营业执照照片</span>
+				</P>
+			</li>
+		</ul>
+		
+	</div>
+
+	<div class="detail-bottom">
+		<div class="clearfix">
+			<a href="javascript:;" class="current" id="checkPass">审核通过</a>
+			<a href="javascript:;" class="current" id="checkUnpass">审核不通过</a>
+		</div>
+	</div>
+
+	<div class="car-information vehicle-info">
+		<p>车辆司机信息</p>
+	</div>
+	<div class="info-content" hidden="hidden">
+		<table>
+			<tbody>
+				<!-- <tr>
+					<td>
+						<div class="car-num to-info">张三 18356565656</div>
+					</td>
+					<td>
+						<div class="car-list to-info">待审核：身份证号310100199845454745</div>
+					</td>
+					<td>
+						<div class="owe-to">
+				    		<p class="check_by to-info">审核人：张萌萌萌吗</p>
+				    	</div>
+					</td>
+				</tr> -->
+			</tbody>
+		</table>
+	</div>
+</body>
+
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+    <script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+    <script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSImageInfo.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/newAccountInfo2.js?ver=0.4"></script>
+	
+	<script type="text/javascript">
+	var accountId = global.QueryString.accountId;
+	var account = new CBSAccount({accountId:accountId});
+	
+	$('#checkUnpass').click(function(){
+		account.checkUnpass({accountId:accountId});
+		return false;
+	});
+	
+	$('#checkPass').click(function(){
+		account.checkPass({accountId:accountId});
+		return false;
+	});
+	</script>
+	
+</html>

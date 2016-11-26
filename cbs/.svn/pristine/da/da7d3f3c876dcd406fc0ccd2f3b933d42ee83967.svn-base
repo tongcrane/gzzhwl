@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>找回密码</title>
+        <link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+        <link rel="stylesheet" type="text/css" href="/css/login.css?ver=0.3"/>
+        <link rel="stylesheet" type="text/css" href="/css/find_pass.css?ver=0.3"/>
+    </head>
+    <body>
+    	<div class="header log_head">
+			<h1 class="logo">
+				<a href="#">
+					<img src="/img/logo.png"/>
+				</a>
+			</h1>
+		</div>
+    	<div class="wrap">
+    		<div class="con_w">
+    			<div class="log_tit">
+	    			<h2>运势界车货匹配平台V-Lorry</h2>
+	    			<p>找回密码</p>
+	    		</div>
+	    		<div class="log_con">
+	    			<div class="touxiang fi_lock">
+	    				<img src="/img/suo.png" height="66" width="66">
+	    			</div>
+	    			<div class="log_inps find_inps">
+	    				<form method="" action="" onsubmit="return false">
+							<p>
+								<label for="user">用户名</label>
+								<input type="text" name="phone" class="phone" id="reg_phone" placeholder="请输入手机号"/>
+								<span class="reg_hint"></span>
+							</p>
+							<p>
+								<label for="code">手机验证码</label>
+								<div class="clearfix">
+									<input type="text" name="code" class="code" id="code" placeholder="请输入验证码"/>
+									<input class="getMobileCode" value="获取验证码(60s)" id="getMobileCode"/>
+								</div>
+								<span class="reg_hint"></span>
+							</p>
+							<p>
+								<input type="submit" name="submit" id="LoginBtn" value="下一步" class="LoginBtn" />
+							</p>
+						</form>
+	    			</div>
+	    		</div>
+    		</div>
+    	</div>
+    	<div class="footer"></div>
+    </body>
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+</html>

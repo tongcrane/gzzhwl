@@ -1,0 +1,35 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-08-01 14:36:05
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-08-09 17:59:49
+*/
+
+/* 高级搜索样式 */
+.sea-left input,.sea-right input{width:158px;}
+.sea-left label{margin-right:3px;}
+.mar_top{padding-top:15px;}
+.mar_bottom{padding-bottom: 28px;}
+.mar_right{margin-right: 13px;}
+.in_block label,.in_block input{display: inline-block;}
+.in_block input{width:441px;}
+.two-col i{top:59px;left:243px;}
+
+
+/* td内部不加标签样式 */ 
+.handle-content table{table-layout: fixed;}
+td{overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+th{text-align:left;}
+.handle-content td,th{padding:12px 0 12px 10px;}
+
+.check_box{vertical-align: -1px;}
+.all_check{vertical-align: -2px;margin-right:6px;}
+
+/* 状态 */
+.f_single{position: relative;}
+.bus_sel_single{background:url(../img/plat_handle.png) no-repeat 84px center; cursor:pointer;}
+.bus_sel_single.sin_long{background-position: 99px center;}
+.bus_select{background:url(../img/select.png) no-repeat 72px center; cursor:pointer;}
+.bus_sel_single .statu_s{top:33px;left:-9px;}
+.sin_long .statu_s{left:3px;}
+

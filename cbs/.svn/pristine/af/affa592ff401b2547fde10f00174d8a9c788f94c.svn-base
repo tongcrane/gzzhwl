@@ -1,0 +1,123 @@
+
+.detail-right{
+	margin-left:10px;
+}
+.car-detail{
+	overflow: hidden;
+	min-height:352px !important;
+}
+.detail-left, .detail-right{
+	padding-bottom:0px;
+}
+.detail-right{padding-left:0;}
+.driver-img{
+	width:140px;
+	height:140px;
+	background:url(/img/detial_bg.jpg) no-repeat center;
+	border:1px solid #dedede;
+	border-radius: 4px;
+	cursor: pointer;
+}
+.detail-photos p{
+	width:142px;
+}
+.detail-info input.city{
+	width:110px;
+	padding-left:6px;
+	font-size:12px;
+	font-weight: normal;
+	margin-bottom:8px;
+	color:#6e6e6e;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.run-rote{
+	font-size:12px;
+	font-weight: bold;
+	color:#525252;
+}
+/* .car-detail{
+	height:352px;
+} */
+.detail-photos .mar-top{
+	margin-top:-10px;
+}
+.mar-bottom p{
+	margin-bottom:8px;
+}
+.driver-bottom{
+	width:1174px;
+	height:50px;
+	background:#f6f6f6;
+	margin:0 auto;
+}
+.driver-bottom .btn{
+	float:right;
+}
+.driver-bottom button{
+	display: block;
+	float:left;
+	width:85px;
+	height:29px;
+	line-height:29px;
+	border-radius: 4px;
+	border:1px solid #dcdcdc;
+	margin:12px 10px 0 0;
+	cursor: pointer;
+	outline: none;
+}
+.driver-bottom .clock{
+	background: url(/img/clock.png) no-repeat center;
+	
+}
+.driver-bottom .close{
+	background: url(/img/delete-icon.png) no-repeat center;
+}
+.driver-bottom .current{
+	background-color: #de642c;
+	color:#fff;
+	border:1px solid #bc5120;
+	font-size: 14px;
+	font-weight: bold;
+}
+.car-detail.mar-bottom{
+	margin-bottom:25px;
+}
+
+#show-pic{
+	width:100%;
+	height:100%;
+	background:rgba(0,0,0,0.6);
+	position:fixed;
+	top:0;
+	left:0;
+	z-index: 9999;
+	display:none;
+}
+#show-pic .content{
+	width:700px;
+	height:700px;
+	background: #fff;
+	border-radius:10px;
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin-top:-350px;
+	margin-left:-350px;
+}
+#show-pic .content-img{
+	width:100%;
+	height:100%;
+	background-position: center;
+    background-repeat: no-repeat;
+}
+#show-pic .content span{
+	width:18px;
+	height:18px;
+	background: url(/img/show_pic_bg.png) no-repeat;
+	position:absolute;
+	top:10px;
+	right:10px;
+	cursor:pointer;
+}

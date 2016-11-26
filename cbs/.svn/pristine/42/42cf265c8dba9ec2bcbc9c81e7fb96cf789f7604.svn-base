@@ -1,0 +1,75 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-08 17:28:53
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-25 17:44:25
+*/
+body{font-size: 14px;color:#414141;}
+/* .require_spe label{font-size: 16px;} */
+.require_spe .spa_n{width:136px;height:28px;line-height:28px;}
+.require_spe .re_spe_long{width:168px;}
+.require_spe .re_spe_short{width:130px;}
+.layout .spa_n.long{width:838px;margin-left:2px;height:100px;}
+.butt_on {width:154px;margin: 28px 0 0 40px;}
+.butt_on a:first-child{margin-bottom: 14px;}
+.con_tent{border-bottom: 1px solid #e1e1e1;padding-bottom:30px;}
+.bid_table{width:1158px;border:1px solid #e1e1e1;padding:0 20px 20px;margin:15px auto;}
+.handle-data{line-height: 33px;}
+table{border-collapse: collapse;margin-bottom:40px;}
+th{background:#f6f6f6;height:40px;}
+td{padding:20px 0;text-align: center;}
+tr{border-top: 1px solid #dedede;background:#fff;}
+tr:last-child{border-bottom: 1px solid #dedede;}
+.owe-to>p{width:100px;padding-left:0;}
+.owe-to .owe-span{top:0;left:12px;}
+.owe-to .plat_handle{top:0;left:66px;}
+.deadline li>b{margin-top:-5px;}
+.bottom_info{width:100%;height:50px;position: relative;}
+.bottom_con{width:1158px;height:35px;padding:15px 20px 0;background: #f6f6f6;position: absolute;top:0;left:-20px;}
+.bottom_con a{font-size: 14px;color: #fff;height: 26px;line-height: 26px;padding: 0 26px;border: 1px solid #bc5120;background-color: #de642c;color:#fff;border-radius: 2px;}
+.bottom_con a.active{border:1px solid #dcdcdc;background:#eee;color:#4c4c4c;}
+
+/* 模态窗口 */
+.mo_del{display: none;}
+.model_content{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:214px;}
+.model_content p{padding:40px;color:#525252;text-align: center;margin-top: 20px;}
+
+.model_content_cansel{
+	background: #fff;
+	position: fixed;
+	top:50%;
+	left:50%;
+	box-shadow: 0 1px 8px #ccc;
+	display: none;
+}
+.model_content_cansel a{
+	height:28px;
+	line-height: 28px;
+	background: #de642c;
+	border: 1px solid #bc5120;
+	padding:0 30px;
+	border-radius: 2px;
+	color:#fff;
+	position:absolute;
+	right:20px;
+	bottom:32px;
+}
+.model_content_cansel i{
+	background:url("/img/adv_sea_close.png") no-repeat center;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+.model_content_cansel{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:214px;}
+.model_content_cansel p{padding:40px;color:#525252;text-align: center;margin-top: 20px;}
+
+/* 单位样式 */
+.more_unit{font-weight: normal;}
+

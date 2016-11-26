@@ -1,0 +1,647 @@
+/**
+ * 
+ */
+var CBSAddOrder = function(options){
+	this.opt = $.extend({}, options);
+	this.pcdColumns = $('.pcd-column');
+	this.pcdList = {};
+	this.modify = false;
+	
+	var _this = this;
+	
+	$('select.baseInfo-column').each(function(i, j){
+		var minWidth = $(j).data('width');
+		$(j).multiselect({
+			minWidth : minWidth,
+			header : false,
+			multiple : false,
+			selectedList : 1,
+			noneSelectedText: '请选择',
+		})
+	});
+	
+	$('.agreement-select').multiselect({
+    	header : false,
+		multiple : false,
+		selectedList : 1,
+		noneSelectedText: '请选择',
+		click : function(event, ui) {
+			_this.selectAgreement(ui.id);
+		}
+    });
+	
+	this.selectAgreement = function(agreementId){
+		if(agreementId != ''){
+			$.get(global.server + '/admin/agreement/getAgreementDetail', {agreementId:agreementId}, function(msg){
+				if (msg && msg.status && msg.status.statusCode == global.status.success) {
+					var data = msg.data;
+					_this.fillAgreementData(data);
+				}
+			});
+		}
+	};
+	
+	this.fillAgreementData = function(data){
+		$('input.agreement-column').each(function(i, j){
+			var self = $(j);
+			var _p = self.data('agreement');
+			self.val(data[_p]);
+		});
+		$('select.agreement-column').each(function(i, j){
+			var self = $(j);
+			var _p = self.data('agreement');
+			self.multiselect('setValue',data[_p]);
+		});
+		_this.startPC.selectValue(data.startCodeP, data.startCodeC);
+		_this.endPC.selectValue(data.endCodeP, data.endCodeC);
+	}
+	
+	this.enableEdit = function(data){
+		var status = data.orderDetailInfo.status;
+		var consign = data.consignmentInfo;
+		if(status == '01' && consign == null){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	this.init = function(options){
+		var _this = this;
+		_this.getChargeData();
+		_this.startPC = new CBSPCSelect($("#startCodeP"),$('#startCodeC'));
+		_this.endPC = new CBSPCSelect($("#endCodeP"),$('#endCodeC'));
+		
+		$('.use-date').each(function(i, j){
+			$(this).datetimepicker({
+        		timepicker:true,
+        		format:'Y-m-d H:i',
+        		autoclose:true,
+        		todayHighlight:true,
+        		keyboardNavigation:false
+    		});
+		});
+		
+		if (options && options.orderId) {
+			console.log('init order data with id: ' + options.orderId);
+            var url = "/admin/order/getOrderDetail?orderId=" + options.orderId;
+            var _this = this;
+            $.get(global.server + url, function (msg) {
+                if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                    var data = msg.data;
+                    var enable = _this.enableEdit(data);
+                    if(!enable){
+                    	alert("当前状态不允许修改订单");
+                    	window.close();
+                    } else {
+                    	_this.modify = true;
+                    	$('title').text('修改订单');
+                    	_this.fillData(data);
+                    }
+                }
+            });
+		} else {
+			console.log("init order");
+			_this.getCustomerData();
+			
+			_this.pcdColumns.each(function(i, j){
+	     		$(this).append('<select class="pcd-select-p"></select>');
+	     		$(this).append('<select class="pcd-select-c"></select>');
+	     		$(this).append('<select class="pcd-select-d"></select>');
+	     		var category = $(this).data('column');
+	     		var pcd = new CBSPcdSelect({width:100,category:category,showEmpty:false}, $(this));
+	     		if($(j).hasClass('sender-column')){
+	     			_this.pcdList.sender = pcd;
+				} else {
+					_this.pcdList.receiver = pcd;
+				}
+	     	});
+		}
+	}
+	
+	this.getChargeData = function(){
+		var _this = this;
+		$.get(global.server + '/admin/order/charge', function (msg) {
+            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                var data = msg.data;
+                var el = $('<option data-id="" value="">请选择</option>');
+                $('.charge-select').append(el);
+                $.each(data, function(i, j){
+                	var el = $('<option data-type="' +j.unit + '" data-id="'+ j.chargeId +'" value="' + j.chargeId + '">' + j.name +'</option>');
+                	$('.charge-select').append(el);
+                });
+            } 
+        }).done(function(msg){
+        	 $('.charge-select').multiselect({
+             	header : false,
+     			multiple : false,
+     			selectedList : 1,
+     			noneSelectedText: '请选择',
+     			click : function(event, ui) {
+     				var data = {type:ui.type,id:ui.id};
+     				_this.changeCharge(data);
+     			}
+             });
+        });
+	};
+	
+	
+	this.changeCharge = function(data){
+		$('.rela_tive .unit').text(data.type);
+	}
+	
+	this.getCustomerData = function(initId){
+		var _this = this;
+		$.get(global.server + '/admin/customer/queryCustList', function (msg) {
+            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                var data = msg.data;
+                var el = $('<option data-id="" value="">请选择</option>');
+                $('.customer-select').append(el);
+                $.each(data, function(i, j){
+                	var el = null;
+                	if(initId){
+                		if(j.customerId == initId){
+                			el = $('<option selected data-name="' + j.fullName + '" data-id="'+ j.customerId +'" value="' + j.customerId + '">' + j.fullName +'</option>');
+                		} else {
+                			el = $('<option data-name="' + j.fullName + '" data-id="'+ j.customerId +'" value="' + j.customerId + '">' + j.fullName +'</option>');
+                		}
+                	}else{
+                		el = $('<option data-name="' + j.fullName + '" data-id="'+ j.customerId +'" value="' + j.customerId + '">' + j.fullName +'</option>');
+                	}
+                	$('.customer-select').append(el);
+                });
+            } 
+        }).done(function(msg){
+        	 $('.customer-select').multiselect({
+             	header : false,
+     			multiple : false,
+     			selectedList : 1,
+     			noneSelectedText: '请选择',
+     			click : function(event, ui) {
+     				$('.sender-column[data-column="customerName"]').val(ui.name);
+     				_this.getAgreementData(ui.id);
+     			}
+             });
+        });
+	};
+	
+	
+	this.getAgreementData = function(custId, initId){
+		$.get(global.server + '/admin/agreement/getAgreements', {custId:custId}, function(msg){
+			if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				var data = msg.data;
+				$('.agreement-select').empty();
+				var el = $('<option data-id="" value="">请选择</option>');
+                $('.agreement-select').append(el);
+				$.each(data, function(i, j){
+					var el = null;
+					if(initId){
+						if(initId == j.agreementId){
+							el = $('<option selected data-id="'+ j.agreementId +'" value="' + j.agreementId + '">' + j.startCodeP +'</option>');
+						} else {
+							el = $('<option data-id="'+ j.agreementId +'" value="' + j.agreementId + '">' + j.startCodeP +'</option>');
+						}
+					} else {
+						el = $('<option data-id="'+ j.agreementId +'" value="' + j.agreementId + '">' + j.startCodeP +'</option>');
+					}
+                	$('.agreement-select').append(el);
+                });
+				$('.agreement-select').multiselect('refresh');
+			}
+		});
+	}
+	
+	
+	this.init(options);
+}
+
+CBSAddOrder.prototype.fillData = function(data){
+	var _this = this;
+	
+	var orderNo=data.orderDetailInfo.orderNo;
+	$('#orderNo').val(orderNo);
+	
+	var customerId = data.orderSenderInfo.customerId;
+	_this.getCustomerData(customerId);
+	
+	var agreementId = data.orderBaseInfo.agreementId;
+	if(agreementId){//有合同
+		_this.getAgreementData(customerId, agreementId);
+    	_this.selectAgreement(agreementId);
+	} else {//没有合同
+		_this.getAgreementData(customerId);
+		var orderLineInfo = data.orderLineInfo;
+		
+		_this.startPC.selectValue(orderLineInfo.startCodeP, orderLineInfo.startCodeC);
+		_this.endPC.selectValue(orderLineInfo.endCodeP, orderLineInfo.endCodeC);
+	}
+	
+	var sender = data.orderSenderInfo;
+	$('.sender-column').each(function(i, j){
+		var _p = $(j).data('column');
+		$(j).val(sender[_p]);
+	});
+	
+	var receiver = data.orderReceiverInfo;
+	$('.receiver-column').each(function(i, j){
+		var _p = $(j).data('column');
+		$(j).val(receiver[_p]);
+	});
+	
+	_this.pcdColumns.each(function(i, j){
+ 		$(this).append('<select class="pcd-select-p"></select>');
+ 		$(this).append('<select class="pcd-select-c"></select>');
+ 		$(this).append('<select class="pcd-select-d"></select>');
+ 		var category = $(this).data('column');
+ 		if($(j).hasClass('sender-column')){
+ 			var pcd = new CBSPcdSelect({width:100,category:category,showEmpty:false,initCode:sender[category]}, $(this));
+ 			_this.pcdList.sender = pcd;
+		} else {
+			var pcd = new CBSPcdSelect({width:100,category:category,showEmpty:false,initCode:receiver[category]}, $(this));
+			_this.pcdList.receiver = pcd;
+		}
+ 	});
+	
+	var baseInfo = $.extend({},data.orderBaseInfo,data.orderDetailInfo);
+	$('.baseInfo-column').each(function(i, j){
+		var _p = $(j).data('column');
+		if(_p == 'needStartTime' || _p == 'needArriveTime'){
+			var value = baseInfo[_p];
+			if(value){
+				var _v = moment(value, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm");
+				$(j).val(_v);
+			}
+		} else {
+			$(j).val(baseInfo[_p]);
+		}
+	});
+	$('select.baseInfo-column').each(function(i, j){
+		$(j).multiselect('refresh');
+	});
+}
+
+CBSAddOrder.prototype.doSave = function () {
+    var _this = this;
+    var result = _this.getJsonDataFromContent();
+    var valid = _this.validToPost(result);
+    if(valid){
+    	if(_this.modify){
+    		result.baseInfo.orderId = _this.opt.orderId;
+    	}
+    	var dataStringify = JSON.stringify(result);
+    	
+    	var url = '/admin/order/create';
+    	if(_this.modify){
+    		url = '/admin/order/modify';
+    	}
+        $.ajax({
+            url: global.server + url,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: dataStringify,
+            dataType: "Json",
+            success: function (msg) {
+                if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                	var orderId = msg.data;
+                	//alert("订单保存成功");
+                	window.close();
+                	window.opener.location.reload();
+                } else {
+                	alert(msg.status.errorMsg);
+                }
+            }
+        });
+    }
+};
+
+CBSAddOrder.prototype.getJsonData = function(selector){
+	var data = {};
+	$(selector).each(function(i,j){
+		var _this = $(this);
+		var pName = _this.data("column");
+		var pValue = _this.val();
+		data[pName] = pValue;
+	});
+	return data;
+}
+
+CBSAddOrder.prototype.getJsonDataFromContent = function(){
+	var _this = this;
+	var data = {};
+	var baseInfo = _this.getJsonData('.baseInfo-column');
+	var lineInfo = _this.getJsonData('.lineInfo-column');
+	
+	var sender = _this.getJsonData('.sender-column');
+	var senderPCD = _this.pcdList.sender;
+	var senderData = senderPCD.getValue();
+	sender[senderData.category] = senderData.code;
+	
+	var receiver = _this.getJsonData('.receiver-column');
+	var receiverPCD = _this.pcdList.receiver;
+	var receiverData = receiverPCD.getValue();
+	receiver[receiverData.category] = receiverData.code;
+	
+	data.baseInfo = baseInfo;
+	data.lineInfo = lineInfo;
+	data.receiver = receiver;
+	data.sender = sender;
+	return data;
+};
+
+CBSAddOrder.prototype.validToPost = function(data){
+	var _this = this;
+	var customerId = data.sender.customerId;
+
+	if(customerId == ''){
+		alert("请选择客户");
+		return false;
+	}
+	var chargeId = data.baseInfo.chargeId;
+	if(chargeId == ''){
+		alert("请选择计价方式");
+		return false;
+	}
+	var hasError = false;
+	var errorCatalog = null;
+	var errorProperties = null;
+	if(!hasError){
+		var baseInfo = data.baseInfo;
+		$.each(baseInfo, function(i, j){
+			if(i != 'customerBillNo' && i != 'agreementId' && i != 'remark' && i != 'miles'){
+				if(j ==''){
+					hasError = true;
+					errorCatalog = 'baseInfo';
+					errorProperties = i;
+					return false;
+				}
+			}
+		});
+		if(!hasError){
+			var chargeId = baseInfo.chargeId;
+			if(chargeId == '9a6ea2dc-47d6-11e6-b2f0-000c29ce1409' && baseInfo.miles == ''){//按公里数计费方式
+				hasError = true;
+				errorCatalog = 'baseInfo';
+				errorProperties = 'miles';
+			}
+		}
+		if(!hasError){
+			var d_s = moment(baseInfo.needStartTime, "YYYY-MM-DD HH:mm");
+			var d_e = moment(baseInfo.needArriveTime, "YYYY-MM-DD HH:mm");
+			var time_valid = d_e.isAfter(d_s);
+			if(!time_valid){
+				hasError = true;
+				errorCatalog = 'baseInfo';
+				errorProperties = "timeDiff";
+			}
+		}
+		if(!hasError){
+			var miles = parseInt(baseInfo.miles);
+			if(isNaN(miles)){
+				hasError = true;
+				errorCatalog = 'baseInfo';
+				errorProperties = "miles";
+			} else {
+				$('.baseInfo-column[data-column="miles"]').val(miles.toFixed(1));
+				if(miles <= 0){
+			    	hasError = true;
+					errorCatalog = 'baseInfo';
+					errorProperties = "rightMiles";
+			    } else if(goodsWeight > 100000){
+					hasError = true;
+					errorCatalog = 'baseInfo';
+					errorProperties = "rightMiles";
+				} else {
+			    	baseInfo.miles = miles.toFixed(1);
+			    }
+			}
+		}
+		if(!hasError){
+			var unitPrice = parseInt(baseInfo.unitPrice);
+			if(isNaN(unitPrice)){
+				hasError = true;
+				errorCatalog = 'baseInfo';
+				errorProperties = "unitPrice";
+			} else {
+				$('.baseInfo-column[data-column="unitPrice"]').val(unitPrice.toFixed(2));
+				if(unitPrice <= 0){
+			    	hasError = true;
+					errorCatalog = 'baseInfo';
+					errorProperties = "unitPrice";
+			    } else {
+			    	baseInfo.unitPrice = unitPrice.toFixed(2);
+			    }
+			}
+		}
+		if(!hasError){
+			var goodsWeight = parseInt(baseInfo.goodsWeight);
+			if(isNaN(goodsWeight)){
+				hasError = true;
+				errorCatalog = 'baseInfo';
+				errorProperties = "goodsWeight";
+			} else {
+				$('.baseInfo-column[data-column="goodsWeight"]').val(goodsWeight.toFixed(1));
+				if(goodsWeight <= 0){
+					hasError = true;
+					errorCatalog = 'baseInfo';
+					errorProperties = "rightGoodsWeight";
+				} else if(goodsWeight > 100000){
+					hasError = true;
+					errorCatalog = 'baseInfo';
+					errorProperties = "rightGoodsWeight";
+				} else {
+					baseInfo.goodsWeight = goodsWeight.toFixed(1);
+				}
+			}
+			
+		}
+		if(!hasError){
+			var goodsVolume = parseInt(baseInfo.goodsVolume);
+			if(isNaN(goodsVolume)){
+				hasError = true;
+				errorCatalog = 'baseInfo';
+				errorProperties = "goodsVolume";
+			} else {
+				$('.baseInfo-column[data-column="goodsVolume"]').val(goodsVolume.toFixed(1));
+				if(goodsVolume <= 0){
+					hasError = true;
+					errorCatalog = 'baseInfo';
+					errorProperties = "rightGoodsVolume";
+				} else if(goodsVolume > 1000){
+					hasError = true;
+					errorCatalog = 'baseInfo';
+					errorProperties = "rightGoodsVolume";
+				} else {
+					baseInfo.goodsVolume = goodsVolume.toFixed(1);
+				}
+			}
+		}
+	}
+	
+	if(!hasError){
+		var lineInfo = data.lineInfo;
+		$.each(lineInfo, function(i, j){
+			if(i !='startCodeC' && i!= 'endCodeC'){
+				if(j ==''){
+					hasError = true;
+					errorCatalog = 'lineInfo';
+					errorProperties = i;
+					return false;
+				}
+			}
+		});
+	}
+	
+	if(!hasError){
+		var sender = data.sender;
+		$.each(sender, function(i, j){
+			if(i != 'mobile' && i != 'telphone'){
+				if(j ==''){
+					hasError = true;
+					errorCatalog = 'sender';
+					errorProperties = i;
+					return false;
+				}
+			}
+		});
+		
+		if(!hasError){
+			if(sender.mobile =='' && sender.telphone == ''){
+				errorCatalog = 'sender';
+				errorProperties = 'mobile';
+				hasError = true;
+			}
+			if(!hasError){
+				if(sender.telphone!=''){
+					var reg = /^(0\d{2,3}-)?\d{7,8}(-\d{1,6})?$/;
+					var valid = reg.test(sender.telphone);
+					if(!valid){
+						errorCatalog = 'sender';
+						errorProperties = 'telphone';
+						hasError = true;
+					}
+				}
+			}
+		}
+		
+	}
+	
+	if(!hasError){
+		var receiver = data.receiver;
+		$.each(receiver, function(i, j){
+			if(i != 'customerName' && i != 'mobile' && i != 'telphone'){
+				if(j ==''){
+					hasError = true;
+					errorCatalog = 'receiver';
+					errorProperties = i;
+					return false;
+				}
+			}
+		});
+		
+		if(!hasError){
+			if(receiver.mobile =='' && receiver.telphone == ''){
+				errorCatalog = 'receiver';
+				errorProperties = 'mobile';
+				hasError = true;
+			}
+			if(!hasError){
+				if(receiver.telphone!=''){
+					var reg = /^(0\d{2,3}-)?\d{7,8}(-\d{1,6})?$/;
+					var valid = reg.test(receiver.telphone);
+					if(!valid){
+						errorCatalog = 'receiver';
+						errorProperties = 'telphone';
+						hasError = true;
+					}
+				}
+			}
+		}
+	}
+	if(hasError){
+		var message = _this.errorInfo(errorCatalog,errorProperties);
+		alert("请填写"+message);
+	}
+	return !hasError;
+
+}
+
+CBSAddOrder.prototype.errorInfo = function(catalog, properties){
+
+	var message = {
+			baseInfo :{
+				lineAttribute :"线路属性",
+				needOwnVehicles :"是否允许外请",
+				orderType:"订单类型",
+				needLength:"车长",
+				needType:"车型",
+				needImportedVehicles:"是否进口",
+				goodsName:"货品名称",
+				miles:"公里数",
+				rightMiles:"正确的公里数",
+				needStartTime:"计划发车",
+				paymentType:"结算方式",
+				chargeId:"计费方式",
+				goodsWeight:"预估重量",
+				needArriveTime:"到达时限",
+				unitPrice:"单价",
+				goodsVolume:"体积",
+				orderAdvice:"回单要求",
+				timeDiff:"正确的到达时限",
+				isEvaluate:"单价是否预估",
+				rightGoodsVolume:"正确的货物预估体积",
+				rightGoodsWeight:"正确的货物预估重量"
+			},
+			sender :{
+				customerId:"客户",
+				mobile:"发货人的联系方式",
+				telphone:"正确的发货人联系电话",
+				contactName:"发货联系人",
+				areaCode:"联系人地址",
+				address:"联系人地址"
+			},
+			receiver : {
+				mobile:"收货人的联系方式",
+				telphone:"正确的收货人联系电话",
+				contactName:"收货人名称",
+				areaCode:"联系人地址",
+				address:"联系人地址"
+			},
+			lineInfo :{
+				startCodeP:"始发地",
+				endCodeP:"目的地"
+			}
+		};
+	return message[catalog][properties];
+};
+
+CBSAddOrder.prototype.showCancel = function(){
+	var _this = this;
+	var options = {
+		data : {},
+		text : '是否取消修改订单',
+		callback:function(data){
+			window.close();
+		}
+	}
+	new CBSConfirm(options);
+}
+
+
+$(function(){
+	var orderId = global.QueryString.orderId;
+	var param = {};
+	if(orderId){
+		param.orderId = orderId;
+	} 
+	
+	var addOrder = new CBSAddOrder(param);
+	$('.conserve').click(function(){
+		addOrder.doSave();
+		
+	});
+	
+	$('.cancel').click(function(){
+		addOrder.showCancel();
+	});
+})

@@ -1,0 +1,194 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<div class="banner"></div>
+<div class="container">
+	<div class="section">
+		<h2 class="title">合同客户</h2>
+		<div class="line clearfix">
+			<div class="layout">
+				<p class="stage high">订单号</p>
+				<span class="spa_n high gray">系统自动生成</span>
+			</div>
+			<div class="layout">
+				<label class="labe_l need">用车要求</label>
+				<select class="selec_t short"></select>
+				<select class="selec_t short"></select>
+			</div>
+			<div class="layout">
+				<label class="labe_l need">线路属性</label>
+				<select class="selec_t"></select>
+			</div>
+		</div>
+		<div class="line clearfix">
+			<div class="layout">
+				<label class="labe_l need">客户单号</label>
+				<input class="inpu_t" type="text" placeholder="请输入"/>
+			</div>
+			<div class="layout">
+				<label class="labe_l need">订单类型</label>
+				<select class="selec_t"></select>
+			</div>
+			<div class="layout">
+				<label class="labe_l need">始发地</label>
+				<select class="selec_t short"></select>
+				<select class="selec_t short"></select>
+			</div>
+		</div>
+		<div class="line clearfix">
+			<div class="layout">
+				<label class="labe_l need">客户全称</label>
+				<select class="selec_t"></select>
+			</div>
+			<div class="layout">
+				<label class="labe_l need">是否允许外请</label>
+				<select class="selec_t"></select>
+			</div>
+			<div class="layout">
+				<label class="labe_l need">目的地</label>
+				<select class="selec_t short"></select>
+				<select class="selec_t short"></select>
+			</div>
+		</div>
+		<div class="line clearfix">
+			<div class="layout">
+				<label class="labe_l need">客户合同</label>
+				<select class="selec_t"></select>
+			</div>
+			<div class="layout">
+				<label class="labe_l need">是否进口</label>
+				<select class="selec_t"></select>
+			</div>
+		</div>
+	</div>
+	<div class="section">
+		<h2 class="title">发货人信息</h2>
+		<div class="line clearfix">
+			<div class="layout">
+				<label class="labe_l need">发货人公司</label>
+				<input class="inpu_t" type="text" placeholder="请输入"/>
+			</div>
+			<div class="layout long">
+				<label class="labe_l need">货场地址</label>
+				<select class="selec_t"></select>
+				<span class="spa_n">1</span>
+			</div>
+		</div>
+		<div class="line clearfix">
+			<div class="layout">
+				<label class="labe_l need">发货联系人</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+			<div class="layout">
+				<label class="labe_l need">发货人手机</label>
+				<input class="inpu_t" type="text" placeholder="手机 / 电话必填一项" />
+			</div>
+			<div class="layout">
+				<label class="labe_l need">发货人电话</label>
+				<input class="inpu_t" type="text" placeholder="如：020-88888888" />
+			</div>
+		</div>
+	</div>
+	<div class="section">
+		<h2 class="title">收货人信息</h2>
+		<div class="line clearfix">
+			<div class="layout">
+				<label class="labe_l need">收货人公司</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+			<div class="layout long">
+				<label class="labe_l need">收货人地址</label>
+				<select class="selec_t short"></select>
+				<select class="selec_t short"></select>
+				<select class="selec_t short"></select>
+				<input class="inpu_t pright" type="text" placeholder="请输入详细地址" />
+				<span class="location"></span>				
+			</div>
+		</div>
+		<div class="line clearfix">
+			<div class="layout">
+				<label class="labe_l need">发货联系人</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+			<div class="layout">
+				<label class="labe_l need">收货人手机</label>
+				<input class="inpu_t" type="text" placeholder="手机 / 电话必填一项" />
+			</div>
+			<div class="layout">
+				<label class="labe_l need">收货人电话</label>
+				<input class="inpu_t" type="text" placeholder="如：020-88888888" />
+			</div>
+		</div>
+	</div>
+	<div class="section">
+		<h2 class="title">货物及时效</h2>
+		<div class="line clearfix">
+			<div class="layout">
+				<label class="labe_l need">货物名称</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+			<div class="layout">
+				<label class="labe_l need">单价</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />				
+			</div>
+			<div class="layout">
+				<label class="labe_l need">计价方式</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />				
+			</div>
+		</div>
+		<div class="line clearfix">
+			<div class="layout">
+				<label class="labe_l need">提货时间</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+			<div class="layout">
+				<label class="labe_l need">公里数</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+			<div class="layout">
+				<label class="labe_l need">结算方式</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+		</div>
+		<div class="line clearfix">
+			<div class="layout">
+				<label class="labe_l need">计划发车</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+			<div class="layout">
+				<label class="labe_l need">预估体积</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+			<div class="layout">
+				<label class="labe_l need">回单要求</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+		</div>
+		<div class="line clearfix">
+			<div class="layout">
+				<label class="labe_l need">到达时限</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+			<div class="layout">
+				<label class="labe_l need">预估重量</label>
+				<input class="inpu_t" type="text" placeholder="请输入" />
+			</div>
+		</div>
+		<div class="line mar-top clearfix">
+			<label class="labe_l">备注</label>
+			<textarea></textarea>
+		</div>
+	</div>
+	<div class="operation clearfix">
+		<div class="record fl">
+			<a href="javascript:void(0);">操作纪录</a>
+		</div>
+		<div class="btn fr">
+			<a href="javascript:void(0);">推送运势界</a>
+			<a href="javascript:void(0);">生成运单</a>
+			<a href="javascript:void(0);">修改</a>
+			<a href="javascript:void(0);">取消订单</a>
+			<a href="javascript:void(0);">约车</a>
+		</div>
+	</div>
+
+</div>

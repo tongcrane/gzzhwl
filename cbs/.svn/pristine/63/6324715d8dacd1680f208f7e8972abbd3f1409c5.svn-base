@@ -1,0 +1,41 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-12 13:32:57
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-08-09 17:11:42
+*/
+
+.con_tent{border:none;width:1150px;}
+.check{border:none;width:1150px;}
+.right_long{width:746px;}
+.right_one{width:100%;}
+.right_one .inpu_t{width:632px;}
+.right_one .in_short{width:234px;}
+.layout_two .inpu_t{width:108px;}
+.layout_two .inpu_t:last-child{margin-right:16px;}
+.layout_line textarea{width:1032px;height:52px;padding-top:0;}
+.layout_long .inpu_t{width:113px;}
+.layout_long .inpu_t:last-child{margin-right:5px;}
+.check .active{ background-color: #de642c;color:#fff;border: 1px solid #bc5120; border-radius: 2px;}
+.check_hover{background:url(../img/clock.png) no-repeat center;}
+.check a{width:90px;}
+.layout .input_short{width:114px;margin:0 4px 0 1px;}
+
+.specia_l .labe_l{display:inline-block;width:107px;}
+.specia_l .spa_n{display: inline-block;vertical-align: top;width:350px;margin-left:43px;overflow: hidden; text-overflow: ellipsis; white-space:nowrap;}
+
+/* 单位样式 */
+.km,.weight,.volume{position:relative;}
+.km:after,.weight:after,.volume:after{content:"元/kg";position:absolute;top:2px;left:305px;color:#ddd;font-weight: normal;}
+.km:after{content:"km";left:320px;}
+.weight:after{content:"kg";left:325px;}
+.volume:after{content:"m³";left:324px;}
+
+.rela_tive{position:relative;}
+.unit{text-align:right;height:26px;line-height:26px;position:absolute;top:1px;right:127px;font-style: normal;font-size:14px;color:#ddd;}
+
+/* 有单位input加padding-right */
+.layout .unit_short{width:206px;padding-right:28px;}
+
+.pcd-column .ui-multiselect.ui-widget{margin-right:4px;}
+

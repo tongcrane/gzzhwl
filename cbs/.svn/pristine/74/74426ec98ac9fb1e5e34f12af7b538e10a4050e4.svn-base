@@ -1,0 +1,472 @@
+//异常反馈
+var CBSFeedBack = function(options){
+	this.opt = $.extend({}, options);
+	
+	this.el=$('<div class="mo_del">\
+			<div class="car_content">\
+			<h4 class="_title">车辆异常反馈</h4>\
+			<div class="model_back">\
+				<div class="clearfix">\
+					<div class="layout fl">\
+						<label class="labe_l short">异常名称</label>\
+						<input maxlength="10" class="inpu_t feed-column" type="text" data-column="itemName">\
+					</div>\
+					<div class="layout fr">\
+						<label class="labe_l short money">产生费用</label>\
+						<input maxlength="10" class="inpu_t unit_short feed-column" type="text" data-column="itemPrice">\
+					</div>\
+				</div>\
+				<div class="layout feed_reason">\
+					<label class="labe_l">异常描述</label>\
+					<textarea maxlength="400" name="" id="" class="feed-column" data-column="itemDesc"></textarea>\
+				</div>\
+			</div>\
+			<a href="javascript:void(0);" class="">提交</a>\
+			<i class="clo_se"></i>\
+		</div>\
+			</div>');
+	
+	
+	this.init = function(options){
+		var _this = this;
+		_this.el.find('._title').html(_this.opt.title);
+		$('body').append(_this.el);
+		_this.el.find('.clo_se').click(function(){
+			_this.destory();
+		});
+		_this.el.find('a').click(function(){
+			_this.opt.callback.call(_this, _this.opt.data);
+			_this.destory();
+		});
+		_this.show();
+	};
+	
+	this.show = function(){
+		var _this = this;
+		_this.el.find('.car_content').show();
+		_this.el.show();
+	}
+	
+	this.destory = function(){
+		var _this = this;
+		_this.el.remove();
+	}
+	
+	this.init(options);
+}
+//发车反馈
+var CBSTripFeedBack = function(options){
+	this.opt = $.extend({}, options);
+	
+	this.el=$('<div class="mo_del">\
+			<div class="model_content">\
+			<h4>发车反馈</h4>\
+			<div class="model_back clearfix">\
+				<div class="layout fl">\
+					<p class="fl stage">订单号</p>\
+					<span class="fr spa_n orderNo"></span>\
+				</div>\
+				<div class="layout fl">\
+					<p class="fl stage">运单号</p>\
+					<span class="fr spa_n consignNo">OR123456778</span>\
+				</div>\
+				<div class="layout fl right_no">\
+					<p class="fl stage">计价方式</p>\
+					<span class="fr spa_n priceType"></span>\
+				</div>\
+			</div>\
+			<div class="model_back clearfix">\
+				<div class="fl">\
+					<div class="layout clearfix">\
+						<label class="labe_l">发车时间</label>\
+						<input class="inpu_t trip-car" type="text" data-column="tripTime">\
+					</div>\
+					<div class="layout clearfix">\
+						<label class="labe_l weight">实际重量</label>\
+						<input class="inpu_t unit_short trip-car" type="text" data-column="goodsWeight">\
+					</div>\
+					<div class="layout clearfix volume">\
+						<label class="labe_l">实际体积</label>\
+						<input class="inpu_t unit_short trip-car" type="text" data-column="goodsVolume">\
+					</div>\
+					<div class="layout clearfix">\
+						<label class="labe_l">客户单号</label>\
+						<input class="inpu_t trip-car" type="text" data-column="customerBillNo">\
+					</div>\
+				</div>\
+				<div class="fr images"></div>\
+			</div>\
+			<a href="javascript:void(0);" class="">发车</a>\
+			<i class="clo_se"></i>\
+		</div>\
+			</div>');
+	
+	
+	this.init = function(options){
+		var _this = this;
+		$('body').append(_this.el);
+		_this.el.find('.orderNo').text(_this.opt.data.orderNo);
+		_this.el.find('.consignNo').text(_this.opt.data.consignNo);
+		_this.el.find('.priceType').text(_this.opt.data.name);
+		_this.el.find('.clo_se').click(function(){
+			_this.destory();
+		});
+		_this.el.find('a').click(function(){
+			_this.opt.callback.call(_this, _this.opt.data);
+			_this.destory();
+		});
+		_this.show();
+	};
+	
+	this.show = function(){
+		var _this = this;
+		_this.el.find('.model_content').show();
+		_this.el.show();
+	}
+	
+	this.destory = function(){
+		var _this = this;
+		_this.el.remove();
+	}
+	
+	this.init(options);
+}
+
+var CBSTripInfo = function(options){
+	this.opt = $.extend({}, options);
+	this.loadColumns=$('.load-column');
+	this.orderColumns=$('.order-column');
+
+	this.init = function(options){
+		var _this = this;
+		var loadId = _this.opt.loadId;
+		_this.getData(loadId);
+	};
+	
+	
+	this.getData = function(loadId){
+		var _this = this;
+		$.get(global.server+'/admin/trip/getTripDetail',{loadId:loadId}, function(msg){
+			if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				var data = msg.data;
+				_this.data = data;
+				_this.fillLoadContentFromJsonData(data.loadInfo);
+				_this.fillOrderContentFromJsonData(data.orderInfo);
+
+			}
+		}).done(function(msg){
+			var action=msg.data.actionList;
+			var loadId=msg.data.loadInfo.loadId;
+			var orderNo=msg.data.orderInfo.orderNo;  //订单号
+			var consignNo=msg.data.orderInfo.consignNo;  //运单号
+			var tripFeedBackDetail=msg.data.tripFeedBackDetail;
+			var name='';  //计价方式
+			if(tripFeedBackDetail) {
+				name=tripFeedBackDetail.name;
+			}
+			if(action) {
+				$.each(action,function(i,j){
+					if(j.code=='02') {  //车检
+						$('.action_02').show();
+						$('.action_customer').click(function(){
+							var options = {
+						    	data : {loadId : loadId},
+						    	title : '货主异常反馈',
+						    	callback:function(data){
+						    		_this.saveLoadFeedBack(loadId,'01','01');
+						    	}
+						    }
+						    new CBSFeedBack(options);
+						});
+						$('.action_vehicle').click(function(){
+							var options = {
+							    data : {loadId : loadId},
+							    title : '车辆异常反馈',
+							    callback:function(data){
+							    	_this.saveLoadFeedBack(loadId,'01','02');
+							    }
+							 }
+							 new CBSFeedBack(options);
+						});
+					} else if(j.code=='03') {   //靠台
+						$('.action_03').show();
+						$('.action_customer').click(function(){
+							var options = {
+						    	data : {loadId : loadId},
+						    	title : '货主异常反馈',
+						    	callback:function(data){
+						    		_this.saveLoadFeedBack(loadId,'02','01');
+						    	}
+						    }
+						    new CBSFeedBack(options);
+						});
+						$('.action_vehicle').click(function(){
+							var options = {
+							    data : {loadId : loadId},
+							    title : '车辆异常反馈',
+							    callback:function(data){
+							    	_this.saveLoadFeedBack(loadId,'02','02');
+							    }
+							 }
+							 new CBSFeedBack(options);
+						});
+					} else if(j.code=='06') {   //取消发车
+						$('.action_06').show();
+					} else if(j.code=='05') {   //发车反馈
+						$('.action_05').show();
+						$('.action_customer').hide();
+						$('.action_vehicle').hide();
+					}
+				});
+				$('.action_02').click(function(){  //车检
+					var options = {
+			    		data : {},
+			    		text : '是否确认车辆检查',
+			    		callback:function(data){
+			    			_this.vehicleCheck(loadId);
+			    		}
+			    	}
+			    	new CBSConfirm(options);
+				});
+				$('.action_03').click(function(){  //靠台
+					var options = {
+				    		data : {},
+				    		text : '是否确认靠台',
+				    		callback:function(data){
+				    			_this.closeToSurface(loadId);
+				    		}
+				    	}
+				    	new CBSConfirm(options);
+				});
+				$('.action_06').click(function(){   //取消发车
+					var options = {
+							data : {},
+							text:'是否确认取消发车',
+							callback:function(data){
+								_this.cancelTrip(loadId);
+							}
+						}
+						new CBSConfirm(options);
+				});
+				$('.action_05').click(function(){   //发车反馈
+					var options = {
+						data : {loadId : loadId,orderNo:orderNo,consignNo:consignNo,name:name},
+						callback:function(data){
+							_this.tripTheCar(loadId);
+						}
+					}
+					new CBSTripFeedBack(options);
+				});
+			}
+		});
+	};
+	
+	this.init(options);
+};
+
+
+CBSTripInfo.prototype.fillLoadContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    this.loadColumns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	_this.text(pValue);
+    });
+    var driverInfo=data.driverInfo;
+    var idno=$('span[data-column="_idno"]');
+    var realName=$('span[data-column="_realName"]');
+    var telphone=$('span[data-column="_telphone"]');
+    $.each(driverInfo,function(i,j){
+    	if(j.idno) {
+    		$(idno[i]).text(j.idno);
+    	}
+    	if(j.realName) {
+    		$(realName[i]).text(j.realName);
+    	}
+    	if(j.telphone) {
+    		$(telphone[i]).text(j.telphone);
+    	}
+    });
+    var isPredict=data.isPredict;
+    if(isPredict=='01') {
+    	$('span[data-column="isPredict"]').text('准确');
+    } else if(isPredict=='02') {
+    	$('span[data-column="isPredict"]').text('预估');
+    }
+};
+
+CBSTripInfo.prototype.fillOrderContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    this.orderColumns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	_this.text(pValue);
+    });
+    
+/*    var getPcd = function(data){
+		var p = "";
+		var c = "";
+		var d = "";
+		$.each(data,function(i, j){
+			if(j.regionLevel == 1){
+				p = j.regionName;
+			} else if(j.regionLevel == 2){
+				c = j.regionName;
+			} else if(j.regionLevel == 3){
+				d = j.regionName;
+			}
+		});
+		var result = '';
+		if(p){
+			result+=p+" ";
+		}
+		if(c){
+			result+=c+" ";
+		}
+		if(d){
+			result+=d+" ";
+		}
+		return result;
+	}*/
+    
+    //var startP=data.startCodePCn?data.startCodePCn:'';
+    //var endP=data.endCodePCn?data.endCodePCn:'';
+    //var start=startP+" "+startC;
+    //var end=endP+" "+endC;
+    //$('span[data-column="_start"]').text(start);
+    //$('span[data-column="_end"]').text(end);
+    //var receive=getPcd(data.receiveRegion);
+    //var send=getPcd(data.sendRegion);
+    //$('span[data-column="_receive"]').text(receive+" "+data.receiveAddress);
+    //$('span[data-column="_send"]').text(send+" "+data.sendAddress)
+    
+    var startC=data.startCodeCCn?data.startCodeCCn:'';
+    var endC=data.endCodeCCn?data.endCodeCCn:'';
+    $('span[data-column="_line"]').text(startC+" - "+endC);
+};
+//异常反馈
+CBSTripInfo.prototype.saveLoadFeedBack=function(loadId,status,type) {
+	var valid=true;
+	var data = {};
+	var result={};
+	var obj=new Array();
+	$('.feed-column').each(function(i, j){
+        var _this = $(this);
+        var pName = _this.data("column");
+        var pValue = _this.val();
+        data[pName] = pValue;
+    });
+	data.loadId=loadId;
+	data.status=status;
+	data.type=type;
+	obj.push(data);
+	result.loadFeedbackList=obj;
+	if(valid){
+		var dataStringify = JSON.stringify(result);
+		console.log(dataStringify)
+	    $.ajax({
+	        url: global.server + '/admin/trip/saveLoadFeedback',
+	        type: "POST",
+	        contentType: "application/json; charset=utf-8",
+	        data: dataStringify,
+	        dataType: "json",
+	        success: function (msg) {
+	            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+	            	alert("提交成功");
+	            } else {
+	            	
+	            }
+	        }
+	    });
+	}
+}
+//车检
+CBSTripInfo.prototype.vehicleCheck = function (loadId) {
+	var url='/admin/trip/vehicleCheck';
+	$.ajax({
+        url: global.server + url,
+        type: "post",
+        data: {loadId:loadId},
+        success: function (msg) {
+            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+            	alert('已完成车辆检查');
+            	window.location.reload();
+            } else {
+            	alert(msg.status.errorMsg);
+            }
+        }
+    });
+}
+//靠台
+CBSTripInfo.prototype.closeToSurface = function (loadId) {
+	var url='/admin/trip/closeToSurface';
+	$.ajax({
+        url: global.server + url,
+        type: "post",
+        data: {loadId:loadId},
+        success: function (msg) {
+            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+            	alert('已靠台');
+            	window.location.reload();
+            } else {
+            	alert(msg.status.errorMsg);
+            }
+        }
+    });
+}
+//取消发车
+CBSTripInfo.prototype.cancelTrip = function (loadId) {
+	var url='/admin/trip/cancelTrip';
+	$.ajax({
+        url: global.server + url,
+        type: "post",
+        data: {loadId:loadId},
+        success: function (msg) {
+            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+            	alert('已取消发车');
+            	window.location.reload();
+            } else {
+            	alert(msg.status.errorMsg);
+            }
+        }
+    });
+}
+//发车
+CBSTripInfo.prototype.tripTheCar = function (loadId) {
+	var url='/admin/trip/tripTheCar';
+	var data = {};
+	$('.trip-car').each(function(i,j){
+		var _this = $(this);
+		var pName = _this.data("column");
+		var pValue = _this.val();
+		data[pName] = pValue;
+	});
+	data.loadId=loadId;
+	$.ajax({
+        url: global.server + url,
+        type: "post",
+        data: data,
+        success: function (msg) {
+            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+            	alert('已发车');
+            	window.location.reload();
+            } else {
+            	alert(msg.status.errorMsg);
+            }
+        }
+    });
+}
+
+$(function(){
+	
+	var loadId = global.QueryString.loadId;
+	var param = {
+		loadId : loadId
+	};
+	var load=new CBSTripInfo(param);
+	
+});

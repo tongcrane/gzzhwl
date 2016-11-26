@@ -1,0 +1,16 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-08 10:36:16
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-09-17 12:04:21
+*/
+.layout .stage{line-height: normal;height:auto;}
+.layout .spa_n{line-height: normal;height:auto;}
+.layout{margin-bottom:15px;width:350px;}
+.layout.au_to{width:auto;}
+
+/* 单位样式 */
+.km,.money{position:relative;}
+.km:after,.money:after{content:"km";position:absolute;top:0;right:-232px;color:#ddd;font-weight: normal;}
+.money:after{content:"元";}
+.layout .unit_short {width: 206px; padding-right: 26px;}

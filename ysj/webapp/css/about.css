@@ -1,0 +1,57 @@
+/*
+* @Author: Administrator
+* @Date:   2016-08-29 08:59:09
+* @Last Modified by:   Administrator
+* @Last Modified time: 2016-10-08 10:42:03
+*/
+.banner_w{position:relative;height:450px;}
+.banner_bg{width:1920px;height:450px;position:absolute;left:50%;margin-left:-960px;text-align:center;background:url(../img/about_bg.png) no-repeat center;}
+
+.about_w{background-color:#fff;}
+.about{width:1192px;margin:0 auto;text-align:center;}
+.about_w .about_zh .tit{font-size:24px;color:#333;position:relative;display:inline-block;margin-top:100px;}
+.about_w .about_zh .tit:before{content:"";display:block;width:150px;height:1px;background-color:#dfdee3;position:absolute;top:18px;left:-200px;}
+.about_w .about_zh .tit:after{content:"";display:block;width:150px;height:1px;background-color:#dfdee3;position:absolute;top:18px;left:150px;}
+.about_w .about_zh .text{width:894px;margin: 0 auto;text-align: justify;line-height: 34px;font-size:16px;color:#5e5e76;letter-spacing:1px;}
+.about_w .about_zh .text.mt40{margin-top:40px;padding-bottom:105px;}
+.about_w .about_zh .text.mb60{margin-top:60px;padding-bottom:40px;}
+.about_w .about_zh .pic{height:450px;background:url(../img/about_pic.png) no-repeat center;}
+.about_w .about_zh .tit{font-size:22px;color:#202028;}
+/* 
+.banner_bg{width:1920px;height:450px;position:absolute;left:50%;margin-left:-960px;text-align:center;background:url(../img/banner_bg.png) no-repeat center;}
+.about_l{float: left;width:613px;height:503px;background:url(../img/about_l_bg.png) no-repeat center;}
+.about_r{float: left;width:637px;margin:15px 0 0 60px;}
+.about_r .tit{font-size:22px;color:#202028;padding-left:16px;background:url(../img/about_tit_bg.png) no-repeat left center;margin-bottom:50px;}
+.about_r p{font-size:16px;color:#5e5e76;padding-left:42px;background:url(../img/icon_1.png) no-repeat 15px 12px;line-height:36px;margin-bottom:36px;text-align:justify;letter-spacing:1px;}
+.about_r p:nth-child(3){background-image:url(../img/icon_2.png);background-position: 15px 13px;}
+.about_r p:nth-child(4){background-image:url(../img/icon_3.png);background-position: 15px 13px;} */
+
+.corporate_culture{height:660px;background-color:#f4f5f8;}
+.corporate_culture .culture{width:1192px;margin:0 auto;text-align:center;}
+.corporate_culture .culture .tit{font-size:24px;color:#333;position:relative;display:inline-block;margin-top:122px;}
+.corporate_culture .culture .tit:before{content:"";display:block;width:150px;height:1px;background-color:#dfdee3;position:absolute;top:18px;left:-200px;}
+.corporate_culture .culture .tit:after{content:"";display:block;width:150px;height:1px;background-color:#dfdee3;position:absolute;top:18px;left:150px;}
+.corporate_culture .culture ul{margin-top:120px;}
+.corporate_culture .culture ul li{float:left;padding-top:140px;background:url(../img/culture_bg_1.png) no-repeat top center;margin-right:60px;width: 250px;}
+.corporate_culture .culture ul li:nth-child(2){background-image:url(../img/culture_bg_2.png);}
+.corporate_culture .culture ul li:nth-child(3){background-image:url(../img/culture_bg_3.png);}
+.corporate_culture .culture ul li:nth-child(4){background-image:url(../img/culture_bg_4.png);margin-right:0px;}
+.corporate_culture .culture ul li span{display:block;text-align:center;font-size:28px;color:#333;}
+.corporate_culture .culture ul li span:nth-child(2){font-size:14px;color:#666;margin-top:10px;line-height:20px;}
+
+
+.history_w{background-color:#fff;}
+.history{width:1192px;margin:0 auto;text-align:center;}
+.history_w .history .tit{font-size:36px;color:#999999;position:relative;display:inline-block;margin-top:160px;margin-bottom: 80px;}
+.history_w .history ol{margin:0 auto;width:940px;padding-bottom:167px;}
+.history_w .history ol li{text-align:left;font-size:16px;color:#5e5e76;width:456px;position:relative;padding-bottom:22px;}
+.history_w .history ol li:nth-child(odd){border-right:1px solid #999;padding-right:39px;}
+.history_w .history ol li:nth-child(even){border-left:1px solid #999;margin-left:495px;padding-left:39px;}
+.history_w .history ol li p:nth-child(1){font-size:22px;color:#202028;}
+.history_w .history ol li p:nth-child(2){line-height:36px;text-align:justify;}
+.history_w .history ol li .dot{display:block;width:18px;height:18px;background:url(../img/history_dot.png) no-repeat center;position:absolute;top:5px;}
+.history_w .history ol li:nth-child(odd) .dot{right:-9px;}
+.history_w .history ol li:nth-child(even) .dot{left:-10px;}
+.history_w .history ol li:nth-child(1){position:relative;}
+.history_w .history ol li:nth-child(1):before{width:1px;height:5px;background-color:#fff;position:absolute;top:0px;right:-1px;content:"";display:block;}
+.history_w .history ol li:last-child:before{width:1px;height:65px;background-color:#fff;position:absolute;bottom:0px;left:-1px;content:"";display:block;}

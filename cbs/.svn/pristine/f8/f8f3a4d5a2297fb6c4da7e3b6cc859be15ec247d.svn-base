@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HR信息列表</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="/css/infoListBase.css"/>
+<link rel="stylesheet" type="text/css" href="/css/manageInfoList.css">
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css"/>
+</head>
+<body>
+	<header id="header">
+	</header>
+	<div id="list-info">
+		<div class="list-info-title">
+			<h2>资料维护</h2>
+			<input type="text" class="list-search" placeholder="搜索&nbsp;&nbsp;姓名/工号/手机号/部门名称"/>
+			<!-- <span class="advance-sea">高级搜索</span> -->
+			<button id="btn_search" class="title_search">搜索</button>
+			<div class="search-content">
+				<b class="sea-close"></b>
+			</div>
+		</div>
+		<div class=" list-info-content clearfix">
+			<div class="list-Info-left">
+			</div>
+			<div class="list-Info-right">
+				<div class="handle clearfix">
+					<div class="handle-data">
+						<a target="_blank" href="/addHRInfo.html" class="handle-add"></a>
+						<button class="handle-delete "></button>
+						<!-- <button class="handle-export">导出数据</button> -->
+					</div>
+					<div class="handle-page"></div>					
+				</div>
+				<div class="handle-content">
+					<table>
+						<tbody>
+							<!-- <tr> 
+								<td width="30"> 
+										<input class="check-box" type="checkbox"/>
+								</td>
+								<td width="30">
+									<a href="javascript:void(0);" class="edit"></a>
+								</td>
+								<td width="210">
+									<div class="name_num">丁伟涛徐丹 12345</div>
+								</td>
+								<td width="710">
+									<div class="main">18333333333;研发部：交互设计师-邮箱：dingwt@gzzhwl.com</div>
+								</td>
+							</tr> -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="con-foot">
+			 <span> 条款 - 隐私权</span>
+			 <strong>上次账户活动时间<i>1</i>小时前</strong>
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.js"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.filter.js"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js"></script>
+	<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js"></script>
+    <script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js"></script>
+	<script type="text/javascript" src="/js/global.js"></script>
+	<script type="text/javascript" src="/js/menu/menu.js"></script>
+	<script type="text/javascript" src="/js/CBSTable.js"></script>
+	<script type="text/javascript" src="/js/manageInfoList.js"></script>
+</html>

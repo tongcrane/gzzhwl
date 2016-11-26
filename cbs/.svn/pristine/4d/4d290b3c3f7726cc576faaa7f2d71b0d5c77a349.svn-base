@@ -1,0 +1,128 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-06-22 09:29:49
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-06-22 09:37:54
+*/
+
+$(function() {
+	$('.search-content').bind('click', function(e){
+		return false;
+	});
+	var advSearch = {
+		show : function() {
+			$('.search-content').show(10, function(){
+				$('body').one('click', function(){
+					advSearch.hide();
+				});
+			});
+		},
+		hide : function() {
+			$('.search-content').hide();
+			$('body').unbind();
+		}
+	}
+
+	// 点击高级搜索，搜索框显示
+	$('.advance-sea').click(function(event) {
+		advSearch.show();
+	});
+
+	$('.sea-close').click(function(event) {
+		advSearch.hide();
+	});
+	
+	var openDriver = function(accountId,vehicleInfoId){
+    	var url = global.getContextPath() + '/NewDriverInfo.html?accountId='+accountId+'&vehicleInfoId='+vehicleInfoId;
+    	var body = document.getElementsByTagName("body")[0];
+    	var el = document.createElement("a");
+    	body.appendChild(el);
+    	el.href = url;
+    	el.target = '_blank';
+    	el.click();
+    	body.removeChild(el);
+    }
+	
+	var table = new CBSTable({
+		page : $('.handle-page'),
+		content : $('.handle-content > table > tbody'),
+		url : '/admin/vehiclemanage/driverAndVehicleCheckList',
+		method  : 'get',
+		pageNumber : 0,
+		pageSize : 10,
+		rowRender : function(index, row){
+			var el = $('<tr> \
+						<td> \
+							<div class="car-num to-info"></div> \
+						</td> \
+						<td> \
+							<div class="car-list to-info"></div> \
+						</td> \
+						<td> \
+							<div class="owe-to"> \
+					    		<p class="check_by to-info"></p> \
+					    	</div> \
+						</td> \
+					</tr>');
+			var driverList=row.DriverInfo;
+			var driverInfo='';
+			$.each(driverList,function(i,j){
+				var driverName=j.realName;
+				var telphone=j.telphone;
+				var idno=j.idno;
+				var driver=" 司机："+global.defaultIfBlack(driverName,'')+" "+global.defaultIfBlack(telphone,'')+" 身份证号："+global.defaultIfBlack(idno,'')
+				driverInfo+=driver+" ";
+			});
+			el.find('.car-num').html(global.defaultIfBlack(row.plateNumber,''));
+			el.find('.car-list').html(exStatus(row.status,'')+": 用户姓名:"+global.defaultIfBlack(row.userName,'')+driverInfo);
+			el.find('.check_by').html("审核人："+global.defaultIfBlack(row.checkName,''));
+			el.find('.to-info').click(function(){
+				openDriver(row.accountId,row.vehicleInfoId);
+			});
+			el.find('.f-width > .check-box').data(row).val(row.driverInfoId);
+			return el;
+		},
+		onBeforeLoad : function(param){
+			return param.queryType != null;
+		}
+	});
+	
+	$('#btn_search').click(function(){
+		table.load({
+			queryType:0,
+			queryContent:$('.list-search').val()
+		});
+	});
+	
+	$('#btn_adv_search').click(function(){
+		var columns=$('.column');
+		var data = {};
+		columns.each(function(i, j){
+			var _this = $(this);
+			var pName = _this.data("column");
+			var pValue = _this.val();
+			if(null!=pValue&&""!=pValue) {
+				data[pName] = pValue;
+			}
+		});
+		data.queryType=1;
+		table.load(data);
+		advSearch.hide();
+	});
+	
+	var exStatus=function(code) {
+		if(code=="00") {
+			return "审核通过";
+		} else if(code=="01") {
+			return "待审核";
+		} else if(code=="02") {
+			return "审核未通过";
+		} else if(code=="99") {
+			return "未录入完成";
+		}
+	}
+	
+	table.load({
+		queryType:0
+	});
+});

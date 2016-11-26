@@ -1,0 +1,234 @@
+$(function(){
+//    $('.search-content').bind('click', function(e){
+//        return false;
+//    });
+	var onBodyDown = function(event){
+    	if(($(event.target).parents(".search-content").length>0)){
+    		
+    	} else {
+    		advSearch.hide();
+    	}
+    };
+    
+    var advSearch = {
+        show : function() {
+            $('.search-content').show(10, function(){
+//                $('body').one('click', function(){
+//                    advSearch.hide();
+//                });
+            	$("body").bind("mousedown", onBodyDown);
+            });
+        },
+        hide : function() {
+        	$("body").unbind("mousedown", onBodyDown);
+            $('.search-content').hide();
+//            $('body').unbind();
+        }
+    }   
+	
+    //修改
+	var editSupply = function(supplyId){
+		var url = '/addSupplier.html?supplyId='+supplyId;
+    	var body = document.getElementsByTagName("body")[0];
+    	var el = document.createElement("a");
+    	body.appendChild(el);
+    	el.href = url;
+    	el.target = '_blank';
+    	el.click();
+    	body.removeChild(el);
+    }
+	
+    var table = new CBSTable({
+        page : $('.handle-page'),
+        content : $('.handle-content > table > tbody'),
+        url : '/admin/supply/pageSupplyList',
+        method  : 'GET',
+        pageNumber : 0,
+        pageSize : 10,
+        rowRender : function(index, row){
+            /*var el = $('<tr> \
+            <td class="f-width" width="">\
+            <input type="checkbox" class="cancel check_box" val="" status="" loadId=""/>\
+            <a href="javascript:void(0);" class="edit"></a>\
+            <b class="index"></b>\
+            </td> \
+            <td  class="fullName to-info"></td> \
+            <td  class="mobile to-info"></td> \
+            <td  class="type to-info"></td> \
+            <td class="paymentType to-info"></td> \
+            <td class="cardName to-info"></td>\
+            <td class="depositBank to-info"></td> \
+            <td  class="cardNo to-info"></td> \
+            </tr>');*/
+        	var el=$('<tr>\
+						<td width="60">\
+			            	<input type="checkbox" class="cancel check_box" val="" status="" loadId=""/>\
+			            	<a href="javascript:void(0);" class="edit"></a>\
+		            	</td>\
+		            	<td width="220" class="supply-num to-info">西门吹雪雪 18326139999</td>\
+		            	<td width="680" class="supply-list to-info"></td>\
+				</tr>');
+            /*var $index=index+1;
+            el.find(".fullName").html(row.fullName);
+            el.find(".index").html($index);
+            el.find(".mobile").html(row.mobile);
+            el.find(".type").html(type);
+            el.find(".paymentType").html(row.paymentType);
+            el.find(".cardName").html(row.cardName);
+            el.find(".depositBank").html(row.depositBank);
+            el.find(".cardNo").html(row.cardNo);*/
+        	var type='';
+            if(row.type=="01") {
+            	type="个人";
+            } else if(row.type=="02") {
+            	type="公司";
+            }
+        	el.find('.supply-num').html(global.defaultIfBlack(row.contactName,'')+" "+global.defaultIfBlack(row.mobile,''));
+        	el.find('.supply-list').html(type+": 结算类型："+global.defaultIfBlack(row.paymentType,'')+" 开户名："+global.defaultIfBlack(row.cardName,'')+" "+global.defaultIfBlack(row.depositBank,'')+": 银行账号："+global.defaultIfBlack(row.cardNo,''));
+            el.find(".cancel").attr("supplyId",row.supplyId);
+            el.find(".edit").click(function(){
+            	editSupply(row.supplyId);
+            });
+            el.find(".to-info").click(function(){
+                openSupply(row.supplyId);
+            });
+            el.find('.check_box').click(function(){
+                var flag=$(this).attr('checked');
+                if(flag===undefined) {
+                    $(this).attr('checked','checked');
+                    $("tr:eq("+(index+1)+")").css('background-color','#FBEDC1');
+                } else {
+                    $(this).removeAttr('checked');
+                    $("tr:eq("+(index+1)+")").removeAttr("style");
+                }
+            });
+            return el;
+        },
+        onBeforeLoad : function(param){
+        	$('.all_check').attr('checked', false);
+            return param.queryType != null;;
+        }
+    });
+    //详情
+    var openSupply = function(supplyId){
+        var url = '/checkSupplier.html?supplyId='+supplyId;
+        var body = document.getElementsByTagName("body")[0];
+        var el = document.createElement("a");
+        body.appendChild(el);
+        el.href = url;
+        el.target = '_blank';
+        el.click();
+        body.removeChild(el);
+    }
+    //全选
+    $('.all_check').click(function(){
+    	var check_box=$('.check_box');
+    	var flag=$(this).is(':checked');
+    	if(flag){
+	          $.each(check_box,function(i,j){
+	          	if(!$(j).attr('checked')){
+	          		$(this).click();
+	          	}
+	          });
+    	} else {
+    		$.each(check_box,function(i,j){
+            	if($(j).attr('checked')){
+            		$(this).click();
+            	}
+            });
+    	}
+    });
+    //取消
+    /*var delSupply = function(){
+    	var supplyIds = [];
+    	$('.f-width > .cancel:checked').each(function () {
+            var supplyId = $(this).attr("supplyId");
+            supplyIds.push(supplyId);
+        });
+    	var supplyId = supplyIds.join(",");
+    	$.ajax({
+            url: global.server + '/admin/supply/removeSupplyBatch',
+            type: "POST",
+            data: {supplyIds: supplyId},
+            success: function (msg) {
+                if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                	alert("供应商信息已删除");
+                    table.load({
+                        queryType: 0
+                    });
+                } else {
+                	alert("有供应商不允许删除");
+                }
+            }
+        });
+    	
+    }*/
+    
+    $('.handle-data>.handle-delete').click(function() {
+        var selected = $('.f-width > .cancel:checked');
+        /*if (selected.length > 0) {
+        	var options = {
+    			data : {},
+    			text : '是否需要删除供应商信息',
+    			callback:function(data){
+    				delSupply();
+    			}
+    		}
+    		new CBSConfirm(options);
+        } else {
+            alert("请选择要删除的供应商信息");
+        }*/
+        if(selected.length>0) {
+			if(confirm('确认删除？')){
+				$('.f-width > .cancel:checked').each(function() {  
+			    	var supplyId=$(this).attr("supplyId");
+			    	$.ajax({
+				        url: global.server + '/admin/supply/removeSupply',
+				        type: "POST",
+				        data: {supplyId:supplyId},
+				        success: function (msg) {
+				            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				            	table.reload();
+				            }
+				        }
+				    });
+			    });
+			}
+		} else {
+			alert("请选择要删除的供应商信息");
+		}
+    });
+    
+    //搜索/高级搜索
+    $('#btn_search').click(function(){
+        table.load({
+            queryType:0,
+            keyWord:$('.list-search').val()
+        });
+    });
+    $('.advance-sea').click(function(event) {
+        advSearch.show();
+    });
+
+    $('.sea-close').click(function(event) {
+        advSearch.hide();
+    });
+    $('#btn_adv_search').click(function(){
+        var columns=$('.column');
+        var data = {};
+        columns.each(function(i, j){
+            var _this = $(this);
+            var pName = _this.data("column");
+            var pValue = _this.val();
+            data[pName] = pValue;
+        });
+        data.queryType=1;
+        table.load(data);
+        advSearch.hide();
+    });
+    
+    table.load({
+        queryType:0
+    });
+
+});

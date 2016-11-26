@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>货源</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/infoListBase.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/businessSource.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.autocomplete.css"/>
+</head>
+<body>
+	<header id="header">
+	</header>
+	<div id="list-info">
+		<div class="list-info-title">
+			<h2 class="fl">我的业务</h2>
+			<input id="query_content" type="text" class="list-search fl" placeholder="搜索&nbsp;&nbsp;订单号 / 客户单号 / 客户全称 / 发货联系人手机 / 电话" />
+			<span class="advance-sea">高级搜索</span>
+			<button id="btn_search"  class="title_search">搜索</button>
+			<div class="search-content">
+				<b class="sea-close"></b>
+				<div class="search-content-div">
+					<label for="">客户全称</label>
+					<input type="text" id="autocomplete-ajax" class="column"/>
+					<!-- <select data-width="500" data-column="customerId" class="baseInfo-column customer-select column"></select> -->
+				</div>
+				<div class="search-content-div">
+					<label for="">客户合同</label>
+					<!-- <input type="text" class="column" data-column="agreementId"/> -->
+					<select data-width="500" data-column="agreementId" class="baseInfo-column agreement-select column"></select>
+				</div>
+				<div class="search-content-div">
+					<label for="">订单创建时间</label>
+					<div class="two-col clearfix">
+						<input type="text" class="column use-date" data-column="createdTimeS"/>
+						<input type="text" class="column use-date" data-column="createdTimeE"/>
+						<i></i>
+					</div>
+				</div>
+				<div class="search-content-div mar_bottom">
+					<label for="">线路</label>
+					<div class="two-col clearfix">
+						<div class="two_sel fl">
+							<select data-width="112" id="startCodeP" class="column p-select" data-column="startCodeP">
+							</select>
+							<select data-width="112" id="startCodeC"  class="column c-select" data-column="startCodeC">
+							</select>
+						</div>
+						<div class="two_sel fr">
+							<select data-width="112" id="endCodeP" class="column p-select" data-column="endCodeP">
+							</select>
+							<select data-width="112" id="endCodeC"  class="column c-select" data-column="endCodeC">
+							</select>
+						</div>
+						<i></i>
+					</div>
+				</div>
+				<div class="search-content-div">
+					<label for="">订单创建部门</label>
+					<input type="text" class="column" data-column="createDepartName"/>
+				</div>
+				<div class="search-content-div mar-top clearfix">
+					<div class="sea-left">
+						<label for="">发货联系人</label>
+						<input type="text" class="column" data-column="sendContractName"/>
+					</div>
+					<div class="sea-right">
+						<label for="">手机</label>
+						<input type="text" class="column" data-column="sendMobile"/>
+					</div>
+				</div>
+				<div class="search-content-div mar-top clearfix">
+					<div class="sea-left">
+						<label for="">收货联系人</label>
+						<input type="text" class="column" data-column="reciContractName"/>
+					</div>
+					<div class="sea-right">
+						<label for="">手机</label>
+						<input type="text" class="column" data-column="reciMobile"/>
+					</div>
+				</div>
+				<div class="sea-btn clearfix">
+					<input id="btn_adv_search" type="button"/>
+					<span>根据此条件搜索》</span>
+				</div>
+			</div>
+		</div>
+		<div class=" list-info-content clearfix">
+			<div class="list-Info-left">
+			</div>
+			
+			<div class="list-Info-right">
+				<div class="handle clearfix">
+					<div class="handle-data">
+						<a href="/addBusSourceOrder.html" target="_blank" class="handle-add" ></a>
+						<button class="handle-cansel"></button>
+						<button class="handle-export">约车</button>
+					</div>
+					<div class="handle-page">
+
+					</div>					
+				</div>
+				<div class="handle-content">
+					<table>
+						<thead>
+							<tr>
+								<th width="65" ><input type="checkbox" class="all_check">序号</th>
+								<th width="135">订单号</th>
+								<th width="165">客户名称</th>
+								<th width="145">线路</th>
+								<th width="60" >线路属性</th>
+								<th width="80" class="f_single bus_sel_single">
+									订单状态
+									<ul class="statu_s order_status" >
+										<li value="">全部</li>
+										<li value="01">已受理</li>
+										<li value="03">YSJ审核中</li>
+										<li value="05,10,11">YSJ关闭</li>
+										<li value="07">发布竞标</li>
+										<li value="08">已中标 </li>
+										<li value="12">流标</li>
+									</ul>
+								</th>
+								<th width="105" class="f_single bus_sel_single sin_long">
+									申请退回状态
+									<ul class="statu_s return_status">
+										<li value="">全部</li>
+										<li value="01">审批中</li>
+										<li value="02">申请通过</li>
+										<li value="03">申请不通过</li>
+									</ul>
+								</th>
+								<th width="145"  class="bus_select sortBtn">下单时间</th>
+							</tr>
+						</thead>
+						<tbody>                                                      
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="con-foot">
+			 <span> 条款 - 隐私权</span>
+			 <strong>上次账户活动时间<i>1</i>小时前</strong>
+		</div>
+	</div>
+	<div class="mo_del">
+		<div class="model_content">
+			<p>订单号"<b>OR108968789</b>"已在寻车，撤销会影响运势界客户体验，需人工审核申请。是否确认申请撤回？</p>
+			<a href="javascript:void(0);" class="mo_con_yes">是</a>
+			<a href="javascript:void(0);" class="mo_con_no">否</a>
+			<i class="clo_se"></i>
+		</div>
+	</div>
+	
+</body>
+
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.autocomplete.js"></script>
+	<script type="text/javascript" src="/js/moment.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/menu/menu.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSTable.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSConfirm.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSAutocomplete.js"></script>
+    <script type="text/javascript" src="/js/CBSSourceList.js"></script>
+
+</html>

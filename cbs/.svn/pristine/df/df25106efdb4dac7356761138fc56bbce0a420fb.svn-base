@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+        <link rel="stylesheet" type="text/css" href="/css/reg.css?ver=0.3"/>
+    </head>
+    <body>
+    	<div class="header">
+			<h1 class="logo">
+				<a href="#">
+					<img src="/img/logo.png"/>
+				</a>
+			</h1>
+		</div>
+    	<div class="wrap">
+    		<div class="reg_tit">创建您的运势界账户</div>
+    		<div class="reg_con clearfix">
+    			<div class="reg_r">
+    				<div class="reg_w">
+    					<form id="reg" method="" action="" onsubmit="return false">
+							<p>
+								<label for="user">用户名</label>
+								<input type="text" name="phone" class="phone" id="reg_phone"  />
+								<span class="reg_hint"></span>
+							</p>
+							<p>
+								<label for="code">手机验证码</label>
+								<div class="clearfix">
+									<input type="text" name="code" class="code" id="code" />
+									<input class="getMobileCode" value="获取验证码(60s)" id="getMobileCode"/>
+								</div>
+								<span class="reg_hint"></span>
+							</p>
+							<p>
+								<label for="pass">密码</label>
+								<input type="password" name="pass" class="pass" id="reg_pass" />
+								<span class="reg_hint"></span>
+							</p>
+							<p>
+								<label for="pass">再次输入密码</label>
+								<input type="password" name="pass" class="pass" id="re_pass" />
+								<span class="reg_hint"></span>
+							</p>
+							<p>
+							    <label for="role">请选择角色</label>
+								<select class="mySelect">
+									<option  class="first" value="">我是经纪人</option>
+									<option  value="hippopotamus" selected>我是司机</option>
+								</select>
+							</p>
+							<p>
+								<label for="agree"><input id="agree" class="agree" type="checkbox" name="agree" checked="checked" value="1">我同意接受<span>运势界服务协议</span></label>
+							</p>
+							<p class="clearfix">
+								<input type="submit" name="submit" id="nextStep" value="下一步" class="nextStep" />
+							</p>
+						</form>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    	<div class="footer"></div>
+    </body>
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/reg.js?ver=0.3"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		$(".mySelect3").styleSelect({styleClass: "selectFruits",optionsWidth: 1,speed: 'fast'});
+			$(".mySelect").styleSelect({styleClass: "selectDark"});
+		});
+	</script>
+</html>
+

@@ -1,0 +1,64 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-12 13:32:57
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-09-17 14:13:56
+*/
+
+.con_tent{border:none;width:1150px;}
+.check{border:none;width:1150px;}
+.right_long{width:746px;}
+.right_one{width:100%;}
+.right_one .inpu_t{width:632px;}
+.right_one .in_short{width:214px;padding-right:20px;}
+.layout_two .inpu_t{width:108px;}
+.layout_two .inpu_t:last-child{margin-right:16px;}
+.layout_line textarea{width:1032px;height:52px;padding-top:0;}
+.layout_long .inpu_t{width:113px;}
+.layout_long .inpu_t:last-child{margin-right:5px;}
+.check .active{ background-color: #de642c;color:#fff;border: 1px solid #bc5120; border-radius: 2px;}
+.check_hover{background:url(../img/clock.png) no-repeat center;}
+.check a{width:90px;}
+.layout .input_short{width:114px;margin:0 4px 0 1px;}
+
+.specia_l .labe_l{display:inline-block;width:112px;}
+.specia_l .spa_n{display: inline-block;vertical-align: top;width:350px;margin-left:43px;overflow: hidden; text-overflow: ellipsis; white-space:nowrap;}
+
+/* 单位样式 */
+.km,.weight,.volume{position:relative;}
+.km:after,.weight:after,.volume:after{content:"元/kg";position:absolute;top:2px;left:305px;color:#ddd;font-weight: normal;}
+.km:after{content:"km";left:320px;}
+.weight:after{content:"kg";left:325px;}
+.volume:after{content:"m³";left:324px;}
+
+.rela_tive{position:relative;}
+.unit{text-align:right;height:26px;line-height:26px;position:absolute;top:1px;right:127px;font-style: normal;font-size:14px;color:#ddd;}
+
+/* 有单位input加padding-right */
+.layout .unit_short{width:206px;padding-right:28px;}
+
+.pcd-column .ui-multiselect.ui-widget{margin-right:4px;}
+
+/* 添加定位图标 */
+.icon_position{width:15px;height:19px;position:absolute;top:5px;right:3px;background: url(../img/icon_position.png) no-repeat center;cursor: pointer;}
+
+.model_content_map {
+    width: 800px;
+    height: 600px;
+    margin: -300px 0 0 -400px;
+    background: #fff;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    box-shadow: 0 1px 8px #ccc;
+}
+.model_content_map #map_container{height:100%;}
+.model_content_map i{
+	background:url("../img/adv_sea_close.png") no-repeat center;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}

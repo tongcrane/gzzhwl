@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+<title>新增供应商信息</title>
+<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+<link rel="stylesheet" type="text/css" href="css/addSupplier.css?ver=0.4" />
+<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>系统后台</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="require">
+			<h3>基本信息</h3>
+			<div class="clearfix">
+				
+				<div class="left right_long fl">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<label class="fl labe_l">供应商类型</label>
+							<input maxlength="" type="radio" name="suportType" class="people" checked="checked" value="01"/><label for="personal">个人</label>
+							<input maxlength="" type="radio" name="suportType" class="company" value="02"/><label for="company">公司</label>
+						</div>
+						<div class="layout fr rela_tive">
+							<label class="fl labe_l">供应商全称</label>
+							<input maxlength="20" type="text" class="fl inpu_t column supply_column required" data-column="fullName"/>
+							<div class="tips" hidden="">请输入正确的供应商全称</div>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl rela_tive">
+							<label class="fl labe_l">负责人</label>
+							<input maxlength="10" type="text" class="fl inpu_t column supply_column required" data-column="contactName">
+							<div class="tips" hidden="">请输入正确的负责人姓名</div>
+						</div>
+						<div class="layout fr rela_tive">
+							<label class="fl labe_l">手机号</label>
+							<input maxlength="11" type="text" class="fl inpu_t column supply_column required" data-column="mobile">
+							<div class="tips" hidden="">请输入正确的手机号</div>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix rela_tive pcd-column column supply_column"  data-column="areaCode">
+							<label class="fl labe_l">联系地址</label>
+							<input maxlength="200"  type="text" class="fr inpu_t in_short column supply_column required" data-column="address">
+							<div class="tips" hidden="">请输入正确的联系地址</div>
+						</div>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout rela_tive clearfix short">
+						<label class="fl labe_l toggle_p_c">身份证号码</label>
+						<input maxlength="20" class="fr inpu_t column supply_column required" type="text" data-column="taxRegCode"/>
+						<div class="tips toggle_idno_tax" hidden="">请输入正确的身份证号</div>
+					</div>
+					<div class="layout rela_tive clearfix short input_short">
+						<label class="fl labe_l">结算方式</label>
+						<select data-column="paymentType" class="column supply_column required">
+							<option value="">请选择</option>
+							<option value="月结">月结</option>
+							<option value="回单">回单</option>
+							<option value="现付">现付</option>
+							<option value="到付">到付</option>
+						</select>
+						<div class="tips" hidden="">请选择结算方式</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+		<div class="require">
+			<h3>银行信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout rela_tive clearfix">
+						<label class="fl labe_l">银行名称</label>
+						<input maxlength="20" data-column="bankName" class=" inpu_t column fr bank_column" type="text" />
+						<div class="tips" hidden="">请输入正确的银行名称</div>
+					</div>
+					<div class="layout rela_tive clearfix">
+						<label class="fl labe_l">银行账号</label>
+						<input maxlength="30" data-column="cardNo" class=" inpu_t column fr bank_column" type="text"/>
+						<div class="tips" hidden="">请输入正确的银行账号</div>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout rela_tive clearfix">
+						<label class="fl labe_l">开户行</label>
+						<input maxlength="20" data-column="depositBank" class="column fr inpu_t bank_column" type="text"/>
+						<div class="tips" hidden="">请输入正确的开户行</div>
+					</div>					
+				</div>
+				<div class="right fr short">
+					<div class="layout rela_tive clearfix">
+						<label class="fl labe_l">开户名</label>
+						<input maxlength="50" data-column="cardName" class="column fr inpu_t bank_column" type="text"/>
+						<div class="tips" hidden="">请输入正确的开户名</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="check">
+		<div>
+			<a href="javascript:void(0);" class="check_order active conserve">提交</a>
+			<a href="javascript:void(0);" class="check_close cancel">取消</a>
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/IdCardNoUtil.js?ver=0.4"></script>
+	<!-- <script type="text/javascript" src="js/explugin/CBS-PC-Select.js?ver=0.4"></script> -->
+	<script type="text/javascript" src="js/explugin/CBS-PCD-Select.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSSupply.js?ver=0.4"></script>
+	
+	<script type="text/javascript">
+	$(function(){
+		var supplyId = global.QueryString.supplyId;
+		var supply = new CBSSupply({supplyId:supplyId});
+		$('.check_order').click(function(){
+			supply.doSave();
+			return false;
+		});
+		$('.check_close').click(function(){
+			window.close();
+		});
+		$('.people').click(function(){
+			$('.toggle_p_c').html('身份证号码');
+			$('.toggle_idno_tax').html('请输入正确的身份证号');
+		});
+		$('.company').click(function(){
+			$('.toggle_p_c').html('税务登记证号');
+			$('.toggle_idno_tax').html('请输入正确的税务登记证号');
+		});
+	});
+	</script>
+</html>

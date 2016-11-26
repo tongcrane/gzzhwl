@@ -1,0 +1,53 @@
+$(function () {
+//	if (!global.isLogin()) {
+		$.removeCookie('user');
+	
+	
+	
+		$("#LoginBtn .reg_hint").hide();
+		$('#LoginBtn').click(function() {
+			$.removeCookie('user');
+			var mobile = $("#phone");
+			var pass = $("#pass");
+		    var remember = $("#remember");
+			var msg = "";
+			if ($.trim(mobile.val())=="") {
+				//msg = "手机号不能为空！";
+				msg="工号不能为空"
+				mobile.focus().css('border-color', '#e14831').next().show().html(msg);
+				return false;
+			}/*else if (!/^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test($.trim(mobile.val()))) {
+				msg = "手机号格式不正确！";
+				mobile.focus().css('border-color', '#e14831').next().show().html(msg);
+				return false;
+			}*/else{
+				mobile.css('border-color', '').next().hide();
+			} 
+			if ($.trim(pass.val())=="") {
+				msg = "密码不能为空！";
+				pass.focus().css('border-color', '#e14831').next().show().html(msg);
+				return false;
+			}/*else if (!/^\w{6,20}$/.test($.trim(pass.val()))) {
+				msg = "密码格式不正确！";
+				pass.focus().css('border-color', '#e14831').next().show().html(msg);
+				return false;
+			}*/else{
+				pass.css('border-color', '').next().hide();
+			}
+
+			global.doLogin(mobile.val(),pass.val(),function(status) {
+				var statusCode=status.statusCode;
+				var errorMsg=status.errorMsg;
+				if(statusCode=="100010") {
+					mobile.focus().css('border-color', '#e14831').next().show().html(errorMsg);
+				} else if(statusCode=="100011") {
+					pass.focus().css('border-color', '#e14831').next().show().html(errorMsg);
+				} else if(statusCode=="100012") {
+					mobile.focus().css('border-color', '#e14831').next().show().html(errorMsg);
+				}
+			});
+		});
+//	} else {
+//		location.href=global.getContextPath()+"/index.html";
+//	}
+})

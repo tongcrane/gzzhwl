@@ -1,0 +1,134 @@
+/**
+ * Created by zhwl on 2016/7/12.
+ */
+var CreateContract=function(){
+    this.columns = $('.column');
+    this.needColumns=$('.option');
+    var $contract=$("#contract");
+
+    this.init = function () {
+        var _this = this;
+        _this.needColumns.click(function () {
+            alert("000");
+            $(this).siblings('.tips').hide();
+
+        });
+        _this.needColumns.change(function () {
+            $(this).siblings('.tips').hide();
+        });
+        $('select').multiselect({
+            header: false,
+            multiple: false,
+            selectedList: 1,
+            noneSelectedText: '请选择'
+        });
+        $contract.click(function(){
+            _this.Contract();
+        })
+        _this.fillDepartSelect();
+    }
+    this.init();
+
+}
+
+CreateContract.prototype.fillDepartSelect=function(){
+    $.get(global.server + "/admin/customer/queryCustList", function (msg) {
+        var data=msg.data;
+        if (msg && msg.status && msg.status.statusCode == global.status.success) {
+            $.each(data, function(i, j) {
+                $("#customer").append("<option val="+j.agreementNo+">"+j.contactName+"</option>");
+            });
+        }
+    }).done(function(msg){
+        $('select').multiselect('refresh');
+
+    });
+}
+CreateContract.prototype.getJsonDataFromContent = function(){
+    var data = {};
+    this.columns.each(function(i, j){
+        var _this = $(this);
+        var pName = _this.data("column");
+        var pValue = _this.val();
+        data[pName] = pValue;
+    });
+    return data;
+
+};
+CreateContract.prototype.modify = function () {
+    this.inModify = true;
+};
+
+CreateContract.prototype.validToPost = function () {
+    var _this = this;
+    var valid = true;
+    this.needColumns.each(function(i, j){
+        var _this = $(this);
+        var pValue = $.trim(_this.val());
+        if( pValue=='' || pValue == null) {
+            valid = false;
+            _this.siblings('.tips').show();
+        }else{
+            _this.siblings('.tips').hide();
+        }
+    });
+    return valid;
+};
+
+
+CreateContract.prototype.Contract=function(){
+    var _this = this;
+    var valid = _this.validToPost();
+    console.log(valid);
+    if(valid){
+        var columns = _this.getJsonDataFromContent();
+        var customerId=columns.customerId;
+        console.log(columns);
+        $.ajax({
+            type: "post",
+            url: global.server + "/admin/agreement/getAgreements",
+            data: {custId:customerId},
+            async: true,
+            success: function(msg) {
+                console.log(msg);
+                if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                    $.each(data, function(i, j) {
+                        $("#contract").append("<option id="+j.agreementNo+">"+j.contactName+"</option>");
+                    });
+                }
+            },error:function(msg){
+                console.log(msg);
+            }
+        }).done(function(msg){
+            $('select').multiselect('refresh');
+        });
+    }
+
+}
+
+CreateContract.prototype.doSave=function(){
+
+
+}
+CreateContract.prototype.validKeyExpress=function() {
+    var _this=this;
+    var valid=true;
+    var mobile=$("input[data-column='mobile']");
+    var email=$("input[data-column='email']");
+    var validMobile=/^1[0-9]{10}$/;
+    var validEmail=/[a-zA-Z0-9]{1,10}@[a-zA-Z0-9]{1,5}\.[a-zA-Z0-9]{1,5}/;
+    if(!validMobile.test(mobile.val())) {
+        valid=false;
+        mobile.siblings('.tips').html('手机号格式错误');
+        mobile.siblings('.tips').show();
+    } else {
+        mobile.siblings('.tips').hide();
+    }
+    if(!validEmail.test(email.val())) {
+        valid=false;
+        email.siblings('.tips').show();
+    } else {
+        email.siblings('.tips').hide();
+    }
+    return valid;
+}

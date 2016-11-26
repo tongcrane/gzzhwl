@@ -1,0 +1,97 @@
+
+/* 初始化 */
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td { margin: 0; padding: 0; border: 0;}
+html { color: #000; }
+html,body { height: 100%; }
+body,button,input,select,textarea,a{ font-family: 'Microsoft Yahei', '宋体', Tahoma, Arial, sans-serif;}
+ul,ol,li,dl,dd,dt{list-style: none;}
+em,i{ font-style: normal; }
+a { text-decoration: none;}
+a:hover { text-decoration: none; }
+legend { color: #000; }
+fieldset,img { border: 0; }
+button { cursor: pointer; }
+input:-webkit-autofill {
+ -webkit-box-shadow: 0 0 0px 1000px white inset;
+ -webkit-text-fill-color: #333;
+}
+/*解决IE图片缩放失真*/
+img { -ms-interpolation-mode: bicubic; }
+/*清除浮动*/
+.clearfix:after { content: ''; display: block; height: 0; clear: both; }
+.clearfix { zoom: 1; }
+.clear { clear: both; }
+/*连续英文、数字换行*/
+.wordwrap { word-break: break-all; word-wrap: break-word; }
+/*单行文字超出显示省略号*/
+.omg{overflow: hidden; text-overflow: ellipsis; white-space:nowrap;}
+.hide {display: none;}
+.wrap{width:1200px;margin:0 auto;}
+.fr{float:right;}
+.fl{float:left;}
+input{outline:none;}
+*{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;  
+    -o-box-sizing: border-box; 
+    -ms-box-sizing: border-box; 
+}
+/* placeholder字体颜色 */
+input::-webkit-input-placeholder {color:#adadad;}
+input:-moz-placeholder {color:#adadad;}
+input::-moz-placeholder {color:#adadad;}
+input:-ms-input-placeholder {color:#adadad;}
+
+/* 头部公共样式 */
+#header{width:100%;padding:0 15px;min-width: 1240px;height:50px;background: #202223;}
+#header h1{height:50px;line-height:50px;padding:0 20px 0 75px;float:left;font-size:18px;color:#fff;font-weight: normal;background:url(../img/head_logo.png) no-repeat 0 center;}
+#header .header_nav{height:50px;padding-left:275px;font-size:14px;}
+.nav_content{float:left;}
+.nav_content li a{display:block;padding:0 15px;height:50px;line-height: 50px;color:#a6a6a6;background:url(../img/head_down.png) no-repeat right center; }
+.nav_set,.nav_user{float:right;height:50px;line-height:50px;color:#d9d9d9;cursor:pointer;}
+.nav_set i{height:10px;border-left:1px solid #3f4142;margin-left:20px;} 
+.nav_user{padding:0 10px 0 20px;background: url(../img/head_user_down.png) no-repeat right center;}
+
+/* 列表部分布局 */
+.list-info{width:100%;height:1000px;/* background:pink; */}
+.list-info-left{width:204px;height:100%;float:left;background:#f3f3f3;border-right: 1px solid #e9e9e9;}
+.list-info-right{width:100%;height:100%;padding:0 15px 0 224px;min-width:1240px;}
+
+.list-info-left dl{width:100%;border-bottom:1px solid #e5e5e5;}
+.list-info-left dt{position: relative;}
+.list-info-left dt a,.list-info-left dd a{display:block;padding-left:47px;color:#878787;}
+.list-info-left dt a{height:54px;line-height:54px;font-size:16px;}
+.list-info-left dt span{position:absolute;top:17px;left:15px;width:24px;height:20px;}
+.list-info-left dt i{position:absolute;top:24px;right:0;width:20px;height:20px;background:url(../img/info_left_select.png) no-repeat 0 0;}
+.list-info-left dd a{height:40px;line-height:40px;font-size:14px;}
+.list-info-left .car_icon{background: url(../img/car_icon.png) no-repeat 0 0;}
+.list-info-left .dt_current a{color:#f65100;background:#fff;width:205px;}
+.list-info-left .dt_current span{background-position: 0 -39px;}
+.list-info-left .dt_current i{background-position: 0 -35px;}
+.list-info-left a.dd_current{color:#f65100;}
+
+/* 右边内容部分 */
+.search{width:100%;height:55px;border-bottom:1px solid #ebebeb;}
+.handle{width:100%;height:55px;}
+.handle_content{}
+
+/* 表格部分 */
+.handle_content table {width: 100%;border-collapse: collapse;table-layout: fixed;font-size:14px;color:#333;}
+td{overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+th{text-align:left;}
+.handle_content td{padding:12px 0 12px 10px;}
+.handle_content th{height:40px;border-top:1px solid #eee;padding-left:10px;}
+.handle_content tr:first-child{background:#f7f7f7;}
+.handle_content tr{border-bottom:1px solid #eee;}
+
+.check_box{vertical-align: -1px;}
+.all_check{vertical-align: -2px;margin-right:6px;}
+
+/* 状态 */
+.f_single{position: relative;}
+.bus_sel_single{background:url(../img/plat_handle.png) no-repeat 72px center; cursor:pointer;}
+.bus_sel_single.sin_long{background-position: 99px center;}
+.bus_select{background:url(../img/select.png) no-repeat 72px center; cursor:pointer;}
+.bus_sel_single .statu_s{top:33px;left:-9px;}
+.sin_long .statu_s{left:3px;}

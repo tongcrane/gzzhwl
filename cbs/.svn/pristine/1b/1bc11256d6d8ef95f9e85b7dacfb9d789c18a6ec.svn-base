@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title class="title_val">添加挂车信息</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/base.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/addBase.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/addLoseCarInfoTwo.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>添加挂车信息</p>
+	</div>
+
+	<div class="car-detail">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="licenseImageRefId" />
+						<span class="p-add">添加车辆行驶证照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>使用信息</h3>
+					<p>
+						<label for="">所属部门</label>
+						<input maxlength="50" data-column="belongDepartName" class="column" type="text" value="">
+					</p>
+					<p>
+						<label for="">使用部门</label>
+						<input maxlength="50" data-column="useDepartName" class="column" type="text" value="">
+					</p>
+					<!-- <p class="routline">
+						<label for="">使用线路</label>
+						<div class="car-from clearfix">
+							<select class="mySelect"></select>
+							<select class="mySelect"></select>
+							<select class="mySelect"></select>
+						</div>
+						<div class="car-to clearfix">
+							<select class="mySelect">
+								<option value="">上海市</option>
+								<option value="">北京市</option>
+							</select>
+							<select class="mySelect"></select>
+							<select class="mySelect"></select>
+						</div>
+						<div class="arrive"><span>至</span></div>
+					</p> -->
+					<p class="routline">
+						<label class="useline">使用线路</label>
+						<div class="car-from pcd-column" data-column="departureCode">
+						</div>
+						<div class="car-to pcd-column" data-column="destinationCode">
+						</div>
+						<!-- <div class="arrive"><span>至</span></div> -->
+					</p>
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="vehicleImageRefId" />
+						<span class="p-add">添加车辆照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>其他信息</h3>
+					<p class="f-select clearfix">
+						<label for="">车长（m）</label>
+						<select data-column="length" class="column mySelect">
+							<option value="12.5">12.5</option>
+							<option value="13.5">13.5</option>
+							<option value="17.5">17.5</option>
+							<option value="18.5">18.5</option>
+							<option value="19.5">19.5</option>
+							<option value="20">20</option>
+							<option value="21">21</option>
+							<option value="其他">其他</option>
+						</select>
+					</p>
+					<p>
+						<label for="">备注</label>
+						<textarea maxlength="200" name="" id="" data-column="remark" rows=3 class="column remarks" ></textarea>
+					</p>
+				</div>
+			</div>
+				
+			<div class="detail-bottom">
+				<div class="btn">
+					<button class="pre">上一页</button>
+					<button class="current">提交</button>
+				</div>
+			</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/moment.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSImage.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBS-PCD-Select.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSLoseCar.js?ver=0.3"></script>
+
+</html>
+<script type="text/javascript">
+	$(function(){
+		var vehicleInfoId = global.QueryString.vehicleInfoId;
+		var loseCar = new CBSLoseCar({vehicleInfoId:vehicleInfoId});
+		$('.btn .pre').click(function(){
+			window.onbeforeunload = null;
+            window.onunload = null;
+			location.href = '/addLoseCarInfoOne.html?vehicleInfoId='+vehicleInfoId;
+			return false;
+		});
+		$('.current:last').click(function(){
+			loseCar.doSave();
+			return false;
+		});
+		
+	});
+</script>

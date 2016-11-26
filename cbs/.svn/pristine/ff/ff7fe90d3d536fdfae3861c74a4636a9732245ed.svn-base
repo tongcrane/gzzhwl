@@ -1,0 +1,621 @@
+//异常反馈
+var CBSTrackWin = function(options){
+	this.opt = $.extend({}, options);
+	
+	this.el=$('<div class="mo_del"> \
+		<div class="model_content mask"> \
+			<h4> \
+				<p>跟踪信息</p> \
+				<div class="radio_btn"> \
+					<label><input type="radio" name="status" value="01" checked="checked">无异常</label> \
+					<label><input type="radio" name="status" value="02">有异常</label> \
+				</div> \
+			</h4> \
+			<div class="mask_nor"> \
+				<div class="layout"> \
+					<label class="labe_l">车辆位置</label> \
+					<input maxlength="30" type="text" class="inpu_t no-column" data-column="address"> \
+				</div> \
+				<div class="layout"> \
+					<label class="labe_l">备注</label> \
+					<textarea maxlength="200" name="" id="" cols="30" rows="10" class="no-column" data-column="itemDesc"></textarea> \
+				</div> \
+			</div> \
+			<div class="mask_abnor" hidden="hidden"> \
+				<div class="clearfix"> \
+					<div class="layout fl"> \
+						<label class="labe_l">异常开始时间</label> \
+						<input type="text" class="inpu_t column use-date" data-column="feedbackTime" data-time="true"> \
+					</div> \
+					<div class="layout fr right_no"> \
+						<label class="labe_l">异常结束时间</label> \
+						<input type="text" class="inpu_t column use-date" data-column="endTime" data-time="true"> \
+					</div> \
+				</div> \
+				<div class="clearfix"> \
+					<div class="layout fl"> \
+						<label class="labe_l">异常原因</label> \
+						<select class="column" data-column="itemName" data-width="308">\
+							<option value="">请选择</option>\
+							<option value="堵车">堵车</option>\
+							<option value="异常天气">异常天气</option>\
+							<option value="车辆故障">车辆故障</option>\
+							<option value="高速封路">高速封路</option>\
+							<option value="交通事故">交通事故</option>\
+							<option value="其他">其他</option>\
+						</select>\
+					</div> \
+					<div class="layout fr right_no"> \
+						<label class="labe_l">车辆位置</label> \
+						<input maxlength="30" type="text" class="inpu_t column" data-column="address"> \
+					</div> \
+				</div> \
+				<div class="layout right_no"> \
+					<label class="labe_l">备注</label> \
+					<textarea maxlength="200" name="" id="" cols="30" rows="10" class="column" data-column="itemDesc"></textarea> \
+				</div> \
+				<ol class="line_img"> \
+					<li class="ab_image"> \
+						<input type="text" class="file-add image-column" readonly="" onfocus="this.blur();" data-column="imageId1"> \
+						<span class="p-add">上传车辆异常照片</span> \
+					</li> \
+					<li class="ab_image"> \
+						<input type="text" class="file-add image-column" readonly="" onfocus="this.blur();" data-column="imageId2"> \
+						<span class="p-add">上传车辆异常照片</span> \
+					</li> \
+					<li class="ab_image"> \
+						<input type="text" class="file-add image-column" readonly="" onfocus="this.blur();" data-column="imageId3"> \
+						<span class="p-add">上传车辆异常照片</span> \
+					</li> \
+					<li class="ab_image"> \
+						<input type="text" class="file-add image-column" readonly="" onfocus="this.blur();" data-column="imageId4"> \
+						<span class="p-add">上传车辆异常照片</span> \
+					</li> \
+					<li class="ab_image right_no"> \
+						<input type="text" class="file-add image-column" readonly="" onfocus="this.blur();" data-column="imageId5"> \
+						<span class="p-add">上传车辆异常照片</span> \
+					</li> \
+				</ol> \
+			</div> \
+			<a href="javascript:void(0);" class="">提交</a> \
+			<i class="clo_se"></i> \
+		</div> \
+	</div>');
+	
+	
+	this.init = function(options){
+		var _this = this;
+		var imageList = _this.opt.data.imageList;
+		$('body').append(_this.el);
+		_this.el.find('input[name="status"]').on('change',function(){
+			var status=_this.el.find("input[name='status']:checked").val();
+			if(status=='01') {
+				_this.el.find('.mask_nor').show();
+				_this.el.find('.mask_abnor').hide();
+			} else if(status=='02') {
+				_this.el.find('.mask_nor').hide();
+				_this.el.find('.mask_abnor').show();
+			}
+		});
+		_this.el.find('.use-date').each(function(i, j){
+    		var time = $(this).data('time');
+    		if(time){
+    			$(this).datetimepicker({
+            		timepicker:true,
+            		format:'Y-m-d H:i',
+            		autoclose:true,
+            		todayHighlight:true,
+            		keyboardNavigation:false
+        		});
+    		} else {
+    			$(this).datetimepicker({
+            		timepicker:false,
+            		format:'Y-m-d',
+            		autoclose:true,
+            		todayHighlight:true,
+            		keyboardNavigation:false
+        		});
+    		}
+        });
+		var minWidth = $('select').data('width');
+		$('select').multiselect({
+			minWidth : minWidth,
+			header : false,
+			multiple : false,
+			selectedList : 1,
+			noneSelectedText: '请选择'
+		});
+		if (typeof CBSImage === "function") {
+        	_this.el.find('.image-column').each(function(i, j){
+            	var image = new CBSImage({
+            		view: $(this),
+            		category: $(this).data("column")
+                });
+            	imageList.push(image);
+            });
+        }
+		var feedBackTime=moment(new Date()).format("YYYY-MM-DD HH:mm");
+		_this.el.find('input[data-column="feedbackTime"]').val(feedBackTime);
+		_this.el.find('.clo_se').click(function(){
+			_this.destory();
+		});
+		_this.el.find('a').click(function(){
+			_this.opt.callback.call(_this, _this.opt.data);
+		});
+		_this.show();
+	};
+	
+	this.show = function(){
+		var _this = this;
+		$('body').css("overflow","hidden")
+		_this.el.find('.model_content').show();
+		_this.el.show();
+	}
+	
+	this.destory = function(){
+		var _this = this;
+		$('body').css("overflow","scroll")
+		_this.el.remove();
+	}
+	
+	this.init(options);
+}
+
+var CBSTrackArrive=function(options){
+	this.opt = $.extend({}, options);
+	
+	this.el=$('<div class="mo_del">\
+					<div class="model_content arrive">\
+						<h4>车辆到达</h4>\
+						<div class="layout">\
+							<label class="labe_l" for="">到达时间</label>\
+							<input class="inpu_t use-date" type="text" data-time="true" data-column="realArriveTime">\
+						</div>\
+						<a href="javascript:void(0);" class="">提交</a>\
+						<i class="clo_se"></i>\
+					</div>\
+				</div>');
+	
+	this.init = function(options){
+		var _this = this;
+		$('body').append(_this.el);
+//		_this.el.find('._title').html(_this.opt.title);
+		var realArriveTime=moment(new Date()).format("YYYY-MM-DD HH:mm");
+		_this.el.find('.use-date').val(realArriveTime);
+		_this.el.find('.use-date').each(function(i, j){
+    		var time = $(this).data('time');
+    		if(time){
+    			$(this).datetimepicker({
+            		timepicker:true,
+            		format:'Y-m-d H:i',
+            		autoclose:true,
+            		todayHighlight:true,
+            		keyboardNavigation:false
+        		});
+    		} else {
+    			$(this).datetimepicker({
+            		timepicker:false,
+            		format:'Y-m-d',
+            		autoclose:true,
+            		todayHighlight:true,
+            		keyboardNavigation:false
+        		});
+    		}
+        });
+		_this.el.find('.clo_se').click(function(){
+			_this.destory();
+		});
+		_this.el.find('a').click(function(){
+			_this.opt.callback.call(_this, _this.opt.data);
+		});
+		_this.show();
+	};
+	
+	this.show = function(){
+		var _this = this;
+		_this.el.find('.model_content').show();
+		_this.el.show();
+	}
+	
+	this.destory = function(){
+		var _this = this;
+		_this.el.remove();
+	}
+	
+	this.init(options);
+}
+
+var CBSTrackInfo = function(options){
+	this.opt = $.extend({}, options);
+	this.noColumns=$('.no-column');
+	this.columns=$('.column');
+	this.imageColumns = $('.image-column');
+	this.imageList = [];
+
+	this.init = function(options){
+		var _this = this;
+		var loadId = _this.opt.loadId;
+		_this.getData(loadId);
+	};
+	
+	this.getData = function(loadId){
+		var _this = this;
+		$.get(global.server+'/admin/transit/getTransitDetail',{loadId:loadId}, function(msg){
+			if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				var data = msg.data;
+				var loadNo=data.loadVehicleInfo.loadNo;
+				_this.data = data;
+				_this.fillContentFromJsonData(data.loadVehicleInfo);
+				_this.getTrack(data.feedBackList,loadNo);
+			}
+		}).done(function(msg){
+			$('.track_btn').click(function(){
+				var options = {
+					data : {imageList:_this.imageList},
+					callback:function(data){
+						var dialog=this;
+						_this.saveLoadFeedBack(_this.opt.loadId,dialog);
+					}
+				}
+				new CBSTrackWin(options);
+			});
+			$('.arrive_car').click(function(){
+				var options = {
+						data : {},
+						callback:function(data){
+							_this.ArriveTheCar(loadId);
+						}
+					}
+					new CBSTrackArrive(options);
+			});
+			
+			$('span[data-column="plateNumber"]').click(function(){
+				var url = global.getContextPath() + '/checkCarInfomation.html?vehicleInfoId='+msg.data.loadVehicleInfo.vehicleInfoId;
+		    	var body = document.getElementsByTagName("body")[0];
+		    	var el = document.createElement("a");
+		    	body.appendChild(el);
+		    	el.href = url;
+		    	el.target = '_blank';
+		    	el.click();
+		    	body.removeChild(el);
+			});
+			var editHr=function(staffId) {
+				var url = global.getContextPath() + '/addHRInfo.html?staffId='+staffId;
+		    	var body = document.getElementsByTagName("body")[0];
+		    	var el = document.createElement("a");
+		    	body.appendChild(el);
+		    	el.href = url;
+		    	el.target = '_blank';
+		    	el.click();
+		    	body.removeChild(el);
+			}
+		});
+	};
+	
+	this.init(options);
+};
+
+
+CBSTrackInfo.prototype.fillContentFromJsonData = function (data) {
+    if (!data) return;
+    var _this = this;
+    this.columns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	if (pName=='length'){
+    		if(pValue==null||pValue=='') {
+    			_this.text('');
+    		} else if(pValue!='其他'){
+				_this.text(pValue+" 米");
+			} else {
+    			_this.text(pValue);
+    		}
+		} else if(pName=='needStartTime'||pName=='tripTime'||pName=='needArriveTime'){
+			if(pValue) {
+				var _date=moment(pValue).format("YYYY-MM-DD HH:mm");
+				_this.text(_date)
+			}
+		} else {
+			_this.text(pValue);
+		}
+    });
+    var startCodePCn=data.startCodePCn;
+    var startCodeCCn=data.startCodeCCn;
+    var endCodePCn=data.endCodePCn;
+    var endCodeCCn=data.endCodeCCn;
+    $('span[data-column="_start"]').text(startCodePCn+" - "+startCodeCCn);
+    $('span[data-column="_end"]').text(endCodePCn+" - "+endCodeCCn);
+    var driverInfo=data.driverInfo;
+    if(driverInfo) {
+    	if(driverInfo[0]) {
+    		$('span[data-column="realName1"]').text(driverInfo[0].realName);
+    		$('span[data-column="telphone1"]').text(driverInfo[0].telphone);
+    	}
+    	if(driverInfo[1]) {
+    		$('span[data-column="realName2"]').text(driverInfo[1].realName);
+    		$('span[data-column="telphone2"]').text(driverInfo[1].telphone);
+    	}
+    }
+};
+
+CBSTrackInfo.prototype.getTrack = function (data,loadNo) {
+    if (!data) return;
+    var _this = this;
+    if(data.length>0) {
+    	var main=$('<h3>跟踪信息</h3><div class="main_box">');
+        $('.track_feedback').append(main);
+        $.each(data.reverse(),function(i,j){
+        	var el=$('<div class="box_line">\
+    					<b class="circle"></b>\
+    					<span class="track_time"></span>\
+    					<span class="track_people"></span>\
+    	    			<a class="track_location" href="javascript:void(0);"></a>\
+    					<div class="track_content">\
+    						<div class="abnormal">\
+    							<div class="ab_line">\
+    								<span class="ab_reason">异常：<i class="itemName"></i></span>\
+    								<span class="ab_start">开始时间：<i class="track_start"></i></span>\
+    								<span class="ab_end">结束时间：<i class="track_end"></i></span>\
+    							</div>\
+    							<div class="ab_remark"></div>\
+    							<ul class="pic">\
+    							</ul>\
+    							<a href="javascript:void(0);" class="ab_a">已跟踪</a>\
+    						</div>\
+    					</div>\
+    				</div>')
+    		var longitude=j.longitude;
+        	var latitude=j.latitude;
+        	var track_position='';
+        	if(longitude) {
+        		track_position=longitude+","+latitude;
+        		el.find('.track_location').addClass('active');
+        		el.find('.track_location').attr('href',global.getContextPath() + '/ViewMap.html?type=02&billNo='+loadNo).attr('target','_blank');
+        	} else {
+        		track_position=j.address;
+        		el.find('.track_location').addClass('no_hand');
+        	}
+        	var createdTime=j.createdTime;
+        	var feedbackTime=j.feedbackTime;
+        	var endTime=j.endTime;
+        	if(createdTime) {
+        		createdTime=moment(createdTime).format("YYYY-MM-DD HH:mm");
+        	}
+        	if(feedbackTime) {
+        		feedbackTime=moment(feedbackTime).format("YYYY-MM-DD HH:mm");
+        	}
+        	if(endTime) {
+        		endTime=moment(endTime).format("YYYY-MM-DD HH:mm");
+        	}
+        	var isException=j.isException;
+        	if(isException=='00') {
+        		el.find('.ab_line').hide();
+        		el.find('.ab_a').hide();
+        	} else if(isException=='01') {
+        		el.find('.ab_line').show();
+        		el.find('.ab_a').show();
+        	}
+        	var isEnd=j.isEnd;
+        	if(isEnd=='01') {
+        		el.find('.ab_a').hide();
+        	}
+    		el.find('.track_time').text(createdTime);
+    		if(j.realName) {
+    			if(j.position) {
+        			el.find('.track_people').html(j.realName+'(<i class="people">'+j.position+'</i>)');
+        		} else {
+        			el.find('.track_people').html(j.realName);
+        		}
+    		} else {
+    			el.find('.track_people').text('');
+    		}
+        	el.find('.track_location').text(track_position);
+        	el.find('.itemName').text(j.itemName);
+        	el.find('.track_start').text(feedbackTime);
+        	el.find('.track_end').text(endTime);
+        	el.find('.ab_remark').text(j.itemDesc);
+        	var atta=j.atta;
+        	if(atta){
+        		if (typeof CBSImageInfo === "function") {
+    	    		$.each(atta,function(i, j){
+    	    			var _p = $('<li class="images car-img" data-column="imageId"></li>');
+        				el.find('.pic').append(_p);
+    	        		var category = _p.data("column");
+    	        		var imageId = j.fileId;
+    	            	var image = new CBSImageInfo({
+    	            		view: _p,
+    	            		category: category,
+    	            		imageId: imageId
+    	                });
+    	    		});
+        		};
+        	}
+    		$('.main_box').append(el);
+        });
+    }
+};
+//异常反馈
+CBSTrackInfo.prototype.saveLoadFeedBack=function(loadId,dialog) {
+	var _this=this;
+	var data = {};
+	var result={};
+	var obj=new Array();
+	var imageList=new Array();
+	var status=$("input[name='status']:checked").val();
+	if(status=='01') {
+		$('.no-column').each(function(i, j){
+	        var _this = $(this);
+	        var pName = _this.data("column");
+	        var pValue = _this.val();
+	        data[pName] = pValue;
+	    });
+		data.isException="00";  //无异常
+	} else if(status=='02') {
+		$('.column').each(function(i, j){
+	        var _this = $(this);
+	        var pName = _this.data("column");
+	        var pValue = _this.val();
+	        data[pName] = pValue;
+	    });
+		data.isException="01";  //有异常
+	}
+	$.each(_this.imageList,function(i, j){
+		var result = j.postToServer('/admin/feedback/feedBackUploadImage');
+		if(result != null){
+			var imageId=result.imageId;
+			imageList.push({'imageId':imageId});
+		}
+	});
+	data.loadId=loadId;
+	data.status='05';    //在途反馈
+	data.type='03';    //司机异常
+	data.imageIdList=imageList;
+	obj.push(data);
+	result.loadFeedbackList=obj;
+	var valid=_this.validFeedBack(data,imageList);
+	if(valid){
+		var dataStringify = JSON.stringify(result);
+		console.log(dataStringify)
+	    $.ajax({
+	        url: global.server + '/admin/feedback/saveLoadFeedback',
+	        type: "POST",
+	        contentType: "application/json; charset=utf-8",
+	        data: dataStringify,
+	        dataType: "json",
+	        success: function (msg) {
+	            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+	            	alert("提交成功");
+	            	dialog.destory();
+	            	window.location.reload();
+	            } else {
+	            	alert(msg.status.errorMsg);
+	            }
+	        }
+	    });
+	}
+}
+
+//车辆到达
+CBSTrackInfo.prototype.ArriveTheCar=function(loadId) {
+	var _this=this;
+	var url='/admin/arrived/arrive';
+	var data = {};
+	data.arriveTime=$('input[data-column="realArriveTime"]').val();
+	data.loadId=loadId;
+	var valid=this.validArrive(data);
+	if(valid) {
+		$.ajax({
+	        url: global.server + url,
+	        type: "post",
+	        data: data,
+	        success: function (msg) {
+	            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+//	            	alert('已发车');
+	            	window.close();
+	            	window.opener.location.reload();
+	            } else {
+	            	alert(msg.status.errorMsg);
+	            }
+	        }
+	    });
+	}
+}
+
+CBSTrackInfo.prototype.validArrive=function(data) {
+	var valid=true;
+	if(data.arriveTime==''||data.arriveTime==null) {
+		valid=false;
+		alert('实际到达时间不能为空');
+		return false;
+	}
+	return valid;
+}
+
+CBSTrackInfo.prototype.validFeedBack=function(data,imageList) {
+	var valid=true;
+	if(data.isException=='00') {
+		if(!data.address) {
+			valid=false;
+			alert('车辆位置不能为空');
+			return false;
+		} else {
+			var valid_address =/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g;
+//			var valid_address =/[^\u4E00-\u9FA5]/g;
+			var address=data.address;
+			if (address.match(valid_address)) {
+				valid=false;
+				alert('请输入正确的车辆位置');
+				return false;
+			}
+		}
+//		if(!data.itemDesc) {
+//			valid=false;
+//			alert('备注不能为空');
+//			return false;
+//		}
+	} else if(data.isException=='01') {
+		if(!data.feedbackTime) {
+			valid=false;
+			alert('异常开始时间不能为空');
+			return false;
+		}
+//		if(!data.endTime) {
+//			valid=false;
+//			alert('异常结束时间不能为空');
+//			return false;
+//		}
+		if(data.endTime) {
+			var feedbackTime=$('input[data-column="feedbackTime"]').val();
+			var endTime=$('input[data-column="endTime"]').val();
+			var v_s=moment(feedbackTime,"YYYY-MM-DD HH:mm");
+			var v_e=moment(endTime,"YYYY-MM-DD HH:mm");
+			var time_valid_v=v_e.isAfter(v_s);
+			if(!time_valid_v) {
+				valid=false;
+				alert("异常结束时间不能小于异常开始时间");
+				return false;
+			}
+		}
+		if(!data.itemName) {
+			valid=false;
+			alert('异常原因不能为空');
+			return false;
+		}
+		if(!data.address) {
+			valid=false;
+			alert('车辆位置不能为空');
+			return false;
+		} else {
+			var valid_address =/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g;
+//			var valid_address =/[^\u4E00-\u9FA5]/g;
+			var address=data.address;
+			if (address.match(valid_address)) {
+				valid=false;
+				alert('请输入正确的车辆位置');
+				return false;
+			}
+		}
+//		if(!data.itemDesc) {
+//			valid=false;
+//			alert('备注不能为空');
+//			return false;
+//		}
+		if(imageList.length==0) {
+			valid=false;
+			alert('至少需要一张异常图片');
+			return false;
+		}
+	}
+	return valid;
+}
+
+$(function(){
+	
+	var loadId = global.QueryString.loadId;
+	var param = {
+		loadId : loadId
+	};
+	var track=new CBSTrackInfo(param);
+	
+});

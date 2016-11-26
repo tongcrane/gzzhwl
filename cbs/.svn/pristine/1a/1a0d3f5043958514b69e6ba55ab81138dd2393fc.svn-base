@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>查看驾驶员信息</title>
+    <link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/base.css?ver=0.3">
+	<link rel="stylesheet" type="text/css" href="/css/checkDriverInformation.css?ver=0.3"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>驾驶员信息</p>
+	</div>
+	
+	<div class="car-detail">
+		<div class="clearfix clear-float">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<p>
+						<div class="car-img" data-column="idFImageRefId"></div>
+						<span>身份证正面照</span>
+					</p>
+					<p>
+						<div class="car-img" data-column="idBImageRefId"></div>
+						<span>身份证反面照</span>
+					</p>
+					<p>
+						<div class="car-img" data-column="photoFImageRefId"></div>
+						<span>个人免冠照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>基本信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">驾驶员姓名</label>
+						<span  class="column span-right" data-column="realName"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">身份证号码</label>
+						<span  class="column span-right" data-column="idno"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">性别</label>
+						<span  class="column span-right" data-column="sex"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">出生日期</label>
+						<span  class="column span-right" data-column="birthday"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">司机手机</label>
+						<span  class="column span-right" data-column="telphone"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">驾驶员属性</label>
+						<span  class="column span-right" data-column="attributes"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">联系地址</label>
+						<span  class="column span-right" data-column="address"></span>
+					</p>
+					<p class="clearfix">
+						<label for="" class="no-good">不良记录</label>
+						<span data-column="criminalRecord" class="no-good-con column  span-right"></span>
+					</p>
+					<h3>账户信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">开户行名称</label>
+						<span  class="bank-column span-right" data-column="depositBank"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">开户银行</label>
+						<span  class="bank-column span-right" data-column="bankName"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">开户名</label>
+						<span  class="bank-column span-right" data-column="cardName"></span>
+					</p>
+					<p class="clearfix">
+						<label for="">银行账号</label>
+						<span  class="bank-column span-right" data-column="cardNo"></span>
+					</p>
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+					<p>
+						<div class="car-img" data-column="drivingFImageRefId"></div>
+						<span>驾驶证正面照片</span>
+					</p>
+					<p>
+						<div class="car-img" data-column="drivingBImageRefId"></div>
+						<span>驾驶证侧面照片</span>
+					</p>
+					<p>
+						<div class="car-img" data-column="qualifiImageRefId"></div>
+						<span>从业资格证照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>驾驶证信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">准驾车型</label>
+						<span  class="column span-right" data-column="dlType"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">初次领证日期 </label>
+						<span  class="column span-right" data-column="dlIssueDate"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">驾驶证有效期</label>
+						<span  class="column span-right" data-column="dlEndDate"></span>
+					</p>
+					<h3>从业资格证信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">从业资格证号码</label>
+						<span  class="column span-right" data-column="qcNo"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">从业资格证类型</label>
+						<span  class="column span-right" data-column="qcType"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">初次领证日期</label>
+						<span  class="column span-right" data-column="qcIssueDate"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">从业资格证有效期</label>
+						<span  class="column span-right" data-column="qcEndDate"></span>
+					</p>
+				</div>
+			</div>
+		</div>
+			<div class="detail-bottom">
+				<div class="btn">
+					<div class="btn">
+						<!-- <button class="clock"></button> -->
+						<button class="close"></button>
+						<button class="current">修改</button>
+					</div>
+				</div>
+			</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSImageInfo.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSDriverInfo.js?ver=0.3"></script>
+
+	<script type="text/javascript">
+		
+		
+		$(function(){
+			var driverInfoId = global.QueryString.driverInfoId;
+			var driver = new CBSDriverInfo({driverInfoId:driverInfoId});
+			
+			$('.btn > .close').click(function(){
+				if(confirm('确认删除？')){
+			    	$.ajax({
+				        url: global.server + '/admin/driver/removeDriver',
+				        type: "POST",
+				        data: {driverInfoId:driverInfoId},
+				        success: function (msg) {
+				            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				            	alert("操作成功");
+				            	window.close();
+				            	window.opener.location.reload();
+				            }
+				        }
+				    });
+				}
+				return false;
+			});
+			
+			$('.btn > .current').click(function(){
+				var url = '/addDriverInfoOne.html?driverInfoId='+ driverInfoId;
+				location.href = url;
+				return false;
+			});
+			
+			$('.clock').click(function(event) {
+				$('.change-photo').show();
+			});
+		
+		
+			var timer;
+			$('.clock').mouseover(function(event) {
+				clearTimeout(timer);
+				$('.change-photo').show();
+			});
+		
+			$('.clock').mouseout(function(event) {
+				timer = setTimeout(function(){
+					$('.change-photo').hide();
+				},500 );
+			});
+		
+			$('.change-photo').mouseover(function(event) {
+				clearTimeout(timer);
+			});
+			$('.change-photo').mouseout(function(event) {
+				timer = setTimeout(function(){
+					$('.change-photo').hide();
+				},500 );
+			});
+		});
+	</script>
+
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+	<title>订单详情</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/sourceBass.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/checkBusinessSource.css?ver=0.4" />
+	<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age">
+			<h3>客户合同</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">订单号</p>
+						<span class="fr spa_n detailInfo-column" data-column="orderNo" ></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">客户合同</p>
+						<span class="fr spa_n agreementName" ></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">线路属性</p>
+						<span class="fr spa_n baseInfo-column" data-column="lineAttribute"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">是否允许外请</p>
+						<span class="fr spa_n baseInfo-column" data-column="needOwnVehicles"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">订单类型</p>
+						<span class="fr spa_n baseInfo-column" data-column="orderType"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">始发地</p>
+						<span class="fr spa_n lineInfo-column" data-column="startCodePCn,startCodeCCn"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">用车要求</p>
+						<span class="fr spa_n baseInfo-column" data-column="needLength,needType"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">客户单号</p>
+						<span class="fr spa_n baseInfo-column" data-column="customerBillNo"></span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">客户全称</p>
+						<span class="fr spa_n senderInfo-column" data-column="customerName" ></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">目的地</p>
+						<span class="fr spa_n lineInfo-column" data-column="endCodePCn,endCodeCCn"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">是否进口</p>
+						<span class="fr spa_n baseInfo-column" data-column="needImportedVehicles"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="mess_age">
+			<h3>联系人信息</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">发货人公司</p>
+						<span class="fr spa_n senderInfo-column" data-column="customerName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">发货人手机</p>
+						<span class="fr spa_n senderInfo-column" data-column="mobile"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">收货人公司</p>
+						<span class="fr spa_n receiverInfo-column" data-column="customerName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">收货人手机</p>
+						<span class="fr spa_n receiverInfo-column" data-column="mobile"></span>
+					</div>
+				</div>
+				<div class="right right_long fr">
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">发货联系人</p>
+							<span class="fl spa_n senderInfo-column" data-column="contactName"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">发货人电话</p>
+							<span class="fl spa_n senderInfo-column" data-column="telphone"></span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">货场地址</p>
+							<span class="fl spa_n senderInfo-addr"></span>
+						</div>
+					</div>
+					<div class="right_two clearfix">
+						<div class="layout fl">
+							<p class="fl stage">收货联系人</p>
+							<span class="fl spa_n receiverInfo-column" data-column="contactName"></span>
+						</div>
+						<div class="layout fr">
+							<p class="fl stage">收货人电话</p>
+							<span class="fl spa_n receiverInfo-column" data-column="telphone"></span>
+						</div>
+					</div>
+					<div class="right_one">
+						<div class="layout clearfix">
+							<p class="fl stage">收货人地址</p>
+							<span class="fl spa_n receiverInfo-addr"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mess_age">
+			<h3>货物及时效</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">货物品名</p>
+						<span class="fr spa_n baseInfo-column" data-column="goodsName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">公里数</p>
+						<span class="fr spa_n"><b class="more_unit baseInfo-column" data-column="miles"></b>&nbsp;&nbsp;km</span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">计划发车</p>
+						<span class="fr spa_n baseInfo-column" data-column="needStartTime"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">结算方式</p>
+						<span class="fr spa_n baseInfo-column" data-column="paymentType"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">计价方式</p>
+						<span class="fr spa_n chargeInfo-column" data-column="name"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">预估重量</p>
+						<span class="fr spa_n"><b class="more_unit  baseInfo-column" data-column="goodsWeight"></b>&nbsp;&nbsp;kg</span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">到达时限</p>
+						<span class="fr spa_n baseInfo-column" data-column="needArriveTime"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">是否已开单</p>
+						<span class="fr spa_n hasConsign" ></span>
+					</div>
+
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">单价</p>
+						<span class="fr spa_n" ><b class="more_unit baseInfo-column" data-column="unitPrice"></b>&nbsp;&nbsp;元/kg<i class="produce isPredict"></i></span>
+						
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">预估体积</p>
+						<span class="fr spa_n"><b class="more_unit baseInfo-column" data-column="goodsVolume"></b>&nbsp;&nbsp;m³</span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">回单要求</p>
+						<span class="fr spa_n baseInfo-column" data-column="orderAdvice"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">提货时间</p>
+						<span class="fr spa_n baseInfo-column" data-column="pickUpTime"></span>
+					</div>
+				</div>
+			</div>
+			<div class="layout layout_line clearfix">
+				<p class="fl stage">备注</p>
+				<span class="fl spa_n baseInfo-column" data-column="remark"></span>
+			</div>
+		</div>
+	</div>
+	<div class="check">
+		<div class="actions">
+			<a href="javascript:void(0);" class="load_btn action_05 disable">约车</a>
+			<a href="javascript:void(0);" class="cancel_btn action_03 disable">取消订单</a>
+			<a href="javascript:void(0);" class="close_btn action_08 disable">关闭订单</a>
+			<a href="javascript:void(0);" class="edit_btn action_02 disable">修改</a>
+			<a href="javascript:void(0);" class="consign_btn action_99 disable">生成运单</a>
+			<a href="javascript:void(0);" class="apply_return_btn action_98 disable">申请退回</a>
+			<a href="javascript:void(0);" class="push_btn action_04 disable">推送运势界</a>
+			<a href="javascript:void(0);" class="push_btn action_07 disable">推送运势界</a>
+			<a href="javascript:void(0);" class="check_hover">
+				<div class="hover_content">
+					<!-- <h4>操作纪录</h4>
+					<p><span>李四</span> 推送时间是；备注:此单十分着急；</p>
+					<p><span>李四</span> 推送时间是；备注:此单十分着急；</p> -->
+				</div>
+			</a>	
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+   	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSOrderPush.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSOrderInfo.js?ver=0.4"></script>
+
+</html>
+
+
+
+
+
+
+

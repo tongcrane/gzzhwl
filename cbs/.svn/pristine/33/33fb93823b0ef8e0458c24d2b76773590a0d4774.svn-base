@@ -1,0 +1,215 @@
+
+/* 引入这css前必须得引用base.css */
+.detail-photos p{
+	width:178px;
+	height:180px;
+	background: #fbfbfb;
+	border-radius: 4px;
+	border:1px solid #eee;
+}
+.detail-photos .down{
+	margin-top:250px;
+}
+.detail-photos p,.detail-info{
+	margin-top:20px;
+}
+.detail-photos input{
+	width:44px;
+	height:44px;
+	background:url(/img/car_add.png) no-repeat;
+	margin:46px 0 0 66px;
+	cursor: pointer;
+}
+.detail-photos span{
+	color:#919191;
+	font-weight: normal;
+	margin-top:20px;
+}
+.detail-info{
+	width:355px;
+	margin-right:18px;
+}
+.detail-info h3{
+	padding-bottom:14px;
+	border-bottom:1px solid #eee;
+	background-position:0 0;
+	padding-top:2px;
+}
+.detail-info p{
+	padding-left:0;
+}
+.detail-info p label{
+	display: block;
+	width: 100%;
+	height:22px;
+	line-height: 22px;
+
+}
+.detail-info p input{
+	width:100%;
+	height:26px;
+	border:1px solid #e2e2e2;
+	border-radius: 2px;
+	text-indent: 4px;
+}
+.detail-info .exp-date input{
+	width:160px;
+	display: inline-block;
+}
+.detail-info .exp-date input:first-child{
+	margin-left:0;
+}
+.detail-info .exp-date input:last-child{
+	margin-left:26px;
+}
+.exp-date{
+	position: relative;
+}
+.exp-date:after{
+	content: "";
+	width:23px;
+	border-top:1px solid #e2e2e2;
+	position: absolute;
+	top:35px;
+	left:165px;
+}
+/* 必填字段黄色star背景 */
+.star-type{
+	background: url(/img/star.png) no-repeat 63px center;
+}
+.exp-date .need{
+	background: url(/img/star.png) no-repeat 90px center;
+}
+.exp-date .right-date.need{
+	background: url(/img/star.png) no-repeat 118px center;
+}
+.star-sex{
+	background: url(/img/star.png) no-repeat 35px center;
+}
+.need{
+	background: url(/img/star.png) no-repeat 99% center;
+}
+/* 必填字段黄色star背景 */
+.detail-info p select{
+	border-radius:2px;
+}
+.detail-info .remarks{
+	width:100%;
+	border:1px solid #e2e2e2;
+	border-radius: 2px;
+	text-indent: 4px;
+	height:42px;
+	resize: none;
+	outline: none;
+	font-size:14px;
+}
+.routline{
+	position:relative;
+}
+.car-from,.car-to{
+	margin-left:15px;
+    position: relative;
+    width: 500px;
+}
+.car-from{
+	margin-top:-8px;
+}
+.car-to{
+	margin-top:30px;
+}
+.user-apart{
+	position: relative;
+}
+.arrive{
+	width:12px;
+	height:50px;
+	line-height:50px;
+	border:1px solid #e2e2e2;
+	border-right:none;
+	position:absolute;
+	bottom:74px;
+	left:216px;
+	color:#888;
+}
+.arrive span{
+	padding:2px 5px;
+	background:#fff;
+	margin-left:-12px;
+}
+.detail-info .date-second{
+	width:128px;
+	background:#eee url(/img/date_select.png) no-repeat 98% center;
+	background-size: 10px auto;
+}
+.detail-info .date-first{
+	margin-left:0;
+}
+.detail-bottom .pre{
+	font-weight:bold;
+	color:#414141;
+}
+
+
+/* 页面提示框样式 */
+.detail-info .f-tips{
+	padding-left:0;
+	font-size:14px;
+	position:relative;
+	margin-bottom: 10px;
+}
+.detail-info .f-tips label{
+	display: block;
+	width: 100%;
+	height:22px;
+	line-height: 22px;
+	font-weight: bold;
+	color:#525252;
+
+}
+.detail-info .f-tips input{
+	width:100%;
+	height:26px;
+	border:1px solid #e2e2e2;
+	border-radius: 2px;
+	text-indent: 4px;
+	font-size:14px;
+	color:#6e6e6e;
+}
+.detail-info .f-tips .tips{
+	position:absolute;
+	top:0;
+	right:370px;
+	width:200px;
+	background:#fff;
+	padding:5px;
+	border:1px solid #CBCBCB;
+	border-radius: 2px;
+	box-shadow:0 1px 6px #bbb;
+	color:#525252;
+	z-index: 9999;
+}
+.detail-info .f-tips .tips:before{
+	content:"";
+	display: block;
+	height:0;
+	width:0;
+	border:10px solid transparent;
+	border-left-color: #cbcbcb;
+	position:absolute;
+	top:3px;
+	right:-20px;
+}
+.detail-info .f-tips .tips:after{
+	content:"";
+	display: block;
+	height:0;
+	width:0;
+	border:9px solid transparent;
+	border-left-color:#fff;
+	position:absolute;
+	top:4px;
+	right:-17px;
+}
+.detail-info .f-tips input {width: 355px;height: 26px;border: 1px solid #e2e2e2;border-radius: 2px;text-indent: 4px;font-size: 14px;color: #6e6e6e; }
+/* input输入框输入文字不覆盖星星 */
+.detail-info .f-tips input.need{width: 340px;padding-right: 15px;}

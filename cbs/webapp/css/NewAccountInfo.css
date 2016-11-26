@@ -1,0 +1,58 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-18 15:04:12
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-19 16:03:05
+*/
+.car-information p{width:1140px;height:46px;margin:0 auto;font-size:18px;line-height:46px;padding-left:60px;color:#525252;font-weight: bold;background: url(../img/car_info_bg.jpg) no-repeat 24px 12px;}
+.car-detail{width:1174px;min-height:524px;padding-bottom:50px;margin:10px auto;border:1px solid #dcdcdc;font-size:14px;}
+.info_line{width:1084px;padding:0 12px;height:48px;background: #f9fdff;border:1px solid #e3eff6;border-radius:2px;margin:30px auto 40px;}
+.u_l li{width:180px;float:left;margin-left:140px;}
+.u_l li:nth-child(1){margin-left:34px;}
+.u_l li .im_ages{width:178px;height:178px;border:1px solid #e5e5e5;background:#fbfbfb;border-radius: 4px;background-size:cover;background-position:center center;cursor:pointer;}
+.u_l li>span{display:block;width:100%;height:28px;line-height:28px;text-align: center;color:#3b3b3b;font-weight: bold;}
+.detail-bottom{width:1176px;margin:25px auto 4px;height:50px;background:#f6f6f6;}
+
+.detail-bottom a{display: block;float:right;width:85px;height:30px;line-height:30px;border-radius: 2px;border:1px solid #dcdcdc;margin:10px 15px 0 0;outline: none;text-align: center;color:#4c4c4c;}
+.detail-bottom .current{background-color: #de642c;color:#fff;border:1px solid #bc5120;font-size: 14px;font-weight: bold;}
+.info_line_div{float:left;margin:14px 0 0 110px;}
+.info_line_div:nth-child(1){margin-left:0;}
+
+#show-pic{
+	width:100%;
+	height:100%;
+	background:rgba(0,0,0,0.6);
+	position:fixed;
+	top:0;
+	left:0;
+	z-index: 9999;
+	display:none;
+}
+#show-pic .content{
+	width:600px;
+	height:600px;
+	background: #fff;
+	border-radius:10px;
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin-top:-350px;
+	margin-left:-350px;
+	overflow:hidden;
+}
+#show-pic .content-img{
+	width:100%;
+	height:100%;
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+#show-pic .content span{
+	width:18px;
+	height:18px;
+	background: url(../img/show_pic_bg.png) no-repeat;
+	position:absolute;
+	top:10px;
+	right:10px;
+	cursor:pointer;
+}

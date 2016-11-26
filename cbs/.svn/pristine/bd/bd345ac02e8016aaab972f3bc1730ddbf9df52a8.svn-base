@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>单据详情</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/infoListBase.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/sourceBass.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/checkBusOverView.css">
+<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="con_tent">
+		<div class="mess_age order-info">
+			<h3>
+				<p class="order_num">订单号：<i class="orderNo orderDetailInfo-column" data-column="orderNo"></i></p>
+				<p>订单创建时间：<span class="createdTime orderDetailInfo-column" data-column="createdTime" ></span></p>
+				<p>订单创建部门：<b class="updatedBy  orderBaseInfo-column" data-column="departName"></b></p>
+			</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage ">客户全称</p>
+						<span class="fr spa_n customerName orderReceiverInfo-column" data-column="customerName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">线路属性</p>
+						<span class="fr spa_n lineAttribute orderBaseInfo-column" data-column="lineAttribute"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">要求到达时间</p>
+						<span class="fr spa_n needArriveTime orderBaseInfo-column" data-column="needArriveTime"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">回单要求</p>
+						<span class="fr spa_n orderAdvice orderBaseInfo-column" data-column="orderAdvice"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">预估体积</p>
+						<span class="fr spa_n"><b class="more_unit goodsVolume orderDetailInfo-column" data-column="goodsVolume"></b>&nbsp;&nbsp;m³</span>	
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">发货人电话</p>
+						<span class="fr spa_n STelphone orderSenderInfo-column" data-column="contactName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">收货人电话</p>
+						<span class="fr spa_n RTelphone orderReceiverInfo-column" data-column="contactName"></span>
+					</div>
+					<!-- <div class="layout clearfix">
+						<p class="fl stage">始发地</p>
+						<span class="fr spa_n startCodeP orderLineInfo-column" data-column="startCodePCn, startCodeCCn"></span>
+					</div> -->	
+					<!-- <div class="layout clearfix">
+						<p class="fl stage">客户单号</p>
+						<span class="fr spa_n customerBillNo orderBaseInfo-column" data-column="belongDepartId"></span>
+					</div> -->
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">订单类型</p>
+						<span class="fr spa_n orderType orderBaseInfo-column" data-column="orderType"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">用车要求</p>
+						<span class="fr spa_n needType orderBaseInfo-column" data-column="needType,needLength"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">计价方式</p>
+						<span class="fr spa_n chargeInfo orderBaseInfo-column" data-column="paymentType"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">货物品名</p>
+						<span class="fr spa_n goodsName orderBaseInfo-column" data-column="goodsName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">公里数</p>
+						<span class="fr spa_n"><b class="more_unit miles orderBaseInfo-column" data-column="miles"></b>&nbsp;&nbsp;km</span>
+						
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage ">发货人手机</p>
+						<span class="fr spa_n SMobile orderSenderInfo-column" data-column="mobile"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">收货人手机</p>
+						<span class="fr spa_n RMobile orderReceiverInfo-column" data-column="mobile"></span>
+					</div>
+					<!-- <div class="layout clearfix">
+						<p class="fl stage">目的地</p>
+						<span class="fr spa_n endCodeP orderLineInfo-column" data-column="endCodePCn, endCodeCCn"></span>
+					</div> -->
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">线路</p>
+						<span class="fr spa_n"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">计划发车</p>
+						<span class="fr spa_n needStartTime orderBaseInfo-column" data-column="needStartTime"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">单价</p>
+						<span class="fr spa_n"><b class="more_unit  unitPrice orderBaseInfo-column" data-column="belongDepartId"></b>&nbsp;&nbsp;元/kg</span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">预估重量</p>
+						<span class="fr spa_n"><b class="more_unit goodsWeight orderBaseInfo-column" data-column="belongDepartId"></b>&nbsp;&nbsp;kg</span>	
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">发货联系人</p>
+						<span class="fr spa_n SContactName orderSenderInfo-column" data-column="contactName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage ">收货联系人</p>
+						<span class="fr spa_n RContactName orderReceiverInfo-column" data-column="contactName"></span>
+					</div>
+					
+					
+					
+				</div>
+			</div>
+		</div>
+		<div class="check order-info">
+			<a href="javascript:;" class="to_order_detail">查看详情</a>
+		</div>
+		<div class="mess_age consign-info">
+			<h3>
+				<p class="order_num">运单号：<i class="consignId consignmentInfo-column" data-column="consignNo"></i></p>
+				<p>运单生成时间：<span class="consignCreatedTime consignmentInfo-column" data-column="createdTime"></span></p>
+				<p>开单部门：<b class="consignCreatedBy consignmentInfo-column" data-column="consignDepartName"></b></p>
+			</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage">客户单号</p>
+						<span class="fr spa_n consignId consignmentInfo-column" data-column="consignNo"></span>
+					</div>
+					<div class="layout rela_tive  clearfix">
+						<p class="fl stage">其他费用</p>
+						<span class="fr spa_n"><b class="more_unit consignOtherPrice consignmentInfo-column" data-column="otherPrice"></b>&nbsp;&nbsp;元</span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout rela_tive clearfix">
+						<p class="fl stage">纯运费</p>
+						<span class="fr spa_n"><b class="more_unit consignFreightPrice consignmentInfo-column" data-column="freightPrice"></b>&nbsp;&nbsp;元</span>
+						<i class="fee">预估费</i>
+					</div>
+					<div class="layout rela_tive clearfix">
+						<p class="fl stage total">总费用</p>
+						<span class="fr spa_n"><b class="more_unit consignTotal consignmentInfo-column" data-column="total"></b>&nbsp;&nbsp;元</span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout rela_tive clearfix">
+						<p class="fl stage loadPrice">装卸费</p>
+						<span class="fr spa_n"><b class="more_unit consignLoadPrice consignmentInfo-column" data-column="loadPrice"></b>&nbsp;&nbsp;元</span>	
+					</div>
+					
+				</div>
+			</div>
+			<div class="layout layout_line clearfix">
+				<p class="fl stage">其他费用说明</p>
+				<span class="fl spa_n consignOtherExplain consignmentInfo-column" data-column="otherExplain"></span>
+			</div>
+			<div class="layout layout_line clearfix">
+				<p class="fl stage remark">备注</p>
+				<span class="fl spa_n consignRemark consignmentInfo-column" data-column="remark"></span>
+			</div>
+		</div>
+		<div class="check consign-info">
+			<a href="javascript:;" class="to_order_detail">查看详情</a>
+		</div>
+		<div class="mess_age load-info">
+			<h3>
+				<p class="order_num">提货单号：<i class="load-column" data-column="loadNo"></i></p>
+				<p>配载单生成时间：<span class="load-column" data-column="createdTime" ></span></p>
+				<p>配载单创建部门：<b class="load-column" data-column="name"></b></p>
+			</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage ">车牌号</p>
+						<span class="fr spa_n load-column" data-column="plateNumber"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">司机电话1</p>
+						<span class="fr spa_n" data-column="_telphone"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">预付现金</p>
+						<span class="fr spa_n"><b class="more_unit load-column" data-column="prePay"></b>&nbsp;&nbsp;元</span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">司机电话2</p>
+						<span class="fr spa_n" data-column="_telphone"></span>
+					</div>
+				</div>
+				<div class="middle fl">
+					<div class="layout clearfix">
+						<p class="fl stage">挂车号</p>
+						<span class="fr spa_n load-column" data-column="loadPlateNumber"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">要求到达时间</p>
+						<span class="fr spa_n load-column" data-column="needArriveTime"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">预付油卡</p>
+						<span class="fr spa_n"><b class="more_unit load-column" data-column="oilPay"></b>&nbsp;&nbsp;元</span>
+					</div>
+				</div>
+				<div class="right fr">
+					<div class="layout clearfix">
+						<p class="fl stage">司机姓名1</p>
+						<span class="fr spa_n" data-column="_realName"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">纯运费</p>
+						<span class="fr spa_n"><b class="more_unit load-column" data-column="freightPrice"></b>&nbsp;&nbsp;元</span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage">司机姓名2</p>
+						<span class="fr spa_n" data-column="_realName"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="check load-info">
+			<a href="javascript:;" class="to_order_detail">查看详情</a>
+		</div>
+		<div class="unusual order-info">
+			<h3>
+				<p class="order_num fl">车辆检查</p>
+				<p class="fr">车检时间：<span class="" data-column="" >2016-10-12 10:30</span></p>
+			</h3>
+			<div class="un_content">
+				<h4>车辆异常</h4>
+				<div class="un_bg">
+					<p>
+						<span class="un_num">1:</span>
+						<span class="un_time">2016-10-12 10:30</span>
+						<span class="un_name">时效罚款</span>
+						<span class="un_cost">133元</span>
+						<span class="un_reason">天气不好，心情不好</span>
+					</p>
+					<p>
+						<span class="un_num">1:</span>
+						<span class="un_time">2016-10-12 10:30</span>
+						<span class="un_name">时效罚款</span>
+						<span class="un_cost">133元</span>
+						<span class="un_reason">天气不好，心情不好</span>
+					</p>
+				</div>
+			</div>
+			<div class="un_content">
+				<h4>货主异常</h4>
+				<div class="un_bg">
+					<p>
+						<span class="un_num">1:</span>
+						<span class="un_time">2016-10-12 10:30</span>
+						<span class="un_name">时效罚款</span>
+						<span class="un_cost">133元</span>
+						<span class="un_reason">天气不好，心情不好</span>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="unusual order-info">
+			<h3>
+				<p class="order_num fl">靠台</p>
+				<p class="fr">靠台时间：<span class="" data-column="" >2016-10-12 10:30</span></p>
+			</h3>
+			<div class="un_content">
+				<h4>货主异常</h4>
+				<div class="un_bg">
+					<p>
+						<span class="un_num">1:</span>
+						<span class="un_time">2016-10-12 10:30</span>
+						<span class="un_name">时效罚款</span>
+						<span class="un_cost">133元</span>
+						<span class="un_reason">天气不好，心情不好</span>
+					</p>
+					<p>
+						<span class="un_num">1:</span>
+						<span class="un_time">2016-10-12 10:30</span>
+						<span class="un_name">时效罚款</span>
+						<span class="un_cost">133元</span>
+						<span class="un_reason">天气不好，心情不好</span>
+					</p>
+				</div>
+			</div>
+			<div class="un_content">
+				<h4>司机反馈异常</h4>
+				<div class="un_bg">
+					<p>
+						<span class="un_num">1:</span>
+						<span class="un_time">2016-10-12 10:30</span>
+						<span class="un_name">时效罚款</span>
+						<span class="un_cost">133元</span>
+						<span class="un_reason">天气不好，心情不好</span>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="unusual mar_bottom trip-info">
+			<h3>
+				<p class="order_num fl">发车</p>
+				<p class="fr">发车时间：<span class="trip-column" data-column="tripTime" ></span></p>
+			</h3>
+			<div class="clearfix">
+				<div class="left fl">
+					<div class="layout clearfix">
+						<p class="fl stage ">客户单号</p>
+						<span class="fr spa_n trip-column" data-column="customerBillNo"></span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage ">实际重量</p>
+						<span class="fr spa_n trip-column" data-column="goodsWeight"><b class="more_unit"></b>&nbsp;&nbsp;kg</span>
+					</div>
+					<div class="layout clearfix">
+						<p class="fl stage ">实际体积</p>
+						<span class="fr spa_n trip-column" data-column="goodsVolume"><b class="more_unit"></b>&nbsp;&nbsp;m³</span>
+					</div>
+				</div>
+				<div class="fr images"></div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/moment.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+   	<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSTable.js?ver=0.3"></script>
+    <script type="text/javascript" src="/js/CBSOverView.js"></script>
+
+	<script type="text/javascript">
+		var timer;
+		$('.check_hover').hover(function() {
+			$('.hover_content').show();
+			clearTimeout(timer);
+		}, function() {
+			timer = setTimeout(function(){
+				$('.hover_content').hide();
+			},200);
+		});
+		$('.hover_content').hover(function() {
+			clearTimeout(timer);
+		}, function() {
+			timer = setTimeout(function(){
+				$('.hover_content').hide();
+			},200);
+		});
+
+		// 模态窗口
+		$('.refuse').click(function(){
+			$('.mo_del').show();
+		});
+		$('.model_content span').click(function(){
+			$('.mo_del').hide();
+		});
+	</script>
+</html>

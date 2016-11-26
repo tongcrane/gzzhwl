@@ -1,0 +1,78 @@
+/**
+ * 
+ */
+var ViewMap = function(options){
+	this.opt = $.extend({}, options);
+	var _this = this;
+	
+	this.init = function(options){
+		var _this = this;
+		$('#search_type').multiselect({
+			header : false,
+			multiple : false,
+			selectedList : 1,
+			noneSelectedText: '请选择',
+			minWidth : 104,
+			click: function(event, ui){
+				$('#search_input').prop('placeholder',ui.placeholder);
+		    }
+		});
+		
+		_this.amap = new CBSMap({
+			target : "map",
+			onClick : _this.onClick,
+			onMarkerShow : _this.onMarkerShow
+		});
+	}
+	
+	//地图上点的click时间
+	this.onMarkerShow = function(param){
+		console.log(param);
+		var el = $('<div class="map_tips"> \
+				<div class="tip_con"> \
+				<span>车牌号</span> \
+				<p>粤12345</p> \
+			</div> \
+			<div class="tip_con"> \
+				<span>位置</span> \
+				<p>重岳高速恩施段233km处</p> \
+			</div> \
+			<div class="tip_con"> \
+				<span>行驶速度</span> \
+				<p><b>33.5</b><i class="speed">&nbsp;km/h</i></p> \
+			</div> \
+		</div>');
+		return el.prop('outerHTML');
+	}
+	
+	//地图上click
+	this.onClick = function(e){
+		_this.amap.addMarker({
+			param:{
+				position:e.lnglat.getLng()
+			},
+			position:e.lnglat
+		});
+	}
+	
+	this.search = function(){
+		var param = {};
+		param.type = $('#search_type').val();
+		param.text = $('#search_input').val();
+		console.log(param);
+		
+		
+		_this.amap.clearMarker();
+	}
+	
+	
+	this.init(options);
+}
+
+$(function(){
+	var view = new ViewMap();
+	
+	$('.search_btn').click(function(){
+		view.search();
+	})
+})

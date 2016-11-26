@@ -1,0 +1,15 @@
+/*
+* @Author: Administrator
+* @Date:   2016-06-28 18:50:54
+* @Last Modified by:   Administrator
+* @Last Modified time: 2016-06-28 19:23:39
+*/
+$(function(){
+	// 常跑路线
+	$("#lines li").mouseover(function(event) {
+		$(this).children().addClass('r_close').parent("li").siblings().children().removeClass('r_close');
+	});
+	$("#lines").on('click', 'em.r_close', function(event) {
+		$(this).parent().hide();
+	});
+})

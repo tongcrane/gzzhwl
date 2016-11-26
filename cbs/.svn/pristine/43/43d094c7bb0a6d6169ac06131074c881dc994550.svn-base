@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>查看挂车信息</title>
+    <link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+    <link rel="stylesheet" type="text/css" href="/css/base.css?ver=0.3"/>
+    <link rel="stylesheet" type="text/css" href="/css/checkLoseCarInfo.css?ver=0.3">
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>挂车信息</p>
+	</div>
+	
+	<div class="car-detail">
+		<div class="clearfix clear-float">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<p>
+						<div class="car-img" data-column="licenseImageRefId"></div>
+						<span>车辆行驶证照片</span>
+					</p>
+					<p>
+						<div class="car-img" data-column="regImageRefId"></div>
+						<span>车辆登记证照片</span>
+					</p>
+					<p>
+						<div class="car-img" data-column="ocImageRefId"></div>
+						<span>车辆营运证照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>行驶证信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">车牌号</label>
+						<span  class="column span-right" data-column="plateNumber"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">行驶证档案编号</label>
+						<span  class="column span-right" data-column="licenseNo"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">车辆类型</label>
+						<span  class="column span-right" data-column="type"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">车架号</label>
+						<span  class="column span-right" data-column="vin"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">准牵引总质量（kg）</label>
+						<span  class="column span-right" data-column="loadWeight"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">行驶证发证日期</label>
+						<span  class="column span-right" data-column="licenseIssueDate"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">行驶证注册日期</label>
+						<span  class="column span-right" data-column="licenseRegDate"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">行驶证有效期至</label>
+						<span  class="column span-right" data-column="licenseValidDate"></span>
+					</p>
+					<h3>登记证信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">机动车登记证编号</label>
+						<span  class="column span-right" data-column="regCertCode"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">车辆登记日期</label>
+						<span  class="column span-right" data-column="regDate"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">车辆品牌</label>
+						<span  class="column span-right" data-column="brand"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">车辆型号</label>
+						<span  class="column span-right" data-column="type"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">轮胎数</label>
+						<span  class="column span-right" data-column="wheelsNum"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">车体颜色</label>
+						<span  class="column span-right" data-column="color"></span>
+					</p>
+					<h3>道路运输证信息</h3>
+					<p class="clearfix">
+						<label class="lab-left">道路运输证号</label>
+						<span  class="column span-right" data-column="operatingCertNo"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">营运证发证日期</label>
+						<span  class="column span-right" data-column="operatingCertIssueDate"></span>
+					</p>
+					<p class="clearfix">
+						<label class="lab-left">车长（m）</label>
+						<span  class="column span-right" data-column="length"></span>
+					</p>
+					<p class="clearfix">
+						<label class="b-remark" for="">备注</label>
+						<span  data-column="remark" class="re-mark column" readonly></span>
+					</p>
+
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+					<p>
+						<div class="car-img" data-column="vehicleImageRefId"></div>
+						<span>添加车辆照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>使用信息</h3>
+					<p class="clearfix">
+						<label for="">所属部门</label>
+						<span  class="column span-right" data-column="belongDepartName"></span>
+					</p>
+					<p class="clearfix">
+						<label for="">使用部门</label>
+						<span  class="column span-right" data-column="useDepartName"></span>
+					</p>
+					<p class="clearfix">
+						<label for="">使用线路</label>
+						<span  class="column span-right" data-column=""></span>
+					</p>
+					<p class="clearfix">
+						<label for="">使用状态</label>
+						<span  class="column span-right" data-column="useStatus"></span>
+					</p>
+					<p class="clearfix">
+						<label for="">申请部门</label>
+						<span  class="column span-right" data-column=""></span>
+					</p>
+					<p class="clearfix">
+						<label for="">提出申请时间</label>
+						<span  class="column span-right" data-column=""></span>
+					</p>
+					<p class="clearfix">
+						<label for="">申请的线路</label>
+						<span  class="column span-right" data-column=""></span>
+					</p>
+					<p class="clearfix">
+						<label for="">申请开始时间</label>
+						<span  class="column span-right" data-column=""></span>
+					</p>
+					<p class="clearfix">
+						<label for="">申请结束时间</label>
+						<span  class="column span-right" data-column=""></span>
+					</p>
+					<p class="clearfix">
+						<label for="">审批状态</label>
+						<span  class="column span-right" data-column=""></span>
+					</p>
+
+				</div>
+			</div>
+		</div>
+		<div class="detail-bottom">
+			<div class="btn">
+				<div class="btn">
+					<!-- <button class="clock"></button> -->
+					<button class="close"></button>
+					<button class="current">修改</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSImageInfo.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSLoseCarInfo.js?ver=0.3"></script>
+
+	<script type="text/javascript">
+		
+		
+		$(function(){
+			var vehicleInfoId = global.QueryString.vehicleInfoId;
+			var vehicle = new CBSLoseCarInfo({vehicleInfoId:vehicleInfoId});
+			
+			$('.btn > .close').click(function(){
+				if(confirm('确认删除？')){
+			    	$.ajax({
+				        url: global.server + '/admin/vehiclemanage/remove',
+				        type: "GET",
+				        data: {vehicleInfoId:vehicleInfoId},
+				        success: function (msg) {
+				            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				            	alert("操作成功");
+				            	window.close();
+				            	window.opener.location.reload();
+				            }
+				        }
+				    });
+				}
+				return false;
+			});
+			
+			$('.btn > .current').click(function(){
+				var url = '/addLoseCarInfoOne.html?vehicleInfoId='+ vehicleInfoId;
+				location.href = url;
+				return false;
+			});
+			
+			$('.clock').click(function(event) {
+				$('.change-photo').show();
+			});
+		
+		
+			var timer;
+			$('.clock').mouseover(function(event) {
+				clearTimeout(timer);
+				$('.change-photo').show();
+			});
+		
+			$('.clock').mouseout(function(event) {
+				timer = setTimeout(function(){
+					$('.change-photo').hide();
+				},500 );
+			});
+		
+			$('.change-photo').mouseover(function(event) {
+				clearTimeout(timer);
+			});
+			$('.change-photo').mouseout(function(event) {
+				timer = setTimeout(function(){
+					$('.change-photo').hide();
+				},500 );
+			});
+		});
+	</script>
+
+</html>

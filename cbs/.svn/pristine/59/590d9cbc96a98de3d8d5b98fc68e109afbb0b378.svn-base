@@ -1,0 +1,107 @@
+
+.con_tent{border:none;width:1150px;padding-bottom:10px;}
+.layout{margin-right:46px;width:346px;}
+.right_no{margin-right:0;}
+.check{border:none;width:1150px;}
+.check .active,.over{ background-color: #de642c;color:#fff;border: 1px solid #bc5120;}
+.spa_n.car_number{text-decoration: underline;color:#e1642d;cursor: pointer;}
+.check a{width:auto;text-align: center;padding:0 10px;}
+.spa_n>a{text-decoration:underline;color:#de642c;}
+.over{display: inline-block;padding:0 20px;height:28px;line-height:28px;cursor:pointer;margin-bottom: 15px;margin-left:1006px;letter-spacing: 2px;}
+
+/* 去掉详情页面行高 */
+.layout .stage{line-height: normal;height:auto; /* background:orange; */}
+.layout .spa_n{line-height: normal;height:auto;/* background:pink; */}
+.layout{margin-bottom:15px;}
+
+/* 车辆到达部分样式 */
+.unusual h3{width: 1123px;height: 48px;line-height: 48px;padding-left: 25px;margin-bottom: 24px;border-bottom: 1px solid #e1e1e1;background: url(../img/detail_info.png) no-repeat 0 center;font-size: 16px;color: #525252;}
+.unusual{width:1150px;margin:0 auto;}
+.un_content{margin-bottom: 30px;}
+.un_content h4{font-size:14px;color:#414141;margin-bottom:20px;}
+.un_bg{background: #f0f5ff;font-size: 14px;color:#414141;padding:15px 0;}
+.un_bg.no_bg{background:#fff;}
+.un_bg>p>button{height:28px;line-height:28px;padding:0 10px;border-radius:2px;background-color: #de642c;color: #fff;border: 1px solid #bc5120;margin-left:10px;}
+.un_bg>p>button.long{padding:0 28px;}
+@-moz-document url-prefix() { .un_bg>p>button.long{line-height:24px; } }
+.un_bg>p{padding:5px 10px;}
+.un_num{padding-right:4px;}
+.un_bg>p>span{vertical-align: top;display: inline-block;}
+.un_arrive{max-width:800px;}
+.un_arrive i,.arrive_time i,.company b,.delay i{margin-left:10px;}
+.un_name,.un_arrive,.company,.arrive_time,.un_cost,.delay{padding-left:10px;}
+.un_time{width:140px;}
+.un_name{width:130px;}
+.un_cost{width:110px;}
+.company{width:190px;}
+.delay{width:150px;}
+.delay_reason{width:540px;padding-left:10px;}
+.arrive_time{width:219px;}
+.unusual>h3>p:nth-of-type(2){margin-right:20px;font-size:14px;}
+.un_bg .images{width: 116px;height: 65px;background: #eee;background-size: cover;background-position: center center;display: inline-block;margin-left:10px;} 
+.relati_ve{position:relative;}
+
+/* 模态窗口 */
+.model_content>h4{margin-top:5px;}
+.model_content>h4>p{display: inline-block;}
+.layout .labe_l{display: inline-block;width:84px;}
+
+/* 异常反馈弹出框 */
+.car_content{width:630px;margin:-203px 0 0 -315px;}
+.car_content>a{margin: 20px 0 20px 525px;}
+.model_content .layout .stage{width:94px;}
+.model_back .layout .stage{width:auto;padding-right:8px;}
+.model_back .layout .spa_n{width:148px;}
+.model_back .layout{margin-right:0px;margin-bottom:20px;}
+.layout.mar_right{margin-right:10px;}
+.model_back .inpu_t{width:236px;margin-left:4px;}
+.model_back .images{margin-left:0;}
+.model_back .unit_short{width:210px;padding-right:26px;}
+
+.model_back .labe_l.short,.feed_reason .labe_l{width:auto;padding-right:8px;}
+.feed_reason>textarea{height:86px;width:545px;vertical-align: top;}
+
+.layout.inline{display: inline-block;margin-right:90px;font-size:14px;}
+.layout.inline:nth-last-of-type(1){margin-right:0;}
+.layout.inline>input[type='radio']{margin-left:24px;margin-right:6px;}
+
+/* 车辆到达时间弹框 */
+.model_content.common2{width:388px;margin:-180px 0 0 -214px;min-height:192px;}
+.model_content.common2 > a{margin:30px 0 30px 290px;}
+.model_content.common2 .layout{margin-right:0;font-size:14px;}
+.model_content.common2 .layout > .labe_l{width:124px;}
+.model_content.common2 .layout > .inpu_t{width:257px;}
+
+.model_content.common2 .layout > input[type='radio']{margin-right:8px;}
+.model_content.common2 .layout > input[type='radio']:nth-of-type(2){margin-left:98px;}
+
+.model_content.review .layout > input[type='radio']:nth-of-type(2){margin-left:65px;}
+
+/* 纸质回单时间 */
+.model_content.waybill_time .layout > .inpu_t{width:245px;}
+
+/* 上传回单 */
+.model_content.common1{width:502px;margin:-180px 0 0 -251px;min-height:192px;}
+.model_content.common1 > a{margin:30px 0 30px 400px;}
+.upload .layout{display: inline-block;margin-right: 20px;vertical-align: top;}
+.upload .layout>.labe_l{}
+.upload .layout>.inpu_t{width:216px;}
+.receipt_img{width:162px;height:162px;display: inline-block;position:relative;border:1px solid #e5e5e5;cursor:pointer;border-radius:4px;background:#fbfbfb;background-size:cover;background-position:center center;}
+.receipt_img .file-add{width:44px;height:44px;cursor:pointer;position:absolute;top:35px;left:58px;z-index:10;background:url(../img/car_add.png) no-repeat;}
+.receipt_img>span{position:absolute;top:-4px;left:41px;z-index:10;font-size:14px;color:#919191;margin-top:118px;}
+.receipt_img .picture{width:100%;height:100%;border-radius:4px;position:absolute;top:0;left:0;}
+
+.waybill_time>.layout>.inpu_t{margin-left: 12px;}
+
+/* 关闭单据 */
+.clos_e>.layout{margin-right:0;}
+.clos_e>.layout>.labe_l{width:70px;}
+.clos_e>.layout>textarea{width:408px;}
+
+/* 单位样式 */
+.money:after{content:"元/kg";position:absolute;top:2px;left:305px;color:#ddd;font-weight: normal;}
+.money:after{content:"元";left:288px;top:1px;}
+
+
+.tips{margin-top:40px;}
+.tips .text{color:red;}

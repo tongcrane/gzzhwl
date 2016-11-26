@@ -1,0 +1,61 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/map.css?v=${sessionId}"/>
+
+<div class="banner">
+	<div class="wrap">
+		<div class="map-search">
+			<select id="search_type" class="selec_t">
+				<option value="01" data-placeholder="请输入车牌号" selected>车牌号</option>
+				<option value="02" data-placeholder="请输入提货单号">提货单号</option>
+				<option value="03" data-placeholder="请输入订单号">订单号</option>
+			</select>
+			<input type="text" class="inpu_t" id="search_input" placeholder="请输入车牌号" />
+			<span class="map-icon"></span>
+		</div>
+	</div>
+</div>
+<div class="contain">
+	<div id="map"></div>
+	<!--  异常点 -->
+<!-- <div class="map-status">
+	<span class="close"></span>
+	<span class="map-icon"></span>
+	<h3>订单号：<span>123456789</span></h3>
+	<div class="status-cont">
+		<p class="title">粤A88888</p>
+		<p>行驶速度：120km/h</p>
+		<div class="abnormal">
+			<p class="reason">异常类型：<span>堵车</span></p>
+			<p>异常开始时间：<span>2016-10-08 12:30</span></p>
+			<p>异常结束时间：<span>2016-10-08 12:30</span></p>
+			<p>位置：<span>123.3434</span></p>
+		</div>   
+	</div>
+</div> -->
+	<!--  正常点 -->
+<!-- 	<div class="map-status">
+		<span class="close"></span>
+		<span class="map-icon"></span>
+		<h3>订单号：<span>123456789</span></h3>
+		<div class="status-cont">
+			<p class="title">粤A88888</p>
+			<p>行驶速度：120km/h</p>
+			<div class="normal">
+				<p>获取时间：<span>2016-10-08 12:30</span></p>
+				<p>位置：<span>123.3434</span></p>
+			</div>
+		</div>
+	</div>
+ -->	 
+	 <!--  起点终点位置 -->
+	<!-- <div class="location"> 
+		<span class="close"></span>
+		<span class="location-cont">浦东软件园浦东软件园浦东软件园浦东软件园浦东软件园浦东软件园</span>
+	</div> -->
+	<div class="current-location">获取当前位置</div>   <!-- 当前位置 -->
+</div>
+
+
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=6c1b0d3baab9c9a1631d88a86f8eb3d5"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/explugin/CBSMap.js?v=${sessionId}"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/business/ViewMap.js?v=${sessionId}"></script>

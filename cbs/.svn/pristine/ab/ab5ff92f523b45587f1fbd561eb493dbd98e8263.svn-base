@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <title>查看HR信息</title>
+        <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/base.css">
+        <link rel="stylesheet" type="text/css" href="/css/checkHRInfo.css">
+    </head>
+    <body>
+
+		<header id="header">
+			<div class="header-content">
+				<h2>志鸿物流核心业务系统</h2>
+			</div>
+		</header>
+		<div class="car-information">
+			<p>HR详情</p>
+		</div>
+		<div class="car-detail">
+			<div class="clearfix clear-float">
+				<div class="detail-left">
+					<div class="detail-photos">
+						<p class="car-img"></p>
+					</div>
+					<div class="detail-info">
+						<h3>人员信息</h3>
+						<p class="clearfix">
+							<label class="lab-left">工号</label>
+							<span  class="span-right column" data-column="number"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">姓名</label>
+							<span  class="span-right column" data-column="realName"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">手机号</label>
+							<span  class="span-right column" data-column="telphone"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">邮箱</label>
+							<span  class="span-right column" data-column="email"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">职级</label>
+							<span  class="span-right column" data-column="position"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">所属部门名称</label>
+							<span  class="span-right column" data-column="departName"></span>
+						</p>
+
+					</div>
+				</div>
+			</div>
+			<div class="detail-bottom">
+				<div class="btn">
+					<a href="javascript:void(0);" class="close"></a>
+					<a href="javascript:void(0);" class="current">修改</a>
+				</div>		
+			</div>
+		</div>
+    </body>
+    
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js"></script>
+    <script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js"></script>
+	<script type="text/javascript" src="/js/global.js"></script>
+	<script type="text/javascript" src="/js/CBSHrInfo.js"></script>
+	
+	<script type="text/javascript">
+		$(function(){
+			var staffId=global.QueryString.staffId;
+			var staff=new CBSHrInfo({staffId:staffId});
+			
+			$('.btn > .current').click(function(){
+				var url = '/addHRInfo.html?staffId='+ staffId;
+				location.href = url;
+				return false;
+			});
+			
+			$('.btn > .close').click(function(){
+				if(confirm('确认删除？')){
+			    	$.ajax({
+				        url: global.server + '/admin/staff/delStaff',
+				        type: "post",
+				        data: {staffId:staffId},
+				        success: function (msg) {
+				            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+				            	alert("操作成功");
+				            	window.close();
+				            	window.opener.location.reload();
+				            }
+				        }
+				    });
+				}
+				return false;
+			});
+		});
+	</script>
+	
+</html>
+
+

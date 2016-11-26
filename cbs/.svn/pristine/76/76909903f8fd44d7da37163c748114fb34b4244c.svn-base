@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title class="title_val">添加挂车信息</title>
+<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/base.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/addBase.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/addLoseCarInfoTwo.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>添加挂车信息</p>
+	</div>
+
+	<div class="car-detail">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<!-- <p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="ocImageRefId" />
+						<span class="p-add">添加车辆营运证照片</span>
+					</p> -->
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="" />
+						<span class="p-add">添加道路运输证照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3 class="add-width">道路运输证信息</h3>
+					<p>
+						<label for="">道路运输证号</label>
+						<input maxlength="20" data-column="operatingCertNo" class="column single" type="text" value="">
+					</p>
+					<p>
+						<label for="">营运证发证日期</label>
+						<input data-column="operatingCertIssueDate" type="text" value=""class="use-date column slide-down">						
+					</p>
+					<p>
+						<label for="">营运证有效期至</label>
+						<input data-column="operatingCertValidDate" type="text" value=""class="use-date column slide-down">					
+					</p>
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+				</div>
+				<div class="detail-info">
+					<h3>其他信息</h3>
+					<p class="f-select clearfix">
+						<label for="">车长（米）</label>
+						<select data-column="length" class="column mySelect">
+							<option value="12.5">12.5</option>
+							<option value="13.5">13.5</option>
+							<option value="15">15</option>
+							<option value="15.8">15.8</option>
+							<option value="16.2">16.2</option>
+							<option value="17.5">17.5</option>
+							<option value="18.5">18.5</option>
+							<option value="19">19</option>
+							<option value="20">20</option>
+							<option value="21">21</option>
+							<option value="其他">其他</option>
+						</select>
+					</p>
+					<p>
+						<label for="">备注</label>
+						<textarea maxlength="200" name="" id="" data-column="remark" rows=3 class="column remarks" ></textarea>
+					</p>
+				</div>
+			</div>
+				
+			<div class="detail-bottom">
+				<div class="btn">
+					<button class="pre">上一页</button>
+					<button class="current">提交</button>
+				</div>
+			</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.autocomplete.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+<script type="text/javascript" src="js/explugin/CBSImage.js?ver=0.4"></script>
+<!-- <script type="text/javascript" src="js/explugin/CBS-PCD-Select.js?ver=0.4"></script> -->
+<script type="text/javascript" src="js/explugin/CBSLineSelect.js?ver=0.4"></script>
+<script type="text/javascript" src="js/explugin/CBSAutocomplete2.js?ver=0.4"></script>
+<script type="text/javascript" src="js/CBSLoseCar.js?ver=0.4"></script>
+
+</html>
+<script type="text/javascript">
+	$(function(){
+		var vehicleInfoId = global.QueryString.vehicleInfoId;
+		var loseCar = new CBSLoseCar({vehicleInfoId:vehicleInfoId});
+		$('.btn .pre').click(function(){
+			window.onbeforeunload = null;
+            window.onunload = null;
+			location.href = global.getContextPath() + '/addLoseCarInfoOne.html?vehicleInfoId='+vehicleInfoId;
+			return false;
+		});
+		$('.current:last').click(function(){
+			loseCar.doSave();
+			return false;
+		});
+		
+	});
+</script>

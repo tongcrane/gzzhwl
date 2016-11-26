@@ -1,0 +1,459 @@
+var CBSPCSelect = function(p, c, append){
+	this.init = function(p, c, append){
+		var _this = this;
+		var _ptarget = p;
+		var _ctarget = c;
+		
+		this.pSelect = new CBSPCSelectRow(_ptarget, {showEmpty:true});
+		this.cSelect = new CBSPCSelectRow(_ctarget, {showEmpty:true});
+		
+		var pw = p.data('width');
+		
+		_ptarget.multiselect({
+			header : false,
+			multiple : false,
+			selectedList : 1,
+			minWidth : pw,
+			appendTo : append,
+			position:{
+				my: 'left bottom',
+			    at: 'left top'
+			},
+			noneSelectedText: '请选择',
+			click: function(event, ui){
+				_this.cSelect.refresh(ui.id);
+		    }
+		});
+		var cw = p.data('width');
+		_ctarget.multiselect({
+			header : false,
+			multiple : false,
+			selectedList : 1,
+			minWidth : pw,
+			appendTo : append,
+			position:{
+				my: 'left bottom',
+			    at: 'left top'
+			},
+			noneSelectedText: '请选择'
+		});
+		
+		_this.showDefault();
+	};
+	
+	
+	this.showDefault = function(code){
+		var _this = this;
+		_this.pSelect.refresh(1);
+	};
+	
+	this.selectValue = function(pV, cV){
+		var _this = this;
+		if(pV){
+			if(cV){
+				_this.cSelect.refreshByCode(pV, cV);
+				_this.pSelect.refreshByCode('000000',pV);
+			} else {
+				_this.pSelect.refreshByCode('000000',pV);
+			}
+		}
+	};
+	
+	this.init(p, c, append);
+}
+
+var CBSPCSelectRow = function(container, options){
+	this.container = container;
+	this.opt = $.extend({}, options);
+	
+	this.refresh = function(parentId, initId){
+		var _this = this;
+		_this.getData(parentId, _this.showData, initId);
+	};
+	
+	this.refreshByCode = function(parentCode, initCode){
+		var _this = this;
+		_this.getDataByCode(parentCode, _this.showDataByCode, initCode);
+	}
+	
+	this.showDataByCode = function(data, initCode){
+		var _this = this;
+		container.empty();
+		if(options.showEmpty){
+			container.append('<option data-id="" value="">请选择</option>');
+		}
+		$.each(data, function(i, j){
+			if(initCode){
+				if(j.regionCode == initCode){
+					container.append('<option selected data-id="'+ j.regionId +'" value="' + j.regionCode + '">' + j.regionName +'</option>');
+				} else {
+					container.append('<option data-id="'+ j.regionId +'" value="' + j.regionCode + '">' + j.regionName +'</option>');
+				}
+			}else{
+				container.append('<option data-id="'+ j.regionId +'" value="' + j.regionCode + '">' + j.regionName +'</option>');
+			}
+		});
+		container.multiselect("refresh");
+		if(initCode){
+			//console.log("init..."+initId);
+		} else {
+			//console.log("refresh");
+			container.multiselect("widget").find("label.ui-corner-all:first").each(function(){
+				this.click();
+			});
+		}
+	};
+	
+
+	this.showData = function(data, initId){
+		var _this = this;
+		container.empty();
+		if(options.showEmpty){
+			container.append('<option data-id="" value="">请选择</option>');
+		}
+		$.each(data, function(i, j){
+			if(initId){
+				if(j.regionId == initId){
+					container.append('<option selected data-id="'+ j.regionId +'" value="' + j.regionCode + '">' + j.regionName +'</option>');
+				} else {
+					container.append('<option data-id="'+ j.regionId +'" value="' + j.regionCode + '">' + j.regionName +'</option>');
+				}
+			}else{
+				container.append('<option data-id="'+ j.regionId +'" value="' + j.regionCode + '">' + j.regionName +'</option>');
+			}
+			
+		});
+		container.multiselect("refresh");
+		if(initId){
+			//console.log("init..."+initId);
+		} else {
+			//console.log("refresh");
+			container.multiselect("widget").find("label.ui-corner-all:first").each(function(){
+				this.click();
+			});
+		}
+	};
+	
+	this.getValue = function(){
+		return container.val();
+	}
+	
+	
+	this.getData = function(parentId, callback, initId){
+		var url = '/api/region/findById';
+		if(parentId){
+			$.ajax({
+		        url: global.server + url,
+		        type: "get",
+		        data: {"parentId":parentId},
+		        success: function (msg) {
+		            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+		            	var data = msg.data;
+		            	callback(data, initId);
+		            }
+		        }
+		    });
+		} else {
+			callback([], initId);
+		}
+	};
+	
+	this.getDataByCode = function(parentCode, callback, initCode){
+		var url = '/api/region/findByCode';
+		if(parentCode){
+			$.ajax({
+				url: global.server + url,
+				type: "get",
+				data: {"regionCode":parentCode},
+				success: function (msg) {
+					if (msg && msg.status && msg.status.statusCode == global.status.success) {
+						var data = msg.data;
+						callback(data, initCode);
+					}
+				}
+			});
+		} else {
+			callback([], initCode);
+		}
+	};
+	
+};
+
+
+$(function() {
+	
+	var onBodyDown = function(event){
+    	if(($(event.target).parents(".search-content").length>0)){
+    		
+    	} else {
+    		advSearch.hide();
+    	}
+    };
+    
+    var advSearch = {
+        show : function() {
+            $('.search-content').show(10, function(){
+//                $('body').one('click', function(){
+//                    advSearch.hide();
+//                });
+            	$("body").bind("mousedown", onBodyDown);
+            });
+        },
+        hide : function() {
+        	$("body").unbind("mousedown", onBodyDown);
+            $('.search-content').hide();
+//            $('body').unbind();
+        }
+    }
+    
+	$('.use-date').each(function(i, j){
+		var time = $(this).data('time');
+		if(time){
+			$(this).datetimepicker({
+        		timepicker:true,
+        		format:'Y-m-d H:i',
+        		autoclose:true,
+        		todayHighlight:true,
+        		keyboardNavigation:false
+    		});
+		} else {
+			$(this).datetimepicker({
+        		timepicker:false,
+        		format:'Y-m-d',
+        		autoclose:true,
+        		todayHighlight:true,
+        		keyboardNavigation:false
+    		});
+		}
+    });
+
+	// 点击高级搜索，搜索框显示
+	$('.advance-sea').click(function(event) {
+		advSearch.show();
+	});
+
+	$('.sea-close').click(function(event) {
+		advSearch.hide();
+	});
+	
+	var openConsign = function(consignId){
+    	var url = '/checkBusContract.html?consignId='+consignId;
+    	var body = document.getElementsByTagName("body")[0];
+    	var el = document.createElement("a");
+    	body.appendChild(el);
+    	el.href = url;
+    	el.target = '_blank';
+    	el.click();
+    	body.removeChild(el);
+    }
+	
+	var CBSOrderPCSelect = function(start, end){
+		this.init = function(start, end){
+			var _this = this;
+			var _ptarget = start;
+			var _ctarget = end;
+			
+			this.pSelect = new CBSPcsSelectRow(_ptarget, {showEmpty:true});
+			this.cSelect = new CBSPcsSelectRow(_ctarget, {showEmpty:true});
+
+			_ptarget.multiselect({
+				header : false,
+				multiple : false,
+				selectedList : 1,
+				minWidth : 110,
+				noneSelectedText: '请选择',
+				click: function(event, ui){
+					_this.cSelect.refresh(ui.id);
+			    }
+			});
+			_ctarget.multiselect({
+				header : false,
+				multiple : false,
+				selectedList : 1,
+				minWidth : 108,
+				noneSelectedText: '请选择'
+			});
+			
+			_this.showDefault();
+		};
+		
+		
+		this.showDefault = function(code){
+			var _this = this;
+			_this.pSelect.refresh(1);
+		};
+		
+		this.getValue = function(){
+			var _this = this;
+			var category = _this.opt.category;
+			return {};
+		};
+		
+		this.init(start, end);
+	}
+	
+	new CBSPCSelect($("#startCodeP"),$('#startCodeC'),'.search-content');
+	new CBSPCSelect($("#endCodeP"),$('#endCodeC'),'.search-content');
+	
+	//客户全称&客户合同下拉框
+	$('select.baseInfo-column').each(function(i, j){
+		var minWidth = $(j).data('width');
+		$(j).multiselect({
+			minWidth : minWidth,
+			header : false,
+			multiple : false,
+			selectedList : 1,
+			appendTo : '.search-content',
+			position:{
+				my: 'left top',
+			    at: 'left bottom'
+			},
+			noneSelectedText: '请选择',
+		})
+	});
+	
+	$('.agreement-select').multiselect({
+    	header : false,
+		multiple : false,
+		selectedList : 1,
+		appendTo : '.search-content',
+		position:{
+			my: 'left top',
+		    at: 'left bottom'
+		},
+		noneSelectedText: '请选择'
+    });
+	
+	$.get(global.server + '/admin/customer/queryCustList', function (msg) {
+        if (msg && msg.status && msg.status.statusCode == global.status.success) {
+            var data = msg.data;
+            var el = $('<option data-id="" value="">请选择</option>');
+            $('.customer-select').append(el);
+            $.each(data, function(i, j){
+            	var el = $('<option data-name="' + j.fullName + '" data-id="'+ j.customerId +'" value="' + j.customerId + '">' + j.fullName +'</option>');
+            	$('.customer-select').append(el);
+            });
+        } 
+    }).done(function(msg){
+    	 $('.customer-select').multiselect({
+         	header : false,
+ 			multiple : false,
+ 			selectedList : 1,
+ 			appendTo : '.search-content',
+			position:{
+				my: 'left top',
+			    at: 'left bottom'
+			},
+ 			noneSelectedText: '请选择',
+ 			click : function(event, ui) {
+ 				$('.sender-column[data-column="customerName"]').val(ui.name);
+ 				$.get(global.server + '/admin/agreement/getAgreements', {custId:ui.id}, function(msg){
+ 					if (msg && msg.status && msg.status.statusCode == global.status.success) {
+ 						var data = msg.data;
+ 						$('.agreement-select').empty();
+ 						var el = $('<option data-id="" value="">请选择</option>');
+ 		                $('.agreement-select').append(el);
+ 						$.each(data, function(i, j){
+ 							var el = $('<option data-id="'+ j.agreementId +'" value="' + j.agreementId + '">' + j.startCodeP +'</option>');
+ 		                	$('.agreement-select').append(el);
+ 		                });
+ 						$('.agreement-select').multiselect('refresh');
+ 					}
+ 				});
+ 			}
+         });
+    });
+	
+	var table = new CBSTable({
+		page : $('.handle-page'),
+		content : $('.handle-content > table > tbody'),
+		url : '/admin/consignment/pageConsignList',
+		method  : 'GET',
+		pageNumber : 0,
+		pageSize : 10,
+		rowRender : function(index, row){
+			var el = $('<tr>\
+							<td class="bus_edit">\
+								<b class="No">1</b>\
+							</td>\
+							<td  class="consignNo to-info">OR100987689</td>\
+							<td  class="customerName to-info" >粤A12332</td>\
+							<td  class="lineInfo to-info">乌鲁木齐-乌鲁木齐</td>\
+							<td class="total to-info">8000</td>\
+							<td  class="status to-info">OR230932099</td>\
+							<td  class="customerBillNo to-info">待车检</td>\
+							<td  class="createdTime to-info">2016.07.12 12:00</td>\
+						</tr>');
+			var startP=global.defaultIfBlack(row.startCodePCn,'');
+			var startC=global.defaultIfBlack(row.startCodeCCn,'');
+			var endP=global.defaultIfBlack(row.endCodePCn,'');
+			var endC=global.defaultIfBlack(row.endCodeCCn,'');
+			var start=startP+startC;
+			var end=endP+endC;
+			//var lineInfo=start?start+" - "+end:end;
+			var lineInfo=startC?startC+" - "+endC:'';
+			el.find('.No').html(index+1);
+			el.find('.consignNo').html(global.defaultIfBlack(row.consignNo,''));
+			el.find('.customerName').html(global.defaultIfBlack(row.customerName,''));
+			el.find('.lineInfo').html(global.defaultIfBlack(lineInfo,''));
+			el.find('.total').html(global.defaultIfBlack(row.total,''));
+			el.find('.status').html(global.defaultIfBlack(row.statusCn,''));
+			el.find('.customerBillNo').html(global.defaultIfBlack(row.customerBillNo));
+			el.find('.createdTime').html(global.defaultIfBlack(row.createdTime,''));
+			el.find('.to-info').click(function(){
+				openConsign(row.consignId);
+			});
+//			el.find('#action_02').click(function(){
+//				doPublic(row.sourceId);
+//			});
+//			el.find('#action_03').click(function(){
+//				new reject_win(row.sourceId);
+//			});
+			return el;
+		},
+		onBeforeLoad : function(param){
+			return param.queryType != null;
+		}
+	});
+	
+	$('#btn_search').click(function(){
+		table.load({
+			queryType:0,
+			keyWord:$('.list-search').val()
+		});
+	});
+	
+	$('#btn_adv_search').click(function(){
+		var columns=$('.column');
+		var data = {};
+		columns.each(function(i, j){
+			var _this = $(this);
+			var pName = _this.data("column");
+			var pValue = _this.val();
+			data[pName] = pValue;
+		});
+		data.queryType=1;
+		table.load(data);
+		advSearch.hide();
+	});
+	
+	var sort='01';
+	
+	$('.bus_select').click(function(){
+		if(sort=='01') {
+			sort='00';
+		} else {
+			sort='01';
+		}
+		table.load({
+			queryType:0,
+			keyWord:$('.list-search').val(),
+			sort:sort
+		});
+	});
+	
+	table.load({
+		queryType:0
+	});
+
+});

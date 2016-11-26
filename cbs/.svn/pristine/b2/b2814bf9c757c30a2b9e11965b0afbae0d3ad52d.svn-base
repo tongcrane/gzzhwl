@@ -1,0 +1,151 @@
+var CBSDriverInfo = function(options){
+	this.opt = $.extend({}, options);
+	this.columns = $('.car-column');
+	//this.bankColumns = $('.bank-column');
+	this.imageColumns = $('.car-img');
+    var _this = this;
+    
+    this.init = function (options) {
+    	$('#checkUnpass').hide();
+		$('#checkPass').hide();
+    	var _this = this;
+        if (options && options.accountId&&options.vehicleInfoId) {
+            console.log('init driver data with id: ' + options.accountId+' '+options.vehicleInfoId);
+            var url = "/admin/vehiclemanage/queryDriverandVehicleCheckDetail?accountId=" + options.accountId+'&vehicleInfoId='+options.vehicleInfoId;
+            var _this = this;
+            $.get(global.server + url, function (msg) {
+                if (msg && msg.status && msg.status.statusCode == global.status.success) {
+                    var data = msg.data;
+                    if(data.status=='01') {
+                    	$('#checkUnpass').show();
+            			$('#checkPass').show();
+                    }
+                    _this.fillContentFromJsonData(data);
+                    _this.fillDriverContentFromJsonData(data);
+                } else {
+                	alert("页面参数错误，或数据已不存在。");
+                	window.close();
+                }
+            });
+        } else {
+        	alert("页面参数错误");
+        	window.close();
+        }
+    }
+	this.init(options);
+	
+};
+
+CBSDriverInfo.prototype.fillContentFromJsonData = function (data) {
+    if (!data) return;
+    this.data = data;
+    var _this = this;
+    this.columns.each(function (i, j) {
+    	var _this = $(this);
+    	var pName = _this.data("column");
+    	var pValue = data[pName];
+    	console.log(pName)
+    	console.log(pValue)
+    	_this.text(pValue);
+    });
+    // 加载照片控件
+    if (typeof CBSImageInfo === "function") {
+    	this.imageColumns.each(function(i, j){
+    		var category = $(this).data("column");
+    		var imageId = data[category];
+        	var image = new CBSImageInfo({
+        		view: $(this),
+        		category: $(this).data("column"),
+        		imageId: imageId
+            });
+        });
+    };
+};
+
+CBSDriverInfo.prototype.fillDriverContentFromJsonData=function(data) {
+	var driverInfo=data.DriverInfo;
+	$.each(driverInfo,function(i,j){
+		var el=$('<div class="group">\
+				<div class="info_line">\
+					<div class="info_line_div">\
+						<label class="fl labe_l">姓名：</label>\
+						<span class="fr spa_n driver-column" data-column="realName"></span>\
+					</div>\
+					<div class="info_line_div">\
+						<label class="fl labe_l">手机号：</label>\
+						<span class="fr spa_n driver-column" data-column="telphone"></span>\
+					</div>\
+					<div class="info_line_div">\
+						<label class="fl labe_l">身份证号：</label>\
+						<span class="fr spa_n driver-column" data-column="idno"></span>\
+					</div>\
+				</div>\
+				<ul class="u_l clearfix">\
+					<li class="mar_left">\
+						<div class="im_ages car-img" data-column="idFImageRefId"></div>\
+						<span>身份证正面照片</span>\
+					</li>\
+					<li>\
+						<div  class="im_ages car-img" data-column="idBImageRefId"></div>\
+						<span>身份证反面照片</span>\
+					</li>\
+					<li>\
+						<div class="im_ages car-img" data-column="qualifiImageRefId"></div>\
+						<span>从业资格证照片</span>\
+					</li>\
+					<li>\
+						<div class="im_ages car-img" data-column="qualifiImage2RefId"></div>\
+						<span>从业资格证照片</span>\
+					</li>\
+					<li>\
+						<div class="im_ages car-img" data-column="drivingFImageRefId"></div>\
+						<span>驾驶证照片</span>\
+					</li>\
+				</ul>\
+				<hr class="sp-line"/>\
+			</div>')
+		$('.driver-info').append(el);
+		if(i==(driverInfo.length-1)) {
+			el.find('.sp-line').remove();
+		}
+		var columns=el.find('.driver-column');
+		var imageColumns=el.find('.car-img');
+		columns.each(function (k, l) {
+	    	var _this = $(this);
+	    	var pName = _this.data("column");
+	    	var pValue = j[pName];
+	    	console.log(pValue);
+	    	_this.text(pValue);
+	    });
+		if (typeof CBSImageInfo === "function") {
+	    	imageColumns.each(function(k, l){
+	    		var category = $(this).data("column");
+	    		var imageId = j[category];
+	        	var image = new CBSImageInfo({
+	        		view: $(this),
+	        		category: $(this).data("column"),
+	        		imageId: imageId
+	            });
+	        });
+	    };
+	});
+}
+
+CBSDriverInfo.prototype.check=function(data) {
+	$.ajax({
+        type: "get",
+        url: global.server + '/admin/vehiclemanage/driverAndVehicleCheck',
+        data: data,
+        async: true,
+        success: function(msg) {
+        	if (msg && msg.status && msg.status.statusCode == global.status.success) {
+        		alert('操作成功！');
+        		//window.location.reload();
+        		window.close();
+        		window.opener.location.reload();
+        	} else if(msg.status.statusCode != global.status.success){
+            	return false;
+            }
+        }
+    });
+}

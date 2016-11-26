@@ -1,0 +1,94 @@
+/*
+* @Author: Administrator
+* @Date:   2016-06-06 17:36:40
+* @Last Modified by:   Administrator
+* @Last Modified time: 2016-06-12 11:22:59
+*/
+$(function(){
+	$("#reg .reg_hint").hide();
+	window.countdown=180;
+	window.settime =function(val) {
+		if (countdown == 0) {
+			val.removeAttribute("disabled");
+			val.innerHTML ="";
+			val.style.backgroundImage = 'url("/static/images/getCode.jpg")';
+			countdown = 60;
+			return false;
+		} else {
+			val.setAttribute("disabled", true);
+			val.innerHTML = countdown + " 秒";
+			countdown--;
+		}
+		setTimeout(function() {
+			settime(val)
+		},1000)
+	}
+	$("#getMobileCode").click(function(){
+		var phone = $("#reg_phone").val();
+		$.ajax({
+			type: "",
+			url: "",
+			dataType:"",
+			data: { username: phone },
+			success: function (data) {
+				if(data.error==1){
+					$("#msg").html(data.message);
+                    $(".reg_hint").css("display","block");
+				}
+				if(!(data.error != 0)){
+					var btn = $("#getMobileCode");
+					btn.attr("disabled", "true");
+					btn.css({"background-image": "none"});
+					btn.css({"background-color": "#f2f2f2"});
+					settime(btn[0]);
+				}
+
+			}
+		})
+	})
+	$("#reg").on('click', '#nextStep', function(event) {
+		var mobile = $("#reg_phone");
+		var pass = $("#reg_pass");
+		var mobilecode = $("#code");
+		var greement = $("#agree");
+		var confirm = $("#re_pass");
+		var msg = "";
+		if ($.trim(mobile.val()) == ""){
+			msg = "手机号不能为空！";
+			mobile.focus();
+		}else if (!/^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test($.trim(mobile.val()))){
+			msg = "手机号格式不正确！";
+			mobile.focus();
+		}else if ($.trim(mobilecode.val()) == "") {
+			msg="短信验证码不能为空！"
+		}else if ($.trim(pass.val()) == ""){
+			msg = "密码不能为空！";
+			pass.focus();
+		}else if (!/^\w{6,20}$/.test($.trim(pass.val()))){
+			msg = "密码格式不正确！";
+			pass.focus();
+		}else if(pass.val()!=confirm.val()){
+			msg = "两次输入密码不同"
+			pass.focus();
+		}
+		if (msg != ""){
+			$("#reg .reg_hint").show().html(msg);
+			return false;
+		}
+		$.ajax({
+			type:"",
+			url: "",
+			dataType:"",
+			data: { username: mobile.val(),password:pass.val(),code:mobilecode.val(),agreement:greement[0].checked ? 1 :0},
+			success: function (data) {
+				if(data.error==0){
+					window.location.href="";
+				}else{
+					$("#msg").html(data.message);
+                    $(".reg_hint").css("display","block");
+				}
+			}
+		})
+	});
+})
+

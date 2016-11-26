@@ -1,0 +1,26 @@
+
+#header{position: absolute;top:0;left:0;z-index: 99;}
+#container{width:1200px;height:100%;margin:0 auto;padding-top:60px;position: relative;background: #eee; box-sizing: border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;}
+#map{height:100%;}
+
+
+
+.map_search{height:45px;/* width:410px; */position: absolute;left:20px;top:92px;border-radius:4px;z-index: 50;}
+.search_box,.search_btn,.get_current{float:left;height:45px;}
+.search_btn{width:64px;border-top-right-radius: 4px;border-bottom-right-radius: 4px;background:#e65e20 url(../img/search-icon-big.png) no-repeat center;}
+.get_current{margin-left:16px;padding:0 15px;font-size:16px;line-height:45px;border-radius: 4px;background:#e65e20;color:#fff;}
+.search_box .selec_t{width:96px;height:45px;margin-top:0;vertical-align: top;color:#333;font-size:16px;border:none;padding-left:10px;}
+.search_box .inpu_t{font-size:16px;color:#333;height:45px;line-height: 45px;width:220px;vertical-align: top;padding-left:15px;margin-left:-5px;}
+.map_search:before{content: '';display: block;height:35px;border-left: 1px solid #e0e0e0;position:absolute;top:5px;left:108px;}
+
+/* 提示信息 */
+.map_tips{}
+.tip_con>span,.tip_con>p{display: inline-block;font-size:15px;}
+.tip_con>span{width:100px;height:26px;line-height: 26px;text-align:left;}
+.tip_con>p{padding-right:10px;}
+
+/* 下拉框样式 */
+.ui-multiselect{padding:12px 0 12px 10px !important;}
+.selectDark.ui-multiselect.ui-widget {background:#fff;}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{border:none !important;outline: none;}
+button.selectDark span,.ui-multiselect-option>span{font-size:16px;}

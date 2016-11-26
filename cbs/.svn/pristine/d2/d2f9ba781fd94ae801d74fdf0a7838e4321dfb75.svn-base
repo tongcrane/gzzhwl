@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <title>查看客户信息</title>
+        <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/base.css">
+        <link rel="stylesheet" type="text/css" href="/css/checkCustomInfo.css">
+    </head>
+    <body>
+
+		<header id="header">
+			<div class="header-content">
+				<h2>志鸿物流核心业务系统</h2>
+			</div>
+		</header>
+		<div class="car-information">
+			<p>客户信息详情</p>
+		</div>
+		<div class="car-detail">
+			<div class="clearfix clear-float">
+				<div class="detail-left">
+					<div class="detail-photos">
+						<p><img src="img/custom1.png"></p>
+					</div>
+					<div class="detail-info">
+						<h3>客户信息</h3>
+						<p class="clearfix">
+							<label class="lab-left">客户编码</label>
+							<span  class="span-right column" data-column="customerNo"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">客户类型</label>
+							<span  class="span-right " id="customType"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">客户全称</label>
+							<span  class="span-right column" data-column="fullName"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">税务登记号</label>
+							<span  class="span-right column" data-column="taxRegCode"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">是否合同客户</label>
+							<span  class="span-right " id="isAgree"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">合同编码</label>
+							<span  class="span-right column" data-column="agreementNo"></span>
+						</p>
+						<h3 class="mar_top">业务联系</h3>
+						<p class="clearfix">
+							<label class="lab-left">联系人</label>
+							<span  class="span-right column" data-column="contactName"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">电话</label>
+							<span  class="span-right column" data-column="telphone"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">手机</label>
+							<span  class="span-right column" data-column="mobile"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">邮箱</label>
+							<span  class="span-right column" data-column="email"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">联系地址</label>
+							<span class="span-right pcd-column"></span>
+							<span  class="span-right column" data-column="address"></span>
+						</p>
+						<p class="clearfix">
+							<label class="lab-left">备注</label>
+							<span  class="span-right column" data-column="remark"></span>
+						</p>
+					</div>
+				</div>
+				<div class="detail-right">
+					<div class="detail-photos">
+						<p><img src="img/custom2.png"></p>
+					</div>
+					<div class="detail-info">
+						<h3>财务信息</h3>
+						<p class="clearfix">
+							<label for="">银行名称</label>
+							<span  class="span-right column" data-column="bankName"></span>
+						</p>
+						<p class="clearfix">
+							<label for="">开户银行</label>
+							<span  class="span-right column" data-column="depositBank"></span>
+						</p>
+						<p class="clearfix">
+							<label for="">开户名</label>
+							<span  class="span-right column" data-column="cardName"></span>
+						</p>
+						<p class="clearfix">
+							<label for="">银行账号</label>
+							<span  class="span-right column" data-column="cardNo"></span>
+						</p>
+						<p class="clearfix">
+							<label for="">发票抬头</label>
+							<span  class="span-right column" data-column="invoiceTitle"></span>
+						</p>
+					</div>
+			</div>
+			<div class="detail-bottom">
+				<div class="btn">
+					<a href="javascript:void(0);" class="close"></a>
+					<a href="javascript:void(0);" class="current">修改</a>
+				</div>		
+			</div>
+		</div>
+    </body>
+    
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js"></script>
+    <script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js"></script>
+	<script type="text/javascript" src="/js/global.js"></script>
+	<script type="text/javascript" src="/js/CBSCustomInfo.js"></script>
+	
+	<script type="text/javascript">
+	$(function(){
+		var custId=global.QueryString.custId;
+		var custom=new CBSCustomInfo({custId:custId});
+		
+		$('.btn > .current').click(function(){
+			var url = '/addCustomInfo.html?custId='+ custId;
+			location.href = url;
+			return false;
+		});
+		
+		$('.btn > .close').click(function(){
+			if(confirm('确认删除？')){
+		    	$.ajax({
+			        url: global.server + '/admin/customer/removeCustomer',
+			        type: "post",
+			        data: {custId:custId},
+			        success: function (msg) {
+			            if (msg && msg.status && msg.status.statusCode == global.status.success) {
+			            	alert("操作成功");
+			            	window.close();
+			            	window.opener.location.reload();
+			            }
+			        }
+			    });
+			}
+			return false;
+		});
+	});	
+	</script>
+	
+</html>
+
+

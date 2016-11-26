@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8"/>
+	<title>调配记录</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/infoListBase.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/businessBorrowCar.css?ver=0.4">
+	<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+	</header>
+	<div id="list-info">
+		<div class="list-info-title">
+			<h2 class="fl">我的业务</h2>
+			<input id="query_content" type="text" class="list-search fl" placeholder="搜索&nbsp;&nbsp;调配记录号/车牌号/借车部门" />
+			<span class="advance-sea">高级搜索</span>
+			<button id="btn_search"  class="title_search">搜索</button>
+			<div class="search-content">
+				<b class="sea-close"></b>
+				<div class="search-content-div">
+					<label for="">借用状态</label>
+					<select data-width="500"  data-column="status" class="select column">
+						<option value="">请选择</option>
+						<option value="01">借用中</option>
+						<option value="02">已归还</option>
+					</select>
+				</div>
+				<div class="search-content-div">
+					<label for="">借车开始时间</label>
+					<div class="two-col clearfix">
+						<input type="text" class="column use-date" data-column="startLendStartTime"/>
+						<input type="text" class="column use-date" data-column="endLendStartTime"/>
+						<i></i>
+					</div>
+				</div>
+				<div class="search-content-div">
+					<label for="">计划还车时间</label>
+					<div class="two-col clearfix">
+						<input type="text" class="column use-date" data-column="startLendEndTime"/>
+						<input type="text" class="column use-date" data-column="endLendEndTime"/>
+						<i></i>
+					</div>
+				</div>
+				<div class="search-content-div">
+					<label for="">实际还车时间</label>
+					<div class="two-col clearfix">
+						<input type="text" class="column use-date" data-column="startRealReturnedTime"/>
+						<input type="text" class="column use-date" data-column="endRealReturnedTime"/>
+						<i></i>
+					</div>
+				</div>
+				<div class="sea-btn sea-btn-m25 clearfix">
+					<input id="btn_adv_search" type="button"/>
+					<span>根据此条件搜索》</span>
+				</div>
+			</div>
+		</div>
+		<div class=" list-info-content clearfix">
+			<div class="list-Info-left">
+			</div>
+			
+			<div class="list-Info-right">
+				<div class="handle clearfix">
+					<div class="handle-data">
+						<a href="addBorrowCar.html" target="_blank" class="handle-add" ></a>
+						<!--<button class="handle-delete"></button>-->
+						<!-- <button class="handle-export">收回车辆</button> -->
+					</div>
+					<div class="handle-page"></div>					
+				</div>
+				<div class="handle-content">
+					<table>
+						<thead>
+							<tr>
+								<th width="70" ><input type="checkbox" class="all_check">序号</th>
+								<th width="130">调配记录号</th>
+								<th width="135">申请部门</th>
+								<th width="80" >车牌号</th>
+								<th width="175">使用线路</th>
+								<th width="90" class="f_single bus_sel_single">
+									车辆状态
+									<ul class="statu_s use_status" >
+										<li value="01">借用中</li>
+										<li value="02">已归还</li>
+									</ul>
+								</th>
+								<th width="110" class="bus_select start_time_sort">开始日期</th>
+								<th width="110"  class="bus_select real_returned_time_sort">还车日期</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="con-foot">
+			 <span> 条款 - 隐私权</span>
+			 <strong>上次账户活动时间<i>1</i>小时前</strong>
+		</div>
+	</div>
+	<div class="mo_del">
+		<div class="model_content">
+			<p>确认删除配载单"<b>OR108968789</b>"？</p>
+			<a href="javascript:void(0);" class="mo_con_yes">确认</a>
+			<a href="javascript:void(0);" class="mo_con_no">取消</a>
+			<i class="clo_se"></i>
+		</div>
+	</div> 
+	
+</body>
+
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/menu/menu.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSTable.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/CBSBorrowCarList.js?ver=0.4"></script>
+
+</html>

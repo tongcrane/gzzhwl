@@ -1,0 +1,13 @@
+
+.change-photo{position:absolute;top:-152px;right:68px;z-index:99;display:none;}
+.c-h-content{padding:0 12px;width:364px;height:150px;box-sizing:border-box;background-color:#fff;box-shadow:0 0 8px #333;}
+.c-h-content h4{line-height:30px;font-size:14px;color:#282828;}
+.c-h-content p{width:100%;font-size:14px;color:#666;border-bottom:1px solid #828282;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:18px;cursor:pointer;}
+.c-h-content p b{color:#4286f5;}
+.change-photo span{position:absolute;top:149px;left:178px;display:block;height:0;width:0;border:10px solid transparent;border-top-color:#fff;}
+#show-pic{width:100%;height:100%;background:rgba(0,0,0,0.6);position:fixed;top:0;left:0;z-index:9999;display:none;}
+#show-pic .content{width:700px;height:700px;background:#fff;border-radius:10px;position:absolute;top:50%;left:50%;margin-top:-350px;margin-left:-350px;}
+#show-pic .content-img{width:100%;height:100%;background-position:center;background-repeat:no-repeat;}
+#show-pic .content span{width:18px;height:18px;background:url(../img/show_pic_bg.png) no-repeat;position:absolute;top:10px;right:10px;cursor:pointer;}
+.detail-info p label{width:130px;}
+.detail-info p .span-right{width:170px;}

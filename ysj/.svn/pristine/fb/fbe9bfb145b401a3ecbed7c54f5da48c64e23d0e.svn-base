@@ -1,0 +1,48 @@
+/*
+* @Author: Administrator
+* @Date:   2016-08-29 08:59:09
+* @Last Modified by:   Administrator
+* @Last Modified time: 2016-09-25 09:38:08
+*/
+.banner_w{position:relative;height:450px;}
+.banner_bg{width:1920px;height:450px;position:absolute;left:50%;margin-left:-960px;text-align:center;background:url(../img/about_bg.png) no-repeat center;}
+
+.about_w{background-color:#fff;}
+.about{width:1192px;margin:0 auto;text-align:center;}
+.about_w .about .tit{font-size:24px;color:#333;position:relative;display:inline-block;margin-top:122px;}
+.about_w .about .tit:before{content:"";display:block;width:150px;height:1px;background-color:#dfdee3;position:absolute;top:18px;left:-200px;}
+.about_w .about .tit:after{content:"";display:block;width:150px;height:1px;background-color:#dfdee3;position:absolute;top:18px;left:150px;}
+.about_w .about .text{width:816px;margin: 0 auto;text-align: left;line-height: 34px;color:#5e5e76;}
+.about_w .about .pic{height:450px;background:url(../img/about_pic.png) no-repeat center;}
+/* 
+.banner_bg{width:1920px;height:450px;position:absolute;left:50%;margin-left:-960px;text-align:center;background:url(../img/banner_bg.png) no-repeat center;}
+.about_l{float: left;width:613px;height:503px;background:url(../img/about_l_bg.png) no-repeat center;}
+.about_r{float: left;width:637px;margin:15px 0 0 60px;}
+.about_r .tit{font-size:22px;color:#202028;padding-left:16px;background:url(../img/about_tit_bg.png) no-repeat left center;margin-bottom:50px;}
+.about_r p{font-size:16px;color:#5e5e76;padding-left:42px;background:url(../img/icon_1.png) no-repeat 15px 12px;line-height:36px;margin-bottom:36px;text-align:justify;letter-spacing:1px;}
+.about_r p:nth-child(3){background-image:url(../img/icon_2.png);background-position: 15px 13px;}
+.about_r p:nth-child(4){background-image:url(../img/icon_3.png);background-position: 15px 13px;} */
+
+.corporate_culture{height:660px;background-color:#f4f5f8;}
+.corporate_culture .culture{width:1192px;margin:0 auto;text-align:center;}
+.corporate_culture .culture .tit{font-size:24px;color:#333;position:relative;display:inline-block;margin-top:122px;}
+.corporate_culture .culture .tit:before{content:"";display:block;width:150px;height:1px;background-color:#dfdee3;position:absolute;top:18px;left:-200px;}
+.corporate_culture .culture .tit:after{content:"";display:block;width:150px;height:1px;background-color:#dfdee3;position:absolute;top:18px;left:150px;}
+.corporate_culture .culture ul{margin-top:120px;}
+.corporate_culture .culture ul li{float:left;padding-top:140px;background:url(../img/culture_bg_1.png) no-repeat top center;margin-right:60px;width: 250px;}
+.corporate_culture .culture ul li:nth-child(2){background-image:url(../img/culture_bg_2.png);}
+.corporate_culture .culture ul li:nth-child(3){background-image:url(../img/culture_bg_3.png);}
+.corporate_culture .culture ul li:nth-child(4){background-image:url(../img/culture_bg_4.png);margin-right:0px;}
+.corporate_culture .culture ul li span{display:block;text-align:center;font-size:28px;color:#333;}
+.corporate_culture .culture ul li span:nth-child(2){font-size:14px;color:#666;margin-top:18px;line-height:20px;}
+
+
+.history_w{background-color:#fff;}
+.history{width:1192px;margin:0 auto;text-align:center;}
+.history_w .history .tit{font-size:36px;color:#999999;position:relative;display:inline-block;margin-top:122px;margin-bottom: 60px;}
+.history_w .history .pic{width:1192px;margin: 0 auto;}
+.history_w .history .pic1{height:500px;background:url(../img/history_1.png) no-repeat center;}
+.history_w .history .pic2{height:536px;background:url(../img/history_2.png) no-repeat center;}
+.history_w .history .pic3{height:668px;background:url(../img/history_3.png) no-repeat center;}
+.history_w .history .pic4{height:786px;background:url(../img/history_4.png) no-repeat center;}
+.history_w .history .padding{height:220px;}

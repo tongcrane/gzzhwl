@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>供应商信息</title>
+<link rel="stylesheet" type="text/css" href="css/common.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/infoListBase.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/supplierInfoList.css?ver=0.4">
+<link rel="stylesheet" type="text/css" href="css/datepicker.min.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-extends.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css?ver=0.4"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.filter.css?ver=0.4"/>
+</head>
+<body>
+	<header id="header">
+	</header>
+	<div id="list-info">
+		<div class="list-info-title">
+			<h2 class="fl">我的业务</h2>
+			<input id="query_content" type="text" class="list-search fl" placeholder="搜索&nbsp;&nbsp;供应商名称/手机号" />
+			<span class="advance-sea">高级搜索</span>
+			<button id="btn_search"  class="title_search">搜索</button>
+			<div class="search-content">
+				<b class="sea-close"></b>
+				<div class="search-content-div">
+					<label for="">供应商类型</label>
+					<select data-width="506"  data-column="type" class="baseInfo-column customer-select column">
+						<option value="">请选择</option>
+						<option value="01">个人</option>
+						<option value="02">公司</option>
+					</select>
+				</div>
+				<div class="search-content-div">
+					<label for="">结算方式</label>
+					<select data-width="506"  data-column="paymentType" class="baseInfo-column customer-select column">
+						<option value="">请选择</option>
+						<option value="月结">月结</option>
+						<option value="回单">回单</option>
+						<option value="现付">现付</option>
+						<option value="到付">到付</option>
+					</select>
+				</div>
+				<!-- <div class="search-content-div">
+					<label for="">状态</label>
+					<select data-width="506"  data-column="status" class="baseInfo-column customer-select column">
+						<option value="">请选择</option>
+						<option value="00">有效</option>
+						<option value="01">无效</option>
+					</select>
+				</div> -->
+				<div class="search-content-div pad_top clearfix">
+					<label for="" class="togglet_label">身份证号/税务登记号</label>
+					<input type="text" class="column" data-column="taxRegCode"/>
+				</div>
+				<div class="sea-btn clearfix">
+					<input id="btn_adv_search" type="button"/>
+					<span>根据此条件搜索》</span>
+				</div>
+			</div>
+		</div>
+		<div class=" list-info-content clearfix">
+			<div class="list-Info-left">
+			</div>
+			
+			<div class="list-Info-right">
+				<div class="handle clearfix">
+					<div class="handle-data">
+						<a href="addSupplier.html" target="_blank" class="handle-add" ></a>
+						<button class="handle-delete"></button>
+						<!-- <button class="handle-export">车辆归还</button> -->
+					</div>
+					<div class="handle-page"></div>					
+				</div>
+				<div class="handle-content">
+					<table>
+						<!-- <thead>
+							<tr>
+								<th width="70" ><input type="checkbox" class="all_check">序号</th>
+								<th width="145">供应商姓名</th>
+								<th width="100">手机号</th>
+								<th width="70" >供应商类型</th>
+								<th width="70">结算类型</th>
+								<th width="145" >开户名</th>
+								<th width="125">开户行</th>
+								<th width="175">银行账号</th>
+							</tr>
+						</thead> -->
+						<tbody>                                                      
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="con-foot">
+			 <span> 条款 - 隐私权</span>
+			 <strong>上次账户活动时间<i>1</i>小时前</strong>
+		</div>
+	</div>
+	
+</body>
+
+	<script type="text/javascript" src="js/plugin/jquery-2.1.1.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery-ui.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/datepicker.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.multiselect.filter.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/moment.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/store.min.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.cookie.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/plugin/jquery.md5.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global_config.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/global.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/menu/menu.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSTable.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/explugin/CBSConfirm.js?ver=0.4"></script>
+	<script type="text/javascript" src="js/supplyInfoList.js?ver=0.4"></script>
+	<script type="text/javascript">
+		$('select[data-column="type"]').on('change',function(){
+			var select=$(this).val();
+			if(select=='01') {
+				$('.togglet_label').html('身份证号');
+			} else if(select=='02') {
+				$('.togglet_label').html('税务登记号');
+			} else {
+				$('.togglet_label').html('身份证号/税务登记号');
+			}
+		});
+	</script>
+</html>

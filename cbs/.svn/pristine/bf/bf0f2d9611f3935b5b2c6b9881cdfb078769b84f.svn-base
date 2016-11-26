@@ -1,0 +1,81 @@
+$(function(){
+    $('.search-content').bind('click', function(e){
+        return false;
+    });
+    var advSearch = {
+        show : function() {
+            $('.search-content').show(10, function(){
+                $('body').one('click', function(){
+                    advSearch.hide();
+                });
+            });
+        },
+        hide : function() {
+            $('.search-content').hide();
+            $('body').unbind();
+        }
+    }
+    var table = new CBSTable({
+        page : $('.handle-page'),
+        content : $('.handle-content > table > tbody'),
+        url : '/admin/consignment/pageConsignList',
+        method  : 'GET',
+        pageNumber : 0,
+        pageSize : 10,
+        rowRender : function(index, row){
+            var el = $('<tr> \
+           <td class="bus_edit">\
+            <input type="checkbox" />\
+            <span class="edit"></span>\
+            <b class="index"></b>\
+            </td> \
+            <td class="orderNo to-info"></td> \
+            <td class="customerName to-info"></td> \
+            <td class="lineAttribute to-info"></td> \
+            <td class="total to-info"></td> \
+            <td class="statusCn to-info"></td> \
+            <td class="consignNo to-info"></td> \
+            <td class="createdTime to-info"></td> \
+            </tr>');
+            var $index=index+1;
+            el.find(".orderNo").html(row.orderNo);
+            el.find(".index").html($index);
+            el.find(".customerName").html(row.customerName);
+            el.find(".statusCn").html(row.statusCn);
+            el.find(".createdTime").html(row.createdTime);
+            el.find(".lineAttribute").html(row.startCodePCn+"-"+row.endCodePCn);
+            el.find(".total").html(row.total);
+            el.find(".consignNo").html(row.consignNo);
+            el.find(".edit").click(function(){
+
+            });
+            el.find(".to-info").click(function(){
+                openCustom(row.orderId);
+            });
+            return el;
+        },
+        onBeforeLoad : function(param){
+            return param.queryType != null;;
+        }
+    });
+    var openCustom = function(orderId){
+        var url = '/checkBusinessSource.html?orderId='+orderId;
+        var body = document.getElementsByTagName("body")[0];
+        var el = document.createElement("a");
+        body.appendChild(el);
+        el.href = url;
+        el.target = '_blank';
+        el.click();
+        body.removeChild(el);
+    }
+    $('#btn_search').click(function(){
+        table.load({
+            queryType:0,
+            keyWord:$('.list-search').val()
+        });
+    });
+    table.load({
+        queryType:0
+    });
+
+});

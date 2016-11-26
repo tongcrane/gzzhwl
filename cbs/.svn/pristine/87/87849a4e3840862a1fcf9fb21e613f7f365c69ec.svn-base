@@ -1,0 +1,57 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-18 15:04:12
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-09-21 10:26:40
+*/
+/* 公用部分 */
+.car-information>p{width:1140px;height:46px;margin:0 auto;font-size:18px;line-height:46px;padding-left:60px;color:#525252;font-weight:bold;background:url(../img/car_info_bg.jpg) no-repeat 24px 12px;}
+.big_wrap{width:1124px;padding:0 25px;height:48px;background:#f6f6f6;border:1px solid #dcdcdc;border-radius:2px;margin:10px auto 40px;font-size:14px;}
+.info_line_div{float:left;margin:14px 0 0 0;}
+.info_line_div .spa_n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* 按钮部分 */
+.detail-bottom{width:1176px;margin:60px auto 4px;height:50px;background:#f6f6f6;}
+.detail-bottom a{display:block;float:right;width:85px;height:30px;line-height:30px;border-radius:2px;border:1px solid #dcdcdc;margin:10px 15px 0 0;outline:none;text-align:center;color:#4c4c4c;}
+.detail-bottom .current{background-color:#de642c;color:#fff;border:1px solid #bc5120;font-size:14px;font-weight:bold;}
+
+
+/* 账号信息 */
+.account .info_line_div:nth-of-type(1)>span{width:200px;}
+.account .info_line_div:nth-of-type(2)>span{width:700px;padding-right:54px;text-align:center;}
+.account .info_line_div:nth-of-type(3)>span{width:170px;}
+
+/* 常跑线路 */
+.always .info_line_div{width:226px;}
+.always .info_line_div>span.from{position:relative;}
+.always .info_line_div>span.from::before{content:' ';display:block;width:26px;border-top:1px solid #000;position:absolute;top:10px;right:-30px;}
+.always .info_line_div .spa_n.to{margin-left:30px;}
+.always .info_line_div:nth-last-of-type(1){width:220px;}
+
+/* 表格*/ 
+.info-content table{border-collapse:collapse;width:100%;font-size:14px;color:#414141;}
+ td{padding:12px 0;}
+
+/* 车辆司机信息 */
+.info-content{width:1174px;margin:10px auto 110px;border:1px solid #dcdcdc;}
+.info-content>table>tbody>tr:nth-child(2n+1){background: #F6F6F6;}
+.info-content>table>tbody>tr>td:nth-child(1){width:160px;padding-left:25px;}
+.info-content>table>tbody>tr>td:nth-child(2){padding:0 45px;}
+.info-content>table>tbody>tr>td:nth-child(3){width:170px;}
+.f-width{width:30px;}
+.car-num{width:160px;}
+.car-list{width:720px;}
+.car-num,.car-list,.owe-to>p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* 审核人部分 */
+.to-info{cursor:pointer;}
+.owe-to{position:relative;}
+.owe-to>p{width:147px;height:100%;padding-left:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.owe-to .owe-span{width:20px;height:20px;position:absolute;top:0px;left:0px;z-index:10;cursor:pointer;background:url(../img/star.png) no-repeat center;}
+.owe-span.h_star{width:20px;height:20px;position:absolute;top:11px;left:3px;cursor:pointer;background:url(../img/h_star.png) no-repeat center;}
+.owe-to .deadline{height:auto;background:#fff;box-shadow:0 1px 4px #ccc;position:absolute;top:18px;left:-70px;z-index:11;display: none;}
+.owe-span:hover .deadline{display:block;}
+.deadline li{padding:4px 10px;height:48px;border-bottom:1px solid #dedede;}
+.deadline li>p{height:30px;line-height:30px;white-space:nowrap;text-align:center;}
+.deadline li>b{display:block;font-weight:normal;margin-top:-3px;white-space:nowrap;text-align:center;}
+.h-star{width:115px;height:100%;padding-left:45px;background:url(../img/h_star.png) no-repeat 23px center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}

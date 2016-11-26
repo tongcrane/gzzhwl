@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>设置新密码</title>
+        <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/login.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/find_pass.css"/>
+    </head>
+    <body>
+    	<div class="header log_head">
+			<h1 class="logo">
+				<a href="#">
+					<img src="/img/logo.png"/>
+				</a>
+			</h1>
+		</div>
+    	<div class="wrap">
+    		<div class="con_w">
+    			<div class="log_tit">
+	    			<h2>志鸿物流核心业务系统</h2>
+	    			<p>设置新密码</p>
+	    		</div>
+	    		<div class="log_con">
+	    			<div class="touxiang fi_lock">
+	    				<img src="/img/suo.png" height="66" width="66">
+	    			</div>
+	    			<div class="log_inps find_inps new_pass">
+	    				<form  method="" action="" onsubmit="return false">
+							<p>
+								<label for="pass">密码</label>
+								<input type="password" name="pass" class="pass" id="reg_pass" placeholder="设置6-10位登录密码" />
+								<span class="reg_hint"></span>
+							</p>
+							<p>
+								<label for="pass">再次输入密码</label>
+								<input type="password" name="pass" class="pass" id="re_pass" placeholder="请再输入一次密码" />
+								<span class="reg_hint"></span>
+							</p>
+							<p>
+								<input type="submit" name="submit" id="LoginBtn" value="确认修改" class="LoginBtn" />
+							</p>
+						</form>
+	    			</div>
+	    		</div>
+    		</div>
+    	</div>
+    	<div class="footer"></div>
+    </body>
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js"></script>
+    <script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js"></script>
+	<script type="text/javascript" src="/js/global.js"></script>
+   <script type="text/javascript" src="/js/newPass.js"></script>
+    
+</html>

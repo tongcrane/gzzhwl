@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>借车记录查询</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/infoListBase.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/businessCheckBorCar.css">
+<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+</head>
+<body>
+	<header id="header">
+	</header>
+	<div id="list-info">
+		<div class="list-info-title">
+			<h2 class="fl">我的业务</h2>
+			<input id="query_content" type="text" class="list-search fl" placeholder="搜索&nbsp;&nbsp;借车记录号 / 车牌号 / 借车部门" />
+			<span class="advance-sea">高级搜索</span>
+			<button id="btn_search"  class="title_search">搜索</button>
+			<div class="search-content">
+				<b class="sea-close"></b>
+				<div class="search-content-div">
+					<label for="">借车状态</label>
+					<select data-width="500"  data-column="customerId" class="baseInfo-column customer-select column"></select>
+				</div>
+				<div class="search-content-div">
+					<label for="">借车时间</label>
+					<div class="two-col clearfix">
+						<input type="text" class="column use-date" data-column="createdTimeS"/>
+						<input type="text" class="column use-date" data-column="createdTimeE"/>
+						<i></i>
+					</div>
+				</div>
+				<div class="search-content-div">
+					<label for="">计划还车时间</label>
+					<div class="two-col clearfix">
+						<input type="text" class="column use-date" data-column="createdTimeS"/>
+						<input type="text" class="column use-date" data-column="createdTimeE"/>
+						<i></i>
+					</div>
+				</div>
+				<div class="search-content-div">
+					<label for="">实际还车时间</label>
+					<div class="two-col clearfix">
+						<input type="text" class="column use-date" data-column="createdTimeS"/>
+						<input type="text" class="column use-date" data-column="createdTimeE"/>
+						<i></i>
+					</div>
+				</div>
+				<div class="sea-btn clearfix">
+					<input id="btn_adv_search" type="button"/>
+					<span>根据此条件搜索》</span>
+				</div>
+			</div>
+		</div>
+		<div class=" list-info-content clearfix">
+			<div class="list-Info-left">
+			</div>
+			
+			<div class="list-Info-right">
+				<div class="handle clearfix">
+					<div class="handle-data">
+						<!-- <a href="/addBusSourceOrder.html" target="_blank" class="handle-add" ></a>
+						<button class="handle-delete"></button>
+						<button class="handle-export">打印配载单</button> -->
+					</div>
+					<div class="handle-page"></div>					
+				</div>
+				<div class="handle-content">
+					<table>
+						<thead>
+							<tr>
+								<th width="50" >序号</th>
+								<th width="125">借车记录号</th>
+								<th width="130">申请部门</th>
+								<th width="70" >车牌号</th>
+								<th width="190">使用线路</th>
+								<th width="85" class="f_single bus_sel_single">
+									借用状态
+									<!-- <ul class="statu_s order_status" >
+										<li value=""></li>
+										<li value=""></li>
+										<li value=""></li>
+										<li value=""></li>
+										<li value=""></li>
+										<li value=""></li>
+										<li value=""></li>
+									</ul> -->
+								</th>
+								<th width="125" class="bus_select">借用日期</th>
+								<th width="125"  class="bus_select sortBtn">还车日期</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<b class="index">1</b>
+								</td>
+								<td class="to-info">OR2EF0C621912</td>
+								<td class="to-info">华南快运事业一部</td>
+								<td class="to-info">粤A12345</td>
+								<td class="to-info">安徽省合肥市-安徽省芜湖市</td>
+								<td class="to-info">借用中</td>
+								<td class="to-info">2016-08-01 15:36</td>
+								<td class="to-info">2016-08-01 15:36</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="con-foot">
+			 <span> 条款 - 隐私权</span>
+			 <strong>上次账户活动时间<i>1</i>小时前</strong>
+		</div>
+	</div>
+	
+</body>
+
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/moment.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/menu/menu.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSTable.js?ver=0.3"></script>
+	<script type="text/javascript" src="/js/CBSConfirm.js?ver=0.3"></script>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>修改权限信息</title>
+	<link rel="stylesheet" type="text/css" href="/css/common.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/base.css">
+	<link rel="stylesheet" type="text/css" href="/css/addBase.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/addPermissionInfo.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/zTreeStyle.css"/>
+	<style type="text/css">
+		div.menu_tree_content {position: absolute;}
+		ul.ztree {border: 1px solid #dedede;background: #fff;width:344px;height:260px;overflow-y:auto;overflow-x:auto;}
+	</style>
+</head>
+<body>
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+	<div class="car-information">
+		<p>修改权限信息</p>
+	</div>
+	<div class="car-detail">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<p></p>
+				</div>
+				<div class="detail-info">
+					<h3>基本信息</h3>
+					<div class="f-tips">
+						<label for="">工号</label>
+						<input class="need column require" type="text" data-column="number" readonly>
+						<div class="tips" hidden></div>
+					</div>
+					<div class="f-tips">
+						<label for="">姓名</label>
+						<input class="need column require" type="text" data-column="realName" readonly>
+						<div class="tips" hidden></div>
+					</div>
+					<div class="f-tips">
+						<label for="">所属部门</label>
+						<input class="need column require" type="text" data-column="departName" readonly>
+						<div class="tips" hidden></div>
+					</div>
+					<div class="f-tips">
+						<label for="">菜单权限</label>
+						<input id="menu_tree" readonly class="" type="text">
+						<div class="tips" hidden></div>
+					</div>
+					<div class="f-tips">
+						<label for="">所属数据权限部门</label>
+						<!-- <input class="need" type="text"> -->
+						<select id="depart">
+						</select>
+						<div class="tips" hidden></div>
+					</div>	
+					<input type="text" id="departId" class="column" data-column="departId" hidden/>	
+			</div>
+				
+			<div class="detail-bottom">
+				<div class="btn">
+					<a href="javascript:void(0);" class="cancel">取消</a>
+					<a href="javascript:void(0);" class="current">提交</a>
+				</div>
+			</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.js"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.filter.js"></script>
+<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/js/jquery.md5.js"></script>
+<script type="text/javascript" src="/js/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="/js/jquery.ztree.excheck.js"></script>
+<script type="text/javascript" src="/js/global_config.js"></script>
+<script type="text/javascript" src="/js/global.js"></script>
+<script type="text/javascript" src="/js/CBSMenuTree.js"></script>
+<script type="text/javascript" src="/js/CBSPermission.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var staffId = global.QueryString.staffId;
+		var permission = new CBSPermission({staffId:staffId});
+		$('.btn .current').click(function(){
+			permission.doSave();
+			return false;
+		});
+		$('.btn .cancel').click(function(){
+			window.close();
+		});
+	});
+</script>
+
+</html>

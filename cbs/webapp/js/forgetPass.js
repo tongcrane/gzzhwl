@@ -1,0 +1,336 @@
+var forgetPass=function(container) {
+	var _this = this;
+	this.number=container.find('#job_num');
+	this.smsCode = container.find('.data-sms-code');
+	this.sendSmsBtn = container.find('.phone_code .getMobileCode');
+	this.picCode = container.find('.data-pic-code');
+	this.picCodeImg = container.find('.code_w');
+	
+	//验证工号
+	this.check=function(number) {
+		var _this = this;
+		var valid=false;
+		if(_this.number.val()==='') {
+			_this.number.focus();
+			alert('请填写工号');
+		} else {
+			$.ajax({
+				type: "get",
+				url: global.server + '/admin/staff/getEmailAndTelphoneByNumber',
+				data:{number:_this.number.val()},
+				async:false,
+				success: function(msg) {
+					if (msg && msg.status && msg.status.statusCode == global.status.success) {
+						$('#telphone').val(msg.data.telphone);
+						$('#email').val(msg.data.email);
+						valid=true;
+					} else {
+						$('#model').show();
+					}
+				}
+			});
+		}
+		return valid;
+	}
+	
+	this.send=function(v) {
+		var _this=this;
+		//邮件重置密码跳转
+		if(v=='email') {
+			var email=$('#email').val();
+			if(email=='') {
+				alert('邮箱地址未登记');
+			} else {
+				$.ajax({
+					type: "post",
+					url: global.server + '/admin/staff/resetPasswordByEmail',
+					data:{number:_this.number.val()},
+//					async:false,
+					success: function(msg) {
+						if (msg && msg.status && msg.status.statusCode == global.status.success) {
+							$('.step1').hide();
+							
+							$('.post_box .number').html(_this.number.val());
+							$('.post_box .special').html($('#email').val());
+							$('.post_box').show();
+                            //前往邮箱
+                            $(".for_w").find(".go-email>a").click(function(){
+                                location.href="http://www.263.net/";
+                            })
+						} else {
+							alert('邮件发送失败');
+						}
+					}
+				});
+			}
+			//手机短信重置密码跳转
+		} else if(v=='telphone') {
+			var telphone=$('#telphone').val();
+			if(telphone=='') {
+				alert('手机号未登记');
+			} else {
+				$('.step1').hide();
+				
+				$('.phone .number').html(_this.number.val());
+				$('.phone').show();
+			}
+		}
+	}
+	
+	//发送手机短信
+	this.getSmsCode = function(){
+		var _this = this;
+		var picCode = _this.picCode.val();
+		var phone = $('#telphone').val();
+		if(phone){
+				//验证图形验证码
+				if(picCode=='') {
+					$('.img_code .code_tip').show();
+				} else {
+					var valid = _this.validPicCode(picCode);
+					if(valid){
+						$('.img_code .code_tip').hide();
+						//启动定时器
+						new Timer({timer : 60, container : _this.sendSmsBtn});
+						//短信下发
+						$.ajax({
+							type: "post",
+							url: global.server + '/api/account/generate',
+							data: { telphone: phone, codeType: '03'},
+							success: function (msg) {
+								if (msg && msg.status && msg.status.statusCode == global.status.success) {
+									var _phone=phone.replace(/^(\d{4})\d{4}(\d+)/,"$1****$2");
+									$('.phone_code .code_tip').html('短信验证码已发送到手机'+_phone+'<br/>请注意查收');
+									$('.phone_code .code_tip').show();
+								} else if(msg.status.statusCode != global.status.success){
+									$('.phone_code .code_tip').html(msg.status.errorMsg);
+									$('.phone_code .code_tip').show();
+									_this.refreshPicCode();
+								}
+							}
+						});
+					} else{
+						$('.img_code .code_tip').html('图形验证码错误');
+						$('.img_code .code_tip').show();
+						_this.refreshPicCode();
+					}
+				}
+		} else {
+			console.log('error');
+		}
+	};
+	
+	//刷新图形验证码
+	this.refreshPicCode = function(){
+		var _this = this;
+		_this.picCaptcha.refresh();
+		_this.picCode.val('');
+	};
+	//验证图形验证码
+	this.validPicCode = function(code){
+		var _this = this;
+		return _this.picCaptcha.valid(code);
+	}
+	
+	//验证手机短信
+	this.validSmsCode = function(code){
+		var _this = this;
+		var valid=false;
+		$.ajax({
+			type: "post",
+			url: global.server + '/api/account/validSmsCode',
+			data:{telphone:$('#telphone').val(),barCode:code,codeType:'03'},
+			async:false,
+			success: function(msg) {
+				if (msg && msg.status && msg.status.statusCode == global.status.success) {
+					valid=true
+				} else {
+					valid=false;
+				}
+			}
+		});
+		return valid;
+	}
+	
+	this.createTicket=function() {
+		_this=this;
+		var ticket=null;
+		var smsCode = _this.smsCode.val();
+		if(smsCode=='') {
+			$('.phone_code .code_tip').show();
+		} else {
+			var valid=_this.validSmsCode(smsCode);
+			if(valid) {
+				$('.phone_code .code_tip').hide();
+				$.ajax({
+					type: "post",
+					url: global.server + '/admin/staff/resetPasswordByTelphone',
+					data:{number:_this.number.val()},
+					async:false,
+					success: function(msg) {
+						if (msg && msg.status && msg.status.statusCode == global.status.success) {
+							var _r=msg.data;
+							location.href = global.getContextPath() + '/new_pass.html?ticketId='+_r.ticketId;
+						} else {
+							alert(msg.status.errorMsg);
+						}
+					}
+				});
+			} else {
+				$('.phone_code .code_tip').html('手机验证码错误');
+			}
+		}
+	}
+	
+	//初始化方法
+	this.init = function(container){
+		var _this = this;
+		_this.container = container;
+		_this.picCaptcha = new PicCaptcha({
+			container:_this.picCodeImg
+		});
+	};
+	
+	this.init(container);
+}
+
+//图形验证码
+var PicCaptcha = function(options){
+	
+	this.init = function(){
+		this.opt = $.extend({}, options);
+		this.container = options.container;
+		var _this = this;
+		_this.refresh();
+	};
+	
+	this.refresh = function(){
+		var _this = this;
+		$.ajax({
+			type: "get",
+			url: global.server + '/api/account/captcha',
+			success: function(msg) {
+				if (msg && msg.status && msg.status.statusCode == global.status.success) {
+					var data = msg.data;
+					_this.show(data);
+				}
+			}
+		});
+	};
+	
+	this.show = function(data){
+		var _this = this;
+		_this.container.find('.picCode>img').attr("src","data:image/png;base64," + data.image);
+		_this.validId = data.validId;
+	};
+	
+	this.valid = function(code){
+		var _this = this;
+		var result = false;
+		$.ajax({
+			type: "post",
+			url: global.server + '/api/account/captcha',
+			data: {token: code, validId:_this.validId},
+			async: false,
+			success: function(msg) {
+				if (msg && msg.status && msg.status.statusCode == global.status.success) {
+					var data = msg.data;
+					result = data;
+				}
+			}
+		});
+		return result;
+	};
+	
+	this.init(options);
+	
+}
+
+//倒计时
+var Timer = function(options){
+	this.opt = $.extend({},{timer:5},options);
+	this.timerc = this.opt.timer;
+	this.container = this.opt.container;
+	
+	this.start = function(){
+		var _this = this;
+		_this.t = setInterval(_this.calc, 1000, _this); 
+		var container = _this.container;
+		container.addClass('timer');
+	}
+
+	this.calc = function(target){
+		var _this = target;
+		_this.timerc--;
+		var timerc = _this.timerc;
+		var container = _this.container;
+		container.text(Number(parseInt(timerc%60/10)).toString()+(timerc%10)+'s后重新获取');
+		container.addClass('disabled');
+		if(timerc<=0){
+			_this.stop(container);
+		}
+	}
+	
+	this.stop = function(container){
+		var _this = this;
+		var t = _this.t;
+		clearInterval(t);
+		container.text('获取验证码');
+		container.removeClass('timer');
+	};
+	
+	this.start();
+}
+
+$(function(){
+	var container = $('.for_w');
+	var forget = new forgetPass(container);
+	
+	/*container.find('#job_num').blur(function(){
+		var v = this.value;
+		forget.check(v);
+	});*/
+	
+	container.find('#close').click(function(){
+		$('#model').hide();
+		$('#job_num').focus();
+	});
+	
+	container.find('#conBtn').click(function(){
+		var number=$('#job_num');
+		if(number.val()==''||number.val()==null) {
+			number.focus();
+			alert('请输入工号');
+		} else {
+			var valid=forget.check(number.val());
+			if(valid) {
+				var v=$('input:radio[name="find"]:checked').val();
+				if(v===undefined) {
+					alert('请选择密码找回方式');
+				} else {
+					forget.send(v);
+				}
+			} else {
+				$('#model').show();
+			}
+		}
+	});
+	
+	container.find('.code_w .picCode').click(function(){
+		forget.refreshPicCode();
+	});
+	
+	container.find('.phone_code .getMobileCode').click(function(){
+		var self = $(this);
+		if(self.hasClass('timer')){
+			return false;
+		} else {
+			forget.getSmsCode();
+		}
+	});
+	
+	container.find('.for_con>a').click(function(){
+		forget.createTicket();
+	});
+	
+});

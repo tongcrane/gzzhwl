@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>添加车辆信息</title>
+	<link rel="stylesheet" type="text/css" href="/css/common.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/base.css?ver=0.3">
+	<link rel="stylesheet" type="text/css" href="/css/addBase.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/datepicker.min.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/addCarInfoOne.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui-extends.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.css?ver=0.3"/>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.multiselect.filter.css?ver=0.3"/>
+</head>
+<body>
+
+	<header id="header">
+		<div class="header-content">
+			<h2>志鸿物流核心业务系统</h2>
+		</div>
+	</header>
+
+	<div class="car-information">
+		<p>添加车辆信息</p>
+	</div>
+
+	<div class="car-detail">
+			<div class="detail-left">
+				<div class="detail-photos">
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="licenseImageRefId"/>
+						<span class="p-add">添加车辆行驶证照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>行驶证信息</h3>
+					<div class="f-tips">
+						<label for="">车牌号</label>
+						<input maxlength="7" data-column="plateNumber" class="need column required single" type="text">
+						<div class="tips" hidden>请输入正确有效的车牌号</div>
+					</div>
+					<div class="f-tips">
+						<label for="">行驶证档案编号</label>
+						<input maxlength="20" data-column="licenseNo" class="need column required single" type="text">
+						<div class="tips" hidden>请输入正确有效的行驶证档案编号</div>
+					</div>
+					<div class="f-tips">
+						<label for="">所有人</label>
+						<input maxlength="50" data-column="ownerType" class="need column required" type="text">
+						<div class="tips" hidden>请输入所有人</div>
+					</div>
+					<div class="f-tips">
+						<label for="" class="up-need">车辆类型</label>
+						<select data-column="type" class="column required">
+							<option value="">请选择</option>
+							<option value="高栏车">高栏车</option>
+							<option value="中栏车">中栏车</option>
+							<option value="低栏车">低栏车</option>
+							<option value="厢式车">厢式车</option>
+							<option value="平板车">平板车</option>
+							<option value="高低板车">高低板车</option>
+							<option value="冷藏车">冷藏车</option>
+							<option value="危险品车">危险品车</option>
+							<option value="自卸货车">自卸货车</option>
+							<option value="集装箱">集装箱</option>
+							<option value="其他车型">其他车型</option>
+						</select>
+						<div class="tips" hidden="hidden">请选择车辆类型</div>
+					</div>
+					<div class="f-tips">
+						<label for="">车架号</label>
+						<input maxlength="17" data-column="vin" type="text" class="need column required single">
+						<div class="tips" hidden>请输入车架号</div>
+					</div>
+					<div class="f-tips">
+						<label for="">发动机号</label>
+						<input maxlength="10" data-column="engineNo" class="need column required single" type="text">
+						<div class="tips" hidden>请输入发动机号</div>
+					</div>
+					<div class="f-tips">
+						<label for="">准牵引总质量（kg）</label>
+						<input maxlength="10" data-column="loadWeight" class="need column required" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+						<div class="tips" hidden>请输入准牵引总质量</div>
+					</div>
+					<div class="f-tips">
+						<label for="">行驶证注册日期</label>
+						<input data-column="licenseRegDate" type="text" class=" use-date need column required slide-down" data-position="bottom right">
+						<div class="tips" hidden>请输入行驶证注册日期</div>
+					</div>
+					<div class="f-tips">
+						<label for="">行驶证发证日期</label>
+						<input data-column="licenseIssueDate" type="text" class=" use-date need column required slide-down" data-position="top left">
+						<div class="tips" hidden>请输入行驶证发证日期</div>
+					</div>
+					<div class="f-tips">
+						<label for="">行驶证有效期至</label>
+						<input data-column="licenseValidDate" type="text" class="use-date need column required slide-down" data-position="top left">
+						<div class="tips" hidden>请输入行驶证有效期</div>
+					</div>
+				</div>
+			</div>
+			<div class="detail-right">
+				<div class="detail-photos">
+					<p>
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();"  data-column="regImageRefId"/>
+						<span class="p-add">添加车辆登记证照片</span>
+					</p>
+					<p class="down">
+						<input type="text" class="file-add image-column" readonly onfocus="this.blur();" data-column="ocImageRefId"/>
+						<span class="p-add">添加道路运输证照片</span>
+					</p>
+				</div>
+				<div class="detail-info">
+					<h3>登记证信息</h3>
+					<div class="f-tips">
+						<label for="">机动车登记证编号</label>
+						<input maxlength="20" data-column="regCertCode" class="column single" type="text">
+					</div>
+					<div class="f-tips">
+						<label for="">车辆登记日期</label>
+						<input type="text" data-column="regDate" class=" use-date column" data-position="bottom left">						
+					</div>
+					<div class="f-tips">
+						<label for="">车辆品牌</label>
+						<input maxlength="10" data-column="brand" class="column" type="text">
+					</div>
+					<div class="f-tips">
+						<label for="">车辆型号</label>
+						<input maxlength="10" data-column="models" class="column" type="text">
+					</div>
+					<div class="f-tips">
+						<label for="">轮胎数</label>
+						<input maxlength="10" data-column="wheelsNum" class="column" type="text">
+					</div>
+					<div class="f-tips">
+						<label for="">车体颜色</label>
+						<input maxlength="10" data-column="color" class="column" type="text">
+					</div>
+					<h3 class="add-width">道路运输证信息</h3>
+					<div class="f-tips">
+						<label for="">道路运输证号</label>
+						<input maxlength="20" data-column="operatingCertNo" class="column single" type="text">
+					</div>
+					<div class="f-tips">
+						<label for="">营运证发证日期</label>
+						<input data-column="operatingCertIssueDate" type="text" class="use-date column slide-down" data-position="top left">
+					</div>
+					<div class="f-tips">
+						<label for="">营运证有效期至</label>
+						<input data-column="operatingCertValidDate" type="text" class="use-date column slide-down" data-position="top left">
+					</div>
+				</div>
+			</div>
+				
+			<div class="detail-bottom">
+				<div class="btn">
+					<button class="current">下一页</button>
+				</div>
+			</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/datepicker.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.multiselect.filter.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/store.min.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/jquery.md5.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global_config.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/global.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSImage.js?ver=0.3"></script>
+<script type="text/javascript" src="/js/CBSVehicle.js?ver=0.3"></script>
+
+
+
+<script type="text/javascript">
+	$(function(){
+		var vehicleInfoId = global.QueryString.vehicleInfoId;
+		var vehicle = new CBSVehicle({vehicleInfoId:vehicleInfoId,step:1});
+		$('.btn > .current').click(function(){
+			vehicle.doSave();
+			return false;
+		});
+		
+		var platNumber=$("input[data-column='plateNumber']");
+		platNumber.on('blur',function(){
+			var re=/^[\u4e00-\u9fa5]{1}[\S]{6}$/;
+			if(this.value){
+				if(platNumber.val().search(re)==-1) {
+					platNumber.val(this.value.toUpperCase());
+					platNumber.next().show();
+					platNumber.focus();
+				} else {
+					platNumber.val(this.value.toUpperCase());
+					platNumber.next().hide();
+				}
+			} else {
+				platNumber.next().hide();
+			}
+		});
+	});
+</script>
+</html>

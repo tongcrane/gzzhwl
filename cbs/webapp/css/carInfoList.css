@@ -1,0 +1,17 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-06-24 15:46:24
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-08-08 17:05:31
+*/
+.search-content-div{padding-bottom:0px;}
+.mar-top{padding-top:8px;}
+.search-content-div .pad_top{padding-top:15px;}
+
+/* 信息提示框 */
+.deadline li{padding:2px 10px;height:32px;}
+.deadline li>p{height:22px;line-height:22px;margin-top:-1px;}
+.deadline li>b{margin-top:-5px;}
+.car-num{width:130px;}
+.car-list{width:585px;}
+.owe-to>p{width:188px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}

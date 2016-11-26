@@ -1,0 +1,21 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-13 13:46:15
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-20 09:05:59
+*/
+.handle-content .bus_edit{text-align:left;}
+.handle-content .bus_edit input{vertical-align: -1px;}
+.handle-content .bus_edit span{display:inline-block;width:20px;height:12px;background: url(../img/handle_edit.png) no-repeat center;cursor:pointer;margin-left:2px;}
+.handle-content .bus_edit b{font-weight: normal;margin-left:5px;}
+.sea-left input,.sea-right input{width:160px;}
+.bus_sel_single{width:20px;height:20px;position:absolute;top:11px;right:2px;background:url(../img/plat_handle.png) no-repeat center; cursor:pointer;}
+.bus_select{display:inline-block;width:20px;height:12px;background:url(../img/select.png) no-repeat center; cursor:pointer;}
+
+/* td内部不加标签样式 */ 
+.handle-content table{table-layout: fixed;}
+td{overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+th{text-align:left;}
+.handle-content td,th{padding:12px 0 12px 10px;} 
+
+.all_check{vertical-align: -2px;margin-right:6px;}

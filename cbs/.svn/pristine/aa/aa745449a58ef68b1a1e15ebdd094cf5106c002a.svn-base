@@ -1,0 +1,56 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-07-08 10:36:16
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-07-22 09:47:53
+*/
+.layout .stage{line-height: normal;height:auto;}
+.layout .spa_n{line-height: normal;height:auto;}
+.layout{margin-bottom:15px;}
+
+/* 模态窗口 */
+.mo_del{display: none;}
+.model_content{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:214px;}
+.model_content p{padding:40px;color:#525252;text-align: center;margin-top: 20px;}
+
+.model_content_cansel{
+	background: #fff;
+	position: fixed;
+	top:50%;
+	left:50%;
+	box-shadow: 0 1px 8px #ccc;
+	display: none;
+}
+.model_content_cansel a{
+	height:28px;
+	line-height: 28px;
+	background: #de642c;
+	border: 1px solid #bc5120;
+	padding:0 30px;
+	border-radius: 2px;
+	color:#fff;
+	position:absolute;
+	right:20px;
+	bottom:32px;
+}
+.model_content_cansel i{
+	background:url("/img/adv_sea_close.png") no-repeat center;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+.model_content_cansel{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:214px;}
+.model_content_cansel p{padding:40px;color:#525252;text-align: center;margin-top: 20px;}
+
+/* 单位样式 */
+.km,.money{position:relative;}
+.km:after,.money:after{content:"km";position:absolute;top:0;right:-232px;color:#ddd;font-weight: normal;}
+.money:after{content:"元";}
+.layout .unit_short {width: 206px; padding-right: 26px;}

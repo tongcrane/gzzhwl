@@ -1,0 +1,75 @@
+/*
+* @Author: zhihong-zh
+* @Date:   2016-08-01 14:36:05
+* @Last Modified by:   zhihong-zh
+* @Last Modified time: 2016-08-01 16:48:33
+*/
+
+/* 高级搜索样式 */
+.sea-left input,.sea-right input{width:178px;}
+.mar_top{margin-top:20px;}
+.mar_bottom{margin-bottom: 28px;}
+.mar_right{margin-right: 13px;}
+.in_block label,.in_block input{display: inline-block;}
+.in_block input{width:437px;}
+
+/* td内部不加标签样式 */ 
+.handle-content table{table-layout: fixed;}
+td{overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+th{text-align:left;}
+.handle-content td,th{padding:12px 0 12px 10px;}
+
+.check_box{vertical-align: -1px;}
+.all_check{vertical-align: -2px;margin-right:6px;}
+
+/* 状态 */
+.f_single{position: relative;}
+.bus_sel_single{background:url(../img/plat_handle.png) no-repeat 84px center; cursor:pointer;}
+.bus_sel_single.sin_long{background-position: 99px center;}
+.bus_select{background:url(../img/select.png) no-repeat 72px center; cursor:pointer;}
+.bus_sel_single .statu_s{top:33px;left:-9px;}
+.sin_long .statu_s{left:3px;}
+
+/* 模态窗口样式 */
+.mo_del {width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5);position: fixed;left: 0;top: 0;z-index: 999;display: none;}
+.model_content{width:414px;height:220px;background: #fff;position: fixed;top:50%;left:50%;margin:-110px 0 0 -212px;box-shadow: 0 1px 8px #ccc;}
+.model_content a{font-size:14px;height:28px;line-height: 28px;background: #de642c;border: 1px solid #bc5120;padding:0 30px;border-radius: 2px;color:#fff;position:absolute;right:20px;bottom:32px;}
+.model_content i{background:url("/img/adv_sea_close.png") no-repeat center;cursor: pointer; width: 20px; height: 20px; position: absolute;right: 5px;top: 5px;}
+.model_content{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:220px;}
+.model_content p{padding:40px;color:#525252;margin-top: 20px;font-size: 14px;font-weight: bold;} 
+
+.model_content_cansel{
+	background: #fff;
+	position: fixed;
+	top:50%;
+	left:50%;
+	box-shadow: 0 1px 8px #ccc;
+	display: none;
+}
+.model_content_cansel a{
+	height:28px;
+	line-height: 28px;
+	background: #de642c;
+	border: 1px solid #bc5120;
+	padding:0 30px;
+	border-radius: 2px;
+	color:#fff;
+	position:absolute;
+	right:20px;
+	bottom:32px;
+}
+.model_content_cansel i{
+	background:url("/img/adv_sea_close.png") no-repeat center;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+.model_content_cansel{width:414px;height:200px;margin:-100px 0 0 -212px;}
+a.mo_con_no{right:108px;}
+a.mo_con_yes{right:214px;}
+.model_content_cansel p{padding:40px;color:#525252;text-align: center;margin-top: 20px;}
